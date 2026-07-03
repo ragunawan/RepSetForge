@@ -8,6 +8,7 @@ struct QuestListView: View {
 
     @State private var newQuest: Quest?
     @State private var showingManageQuestTemplates = false
+    @State private var showingScheduleQuest = false
 
     private var quests: [Quest] { allQuests.filter { $0.status != .completed } }
 
@@ -40,6 +41,11 @@ struct QuestListView: View {
         .sheet(isPresented: $showingManageQuestTemplates) {
             ManageQuestTemplatesSheet()
         }
+        .sheet(isPresented: $showingScheduleQuest) {
+            ScheduleQuestSheet { quest in
+                newQuest = quest
+            }
+        }
         .overlay {
             if quests.isEmpty {
                 Text("No quests yet. Tap + to start one.")
@@ -65,6 +71,11 @@ struct QuestListView: View {
                 } label: {
                     Label("From Template", systemImage: "square.stack.3d.up.fill")
                 }
+            }
+            Button {
+                showingScheduleQuest = true
+            } label: {
+                Label("Schedule Quest…", systemImage: "calendar.badge.plus")
             }
             Button {
                 showingManageQuestTemplates = true
@@ -140,6 +151,96 @@ private struct ManageQuestTemplatesSheet: View {
             modelContext.delete(templates[index])
         }
         try? modelContext.save()
+    }
+}
+
+private struct ScheduleQuestSheet: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \QuestTemplate.name) private var templates: [QuestTemplate]
+
+    let onCreate: (Quest) -> Void
+
+    @State private var name = "New Quest"
+    @State private var date = Date.now
+    @State private var selectedTemplate: QuestTemplate?
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Quest") {
+                    TextField("Name", text: $name)
+                    DatePicker("Date", selection: $date, displayedComponents: .date)
+                }
+                if !templates.isEmpty {
+                    Section("Start From") {
+                        Picker("Template", selection: templateSelection) {
+                            Text("Blank Quest").tag(Optional<QuestTemplate>.none)
+                            ForEach(templates) { template in
+                                Text(template.name).tag(Optional(template))
+                            }
+                        }
+                        Text("Starting from: \(selectedTemplate?.name ?? "Blank Quest")")
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Section {
+                    Label(scheduleHint, systemImage: scheduleIcon)
+                        .font(RepSetForgeFont.body(12))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("Schedule Quest")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Create", action: createQuest)
+                        .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
+        }
+    }
+
+    private var templateSelection: Binding<QuestTemplate?> {
+        Binding(
+            get: { nil },
+            set: { template in
+                if let template {
+                    selectedTemplate = template
+                    name = template.name
+                }
+            }
+        )
+    }
+
+    private var scheduledStatus: QuestStatus { QuestScheduler.status(for: date) }
+
+    private var scheduleHint: String {
+        scheduledStatus == .planned
+            ? "Scheduled for a future day. You can still edit it any time before then."
+            : "Ready to log right away."
+    }
+
+    private var scheduleIcon: String {
+        scheduledStatus == .planned ? "hourglass" : "flame.fill"
+    }
+
+    private func createQuest() {
+        let quest: Quest
+        if let selectedTemplate {
+            quest = QuestTemplateService.makeQuest(from: selectedTemplate)
+            quest.name = name
+        } else {
+            quest = Quest(name: name)
+        }
+        quest.date = date
+        quest.status = scheduledStatus
+        modelContext.insert(quest)
+        onCreate(quest)
+        dismiss()
     }
 }
 
