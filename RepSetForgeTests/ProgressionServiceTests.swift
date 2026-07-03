@@ -12,6 +12,13 @@ final class ProgressionServiceTests: XCTestCase {
         XCTAssertEqual(ProgressionService.setXP(reps: 10, weight: 0), 20)
     }
 
+    func testSetXPNormalizesKilogramsToPoundsForTheBonus() {
+        // 185 lb ≈ 83.9146 kg; bonus should match the pounds-based formula regardless of unit.
+        let poundsXP = ProgressionService.setXP(reps: 5, weight: 185, unit: .pounds)
+        let kilogramsXP = ProgressionService.setXP(reps: 5, weight: 83.9146, unit: .kilograms)
+        XCTAssertEqual(poundsXP, kilogramsXP)
+    }
+
     // MARK: questXP
 
     func testQuestXP() {
@@ -53,6 +60,10 @@ final class ProgressionServiceTests: XCTestCase {
         let bench = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
         let benchSet = ExerciseSet(setNumber: 1, reps: 5, weight: 185)
         XCTAssertEqual(ProgressionService.setXP(exercise: bench, set: benchSet), ProgressionService.setXP(reps: 5, weight: 185))
+
+        let benchKg = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
+        let benchKgSet = ExerciseSet(setNumber: 1, reps: 5, weight: 83.9146, weightUnit: .kilograms)
+        XCTAssertEqual(ProgressionService.setXP(exercise: benchKg, set: benchKgSet), ProgressionService.setXP(reps: 5, weight: 185))
     }
 
     func testExerciseXPUsesDurationFormulaForTimedExercises() {

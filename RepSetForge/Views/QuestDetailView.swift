@@ -184,6 +184,9 @@ private struct AddExerciseSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
+    @Query private var characters: [PlayerCharacter]
+
+    private var preferredWeightUnit: WeightUnit { characters.first?.preferredWeightUnit ?? .pounds }
 
     @State private var name = ""
     @State private var primaryMuscle: MuscleGroup = .chest
@@ -287,6 +290,8 @@ private struct AddExerciseSheet: View {
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.trailing)
                         .frame(width: 64)
+                    Text(preferredWeightUnit.abbreviation)
+                        .foregroundStyle(.secondary)
                 }
             }
             if exerciseType.tracksDistance {
@@ -348,7 +353,8 @@ private struct AddExerciseSheet: View {
                 exerciseType: exerciseType,
                 defaultDistanceMiles: defaultDistanceMiles,
                 defaultDurationSeconds: defaultDurationSeconds
-            )
+            ),
+            unit: preferredWeightUnit
         )
         quest.exercises.append(exercise)
 

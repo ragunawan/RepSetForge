@@ -16,10 +16,12 @@ enum ProgressionService {
         let muscleLevelUps: [MuscleGroup: LevelUpResult]
     }
 
-    /// XP for one logged set: base = reps × 2, bonus = weight / 10.
-    static func setXP(reps: Int, weight: Double) -> Int {
+    /// XP for one logged set: base = reps × 2, bonus = weight (in pounds) / 10.
+    /// `weight` is normalized from `unit` to pounds first so the same lift
+    /// awards the same XP regardless of which unit it was logged in.
+    static func setXP(reps: Int, weight: Double, unit: WeightUnit = .pounds) -> Int {
         let base = Double(reps * 2)
-        let bonus = weight / 10
+        let bonus = unit.convert(weight, to: .pounds) / 10
         return Int((base + bonus).rounded())
     }
 
@@ -40,7 +42,7 @@ enum ProgressionService {
     static func setXP(exercise: Exercise, set: ExerciseSet) -> Int {
         switch exercise.exerciseType {
         case .strength, .bodyweight, .assisted:
-            return setXP(reps: set.reps, weight: set.weight)
+            return setXP(reps: set.reps, weight: set.weight, unit: set.weightUnit)
         case .duration:
             return durationXP(seconds: set.durationSeconds)
         case .distance:

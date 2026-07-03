@@ -6,11 +6,14 @@ struct ExerciseLoggingView: View {
     var isReadOnly: Bool = false
 
     @Environment(\.modelContext) private var modelContext
+    @Query private var characters: [PlayerCharacter]
     @State private var restSecondsRemaining: Int?
 
     private var sortedSets: [ExerciseSet] {
         exercise.sets.sorted(by: { $0.setNumber < $1.setNumber })
     }
+
+    private var preferredWeightUnit: WeightUnit { characters.first?.preferredWeightUnit ?? .pounds }
 
     var body: some View {
         Form {
@@ -108,7 +111,7 @@ struct ExerciseLoggingView: View {
 
     private func addSet() {
         let nextNumber = (exercise.sets.map(\.setNumber).max() ?? 0) + 1
-        exercise.sets.append(ExerciseSet(setNumber: nextNumber))
+        exercise.sets.append(ExerciseSet(setNumber: nextNumber, weightUnit: preferredWeightUnit))
     }
 
     private func deleteSets(at offsets: IndexSet) {
@@ -176,12 +179,14 @@ private struct ExerciseSetRow: View {
     private var weightField: some View {
         if isReadOnly {
             Spacer()
-            Text("\(set.weight, specifier: "%.1f") lb")
+            Text(set.weightUnit.formatted(set.weight))
         } else {
             TextField(exerciseType == .assisted ? "Assist" : "Weight", value: $set.weight, format: .number)
                 .keyboardType(.decimalPad)
                 .frame(width: 64)
                 .multilineTextAlignment(.trailing)
+            Text(set.weightUnit.abbreviation)
+                .foregroundStyle(.secondary)
         }
     }
 

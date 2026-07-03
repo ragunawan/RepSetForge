@@ -76,7 +76,7 @@ struct QuestCompletionView: View {
                                         .font(RepSetForgeFont.body(13))
                                         .foregroundStyle(Color.questNavy)
                                     Spacer()
-                                    Text(record.recordType.formattedValue(record.newValue))
+                                    Text(record.recordType.formattedValue(record.newValue, unit: record.unit ?? .pounds))
                                         .font(RepSetForgeFont.stat(13))
                                         .foregroundStyle(Color.questGold)
                                 }

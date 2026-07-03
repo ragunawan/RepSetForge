@@ -45,6 +45,32 @@ final class PersonalRecordServiceTests: XCTestCase {
         XCTAssertEqual(records.first { $0.recordType == .maxWeight }?.value, 185)
     }
 
+    func testCrossUnitComparisonConvertsBeforeDeciding() {
+        let bench = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
+        bench.sets = [ExerciseSet(setNumber: 1, reps: 5, weight: 185, completed: true)] // pounds
+        PersonalRecordService.evaluateRecords(for: [bench], context: context)
+
+        // 80 kg (~176 lb) is weaker than the existing 185 lb record — should not improve it.
+        let weakerKg = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
+        weakerKg.sets = [ExerciseSet(setNumber: 1, reps: 5, weight: 80, completed: true, weightUnit: .kilograms)]
+        let noImprovement = PersonalRecordService.evaluateRecords(for: [weakerKg], context: context)
+        XCTAssertTrue(noImprovement.isEmpty)
+
+        // 90 kg (~198 lb) is genuinely heavier — should improve maxWeight and
+        // bestVolume (reps tie at 5, so maxReps doesn't count as an improvement).
+        // The record now switches to displaying in kilograms, matching how it
+        // was actually logged.
+        let strongerKg = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
+        strongerKg.sets = [ExerciseSet(setNumber: 1, reps: 5, weight: 90, completed: true, weightUnit: .kilograms)]
+        let improved = PersonalRecordService.evaluateRecords(for: [strongerKg], context: context)
+        XCTAssertEqual(Set(improved.map(\.recordType)), [.maxWeight, .bestVolume])
+
+        let records = (try? context.fetch(FetchDescriptor<PersonalRecord>())) ?? []
+        let maxWeightRecord = records.first { $0.recordType == .maxWeight }
+        XCTAssertEqual(maxWeightRecord?.value, 90)
+        XCTAssertEqual(maxWeightRecord?.weightUnit, .kilograms)
+    }
+
     func testBodyweightAndAssistedOnlyTrackMaxReps() {
         let pullUps = Exercise(name: "Pull-Ups", primaryMuscle: .back, exerciseType: .bodyweight)
         pullUps.sets = [ExerciseSet(setNumber: 1, reps: 12, completed: true)]

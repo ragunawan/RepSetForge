@@ -5,7 +5,10 @@ import Foundation
 enum ExerciseTemplateService {
     /// Creates a new Exercise pre-filled with the template's muscle groups,
     /// notes, and a run of unfilled sets matching its default set scheme.
-    static func makeExercise(from template: ExerciseTemplate) -> Exercise {
+    /// `unit` tags the new sets' weight — templates store only numeric
+    /// defaults, so they're applied in whichever unit the caller is
+    /// currently using (typically the character's preferred unit).
+    static func makeExercise(from template: ExerciseTemplate, unit: WeightUnit = .pounds) -> Exercise {
         let exercise = Exercise(
             name: template.name,
             primaryMuscle: template.primaryMuscle,
@@ -21,7 +24,8 @@ enum ExerciseTemplateService {
                     reps: template.defaultReps,
                     weight: template.defaultWeight,
                     distanceMiles: template.defaultDistanceMiles,
-                    durationSeconds: template.defaultDurationSeconds
+                    durationSeconds: template.defaultDurationSeconds,
+                    weightUnit: unit
                 )
             )
         }

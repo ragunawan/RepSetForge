@@ -26,6 +26,8 @@ struct CharacterProgressView: View {
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
+    @State private var showingSettings = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -102,7 +104,7 @@ struct CharacterProgressView: View {
                                             .foregroundStyle(Color.questSilver.opacity(0.7))
                                     }
                                     Spacer()
-                                    Text(record.recordType.formattedValue(record.value))
+                                    Text(record.recordType.formattedValue(record.value, unit: record.weightUnit ?? .pounds))
                                         .font(RepSetForgeFont.stat(13))
                                         .foregroundStyle(Color.questGold)
                                 }
@@ -116,6 +118,58 @@ struct CharacterProgressView: View {
             }
             .background(Color.questParchment.ignoresSafeArea())
             .navigationTitle("Character")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        showingSettings = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsSheet()
+            }
+        }
+    }
+}
+
+private struct SettingsSheet: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query private var characters: [PlayerCharacter]
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                if let character = characters.first {
+                    Section("Units") {
+                        Picker("Weight Unit", selection: Binding(
+                            get: { character.preferredWeightUnit },
+                            set: { character.preferredWeightUnit = $0 }
+                        )) {
+                            ForEach(WeightUnit.allCases) { unit in
+                                Text(unit.displayName).tag(unit)
+                            }
+                        }
+                    }
+                    Section {
+                        Text("Only affects new sets you log — sets you've already recorded keep displaying in the unit you entered them in.")
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            .navigationTitle("Settings")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        try? modelContext.save()
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }

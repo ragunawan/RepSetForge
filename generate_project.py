@@ -87,6 +87,8 @@ FR = {
     "PersonalRecord":          u(1, 0x46),
     "PersonalRecordService":   u(1, 0x47),
     "TEST_PersonalRecord":     u(1, 0x48),
+    "WeightUnit":              u(1, 0x49),
+    "TEST_WeightUnit":         u(1, 0x4A),
 }
 
 # Build files
@@ -139,6 +141,7 @@ APP_SOURCES = [
     ("ContentView",           "ContentView.swift"),
     ("RepSetForgeTheme",        "RepSetForgeTheme.swift"),
     ("MuscleGroup",           "Models/MuscleGroup.swift"),
+    ("WeightUnit",            "Models/WeightUnit.swift"),
     ("QuestStatus",           "Models/QuestStatus.swift"),
     ("ExerciseType",          "Models/ExerciseType.swift"),
     ("ExerciseSet",           "Models/ExerciseSet.swift"),
@@ -207,6 +210,7 @@ TEST_SOURCES = [
     ("TEST_ProgressionRebuild", "RepSetForgeTests/ProgressionRebuildServiceTests.swift"),
     ("TEST_ExerciseType", "RepSetForgeTests/ExerciseTypeTests.swift"),
     ("TEST_PersonalRecord", "RepSetForgeTests/PersonalRecordServiceTests.swift"),
+    ("TEST_WeightUnit", "RepSetForgeTests/WeightUnitTests.swift"),
 ]
 
 def pbxproj():
@@ -334,7 +338,7 @@ def pbxproj():
         a(f"\t\t\tsourceTree = \"<group>\";")
         a(f"\t\t}};")
 
-    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord",
+    simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord",
                                        "RPGClass", "RPGEquipment", "RPGSkill", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
     simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGSkillRegistry",

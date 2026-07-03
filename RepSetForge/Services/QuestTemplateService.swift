@@ -5,8 +5,9 @@ import Foundation
 enum QuestTemplateService {
     /// Creates a new active Quest named after the template, with one Exercise
     /// per blueprint, each pre-filled with unfilled sets matching its default
-    /// set scheme.
-    static func makeQuest(from template: QuestTemplate) -> Quest {
+    /// set scheme. `unit` tags the new sets' weight (templates store only
+    /// numeric defaults) — typically the character's preferred unit.
+    static func makeQuest(from template: QuestTemplate, unit: WeightUnit = .pounds) -> Quest {
         let quest = Quest(name: template.name, status: .active)
         for blueprint in template.exerciseBlueprints {
             let exercise = Exercise(
@@ -24,7 +25,8 @@ enum QuestTemplateService {
                         reps: blueprint.defaultReps,
                         weight: blueprint.defaultWeight,
                         distanceMiles: blueprint.defaultDistanceMiles,
-                        durationSeconds: blueprint.defaultDurationSeconds
+                        durationSeconds: blueprint.defaultDurationSeconds,
+                        weightUnit: unit
                     )
                 )
             }

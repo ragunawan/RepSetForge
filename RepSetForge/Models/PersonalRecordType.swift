@@ -23,11 +23,14 @@ enum PersonalRecordType: String, Codable, CaseIterable, Identifiable {
     /// Fastest pace is minutes-per-mile, so a smaller number is the better record.
     var lowerIsBetter: Bool { self == .fastestPace }
 
-    func formattedValue(_ value: Double) -> String {
+    /// Formats `value` for display. `unit` only matters for the weight-based
+    /// types (maxWeight, bestVolume); pass the record's own stored unit so
+    /// historical entries always render in the unit they were actually set in.
+    func formattedValue(_ value: Double, unit: WeightUnit = .pounds) -> String {
         switch self {
-        case .maxWeight: return String(format: "%.1f lb", value)
+        case .maxWeight: return unit.formatted(value)
         case .maxReps: return "\(Int(value)) reps"
-        case .bestVolume: return String(format: "%.0f lb", value)
+        case .bestVolume: return String(format: "%.0f %@", value, unit.abbreviation)
         case .longestDuration:
             let seconds = Int(value)
             return String(format: "%d:%02d", seconds / 60, seconds % 60)

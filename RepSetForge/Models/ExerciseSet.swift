@@ -13,6 +13,9 @@ final class ExerciseSet {
     var distanceMiles: Double = 0
     /// Duration in seconds, for `.duration`/`.cardio` exercise types.
     var durationSeconds: Int = 0
+    /// Unit `weight` was recorded in. Defaults to pounds so sets logged
+    /// before this field existed keep displaying correctly.
+    var weightUnitRaw: String = WeightUnit.pounds.rawValue
 
     var exercise: Exercise?
 
@@ -22,7 +25,8 @@ final class ExerciseSet {
         weight: Double = 0,
         completed: Bool = false,
         distanceMiles: Double = 0,
-        durationSeconds: Int = 0
+        durationSeconds: Int = 0,
+        weightUnit: WeightUnit = .pounds
     ) {
         self.id = UUID()
         self.setNumber = setNumber
@@ -31,5 +35,11 @@ final class ExerciseSet {
         self.completed = completed
         self.distanceMiles = distanceMiles
         self.durationSeconds = durationSeconds
+        self.weightUnitRaw = weightUnit.rawValue
+    }
+
+    var weightUnit: WeightUnit {
+        get { WeightUnit(rawValue: weightUnitRaw) ?? .pounds }
+        set { weightUnitRaw = newValue.rawValue }
     }
 }

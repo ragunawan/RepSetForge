@@ -11,6 +11,7 @@
 		AA0200000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000002 /* ContentView.swift */; };
 		AA0200000000000000000003 /* RepSetForgeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000003 /* RepSetForgeTheme.swift */; };
 		AA0200000000000000000004 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000004 /* MuscleGroup.swift */; };
+		AA0200000000000000000049 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* WeightUnit.swift */; };
 		AA0200000000000000000005 /* QuestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000005 /* QuestStatus.swift */; };
 		AA0200000000000000000043 /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* ExerciseType.swift */; };
 		AA0200000000000000000006 /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
@@ -77,6 +78,7 @@
 		AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */; };
 		AA0200000000000000000044 /* ExerciseTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000044 /* ExerciseTypeTests.swift */; };
 		AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000048 /* PersonalRecordServiceTests.swift */; };
+		AA020000000000000000004A /* WeightUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004A /* WeightUnitTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -96,6 +98,7 @@
 		AA0100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000003 /* RepSetForgeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeTheme.swift; sourceTree = "<group>"; };
 		AA0100000000000000000004 /* MuscleGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleGroup.swift; sourceTree = "<group>"; };
+		AA0100000000000000000049 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
 		AA0100000000000000000005 /* QuestStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestStatus.swift; sourceTree = "<group>"; };
 		AA0100000000000000000043 /* ExerciseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseType.swift; sourceTree = "<group>"; };
 		AA0100000000000000000006 /* ExerciseSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSet.swift; sourceTree = "<group>"; };
@@ -162,6 +165,7 @@
 		AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000044 /* ExerciseTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTypeTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000048 /* PersonalRecordServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000004A /* WeightUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnitTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				AA0100000000000000000004 /* MuscleGroup.swift */,
+				AA0100000000000000000049 /* WeightUnit.swift */,
 				AA0100000000000000000005 /* QuestStatus.swift */,
 				AA0100000000000000000043 /* ExerciseType.swift */,
 				AA0100000000000000000006 /* ExerciseSet.swift */,
@@ -320,6 +325,7 @@
 				AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */,
 				AA0100000000000000000044 /* ExerciseTypeTests.swift */,
 				AA0100000000000000000048 /* PersonalRecordServiceTests.swift */,
+				AA010000000000000000004A /* WeightUnitTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -423,6 +429,7 @@
 				AA0200000000000000000002 /* ContentView.swift in Sources */,
 				AA0200000000000000000003 /* RepSetForgeTheme.swift in Sources */,
 				AA0200000000000000000004 /* MuscleGroup.swift in Sources */,
+				AA0200000000000000000049 /* WeightUnit.swift in Sources */,
 				AA0200000000000000000005 /* QuestStatus.swift in Sources */,
 				AA0200000000000000000043 /* ExerciseType.swift in Sources */,
 				AA0200000000000000000006 /* ExerciseSet.swift in Sources */,
@@ -495,6 +502,7 @@
 				AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */,
 				AA0200000000000000000044 /* ExerciseTypeTests.swift in Sources */,
 				AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */,
+				AA020000000000000000004A /* WeightUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

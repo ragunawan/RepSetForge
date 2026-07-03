@@ -13,6 +13,7 @@ enum PersonalRecordService {
         let recordType: PersonalRecordType
         let oldValue: Double?
         let newValue: Double
+        let unit: WeightUnit?
     }
 
     private struct Key: Hashable {
@@ -31,21 +32,31 @@ enum PersonalRecordService {
             uniqueKeysWithValues: existing.map { (Key(name: $0.exerciseName.lowercased(), type: $0.recordType), $0) }
         )
 
-        func consider(name: String, type: PersonalRecordType, value: Double) {
+        // For weight-based types, `value`/`unit` may be in a different unit than
+        // the existing record; convert into the record's unit before comparing
+        // so switching preferences doesn't produce a bogus "improvement."
+        func consider(name: String, type: PersonalRecordType, value: Double, unit: WeightUnit?) {
             guard value > 0 else { return }
             let key = Key(name: name.lowercased(), type: type)
             if let record = byKey[key] {
-                let improved = type.lowerIsBetter ? value < record.value : value > record.value
+                let comparableValue: Double
+                if let unit, let recordUnit = record.weightUnit {
+                    comparableValue = unit.convert(value, to: recordUnit)
+                } else {
+                    comparableValue = value
+                }
+                let improved = type.lowerIsBetter ? comparableValue < record.value : comparableValue > record.value
                 guard improved else { return }
                 let old = record.value
                 record.value = value
+                record.weightUnit = unit
                 record.achievedDate = achievedDate
-                updates.append(Update(exerciseName: name, recordType: type, oldValue: old, newValue: value))
+                updates.append(Update(exerciseName: name, recordType: type, oldValue: old, newValue: value, unit: unit))
             } else {
-                let record = PersonalRecord(exerciseName: name, recordType: type, value: value, achievedDate: achievedDate)
+                let record = PersonalRecord(exerciseName: name, recordType: type, value: value, weightUnit: unit, achievedDate: achievedDate)
                 context.insert(record)
                 byKey[key] = record
-                updates.append(Update(exerciseName: name, recordType: type, oldValue: nil, newValue: value))
+                updates.append(Update(exerciseName: name, recordType: type, oldValue: nil, newValue: value, unit: unit))
             }
         }
 
@@ -53,19 +64,19 @@ enum PersonalRecordService {
             for set in exercise.completedSets {
                 switch exercise.exerciseType {
                 case .strength:
-                    consider(name: exercise.name, type: .maxWeight, value: set.weight)
-                    consider(name: exercise.name, type: .maxReps, value: Double(set.reps))
-                    consider(name: exercise.name, type: .bestVolume, value: Double(set.reps) * set.weight)
+                    consider(name: exercise.name, type: .maxWeight, value: set.weight, unit: set.weightUnit)
+                    consider(name: exercise.name, type: .maxReps, value: Double(set.reps), unit: nil)
+                    consider(name: exercise.name, type: .bestVolume, value: Double(set.reps) * set.weight, unit: set.weightUnit)
                 case .bodyweight, .assisted:
-                    consider(name: exercise.name, type: .maxReps, value: Double(set.reps))
+                    consider(name: exercise.name, type: .maxReps, value: Double(set.reps), unit: nil)
                 case .duration:
-                    consider(name: exercise.name, type: .longestDuration, value: Double(set.durationSeconds))
+                    consider(name: exercise.name, type: .longestDuration, value: Double(set.durationSeconds), unit: nil)
                 case .distance:
                     break
                 case .cardio:
                     guard set.distanceMiles > 0, set.durationSeconds > 0 else { continue }
                     let paceMinutesPerMile = (Double(set.durationSeconds) / 60) / set.distanceMiles
-                    consider(name: exercise.name, type: .fastestPace, value: paceMinutesPerMile)
+                    consider(name: exercise.name, type: .fastestPace, value: paceMinutesPerMile, unit: nil)
                 }
             }
         }

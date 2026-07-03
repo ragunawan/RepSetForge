@@ -5,12 +5,14 @@ struct QuestListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Quest.date, order: .reverse) private var allQuests: [Quest]
     @Query(sort: \QuestTemplate.name) private var questTemplates: [QuestTemplate]
+    @Query private var characters: [PlayerCharacter]
 
     @State private var newQuest: Quest?
     @State private var showingManageQuestTemplates = false
     @State private var showingScheduleQuest = false
 
     private var quests: [Quest] { allQuests.filter { $0.status != .completed } }
+    private var preferredWeightUnit: WeightUnit { characters.first?.preferredWeightUnit ?? .pounds }
 
     var body: some View {
         List {
@@ -42,7 +44,7 @@ struct QuestListView: View {
             ManageQuestTemplatesSheet()
         }
         .sheet(isPresented: $showingScheduleQuest) {
-            ScheduleQuestSheet { quest in
+            ScheduleQuestSheet(weightUnit: preferredWeightUnit) { quest in
                 newQuest = quest
             }
         }
@@ -94,7 +96,7 @@ struct QuestListView: View {
     }
 
     private func startQuest(from template: QuestTemplate) {
-        let quest = QuestTemplateService.makeQuest(from: template)
+        let quest = QuestTemplateService.makeQuest(from: template, unit: preferredWeightUnit)
         modelContext.insert(quest)
         newQuest = quest
     }
@@ -159,6 +161,7 @@ private struct ScheduleQuestSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \QuestTemplate.name) private var templates: [QuestTemplate]
 
+    let weightUnit: WeightUnit
     let onCreate: (Quest) -> Void
 
     @State private var name = "New Quest"
@@ -231,7 +234,7 @@ private struct ScheduleQuestSheet: View {
     private func createQuest() {
         let quest: Quest
         if let selectedTemplate {
-            quest = QuestTemplateService.makeQuest(from: selectedTemplate)
+            quest = QuestTemplateService.makeQuest(from: selectedTemplate, unit: weightUnit)
             quest.name = name
         } else {
             quest = Quest(name: name)
