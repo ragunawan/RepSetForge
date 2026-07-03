@@ -137,17 +137,27 @@ private struct AddExerciseSheet: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
 
     @State private var name = ""
     @State private var primaryMuscle: MuscleGroup = .chest
     @State private var secondaryMuscles: Set<MuscleGroup> = []
     @State private var notes = ""
+    @State private var defaultSetCount = 0
+    @State private var defaultReps = 10
+    @State private var defaultWeight: Double = 0
+    @State private var saveAsTemplate = false
+    @State private var showingManageTemplates = false
 
     var body: some View {
         NavigationStack {
             Form {
+                if !templates.isEmpty {
+                    templateSection
+                }
                 primarySection
                 secondarySection
+                setSchemeSection
                 Section("Notes") {
                     TextField("Optional notes", text: $notes, axis: .vertical)
                 }
@@ -161,7 +171,31 @@ private struct AddExerciseSheet: View {
                     Button("Add", action: addExercise)
                 }
             }
+            .sheet(isPresented: $showingManageTemplates) {
+                ManageTemplatesSheet()
+            }
         }
+    }
+
+    private var templateSection: some View {
+        Section("Templates") {
+            Picker("Load Template", selection: templateSelection) {
+                Text("None").tag(Optional<ExerciseTemplate>.none)
+                ForEach(templates) { template in
+                    Text(template.name).tag(Optional(template))
+                }
+            }
+            Button("Manage Templates") { showingManageTemplates = true }
+        }
+    }
+
+    private var templateSelection: Binding<ExerciseTemplate?> {
+        Binding(
+            get: { nil },
+            set: { template in
+                if let template { applyTemplate(template) }
+            }
+        )
     }
 
     private var primarySection: some View {
@@ -183,6 +217,22 @@ private struct AddExerciseSheet: View {
         }
     }
 
+    private var setSchemeSection: some View {
+        Section("Default Set Scheme") {
+            Stepper("Sets: \(defaultSetCount)", value: $defaultSetCount, in: 0...10)
+            Stepper("Reps: \(defaultReps)", value: $defaultReps, in: 0...50)
+            HStack {
+                Text("Weight")
+                Spacer()
+                TextField("Weight", value: $defaultWeight, format: .number)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 64)
+            }
+            Toggle("Save as Template", isOn: $saveAsTemplate)
+        }
+    }
+
     private func secondaryBinding(for group: MuscleGroup) -> Binding<Bool> {
         Binding(
             get: { secondaryMuscles.contains(group) },
@@ -192,16 +242,88 @@ private struct AddExerciseSheet: View {
         )
     }
 
+    private func applyTemplate(_ template: ExerciseTemplate) {
+        name = template.name
+        primaryMuscle = template.primaryMuscle
+        secondaryMuscles = Set(template.secondaryMuscles)
+        notes = template.notes
+        defaultSetCount = template.defaultSetCount
+        defaultReps = template.defaultReps
+        defaultWeight = template.defaultWeight
+    }
+
     private func addExercise() {
-        let exercise = Exercise(
-            name: name.isEmpty ? "New Skill" : name,
-            primaryMuscle: primaryMuscle,
-            secondaryMuscles: Array(secondaryMuscles),
-            notes: notes
+        let exercise = ExerciseTemplateService.makeExercise(
+            from: ExerciseTemplateService.makeTemplate(
+                name: name.isEmpty ? "New Skill" : name,
+                primaryMuscle: primaryMuscle,
+                secondaryMuscles: Array(secondaryMuscles),
+                notes: notes,
+                defaultSetCount: defaultSetCount,
+                defaultReps: defaultReps,
+                defaultWeight: defaultWeight
+            )
         )
         quest.exercises.append(exercise)
+
+        if saveAsTemplate {
+            let template = ExerciseTemplateService.makeTemplate(
+                name: exercise.name,
+                primaryMuscle: primaryMuscle,
+                secondaryMuscles: Array(secondaryMuscles),
+                notes: notes,
+                defaultSetCount: defaultSetCount,
+                defaultReps: defaultReps,
+                defaultWeight: defaultWeight
+            )
+            modelContext.insert(template)
+        }
+
         try? modelContext.save()
         dismiss()
+    }
+}
+
+private struct ManageTemplatesSheet: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    if templates.isEmpty {
+                        Text("No saved templates yet.")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ForEach(templates) { template in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(template.name)
+                                    .font(SetboundFont.heading(15))
+                                Text("\(template.primaryMuscle.displayName) · \(template.defaultSetCount) × \(template.defaultReps)")
+                                    .font(SetboundFont.body(12))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .onDelete(perform: deleteTemplates)
+                    }
+                }
+            }
+            .navigationTitle("Manage Templates")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+
+    private func deleteTemplates(at offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(templates[index])
+        }
+        try? modelContext.save()
     }
 }
 

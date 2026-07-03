@@ -14,6 +14,7 @@ final class PersistenceController {
         Quest.self,
         Exercise.self,
         ExerciseSet.self,
+        ExerciseTemplate.self,
         PlayerCharacter.self,
         MuscleProgress.self,
         Achievement.self,

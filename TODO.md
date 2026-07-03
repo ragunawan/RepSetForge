@@ -12,7 +12,7 @@ Prioritized backlog for features and polish beyond Phase 1 MVP (see `CLAUDE.md` 
 
 ## P1 - Core Workout Tracking Improvements
 
-- [ ] Exercise templates: save common exercises with default muscle groups, notes, and set schemes.
+- [x] Exercise templates: save common exercises with default muscle groups, notes, and set schemes. (Added `ExerciseTemplate` SwiftData model and `ExerciseTemplateService` for building an `Exercise` + prefilled `ExerciseSet`s from a template's default scheme, and vice versa. `AddExerciseSheet` (QuestDetailView.swift) gained a "Load Template" picker, a "Default Set Scheme" section with a "Save as Template" toggle, and a "Manage Templates" sheet for deleting saved templates. Covered by `ExerciseTemplateServiceTests`; build and all 29 tests pass. Not manually tap-tested in the simulator — no UI-automation tooling available in this environment, see other TODO notes.)
 - [ ] Quest templates: create reusable workout plans such as Push Day, Pull Day, Leg Day, and Core Trial.
 - [ ] Duplicate quest: start from a previous completed quest without re-entering every exercise.
 - [ ] Quest scheduling: allow creating a quest for today, a future date, or a past date (backdating a workout logged after the fact).

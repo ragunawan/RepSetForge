@@ -69,6 +69,9 @@ FR = {
     "RPGSceneView":            u(1, 0x34),
     "TEST_RPGSpawn":           u(1, 0x35),
     "TEST_RPGBoss":            u(1, 0x36),
+    "ExerciseTemplate":        u(1, 0x37),
+    "ExerciseTemplateService": u(1, 0x38),
+    "TEST_ExerciseTemplate":   u(1, 0x39),
 }
 
 # Build files
@@ -124,12 +127,14 @@ APP_SOURCES = [
     ("QuestStatus",           "Models/QuestStatus.swift"),
     ("ExerciseSet",           "Models/ExerciseSet.swift"),
     ("Exercise",              "Models/Exercise.swift"),
+    ("ExerciseTemplate",      "Models/ExerciseTemplate.swift"),
     ("Quest",                 "Models/Quest.swift"),
     ("PlayerCharacter",       "Models/PlayerCharacter.swift"),
     ("MuscleProgress",        "Models/MuscleProgress.swift"),
     ("Achievement",           "Models/Achievement.swift"),
     ("ProgressionService",    "Services/ProgressionService.swift"),
     ("AchievementService",    "Services/AchievementService.swift"),
+    ("ExerciseTemplateService", "Services/ExerciseTemplateService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
     ("QuestListView",         "Views/QuestListView.swift"),
@@ -171,6 +176,7 @@ TEST_SOURCES = [
     ("TEST_Integration", "SetboundTests/IntegrationTests.swift"),
     ("TEST_RPGSpawn",    "SetboundTests/RPGSpawnServiceTests.swift"),
     ("TEST_RPGBoss",     "SetboundTests/RPGBossMilestoneTests.swift"),
+    ("TEST_ExerciseTemplate", "SetboundTests/ExerciseTemplateServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -298,9 +304,9 @@ def pbxproj():
         a(f"\t\t\tsourceTree = \"<group>\";")
         a(f"\t\t}};")
 
-    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "Quest", "PlayerCharacter", "MuscleProgress", "Achievement",
+    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "PlayerCharacter", "MuscleProgress", "Achievement",
                                        "RPGClass", "RPGEquipment", "RPGSkill", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGSkillRegistry",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
