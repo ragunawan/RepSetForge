@@ -4,8 +4,9 @@ import SwiftUI
 struct RPGSpriteView: View {
     let assetName: String
     var size: CGFloat = 64
-    /// Optional compatibility flip. Current RPG source art is authored in
-    /// final scene orientation: heroes face right, monsters/bosses face left.
+    /// Optional compatibility flip. RPG source art is authored with both
+    /// heroes and monsters/bosses facing left, so heroes (placed on the left
+    /// side of the scene) must be flipped to face right, toward the enemy.
     var flipped = false
 
     var body: some View {

@@ -5,9 +5,11 @@ import SwiftData
 /// Phases of the passive Home-scene loop. The view renders sprites and effects
 /// purely from this state; all pacing lives in the view model's tasks.
 enum RPGScenePhase: String, Equatable {
+    case idle
     case walking
     case enemyAppearing
     case enemyAttacking
+    case playerHit
     case playerAttacking
     case skillUsed
     case enemyHit
@@ -46,6 +48,10 @@ final class RPGEncounterViewModel {
     /// one-shot animations land exactly on their frame counts.
     static let frameDuration: Double = 0.15
 
+    /// Floor on how long a normal monster fight's exchange loop runs, so
+    /// weak monsters still feel like a fight rather than a one-shot.
+    static let minimumBattleDuration: Double = 15.0
+
     // MARK: Rendered state
 
     private(set) var phase: RPGScenePhase = .walking
@@ -79,7 +85,7 @@ final class RPGEncounterViewModel {
             return playerClass.spriteFrame(lastActionAnimation, index: ticksIntoPhase, looping: false)
         case .enemyHit:
             return playerClass.spriteFrame(lastActionAnimation, index: .max, looping: false)
-        case .enemyAttacking, .enemyDefeated, .bossDefeated:
+        case .idle, .enemyAttacking, .playerHit, .enemyDefeated, .bossDefeated:
             return playerClass.spriteFrame(.idle, index: frameTick)
         }
     }
@@ -119,7 +125,7 @@ final class RPGEncounterViewModel {
         if let monster = currentMonster {
             return monster.name
         }
-        return "Wandering the training fields…"
+        return phase == .idle ? "Taking a breather…" : "Wandering the training fields…"
     }
 
     // MARK: Configuration
@@ -179,7 +185,7 @@ final class RPGEncounterViewModel {
             if let state, let boss = BossMilestoneService.activeBoss(state: state) {
                 await fightBoss(boss)
             } else {
-                await walk(seconds: Double.random(in: 2.0...3.5, using: &rng))
+                await wander()
                 guard !Task.isCancelled else { return }
                 if let state, let boss = BossMilestoneService.activeBoss(state: state) {
                     await fightBoss(boss)
@@ -188,6 +194,15 @@ final class RPGEncounterViewModel {
                 }
             }
         }
+    }
+
+    /// Between encounters the hero walks the field, then pauses to rest.
+    /// Durations are tuned against typical battle length (`fight`/`fightBoss`)
+    /// so time-on-screen splits roughly 30% idle / 40% walking / 30% battling.
+    private func wander() async {
+        await walk(seconds: Double.random(in: 5.0...7.0, using: &rng))
+        guard !Task.isCancelled else { return }
+        await idle(seconds: Double.random(in: 3.5...5.5, using: &rng))
     }
 
     private func setPhase(_ newPhase: RPGScenePhase) {
@@ -206,18 +221,36 @@ final class RPGEncounterViewModel {
         }
     }
 
+    private func idle(seconds: Double) async {
+        setPhase(.idle)
+        currentMonster = nil
+        var remaining = seconds
+        while remaining > 0 && !Task.isCancelled {
+            await sleep(0.3)
+            remaining -= 0.3
+        }
+    }
+
     private func fight(_ monster: RPGMonster) async {
+        let battleStart = Date.now
         currentMonster = monster
         setPhase(.enemyAppearing)
         await sleep(0.8)
         guard !Task.isCancelled else { return }
 
-        // The monster gets the first lunge; the hero counters.
-        setPhase(.enemyAttacking)
-        await sleep(Self.frameDuration * 3)
-
+        // Each round: the monster strikes and the hero visibly reacts, then
+        // the hero counters — both sides trade blows every round instead of
+        // the hero attacking unopposed. Keeps going until the monster's hits
+        // are spent AND the fight has run at least `minimumBattleDuration`,
+        // so weak monsters don't fall in a couple of exchanges.
         var hitsRemaining = MonsterSpawnService.hitsToDefeat(monster)
-        while hitsRemaining > 0 && !Task.isCancelled {
+        while !Task.isCancelled {
+            let timeUp = Date.now.timeIntervalSince(battleStart) >= Self.minimumBattleDuration
+            if hitsRemaining <= 0 && timeUp { break }
+
+            await monsterAttack(monster)
+            guard !Task.isCancelled else { return }
+
             let skill = pickSkill(bossFight: false)
             hitsRemaining -= await attack(with: skill)
         }
@@ -227,6 +260,20 @@ final class RPGEncounterViewModel {
         emit(.init(text: "Defeated!", kind: .status, jitter: 0))
         await sleep(Self.frameDuration * 4)
         currentMonster = nil
+    }
+
+    /// The monster's turn: it winds up and strikes, and the hero visibly
+    /// reacts — the counterpart to `attack(with:)` so combat reads as a real
+    /// back-and-forth instead of the hero attacking unopposed.
+    private func monsterAttack(_ monster: RPGMonster) async {
+        setPhase(.enemyAttacking)
+        await sleep(Self.frameDuration * 3)
+        guard !Task.isCancelled else { return }
+
+        setPhase(.playerHit)
+        let damage = monsterDamageAmount(monster)
+        emit(.init(text: "-\(damage)", kind: .damage, jitter: CGFloat.random(in: -10...10, using: &rng)))
+        await sleep(Self.frameDuration * 3)
     }
 
     private func fightBoss(_ boss: RPGBoss) async {
@@ -293,6 +340,13 @@ final class RPGEncounterViewModel {
         let base = 2 + snapshot.currentLevel + weaponBonus
         let spread = Int.random(in: 0...max(2, base / 4), using: &rng)
         return (base + spread) * (isSkill ? 2 : 1)
+    }
+
+    /// Flavor damage number for the monster's counterattack, scaled by threat.
+    private func monsterDamageAmount(_ monster: RPGMonster) -> Int {
+        let base = 1 + monster.threat
+        let spread = Int.random(in: 0...max(1, base / 3), using: &rng)
+        return base + spread
     }
 
     /// Occasionally selects a skill: ~30% chance per beat, respecting cooldowns

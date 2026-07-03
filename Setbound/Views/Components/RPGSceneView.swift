@@ -26,24 +26,26 @@ struct RPGSceneView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack(alignment: .bottom) {
+            ZStack(alignment: .center) {
                 Image(viewModel.backgroundAsset)
                     .resizable()
                     .interpolation(.none)
                     .antialiased(false)
                     .scaledToFill()
 
-                HStack(alignment: .bottom) {
+                HStack(spacing: 24) {
+                    Spacer()
                     playerSprite
                     Spacer()
                     enemySprite
+                    Spacer()
                 }
                 .padding(.horizontal, 20)
-                .padding(.bottom, 20)
+                .offset(y: 26)
             }
             .frame(height: 160)
             .clipped()
-            .overlay(alignment: .top) { combatTextOverlay.padding(.top, 8) }
+            .overlay(alignment: .top) { combatTextOverlay.padding(.top, 54) }
 
             statusBar
         }
@@ -68,8 +70,15 @@ struct RPGSceneView: View {
     // MARK: Hero
 
     private var playerSprite: some View {
-        RPGSpriteView(assetName: viewModel.playerSpriteAsset, size: 64)
-            .offset(x: viewModel.phase == .playerAttacking && !reduceMotion ? 6 : 0)
+        let isHit = viewModel.phase == .playerHit
+        return RPGSpriteView(assetName: viewModel.playerSpriteAsset, size: 64, flipped: true)
+            .overlay(
+                RPGSpriteView(assetName: viewModel.playerSpriteAsset, size: 64, flipped: true)
+                    .colorMultiply(.white)
+                    .opacity(isHit ? 0.6 : 0)
+                    .blendMode(.plusLighter)
+            )
+            .offset(x: reduceMotion ? 0 : (viewModel.phase == .playerAttacking ? 6 : (isHit ? -5 : 0)))
             .animation(.easeOut(duration: 0.15), value: viewModel.phase)
     }
 

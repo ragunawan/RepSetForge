@@ -177,7 +177,6 @@ See `TODO.md` for the prioritized backlog — it is the single canonical home fo
 
 Current limitation highlights:
 - [ ] The RPG combat layer (monsters/bosses/skills/equipment) has no gold, no ownable/purchasable equipment, and no per-skill XP yet — see TODO.md P1 "Onboarding And RPG Economy"
-- [ ] RPG art is mid-migration: procedural sprites were removed in favor of a manual chibi-art import pipeline; import is in progress (29/407 required PNGs imported as of this writing) — see TODO.md P0
 - [ ] Real pixel-art muscle group icons and app icon polish
 - [ ] Cardio/timed exercise XP support and additional exercise types
 - [ ] Edit/undo completed quests with full reward recalculation (XP, gold, PRs, achievements, skills)
