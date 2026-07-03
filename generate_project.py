@@ -51,6 +51,24 @@ FR = {
     "TEST_Progression":        u(1, 0x22),
     "TEST_Achievement":        u(1, 0x23),
     "TEST_Integration":        u(1, 0x24),
+    "RPGClass":                u(1, 0x25),
+    "RPGEquipment":            u(1, 0x26),
+    "RPGSkill":                u(1, 0x27),
+    "RPGMonster":              u(1, 0x28),
+    "RPGBoss":                 u(1, 0x29),
+    "RPGProgressionSnapshot":  u(1, 0x2A),
+    "RPGEncounterState":       u(1, 0x2B),
+    "RPGMonsterRegistry":      u(1, 0x2C),
+    "RPGBossRegistry":         u(1, 0x2D),
+    "RPGEquipmentRegistry":    u(1, 0x2E),
+    "RPGSkillRegistry":        u(1, 0x2F),
+    "MonsterSpawnService":     u(1, 0x30),
+    "BossMilestoneService":    u(1, 0x31),
+    "RPGEncounterViewModel":   u(1, 0x32),
+    "RPGSpriteView":           u(1, 0x33),
+    "RPGSceneView":            u(1, 0x34),
+    "TEST_RPGSpawn":           u(1, 0x35),
+    "TEST_RPGBoss":            u(1, 0x36),
 }
 
 # Build files
@@ -129,12 +147,30 @@ APP_SOURCES = [
     ("PixelAchievementCard",  "Views/Components/PixelAchievementCard.swift"),
     ("PixelDivider",          "Views/Components/PixelDivider.swift"),
     ("QuestCompletionRewardRow", "Views/Components/QuestCompletionRewardRow.swift"),
+    ("RPGClass",              "Models/RPGClass.swift"),
+    ("RPGEquipment",          "Models/RPGEquipment.swift"),
+    ("RPGSkill",              "Models/RPGSkill.swift"),
+    ("RPGMonster",            "Models/RPGMonster.swift"),
+    ("RPGBoss",               "Models/RPGBoss.swift"),
+    ("RPGProgressionSnapshot", "Models/RPGProgressionSnapshot.swift"),
+    ("RPGEncounterState",     "Models/RPGEncounterState.swift"),
+    ("RPGMonsterRegistry",    "Services/RPGMonsterRegistry.swift"),
+    ("RPGBossRegistry",       "Services/RPGBossRegistry.swift"),
+    ("RPGEquipmentRegistry",  "Services/RPGEquipmentRegistry.swift"),
+    ("RPGSkillRegistry",      "Services/RPGSkillRegistry.swift"),
+    ("MonsterSpawnService",   "Services/MonsterSpawnService.swift"),
+    ("BossMilestoneService",  "Services/BossMilestoneService.swift"),
+    ("RPGEncounterViewModel", "Services/RPGEncounterViewModel.swift"),
+    ("RPGSpriteView",         "Views/Components/RPGSpriteView.swift"),
+    ("RPGSceneView",          "Views/Components/RPGSceneView.swift"),
 ]
 
 TEST_SOURCES = [
     ("TEST_Progression", "SetboundTests/ProgressionServiceTests.swift"),
     ("TEST_Achievement", "SetboundTests/AchievementServiceTests.swift"),
     ("TEST_Integration", "SetboundTests/IntegrationTests.swift"),
+    ("TEST_RPGSpawn",    "SetboundTests/RPGSpawnServiceTests.swift"),
+    ("TEST_RPGBoss",     "SetboundTests/RPGBossMilestoneTests.swift"),
 ]
 
 def pbxproj():
@@ -262,8 +298,11 @@ def pbxproj():
         a(f"\t\t\tsourceTree = \"<group>\";")
         a(f"\t\t}};")
 
-    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "Quest", "PlayerCharacter", "MuscleProgress", "Achievement"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService"])
+    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "Quest", "PlayerCharacter", "MuscleProgress", "Achievement",
+                                       "RPGClass", "RPGEquipment", "RPGSkill", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService",
+                                           "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGSkillRegistry",
+                                           "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
 
     # Views group
@@ -281,7 +320,8 @@ def pbxproj():
     a(f"\t\t}};")
 
     simple_group("Components", "Components", ["PixelQuestCard", "PixelXPBar", "PixelBadge", "PixelStatPanel",
-                                               "PixelButton", "PixelAchievementCard", "PixelDivider", "QuestCompletionRewardRow"])
+                                               "PixelButton", "PixelAchievementCard", "PixelDivider", "QuestCompletionRewardRow",
+                                               "RPGSpriteView", "RPGSceneView"])
 
     # Tests group
     a(f"\t\t{GR['Tests']} /* SetboundTests */ = {{")

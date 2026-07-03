@@ -16,7 +16,8 @@ final class PersistenceController {
         ExerciseSet.self,
         PlayerCharacter.self,
         MuscleProgress.self,
-        Achievement.self
+        Achievement.self,
+        RPGEncounterState.self
     ])
 
     private init(inMemory: Bool = false) {
@@ -43,6 +44,10 @@ final class PersistenceController {
         let existingGroups = Set(existingMuscles.map(\.muscleGroup))
         for group in MuscleGroup.allCases where !existingGroups.contains(group) {
             modelContext.insert(MuscleProgress(muscleGroup: group))
+        }
+
+        if (try? modelContext.fetch(FetchDescriptor<RPGEncounterState>()))?.isEmpty ?? true {
+            modelContext.insert(RPGEncounterState())
         }
 
         let existingAchievements = (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? []

@@ -15,6 +15,8 @@ struct QuestDashboardView: View {
         NavigationStack(path: $path) {
             ScrollView {
                 VStack(alignment: .leading, spacing: SetboundMetrics.paddingLarge) {
+                    RPGSceneView()
+
                     if let character {
                         PixelStatPanel(
                             level: character.level,

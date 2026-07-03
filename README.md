@@ -84,6 +84,10 @@ Setbound/
 
 ## MVP Acceptance Criteria
 
+Use this as the top-level completion checklist. See `IMPLEMENTATION.md` for detailed verification steps.
+
+### Implementation Checklist
+
 - [x] App scaffolded and named "Setbound"
 - [ ] SwiftData models created (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement)
 - [ ] XP & leveling services implemented
@@ -96,9 +100,26 @@ Setbound/
 - [ ] App builds and runs without errors
 - [ ] Workout logging flow tested end-to-end
 - [ ] Reduce Motion behavior verified for animated effects
-- [ ] All acceptance criteria from task spec verified
 
-See `IMPLEMENTATION.md` for detailed verification steps.
+### Manual Acceptance Checklist
+
+- [ ] App builds successfully
+- [ ] App is named "Setbound" in visible UI
+- [ ] User can create a quest/workout
+- [ ] User can add exercises to the quest
+- [ ] User can log sets, reps, and weight
+- [ ] User can complete a quest
+- [ ] Completing a quest awards XP
+- [ ] Overall character XP and level update correctly
+- [ ] Muscle group XP and levels update correctly
+- [ ] Completed quests appear in history
+- [ ] Quest completion screen shows earned XP and level-ups
+- [ ] Basic achievements can unlock
+- [ ] UI clearly communicates a pixel art RPG theme
+- [ ] Pixel-art styling is consistent across core screens, empty states, and reward moments
+- [ ] Set completion, XP gain, level-up, achievement, and quest completion animations polish the feel without blocking logging
+- [ ] Reduce Motion is respected for animated effects
+- [ ] Workout tracking remains fast, practical, and readable
 
 ## Key Design Decisions
 

@@ -1,0 +1,12 @@
+{
+  "images": [
+    {
+      "filename": "rpg_skill_quick_shot.png",
+      "idiom": "universal"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}
