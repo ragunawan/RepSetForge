@@ -10,6 +10,7 @@ final class Exercise {
     var primaryMuscleRaw: String
     var secondaryMuscleRawValues: [String]
     var notes: String
+    var defaultRestSeconds: Int = 60
 
     @Relationship(deleteRule: .cascade, inverse: \ExerciseSet.exercise)
     var sets: [ExerciseSet] = []
@@ -20,13 +21,15 @@ final class Exercise {
         name: String,
         primaryMuscle: MuscleGroup,
         secondaryMuscles: [MuscleGroup] = [],
-        notes: String = ""
+        notes: String = "",
+        defaultRestSeconds: Int = 60
     ) {
         self.id = UUID()
         self.name = name
         self.primaryMuscleRaw = primaryMuscle.rawValue
         self.secondaryMuscleRawValues = secondaryMuscles.map(\.rawValue)
         self.notes = notes
+        self.defaultRestSeconds = defaultRestSeconds
     }
 
     var primaryMuscle: MuscleGroup {

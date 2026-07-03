@@ -13,7 +13,8 @@ enum QuestTemplateService {
                 name: blueprint.name,
                 primaryMuscle: blueprint.primaryMuscle,
                 secondaryMuscles: blueprint.secondaryMuscles,
-                notes: blueprint.notes
+                notes: blueprint.notes,
+                defaultRestSeconds: blueprint.defaultRestSeconds
             )
             for index in 0..<max(0, blueprint.defaultSetCount) {
                 exercise.sets.append(
@@ -39,7 +40,8 @@ enum QuestTemplateService {
                 notes: exercise.notes,
                 defaultSetCount: exercise.sets.count,
                 defaultReps: firstSet?.reps ?? 10,
-                defaultWeight: firstSet?.weight ?? 0
+                defaultWeight: firstSet?.weight ?? 0,
+                defaultRestSeconds: exercise.defaultRestSeconds
             )
         }
         return QuestTemplate(name: name, exerciseBlueprints: blueprints)

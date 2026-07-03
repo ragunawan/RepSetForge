@@ -18,7 +18,7 @@ final class QuestDuplicationServiceTests: XCTestCase {
 
     func testDuplicatePreservesEachSetsExactRepsAndWeight() {
         let quest = Quest(name: "Push Day", status: .completed)
-        let bench = Exercise(name: "Bench Press", primaryMuscle: .chest, secondaryMuscles: [.arms], notes: "Pause at chest")
+        let bench = Exercise(name: "Bench Press", primaryMuscle: .chest, secondaryMuscles: [.arms], notes: "Pause at chest", defaultRestSeconds: 90)
         bench.sets = [
             ExerciseSet(setNumber: 1, reps: 8, weight: 135, completed: true),
             ExerciseSet(setNumber: 2, reps: 6, weight: 145, completed: true),
@@ -34,6 +34,7 @@ final class QuestDuplicationServiceTests: XCTestCase {
         XCTAssertEqual(copiedExercise.primaryMuscle, .chest)
         XCTAssertEqual(copiedExercise.secondaryMuscles, [.arms])
         XCTAssertEqual(copiedExercise.notes, "Pause at chest")
+        XCTAssertEqual(copiedExercise.defaultRestSeconds, 90)
 
         let copiedSets = copiedExercise.sets.sorted { $0.setNumber < $1.setNumber }
         XCTAssertEqual(copiedSets.map(\.setNumber), [1, 2, 3])

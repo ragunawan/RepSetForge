@@ -6,6 +6,7 @@ struct ExerciseLoggingView: View {
     var isReadOnly: Bool = false
 
     @Environment(\.modelContext) private var modelContext
+    @State private var restSecondsRemaining: Int?
 
     private var sortedSets: [ExerciseSet] {
         exercise.sets.sorted(by: { $0.setNumber < $1.setNumber })
@@ -14,9 +15,16 @@ struct ExerciseLoggingView: View {
     var body: some View {
         Form {
             skillSection
+            if let restSecondsRemaining {
+                restTimerSection(restSecondsRemaining)
+            }
             setsSection
         }
         .navigationTitle(exercise.name)
+        .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
+            guard let remaining = restSecondsRemaining else { return }
+            restSecondsRemaining = remaining > 1 ? remaining - 1 : nil
+        }
     }
 
     @ViewBuilder
@@ -32,6 +40,27 @@ struct ExerciseLoggingView: View {
                 LabeledContent("Secondary", value: exercise.secondaryMuscles.map(\.displayName).joined(separator: ", "))
             }
             notesField
+            if isReadOnly {
+                LabeledContent("Rest", value: "\(exercise.defaultRestSeconds)s")
+            } else {
+                Stepper("Rest: \(exercise.defaultRestSeconds)s", value: $exercise.defaultRestSeconds, in: 0...300, step: 15)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func restTimerSection(_ secondsRemaining: Int) -> some View {
+        Section {
+            HStack {
+                Label("Resting: \(secondsRemaining)s", systemImage: "hourglass")
+                    .font(RepSetForgeFont.heading(15))
+                    .foregroundStyle(Color.questGold)
+                Spacer()
+                Button("Skip") {
+                    restSecondsRemaining = nil
+                }
+                .font(RepSetForgeFont.body(13))
+            }
         }
     }
 
@@ -64,11 +93,13 @@ struct ExerciseLoggingView: View {
     private var setRows: some View {
         if isReadOnly {
             ForEach(sortedSets) { set in
-                ExerciseSetRow(set: set, isReadOnly: isReadOnly)
+                ExerciseSetRow(set: set, isReadOnly: isReadOnly, onComplete: {})
             }
         } else {
             ForEach(sortedSets) { set in
-                ExerciseSetRow(set: set, isReadOnly: isReadOnly)
+                ExerciseSetRow(set: set, isReadOnly: isReadOnly) {
+                    restSecondsRemaining = exercise.defaultRestSeconds > 0 ? exercise.defaultRestSeconds : nil
+                }
             }
             .onDelete(perform: deleteSets)
         }
@@ -90,6 +121,7 @@ struct ExerciseLoggingView: View {
 private struct ExerciseSetRow: View {
     @Bindable var set: ExerciseSet
     var isReadOnly: Bool
+    var onComplete: () -> Void
 
     var body: some View {
         HStack {
@@ -101,6 +133,9 @@ private struct ExerciseSetRow: View {
 
             Button {
                 set.completed.toggle()
+                if set.completed {
+                    onComplete()
+                }
             } label: {
                 Image(systemName: set.completed ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(set.completed ? Color.questGreen : Color.secondary)

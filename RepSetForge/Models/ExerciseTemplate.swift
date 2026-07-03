@@ -13,6 +13,7 @@ final class ExerciseTemplate {
     var defaultSetCount: Int
     var defaultReps: Int
     var defaultWeight: Double
+    var defaultRestSeconds: Int = 60
 
     init(
         name: String,
@@ -21,7 +22,8 @@ final class ExerciseTemplate {
         notes: String = "",
         defaultSetCount: Int = 3,
         defaultReps: Int = 10,
-        defaultWeight: Double = 0
+        defaultWeight: Double = 0,
+        defaultRestSeconds: Int = 60
     ) {
         self.id = UUID()
         self.name = name
@@ -31,6 +33,7 @@ final class ExerciseTemplate {
         self.defaultSetCount = defaultSetCount
         self.defaultReps = defaultReps
         self.defaultWeight = defaultWeight
+        self.defaultRestSeconds = defaultRestSeconds
     }
 
     var primaryMuscle: MuscleGroup {

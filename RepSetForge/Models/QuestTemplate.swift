@@ -13,6 +13,7 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
     var defaultSetCount: Int
     var defaultReps: Int
     var defaultWeight: Double
+    var defaultRestSeconds: Int
 
     init(
         name: String,
@@ -21,7 +22,8 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         notes: String = "",
         defaultSetCount: Int = 3,
         defaultReps: Int = 10,
-        defaultWeight: Double = 0
+        defaultWeight: Double = 0,
+        defaultRestSeconds: Int = 60
     ) {
         self.id = UUID()
         self.name = name
@@ -31,6 +33,7 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         self.defaultSetCount = defaultSetCount
         self.defaultReps = defaultReps
         self.defaultWeight = defaultWeight
+        self.defaultRestSeconds = defaultRestSeconds
     }
 
     var primaryMuscle: MuscleGroup {
@@ -41,6 +44,24 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
     var secondaryMuscles: [MuscleGroup] {
         get { secondaryMuscleRawValues.compactMap(MuscleGroup.init(rawValue:)) }
         set { secondaryMuscleRawValues = newValue.map(\.rawValue) }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, primaryMuscleRaw, secondaryMuscleRawValues, notes, defaultSetCount, defaultReps, defaultWeight, defaultRestSeconds
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        primaryMuscleRaw = try container.decode(String.self, forKey: .primaryMuscleRaw)
+        secondaryMuscleRawValues = try container.decode([String].self, forKey: .secondaryMuscleRawValues)
+        notes = try container.decode(String.self, forKey: .notes)
+        defaultSetCount = try container.decode(Int.self, forKey: .defaultSetCount)
+        defaultReps = try container.decode(Int.self, forKey: .defaultReps)
+        defaultWeight = try container.decode(Double.self, forKey: .defaultWeight)
+        // Old saved templates predate this field, so default rather than fail to decode.
+        defaultRestSeconds = try container.decodeIfPresent(Int.self, forKey: .defaultRestSeconds) ?? 60
     }
 }
 

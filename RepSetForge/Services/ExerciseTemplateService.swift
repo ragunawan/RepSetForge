@@ -10,7 +10,8 @@ enum ExerciseTemplateService {
             name: template.name,
             primaryMuscle: template.primaryMuscle,
             secondaryMuscles: template.secondaryMuscles,
-            notes: template.notes
+            notes: template.notes,
+            defaultRestSeconds: template.defaultRestSeconds
         )
         for index in 0..<max(0, template.defaultSetCount) {
             exercise.sets.append(
@@ -28,7 +29,8 @@ enum ExerciseTemplateService {
         notes: String,
         defaultSetCount: Int,
         defaultReps: Int,
-        defaultWeight: Double
+        defaultWeight: Double,
+        defaultRestSeconds: Int = 60
     ) -> ExerciseTemplate {
         ExerciseTemplate(
             name: name,
@@ -37,7 +39,8 @@ enum ExerciseTemplateService {
             notes: notes,
             defaultSetCount: defaultSetCount,
             defaultReps: defaultReps,
-            defaultWeight: defaultWeight
+            defaultWeight: defaultWeight,
+            defaultRestSeconds: defaultRestSeconds
         )
     }
 }

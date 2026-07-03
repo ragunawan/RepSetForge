@@ -14,7 +14,8 @@ enum QuestDuplicationService {
                 name: exercise.name,
                 primaryMuscle: exercise.primaryMuscle,
                 secondaryMuscles: exercise.secondaryMuscles,
-                notes: exercise.notes
+                notes: exercise.notes,
+                defaultRestSeconds: exercise.defaultRestSeconds
             )
             for set in exercise.sets.sorted(by: { $0.setNumber < $1.setNumber }) {
                 exerciseCopy.sets.append(

@@ -190,6 +190,7 @@ private struct AddExerciseSheet: View {
     @State private var defaultSetCount = 0
     @State private var defaultReps = 10
     @State private var defaultWeight: Double = 0
+    @State private var defaultRestSeconds = 60
     @State private var saveAsTemplate = false
     @State private var showingManageTemplates = false
 
@@ -273,6 +274,7 @@ private struct AddExerciseSheet: View {
                     .multilineTextAlignment(.trailing)
                     .frame(width: 64)
             }
+            Stepper("Rest: \(defaultRestSeconds)s", value: $defaultRestSeconds, in: 0...300, step: 15)
             Toggle("Save as Template", isOn: $saveAsTemplate)
         }
     }
@@ -294,6 +296,7 @@ private struct AddExerciseSheet: View {
         defaultSetCount = template.defaultSetCount
         defaultReps = template.defaultReps
         defaultWeight = template.defaultWeight
+        defaultRestSeconds = template.defaultRestSeconds
     }
 
     private func addExercise() {
@@ -305,7 +308,8 @@ private struct AddExerciseSheet: View {
                 notes: notes,
                 defaultSetCount: defaultSetCount,
                 defaultReps: defaultReps,
-                defaultWeight: defaultWeight
+                defaultWeight: defaultWeight,
+                defaultRestSeconds: defaultRestSeconds
             )
         )
         quest.exercises.append(exercise)
@@ -318,7 +322,8 @@ private struct AddExerciseSheet: View {
                 notes: notes,
                 defaultSetCount: defaultSetCount,
                 defaultReps: defaultReps,
-                defaultWeight: defaultWeight
+                defaultWeight: defaultWeight,
+                defaultRestSeconds: defaultRestSeconds
             )
             modelContext.insert(template)
         }

@@ -11,7 +11,8 @@ final class ExerciseTemplateServiceTests: XCTestCase {
             notes: "Pause at chest",
             defaultSetCount: 3,
             defaultReps: 8,
-            defaultWeight: 135
+            defaultWeight: 135,
+            defaultRestSeconds: 90
         )
 
         let exercise = ExerciseTemplateService.makeExercise(from: template)
@@ -20,6 +21,12 @@ final class ExerciseTemplateServiceTests: XCTestCase {
         XCTAssertEqual(exercise.primaryMuscle, .chest)
         XCTAssertEqual(Set(exercise.secondaryMuscles), [.shoulders, .arms])
         XCTAssertEqual(exercise.notes, "Pause at chest")
+        XCTAssertEqual(exercise.defaultRestSeconds, 90)
+    }
+
+    func testExerciseDefaultsToSixtySecondRestWhenUnspecified() {
+        let exercise = Exercise(name: "Plank", primaryMuscle: .core)
+        XCTAssertEqual(exercise.defaultRestSeconds, 60)
     }
 
     func testMakeExercisePrefillsSetsFromDefaultScheme() {
@@ -48,7 +55,8 @@ final class ExerciseTemplateServiceTests: XCTestCase {
             notes: "Keep elbows tucked",
             defaultSetCount: 3,
             defaultReps: 10,
-            defaultWeight: 95
+            defaultWeight: 95,
+            defaultRestSeconds: 45
         )
 
         XCTAssertEqual(template.name, "Rows")
@@ -58,5 +66,6 @@ final class ExerciseTemplateServiceTests: XCTestCase {
         XCTAssertEqual(template.defaultSetCount, 3)
         XCTAssertEqual(template.defaultReps, 10)
         XCTAssertEqual(template.defaultWeight, 95)
+        XCTAssertEqual(template.defaultRestSeconds, 45)
     }
 }
