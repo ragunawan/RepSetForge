@@ -4,6 +4,7 @@ import SwiftData
 struct CharacterProgressView: View {
     @Query private var characters: [PlayerCharacter]
     @Query private var muscles: [MuscleProgress]
+    @Query(sort: \PersonalRecord.achievedDate, order: .reverse) private var personalRecords: [PersonalRecord]
 
     private var character: PlayerCharacter? { characters.first }
 
@@ -77,6 +78,37 @@ struct CharacterProgressView: View {
                             }
                             .padding(RepSetForgeMetrics.paddingSmall)
                             .pixelPanel()
+                        }
+                    }
+
+                    if !personalRecords.isEmpty {
+                        PixelDivider()
+
+                        Text("Personal Records")
+                            .font(RepSetForgeFont.heading())
+                            .foregroundStyle(Color.questNavy)
+
+                        VStack(spacing: RepSetForgeMetrics.paddingSmall) {
+                            ForEach(personalRecords) { record in
+                                HStack {
+                                    Image(systemName: "trophy.fill")
+                                        .foregroundStyle(Color.questGold)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(record.exerciseName)
+                                            .font(RepSetForgeFont.body(13))
+                                            .foregroundStyle(Color.questSilver)
+                                        Text(record.recordType.displayName)
+                                            .font(RepSetForgeFont.body(11))
+                                            .foregroundStyle(Color.questSilver.opacity(0.7))
+                                    }
+                                    Spacer()
+                                    Text(record.recordType.formattedValue(record.value))
+                                        .font(RepSetForgeFont.stat(13))
+                                        .foregroundStyle(Color.questGold)
+                                }
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel()
+                            }
                         }
                     }
                 }

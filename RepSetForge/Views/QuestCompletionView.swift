@@ -6,6 +6,7 @@ struct QuestCompletionSummary: Identifiable {
     let questName: String
     let distribution: ProgressionService.DistributionResult
     let unlockedAchievements: [Achievement]
+    let newRecords: [PersonalRecordService.Update]
 }
 
 /// Celebratory summary shown right after a quest is completed: XP earned,
@@ -62,6 +63,29 @@ struct QuestCompletionView: View {
                         }
                     }
 
+                    if !summary.newRecords.isEmpty {
+                        VStack(alignment: .leading, spacing: RepSetForgeMetrics.paddingSmall) {
+                            Text("New Personal Records!")
+                                .font(RepSetForgeFont.heading())
+                                .foregroundStyle(Color.questNavy)
+                            ForEach(Array(summary.newRecords.enumerated()), id: \.offset) { _, record in
+                                HStack {
+                                    Image(systemName: "trophy.fill")
+                                        .foregroundStyle(Color.questGold)
+                                    Text("\(record.exerciseName) — \(record.recordType.displayName)")
+                                        .font(RepSetForgeFont.body(13))
+                                        .foregroundStyle(Color.questNavy)
+                                    Spacer()
+                                    Text(record.recordType.formattedValue(record.newValue))
+                                        .font(RepSetForgeFont.stat(13))
+                                        .foregroundStyle(Color.questGold)
+                                }
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel()
+                            }
+                        }
+                    }
+
                     Button("Done") {
                         dismiss()
                     }
@@ -90,6 +114,7 @@ struct QuestCompletionView: View {
             characterLevelUp: .init(oldLevel: 3, newLevel: 4),
             muscleLevelUps: [.chest: .init(oldLevel: 2, newLevel: 3)]
         ),
-        unlockedAchievements: []
+        unlockedAchievements: [],
+        newRecords: []
     ))
 }

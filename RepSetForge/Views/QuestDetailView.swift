@@ -158,12 +158,14 @@ struct QuestDetailView: View {
         character.completedQuestCount += 1
 
         let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: modelContext)
+        let newRecords = PersonalRecordService.evaluateRecords(for: quest.exercises, context: modelContext)
         try? modelContext.save()
 
         completionSummary = QuestCompletionSummary(
             questName: quest.name,
             distribution: distribution,
-            unlockedAchievements: unlocked
+            unlockedAchievements: unlocked,
+            newRecords: newRecords
         )
     }
 

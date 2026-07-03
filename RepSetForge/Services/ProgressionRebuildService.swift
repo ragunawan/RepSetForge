@@ -2,8 +2,8 @@ import Foundation
 import SwiftData
 
 /// Recomputes all derived progression — character level/XP, muscle levels/XP,
-/// completed-quest count, and achievement unlocks — from scratch by replaying
-/// completed-quest history in chronological order.
+/// completed-quest count, achievement unlocks, and personal records — from
+/// scratch by replaying completed-quest history in chronological order.
 ///
 /// Used whenever completed-quest history changes after the fact (undoing a
 /// completion, or editing a completed quest's sets), instead of patching old
@@ -46,6 +46,8 @@ enum ProgressionRebuildService {
             character.completedQuestCount += 1
             AchievementService.checkAchievements(character: character, muscles: muscles, context: context, at: quest.completedDate ?? .now)
         }
+
+        PersonalRecordService.rebuildAll(context: context)
 
         return character
     }

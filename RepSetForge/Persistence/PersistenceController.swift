@@ -19,6 +19,7 @@ final class PersistenceController {
         PlayerCharacter.self,
         MuscleProgress.self,
         Achievement.self,
+        PersonalRecord.self,
         RPGEncounterState.self
     ])
 
