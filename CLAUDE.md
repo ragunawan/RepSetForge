@@ -1,22 +1,22 @@
-# CLAUDE.md — SetCraft MVP
+# CLAUDE.md — RepSetForge MVP
 
-Guidance for Claude Code when working on SetCraft.
+Guidance for Claude Code when working on RepSetForge.
 
 ## Project Focus
 
-Work on the SetCraft codebase in `/Users/ai/Documents/Dev/SetCraft`.
+Work on the RepSetForge codebase in `/Users/ai/Documents/Dev/RepSetForge`.
 
-SetCraft is an iOS app where workouts are "quests" and logging sets earns XP to level up your character and muscle groups.
+RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP to level up your character and muscle groups.
 
 **Do not** mix this with sibling projects (EggSpend, FitBoard, etc.) unless explicitly asked.
 
 ## Project Overview
 
-- **Repository name:** SetCraft
-- **Xcode project:** SetCraft.xcodeproj
-- **App target:** SetCraft (shared scheme)
-- **Test target:** SetCraftTests
-- **Entry point:** SetCraftApp.swift in SetCraft/ folder
+- **Repository name:** RepSetForge
+- **Xcode project:** RepSetForge.xcodeproj
+- **App target:** RepSetForge (shared scheme)
+- **Test target:** RepSetForgeTests
+- **Entry point:** RepSetForgeApp.swift in RepSetForge/ folder
 - **Swift version:** Swift 6, iOS 17.0+
 - **Stack:** SwiftUI + SwiftData (local-only, no CloudKit for MVP)
 
@@ -25,11 +25,11 @@ SetCraft is an iOS app where workouts are "quests" and logging sets earns XP to 
 - `README.md` — Project overview and quick start
 - `TODO.md` — canonical, prioritized backlog; use this to decide what to work on next
 - `generate_project.py` — Xcode project file generator (adapt EggSpend pattern)
-- `SetCraft/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement) plus the passive-combat RPG layer (RPGClass, RPGMonster, RPGBoss, RPGSkill, RPGEquipment, RPGEncounterState, RPGProgressionSnapshot — struct/enum-based, not persisted)
-- `SetCraft/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic), and the RPG combat layer (MonsterSpawnService, BossMilestoneService, RPGEncounterViewModel, RPGMonsterRegistry, RPGBossRegistry, RPGEquipmentRegistry, RPGSkillRegistry)
-- `SetCraft/Persistence/` — PersistenceController (ModelContainer, seeding)
-- `SetCraft/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, History, Achievements, Completion)
-- `SetCraft/Views/Components/` — Pixel-art UI components (PixelQuestCard, PixelXPBar, PixelBadge, PixelStatPanel, PixelButton, PixelAchievementCard, PixelDivider, QuestCompletionRewardRow)
+- `RepSetForge/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement) plus the passive-combat RPG layer (RPGClass, RPGMonster, RPGBoss, RPGSkill, RPGEquipment, RPGEncounterState, RPGProgressionSnapshot — struct/enum-based, not persisted)
+- `RepSetForge/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic), and the RPG combat layer (MonsterSpawnService, BossMilestoneService, RPGEncounterViewModel, RPGMonsterRegistry, RPGBossRegistry, RPGEquipmentRegistry, RPGSkillRegistry)
+- `RepSetForge/Persistence/` — PersistenceController (ModelContainer, seeding)
+- `RepSetForge/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, History, Achievements, Completion)
+- `RepSetForge/Views/Components/` — Pixel-art UI components (PixelQuestCard, PixelXPBar, PixelBadge, PixelStatPanel, PixelButton, PixelAchievementCard, PixelDivider, QuestCompletionRewardRow)
 - `Docs/ART_GENERATION_README.md` / `ArtSource/RPG/` — manual chibi-art import pipeline for RPG sprites (see `scripts/import_rpg_art.py`)
 
 ## Development Workflow
@@ -37,12 +37,12 @@ SetCraft is an iOS app where workouts are "quests" and logging sets earns XP to 
 1. Phase 1 MVP (core quest/XP/leveling loop) is complete. Work from **TODO.md**, top to bottom within each priority tier (P0 before P1 before P2, etc.). Do not skip ahead within a tier without reason.
 2. Before committing, build the app:
    ```bash
-   xcodebuild build -project SetCraft.xcodeproj -scheme SetCraft \
+   xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForge \
      -destination 'platform=iOS Simulator,name=iPhone 16'
    ```
 3. Run tests:
    ```bash
-   xcodebuild test -project SetCraft.xcodeproj -scheme SetCraft \
+   xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge \
      -destination 'platform=iOS Simulator,name=iPhone 16'
    ```
 
@@ -50,19 +50,19 @@ SetCraft is an iOS app where workouts are "quests" and logging sets earns XP to 
 
 **Build:**
 ```bash
-xcodebuild build -project SetCraft.xcodeproj -scheme SetCraft \
+xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForge \
   -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 **Test:**
 ```bash
-xcodebuild test -project SetCraft.xcodeproj -scheme SetCraft \
+xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge \
   -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 **Open in Xcode:**
 ```bash
-open SetCraft.xcodeproj
+open RepSetForge.xcodeproj
 ```
 
 **Generate Xcode project file (after changes to file structure):**
@@ -74,11 +74,11 @@ python3 generate_project.py
 
 Use these names consistently:
 
-- **Repository/folder:** SetCraft
-- **Xcode project:** SetCraft.xcodeproj
-- **App target/product/scheme:** SetCraft
-- **Test target:** SetCraftTests
-- **App entry point:** SetCraftApp
+- **Repository/folder:** RepSetForge
+- **Xcode project:** RepSetForge.xcodeproj
+- **App target/product/scheme:** RepSetForge
+- **Test target:** RepSetForgeTests
+- **App entry point:** RepSetForgeApp
 
 In UI, refer to:
 - Workouts as **"Quests"**
@@ -190,7 +190,7 @@ Current limitation highlights:
 Phase 1 MVP is complete. The app satisfies:
 
 1. ✓ App builds successfully
-2. ✓ App is named "SetCraft" in visible UI
+2. ✓ App is named "RepSetForge" in visible UI
 3. ✓ User can create a quest/workout
 4. ✓ User can add exercises to the quest
 5. ✓ User can log sets, reps, and weight
@@ -214,7 +214,7 @@ This is a deliberately smaller scope than the original RPG-economy brief (gold, 
 - Follow existing Swift conventions (same as EggSpend if familiar)
 - Keep domain logic in models/services, not in views
 - Use `Decimal` for financial calculations (not applicable here, but maintain precision with large numbers if needed)
-- Keep UI changes aligned with SetCraftTheme.swift before adding one-off styling
+- Keep UI changes aligned with RepSetForgeTheme.swift before adding one-off styling
 - Keep animations brief, meaningful, and accessible; workout logging must remain fast
 - Comment only the non-obvious: formulas, constraints, workarounds
 
@@ -230,7 +230,7 @@ For testing, the app supports:
 --tab 2
 ```
 
-These are parsed in SetCraftApp.swift.
+These are parsed in RepSetForgeApp.swift.
 
 ---
 

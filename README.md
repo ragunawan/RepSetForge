@@ -1,4 +1,4 @@
-# SetCraft
+# RepSetForge
 
 A pixel-art RPG-themed workout tracker for iOS. Workouts are "quests," exercises earn XP, and completing sets levels up your character and individual muscle groups.
 
@@ -17,13 +17,13 @@ RPG art is currently mid-migration: procedural sprite generation was retired in 
 python3 generate_project.py
 
 # Build
-xcodebuild build -project SetCraft.xcodeproj -scheme SetCraft -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForge -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Run tests
-xcodebuild test -project SetCraft.xcodeproj -scheme SetCraft -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Open in Xcode
-open SetCraft.xcodeproj
+open RepSetForge.xcodeproj
 ```
 
 **Launch arguments:**
@@ -33,11 +33,11 @@ open SetCraft.xcodeproj
 ## Directory Structure
 
 ```
-SetCraft/
-├── SetCraft/                      # Main app target
-│   ├── SetCraftApp.swift          # Entry point
+RepSetForge/
+├── RepSetForge/                      # Main app target
+│   ├── RepSetForgeApp.swift          # Entry point
 │   ├── ContentView.swift           # Tab navigation
-│   ├── SetCraftTheme.swift         # Colors, fonts, styles
+│   ├── RepSetForgeTheme.swift         # Colors, fonts, styles
 │   ├── Models/
 │   │   ├── MuscleGroup.swift       # Enum: chest, back, legs, shoulders, arms, core, cardio
 │   │   ├── QuestStatus.swift       # Enum: planned, active, completed
@@ -88,11 +88,11 @@ SetCraft/
 │       ├── AppIcon.appiconset/
 │       │   └── AppIcon.png
 │       └── RPG/                          # Imported chibi art (currently empty — see TODO.md P0)
-├── SetCraftTests/
+├── RepSetForgeTests/
 │   ├── ProgressionServiceTests.swift     # XP calc, leveling
 │   ├── AchievementServiceTests.swift     # Unlock logic
 │   └── IntegrationTests.swift            # Quest completion → XP distribution
-├── SetCraft.xcodeproj/
+├── RepSetForge.xcodeproj/
 │   └── project.pbxproj
 ├── ArtSource/RPG/                        # Hand-made RPG art source + import manifest
 ├── Docs/ART_GENERATION_README.md         # RPG art import pipeline spec
@@ -104,7 +104,7 @@ SetCraft/
 
 ## Phase 1 MVP — Complete
 
-- [x] App scaffolded and named "SetCraft"
+- [x] App scaffolded and named "RepSetForge"
 - [x] SwiftData models created (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement)
 - [x] XP & leveling services implemented
 - [x] Core persistence & seeding working

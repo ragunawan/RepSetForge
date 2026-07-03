@@ -1,6 +1,6 @@
-# SetCraft RPG Art Import Pipeline
+# RepSetForge RPG Art Import Pipeline
 
-SetCraft's RPG art pipeline is manual chibi-art import only. Procedural
+RepSetForge's RPG art pipeline is manual chibi-art import only. Procedural
 placeholder generation is disabled.
 
 Source of truth for required files:
@@ -84,7 +84,7 @@ ArtSource/RPG/incoming/
 The importer writes accepted art into:
 
 ```text
-SetCraft/Assets.xcassets/RPG/
+RepSetForge/Assets.xcassets/RPG/
   rpg_class_<class>_<anim><frame>.imageset/
   rpg_monster_<id>_<anim><frame>.imageset/
   rpg_boss_<id>_<anim><frame>.imageset/
@@ -137,14 +137,14 @@ Update Swift registries when adding or removing content IDs:
 
 | File | Responsibility |
 |---|---|
-| `SetCraft/Models/RPGClass.swift` | Hero class enum and frame lookup |
-| `SetCraft/Models/RPGMonster.swift` | Monster asset-name lookup |
-| `SetCraft/Models/RPGBoss.swift` | Boss asset-name lookup |
-| `SetCraft/Services/RPGMonsterRegistry.swift` | Monster ids and level bands |
-| `SetCraft/Services/RPGBossRegistry.swift` | Boss ids and backgrounds |
-| `SetCraft/Services/RPGEquipmentRegistry.swift` | Equipment icon ids |
-| `SetCraft/Services/RPGSkillRegistry.swift` | Skill icon ids |
-| `SetCraft/Services/MonsterSpawnService.swift` | Level background selection |
+| `RepSetForge/Models/RPGClass.swift` | Hero class enum and frame lookup |
+| `RepSetForge/Models/RPGMonster.swift` | Monster asset-name lookup |
+| `RepSetForge/Models/RPGBoss.swift` | Boss asset-name lookup |
+| `RepSetForge/Services/RPGMonsterRegistry.swift` | Monster ids and level bands |
+| `RepSetForge/Services/RPGBossRegistry.swift` | Boss ids and backgrounds |
+| `RepSetForge/Services/RPGEquipmentRegistry.swift` | Equipment icon ids |
+| `RepSetForge/Services/RPGSkillRegistry.swift` | Skill icon ids |
+| `RepSetForge/Services/MonsterSpawnService.swift` | Level background selection |
 | `ArtSource/RPG/README.md` | Required file manifest |
 | `scripts/import_rpg_art.py` | Import manifest validation |
 
@@ -155,5 +155,5 @@ Keep the Swift IDs, importer manifest, and art README in sync.
 - `python3 scripts/import_rpg_art.py` accepts every submitted PNG with 0 rejected files.
 - The importer reports all required RPG art assets are imported.
 - Every imported imageset contains exactly one PNG and one `Contents.json`.
-- All runtime-referenced RPG asset names exist in `SetCraft/Assets.xcassets/RPG/`.
+- All runtime-referenced RPG asset names exist in `RepSetForge/Assets.xcassets/RPG/`.
 - The app builds and RPG scenes show finished chibi art, not procedural placeholders.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Deprecated RPG art generator.
 
-SetCraft's RPG art is now manually generated/imported chibi art. This file is
+RepSetForge's RPG art is now manually generated/imported chibi art. This file is
 kept only so old commands fail with a useful message instead of silently
 recreating procedural placeholder assets.
 

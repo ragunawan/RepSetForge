@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates a pixel-art placeholder AppIcon.png for SetCraft.
+"""Generates a pixel-art placeholder AppIcon.png for RepSetForge.
 
 TODO: replace with a real hand-drawn pixel art icon before shipping.
 This script only exists to produce a checked-in placeholder asset.
@@ -101,7 +101,7 @@ if __name__ == "__main__":
     rows = upscale(grid)
     out = os.path.join(
         os.path.dirname(os.path.abspath(__file__)),
-        "..", "SetCraft", "Assets.xcassets", "AppIcon.appiconset", "AppIcon.png",
+        "..", "RepSetForge", "Assets.xcassets", "AppIcon.appiconset", "AppIcon.png",
     )
     out = os.path.normpath(out)
     write_png(out, rows)
