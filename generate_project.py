@@ -89,6 +89,7 @@ FR = {
     "TEST_PersonalRecord":     u(1, 0x48),
     "WeightUnit":              u(1, 0x49),
     "TEST_WeightUnit":         u(1, 0x4A),
+    "OnboardingView":          u(1, 0x4B),
 }
 
 # Build files
@@ -163,6 +164,7 @@ APP_SOURCES = [
     ("ProgressionRebuildService", "Services/ProgressionRebuildService.swift"),
     ("PersonalRecordService", "Services/PersonalRecordService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
+    ("OnboardingView",        "Views/OnboardingView.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
     ("QuestListView",         "Views/QuestListView.swift"),
     ("QuestDetailView",       "Views/QuestDetailView.swift"),
@@ -349,7 +351,7 @@ def pbxproj():
     a(f"\t\t{GR['Views']} /* Views */ = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
-    for key in ["QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
+    for key in ["OnboardingView", "QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
                 "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView"]:
         filename = dict(APP_SOURCES)[key].split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")

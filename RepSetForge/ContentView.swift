@@ -1,6 +1,9 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query private var characters: [PlayerCharacter]
+
     @State private var selectedTab: Int = {
         let args = ProcessInfo.processInfo.arguments
         if let idx = args.firstIndex(of: "--tab"), args.count > idx + 1 {
@@ -8,6 +11,10 @@ struct ContentView: View {
         }
         return 0
     }()
+
+    private var needsOnboarding: Bool {
+        !(characters.first?.hasCompletedOnboarding ?? true)
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -28,6 +35,9 @@ struct ContentView: View {
                 .tag(3)
         }
         .tint(.questGold)
+        .fullScreenCover(isPresented: .constant(needsOnboarding)) {
+            OnboardingView()
+        }
     }
 }
 

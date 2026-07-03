@@ -33,6 +33,7 @@
 		AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000041 /* ProgressionRebuildService.swift */; };
 		AA0200000000000000000047 /* PersonalRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000047 /* PersonalRecordService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
+		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
 		AA020000000000000000000F /* QuestDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000F /* QuestDashboardView.swift */; };
 		AA0200000000000000000010 /* QuestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000010 /* QuestListView.swift */; };
 		AA0200000000000000000011 /* QuestDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000011 /* QuestDetailView.swift */; };
@@ -120,6 +121,7 @@
 		AA0100000000000000000041 /* ProgressionRebuildService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000047 /* PersonalRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AA010000000000000000000F /* QuestDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDashboardView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000010 /* QuestListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestListView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000011 /* QuestDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDetailView.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 		AA0300000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AA010000000000000000004B /* OnboardingView.swift */,
 				AA010000000000000000000F /* QuestDashboardView.swift */,
 				AA0100000000000000000010 /* QuestListView.swift */,
 				AA0100000000000000000011 /* QuestDetailView.swift */,
@@ -451,6 +454,7 @@
 				AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */,
 				AA0200000000000000000047 /* PersonalRecordService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
+				AA020000000000000000004B /* OnboardingView.swift in Sources */,
 				AA020000000000000000000F /* QuestDashboardView.swift in Sources */,
 				AA0200000000000000000010 /* QuestListView.swift in Sources */,
 				AA0200000000000000000011 /* QuestDetailView.swift in Sources */,

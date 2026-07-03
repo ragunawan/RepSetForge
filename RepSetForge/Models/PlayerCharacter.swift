@@ -13,6 +13,9 @@ final class PlayerCharacter {
     /// Unit new sets are logged in by default. Changing this never rewrites
     /// already-logged sets, which each keep their own recorded unit.
     var preferredWeightUnitRaw: String = WeightUnit.pounds.rawValue
+    /// Flips to true once the player finishes the first-run onboarding flow,
+    /// so it's shown exactly once.
+    var hasCompletedOnboarding: Bool = false
 
     init(
         level: Int = 1,
@@ -21,7 +24,8 @@ final class PlayerCharacter {
         title: String = "Novice Adventurer",
         completedQuestCount: Int = 0,
         createdDate: Date = .now,
-        preferredWeightUnit: WeightUnit = .pounds
+        preferredWeightUnit: WeightUnit = .pounds,
+        hasCompletedOnboarding: Bool = false
     ) {
         self.level = level
         self.currentXP = currentXP
@@ -30,6 +34,7 @@ final class PlayerCharacter {
         self.completedQuestCount = completedQuestCount
         self.createdDate = createdDate
         self.preferredWeightUnitRaw = preferredWeightUnit.rawValue
+        self.hasCompletedOnboarding = hasCompletedOnboarding
     }
 
     /// XP required to advance from the current level to the next.
