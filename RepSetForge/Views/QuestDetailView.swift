@@ -10,6 +10,7 @@ struct QuestDetailView: View {
 
     @State private var showingAddExercise = false
     @State private var showingSaveAsTemplate = false
+    @State private var showingUndoConfirmation = false
     @State private var completionSummary: QuestCompletionSummary?
 
     private var isReadOnly: Bool { quest.status == .completed }
@@ -31,6 +32,14 @@ struct QuestDetailView: View {
                     }
                     .disabled(quest.exercises.isEmpty)
                 }
+            } else {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button(role: .destructive) {
+                        showingUndoConfirmation = true
+                    } label: {
+                        Label("Undo Completion", systemImage: "arrow.uturn.backward.circle")
+                    }
+                }
             }
         }
         .sheet(isPresented: $showingAddExercise) {
@@ -41,6 +50,17 @@ struct QuestDetailView: View {
         }
         .sheet(item: $completionSummary) { summary in
             QuestCompletionView(summary: summary)
+        }
+        .confirmationDialog(
+            "Undo Quest Completion?",
+            isPresented: $showingUndoConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button("Undo Completion", role: .destructive) {
+                undoCompletion()
+            }
+        } message: {
+            Text("This reverts the quest to active and recalculates XP, levels, and achievements from your remaining completed quests.")
         }
     }
 
@@ -145,6 +165,14 @@ struct QuestDetailView: View {
             distribution: distribution,
             unlockedAchievements: unlocked
         )
+    }
+
+    private func undoCompletion() {
+        quest.status = .active
+        quest.completedDate = nil
+        quest.totalXP = 0
+        ProgressionRebuildService.rebuild(context: modelContext)
+        try? modelContext.save()
     }
 }
 

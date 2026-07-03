@@ -31,7 +31,8 @@ enum AchievementService {
     static func checkAchievements(
         character: PlayerCharacter,
         muscles: [MuscleProgress],
-        context: ModelContext
+        context: ModelContext,
+        at date: Date = .now
     ) -> [Achievement] {
         guard let achievements = try? context.fetch(FetchDescriptor<Achievement>()) else { return [] }
         let byKey = Dictionary(uniqueKeysWithValues: achievements.map { ($0.key, $0) })
@@ -40,7 +41,7 @@ enum AchievementService {
         func unlock(_ key: String) {
             guard let achievement = byKey[key], !achievement.unlocked else { return }
             achievement.unlocked = true
-            achievement.unlockedDate = .now
+            achievement.unlockedDate = date
             newlyUnlocked.append(achievement)
         }
 

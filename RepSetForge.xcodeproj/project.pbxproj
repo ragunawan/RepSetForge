@@ -26,6 +26,7 @@
 		AA020000000000000000003B /* QuestTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003B /* QuestTemplateService.swift */; };
 		AA020000000000000000003D /* QuestDuplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003D /* QuestDuplicationService.swift */; };
 		AA020000000000000000003F /* QuestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003F /* QuestScheduler.swift */; };
+		AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000041 /* ProgressionRebuildService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000000F /* QuestDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000F /* QuestDashboardView.swift */; };
 		AA0200000000000000000010 /* QuestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000010 /* QuestListView.swift */; };
@@ -69,6 +70,7 @@
 		AA020000000000000000003C /* QuestTemplateServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003C /* QuestTemplateServiceTests.swift */; };
 		AA020000000000000000003E /* QuestDuplicationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003E /* QuestDuplicationServiceTests.swift */; };
 		AA0200000000000000000040 /* QuestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000040 /* QuestSchedulerTests.swift */; };
+		AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -103,6 +105,7 @@
 		AA010000000000000000003B /* QuestTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTemplateService.swift; sourceTree = "<group>"; };
 		AA010000000000000000003D /* QuestDuplicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDuplicationService.swift; sourceTree = "<group>"; };
 		AA010000000000000000003F /* QuestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestScheduler.swift; sourceTree = "<group>"; };
+		AA0100000000000000000041 /* ProgressionRebuildService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000000F /* QuestDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDashboardView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000010 /* QuestListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestListView.swift; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		AA010000000000000000003C /* QuestTemplateServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTemplateServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000003E /* QuestDuplicationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDuplicationServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000040 /* QuestSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestSchedulerTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +236,7 @@
 				AA010000000000000000003B /* QuestTemplateService.swift */,
 				AA010000000000000000003D /* QuestDuplicationService.swift */,
 				AA010000000000000000003F /* QuestScheduler.swift */,
+				AA0100000000000000000041 /* ProgressionRebuildService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -296,6 +301,7 @@
 				AA010000000000000000003C /* QuestTemplateServiceTests.swift */,
 				AA010000000000000000003E /* QuestDuplicationServiceTests.swift */,
 				AA0100000000000000000040 /* QuestSchedulerTests.swift */,
+				AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -414,6 +420,7 @@
 				AA020000000000000000003B /* QuestTemplateService.swift in Sources */,
 				AA020000000000000000003D /* QuestDuplicationService.swift in Sources */,
 				AA020000000000000000003F /* QuestScheduler.swift in Sources */,
+				AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000000F /* QuestDashboardView.swift in Sources */,
 				AA0200000000000000000010 /* QuestListView.swift in Sources */,
@@ -463,6 +470,7 @@
 				AA020000000000000000003C /* QuestTemplateServiceTests.swift in Sources */,
 				AA020000000000000000003E /* QuestDuplicationServiceTests.swift in Sources */,
 				AA0200000000000000000040 /* QuestSchedulerTests.swift in Sources */,
+				AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
