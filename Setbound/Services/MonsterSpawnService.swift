@@ -68,4 +68,19 @@ enum MonsterSpawnService {
     static func hitsToDefeat(_ monster: RPGMonster) -> Int {
         2 + monster.threat / 2
     }
+
+    /// Level-banded scene backdrop for normal (non-boss) encounters. Bands
+    /// roughly track the monster level bands in RPGMonsterRegistry so the
+    /// setting darkens/toughens alongside the spawn pool.
+    static func backgroundAsset(forLevel level: Int) -> String {
+        switch level {
+        case ..<5: return "rpg_bg_field"
+        case 5..<10: return "rpg_bg_forest"
+        case 10..<15: return "rpg_bg_forest_night"
+        case 15..<20: return "rpg_bg_cave"
+        case 20..<30: return "rpg_bg_mountain_pass"
+        case 30..<40: return "rpg_bg_dungeon_corridor"
+        default: return "rpg_bg_ruined_castle"
+        }
+    }
 }

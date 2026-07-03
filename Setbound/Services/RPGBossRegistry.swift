@@ -55,7 +55,7 @@ enum RPGBossRegistry {
             idleStyle: .stomp, attackStyle: .stomp,
             phaseText: "The Bone Colossus tests your consistency!",
             defeatText: "The colossus crumbles, bone by bone.",
-            difficulty: .veteran, backgroundAsset: "rpg_bg_boss"
+            difficulty: .veteran, backgroundAsset: "rpg_bg_boss_ruins"
         ),
         RPGBoss(
             id: "storm_wyvern", name: "Storm Wyvern",
@@ -73,7 +73,7 @@ enum RPGBossRegistry {
             idleStyle: .stomp, attackStyle: .stomp,
             phaseText: "The Infernal Champion demands discipline!",
             defeatText: "The champion kneels — the flames go quiet.",
-            difficulty: .nightmare, backgroundAsset: "rpg_bg_boss"
+            difficulty: .nightmare, backgroundAsset: "rpg_bg_boss_ruins"
         ),
         RPGBoss(
             id: "ancient_dragon", name: "Ancient Dragon",

@@ -1,10 +1,11 @@
 import SwiftUI
 
-/// Renders a generated pixel-art asset with crisp nearest-neighbor scaling.
+/// Renders an RPG art asset with crisp nearest-neighbor scaling.
 struct RPGSpriteView: View {
     let assetName: String
     var size: CGFloat = 64
-    /// Sprites face right by default; flip to face left.
+    /// Optional compatibility flip. Current RPG source art is authored in
+    /// final scene orientation: heroes face right, monsters/bosses face left.
     var flipped = false
 
     var body: some View {
@@ -27,8 +28,8 @@ struct RPGSpriteView: View {
         }
         HStack {
             RPGSpriteView(assetName: "rpg_monster_training_slime_idle0", size: 48)
-            RPGSpriteView(assetName: "rpg_monster_goblin_warrior_idle0", size: 48, flipped: true)
-            RPGSpriteView(assetName: "rpg_boss_iron_goblin_captain_idle0", size: 72, flipped: true)
+            RPGSpriteView(assetName: "rpg_monster_goblin_warrior_idle0", size: 48)
+            RPGSpriteView(assetName: "rpg_boss_iron_goblin_captain_idle0", size: 72)
         }
         HStack {
             RPGSpriteView(assetName: "rpg_equip_training_sword", size: 32)

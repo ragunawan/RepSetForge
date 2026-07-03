@@ -63,7 +63,7 @@ final class RPGEncounterViewModel {
     var isBossFight: Bool { currentBoss != nil }
 
     var backgroundAsset: String {
-        currentBoss?.backgroundAsset ?? "rpg_bg_field"
+        currentBoss?.backgroundAsset ?? MonsterSpawnService.backgroundAsset(forLevel: snapshot.currentLevel)
     }
 
     private var ticksIntoPhase: Int { max(0, frameTick - phaseStartTick) }

@@ -87,9 +87,9 @@ struct RPGSceneView: View {
 
     private func enemyBody(asset: String, size: CGFloat) -> some View {
         let isHit = viewModel.phase == .enemyHit
-        return RPGSpriteView(assetName: asset, size: size, flipped: true)
+        return RPGSpriteView(assetName: asset, size: size)
             .overlay(
-                RPGSpriteView(assetName: asset, size: size, flipped: true)
+                RPGSpriteView(assetName: asset, size: size)
                     .colorMultiply(.white)
                     .opacity(isHit ? 0.6 : 0)
                     .blendMode(.plusLighter)

@@ -1,0 +1,12 @@
+{
+  "images": [
+    {
+      "filename": "rpg_bg_dungeon_corridor.png",
+      "idiom": "universal"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}
