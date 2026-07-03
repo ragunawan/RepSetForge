@@ -9,6 +9,7 @@ struct QuestDetailView: View {
     @Query private var muscles: [MuscleProgress]
 
     @State private var showingAddExercise = false
+    @State private var showingSaveAsTemplate = false
     @State private var completionSummary: QuestCompletionSummary?
 
     private var isReadOnly: Bool { quest.status == .completed }
@@ -20,8 +21,23 @@ struct QuestDetailView: View {
             footerSection
         }
         .navigationTitle(isReadOnly ? "Quest" : "Edit Quest")
+        .toolbar {
+            if !isReadOnly {
+                ToolbarItem(placement: .secondaryAction) {
+                    Button {
+                        showingSaveAsTemplate = true
+                    } label: {
+                        Label("Save as Template", systemImage: "square.and.arrow.down")
+                    }
+                    .disabled(quest.exercises.isEmpty)
+                }
+            }
+        }
         .sheet(isPresented: $showingAddExercise) {
             AddExerciseSheet(quest: quest)
+        }
+        .sheet(isPresented: $showingSaveAsTemplate) {
+            SaveQuestTemplateSheet(quest: quest)
         }
         .sheet(item: $completionSummary) { summary in
             QuestCompletionView(summary: summary)
@@ -324,6 +340,50 @@ private struct ManageTemplatesSheet: View {
             modelContext.delete(templates[index])
         }
         try? modelContext.save()
+    }
+}
+
+private struct SaveQuestTemplateSheet: View {
+    let quest: Quest
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @State private var name: String
+
+    init(quest: Quest) {
+        self.quest = quest
+        _name = State(initialValue: quest.name)
+    }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Template Name") {
+                    TextField("Name", text: $name)
+                }
+                Section {
+                    Text("Saves \(quest.exercises.count == 1 ? "1 skill" : "\(quest.exercises.count) skills") with their current set schemes.")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("Save as Template")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save", action: saveTemplate)
+                        .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+            }
+        }
+    }
+
+    private func saveTemplate() {
+        let template = QuestTemplateService.makeTemplate(name: name, exercises: quest.exercises)
+        modelContext.insert(template)
+        try? modelContext.save()
+        dismiss()
     }
 }
 
