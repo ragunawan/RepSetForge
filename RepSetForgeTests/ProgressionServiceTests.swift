@@ -25,6 +25,46 @@ final class ProgressionServiceTests: XCTestCase {
         XCTAssertEqual(ProgressionService.questXP(exercises: [exercise]), expectedPerSet * 2)
     }
 
+    // MARK: timed/distance XP
+
+    func testDurationXPIsOneXPPerTwoSeconds() {
+        XCTAssertEqual(ProgressionService.durationXP(seconds: 60), 30)
+        XCTAssertEqual(ProgressionService.durationXP(seconds: 45), 23) // rounds
+    }
+
+    func testDistanceXPIsTwentyXPPerMile() {
+        XCTAssertEqual(ProgressionService.distanceXP(miles: 3.1), 62)
+        XCTAssertEqual(ProgressionService.distanceXP(miles: 0), 0)
+    }
+
+    func testSetXPDispatchesByExerciseType() {
+        let plank = Exercise(name: "Plank", primaryMuscle: .core, exerciseType: .duration)
+        let plankSet = ExerciseSet(setNumber: 1, durationSeconds: 60)
+        XCTAssertEqual(ProgressionService.setXP(exercise: plank, set: plankSet), 30)
+
+        let run = Exercise(name: "5K Run", primaryMuscle: .cardio, exerciseType: .distance)
+        let runSet = ExerciseSet(setNumber: 1, distanceMiles: 3.1)
+        XCTAssertEqual(ProgressionService.setXP(exercise: run, set: runSet), 62)
+
+        let row = Exercise(name: "Rowing", primaryMuscle: .cardio, exerciseType: .cardio)
+        let rowSet = ExerciseSet(setNumber: 1, distanceMiles: 2, durationSeconds: 600)
+        XCTAssertEqual(ProgressionService.setXP(exercise: row, set: rowSet), 40 + 300)
+
+        let bench = Exercise(name: "Bench Press", primaryMuscle: .chest, exerciseType: .strength)
+        let benchSet = ExerciseSet(setNumber: 1, reps: 5, weight: 185)
+        XCTAssertEqual(ProgressionService.setXP(exercise: bench, set: benchSet), ProgressionService.setXP(reps: 5, weight: 185))
+    }
+
+    func testExerciseXPUsesDurationFormulaForTimedExercises() {
+        let plank = Exercise(name: "Plank", primaryMuscle: .core, exerciseType: .duration)
+        plank.sets = [
+            ExerciseSet(setNumber: 1, completed: true, durationSeconds: 60),
+            ExerciseSet(setNumber: 2, completed: true, durationSeconds: 30),
+            ExerciseSet(setNumber: 3, completed: false, durationSeconds: 120) // excluded
+        ]
+        XCTAssertEqual(ProgressionService.exerciseXP(plank), 30 + 15)
+    }
+
     // MARK: leveling
 
     func testLevelUp() {

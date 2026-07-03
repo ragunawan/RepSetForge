@@ -23,9 +23,36 @@ enum ProgressionService {
         return Int((base + bonus).rounded())
     }
 
+    /// XP for duration-held work (planks, timed circuits): 1 XP every 2 seconds
+    /// under tension, roughly comparable in scale to a strength set.
+    static func durationXP(seconds: Int) -> Int {
+        Int((Double(seconds) / 2).rounded())
+    }
+
+    /// XP for distance-based cardio (runs, rows, rides): 20 XP per mile covered.
+    static func distanceXP(miles: Double) -> Int {
+        Int((miles * 20).rounded())
+    }
+
+    /// XP for one logged set, using the formula appropriate to the exercise's
+    /// type: reps/weight for strength-like sets, held time for duration sets,
+    /// distance for pure-distance sets, and both combined for cardio.
+    static func setXP(exercise: Exercise, set: ExerciseSet) -> Int {
+        switch exercise.exerciseType {
+        case .strength, .bodyweight, .assisted:
+            return setXP(reps: set.reps, weight: set.weight)
+        case .duration:
+            return durationXP(seconds: set.durationSeconds)
+        case .distance:
+            return distanceXP(miles: set.distanceMiles)
+        case .cardio:
+            return distanceXP(miles: set.distanceMiles) + durationXP(seconds: set.durationSeconds)
+        }
+    }
+
     /// XP an exercise contributes, summed from its completed sets only.
     static func exerciseXP(_ exercise: Exercise) -> Int {
-        exercise.completedSets.reduce(0) { $0 + setXP(reps: $1.reps, weight: $1.weight) }
+        exercise.completedSets.reduce(0) { $0 + setXP(exercise: exercise, set: $1) }
     }
 
     /// Total XP for a quest, summed across all its exercises.
