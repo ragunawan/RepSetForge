@@ -8,7 +8,7 @@ the exact manifest filenames, then run this script from the repo root:
     python3 scripts/import_rpg_art.py
 
 The script validates filename, dimensions, and PNG format, then writes each
-accepted file into Setbound/Assets.xcassets/RPG/<name>.imageset/.
+accepted file into SetCraft/Assets.xcassets/RPG/<name>.imageset/.
 """
 
 import json
@@ -17,7 +17,7 @@ import struct
 import sys
 
 REPO_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-ASSETS_DIR = os.path.join(REPO_ROOT, "Setbound", "Assets.xcassets", "RPG")
+ASSETS_DIR = os.path.join(REPO_ROOT, "SetCraft", "Assets.xcassets", "RPG")
 ART_SOURCE_DIR = os.path.join(REPO_ROOT, "ArtSource", "RPG")
 INCOMING_DIR = os.path.join(ART_SOURCE_DIR, "incoming")
 HANDMADE_MANIFEST = os.path.join(ART_SOURCE_DIR, "handmade_manifest.json")

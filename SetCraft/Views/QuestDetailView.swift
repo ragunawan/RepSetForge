@@ -1,0 +1,335 @@
+import SwiftUI
+import SwiftData
+
+struct QuestDetailView: View {
+    @Bindable var quest: Quest
+
+    @Environment(\.modelContext) private var modelContext
+    @Query private var characters: [PlayerCharacter]
+    @Query private var muscles: [MuscleProgress]
+
+    @State private var showingAddExercise = false
+    @State private var completionSummary: QuestCompletionSummary?
+
+    private var isReadOnly: Bool { quest.status == .completed }
+
+    var body: some View {
+        Form {
+            questSection
+            skillsSection
+            footerSection
+        }
+        .navigationTitle(isReadOnly ? "Quest" : "Edit Quest")
+        .sheet(isPresented: $showingAddExercise) {
+            AddExerciseSheet(quest: quest)
+        }
+        .sheet(item: $completionSummary) { summary in
+            QuestCompletionView(summary: summary)
+        }
+    }
+
+    @ViewBuilder
+    private var questSection: some View {
+        Section("Quest") {
+            if isReadOnly {
+                LabeledContent("Name", value: quest.name)
+                LabeledContent("Date", value: quest.date.formatted(date: .abbreviated, time: .omitted))
+            } else {
+                TextField("Quest Name", text: $quest.name)
+                DatePicker("Date", selection: $quest.date, displayedComponents: .date)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var skillsSection: some View {
+        Section("Skills") {
+            exerciseRows
+            if !isReadOnly {
+                Button {
+                    showingAddExercise = true
+                } label: {
+                    Label("Add Skill", systemImage: "plus.circle.fill")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var exerciseRows: some View {
+        if isReadOnly {
+            ForEach(quest.exercises) { exercise in
+                exerciseRow(exercise)
+            }
+        } else {
+            ForEach(quest.exercises) { exercise in
+                exerciseRow(exercise)
+            }
+            .onDelete(perform: deleteExercises)
+        }
+    }
+
+    private func exerciseRow(_ exercise: Exercise) -> some View {
+        NavigationLink {
+            ExerciseLoggingView(exercise: exercise, isReadOnly: isReadOnly)
+        } label: {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(exercise.name)
+                    .font(SetCraftFont.heading(15))
+                Text(exercise.primaryMuscle.displayName)
+                    .font(SetCraftFont.body(12))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var footerSection: some View {
+        if !isReadOnly {
+            Section {
+                Button("Complete Quest") {
+                    completeQuest()
+                }
+                .disabled(quest.exercises.isEmpty)
+            }
+        } else if quest.totalXP > 0 {
+            Section("Reward") {
+                LabeledContent("Total XP", value: "+\(quest.totalXP)")
+            }
+        }
+    }
+
+    private func deleteExercises(at offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(quest.exercises[index])
+        }
+    }
+
+    private func completeQuest() {
+        guard let character = characters.first else { return }
+
+        let xp = ProgressionService.questXP(exercises: quest.exercises)
+        let distribution = ProgressionService.distributeXP(
+            questXP: xp,
+            exercises: quest.exercises,
+            to: character,
+            and: muscles
+        )
+
+        quest.status = .completed
+        quest.completedDate = .now
+        quest.totalXP = xp
+        character.completedQuestCount += 1
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: modelContext)
+        try? modelContext.save()
+
+        completionSummary = QuestCompletionSummary(
+            questName: quest.name,
+            distribution: distribution,
+            unlockedAchievements: unlocked
+        )
+    }
+}
+
+private struct AddExerciseSheet: View {
+    let quest: Quest
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
+
+    @State private var name = ""
+    @State private var primaryMuscle: MuscleGroup = .chest
+    @State private var secondaryMuscles: Set<MuscleGroup> = []
+    @State private var notes = ""
+    @State private var defaultSetCount = 0
+    @State private var defaultReps = 10
+    @State private var defaultWeight: Double = 0
+    @State private var saveAsTemplate = false
+    @State private var showingManageTemplates = false
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                if !templates.isEmpty {
+                    templateSection
+                }
+                primarySection
+                secondarySection
+                setSchemeSection
+                Section("Notes") {
+                    TextField("Optional notes", text: $notes, axis: .vertical)
+                }
+            }
+            .navigationTitle("Add Skill")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add", action: addExercise)
+                }
+            }
+            .sheet(isPresented: $showingManageTemplates) {
+                ManageTemplatesSheet()
+            }
+        }
+    }
+
+    private var templateSection: some View {
+        Section("Templates") {
+            Picker("Load Template", selection: templateSelection) {
+                Text("None").tag(Optional<ExerciseTemplate>.none)
+                ForEach(templates) { template in
+                    Text(template.name).tag(Optional(template))
+                }
+            }
+            Button("Manage Templates") { showingManageTemplates = true }
+        }
+    }
+
+    private var templateSelection: Binding<ExerciseTemplate?> {
+        Binding(
+            get: { nil },
+            set: { template in
+                if let template { applyTemplate(template) }
+            }
+        )
+    }
+
+    private var primarySection: some View {
+        Section("Skill") {
+            TextField("Name", text: $name)
+            Picker("Primary Muscle", selection: $primaryMuscle) {
+                ForEach(MuscleGroup.allCases) { group in
+                    Text(group.displayName).tag(group)
+                }
+            }
+        }
+    }
+
+    private var secondarySection: some View {
+        Section("Secondary Muscles") {
+            ForEach(MuscleGroup.allCases.filter { $0 != primaryMuscle }) { group in
+                Toggle(group.displayName, isOn: secondaryBinding(for: group))
+            }
+        }
+    }
+
+    private var setSchemeSection: some View {
+        Section("Default Set Scheme") {
+            Stepper("Sets: \(defaultSetCount)", value: $defaultSetCount, in: 0...10)
+            Stepper("Reps: \(defaultReps)", value: $defaultReps, in: 0...50)
+            HStack {
+                Text("Weight")
+                Spacer()
+                TextField("Weight", value: $defaultWeight, format: .number)
+                    .keyboardType(.decimalPad)
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 64)
+            }
+            Toggle("Save as Template", isOn: $saveAsTemplate)
+        }
+    }
+
+    private func secondaryBinding(for group: MuscleGroup) -> Binding<Bool> {
+        Binding(
+            get: { secondaryMuscles.contains(group) },
+            set: { isOn in
+                if isOn { secondaryMuscles.insert(group) } else { secondaryMuscles.remove(group) }
+            }
+        )
+    }
+
+    private func applyTemplate(_ template: ExerciseTemplate) {
+        name = template.name
+        primaryMuscle = template.primaryMuscle
+        secondaryMuscles = Set(template.secondaryMuscles)
+        notes = template.notes
+        defaultSetCount = template.defaultSetCount
+        defaultReps = template.defaultReps
+        defaultWeight = template.defaultWeight
+    }
+
+    private func addExercise() {
+        let exercise = ExerciseTemplateService.makeExercise(
+            from: ExerciseTemplateService.makeTemplate(
+                name: name.isEmpty ? "New Skill" : name,
+                primaryMuscle: primaryMuscle,
+                secondaryMuscles: Array(secondaryMuscles),
+                notes: notes,
+                defaultSetCount: defaultSetCount,
+                defaultReps: defaultReps,
+                defaultWeight: defaultWeight
+            )
+        )
+        quest.exercises.append(exercise)
+
+        if saveAsTemplate {
+            let template = ExerciseTemplateService.makeTemplate(
+                name: exercise.name,
+                primaryMuscle: primaryMuscle,
+                secondaryMuscles: Array(secondaryMuscles),
+                notes: notes,
+                defaultSetCount: defaultSetCount,
+                defaultReps: defaultReps,
+                defaultWeight: defaultWeight
+            )
+            modelContext.insert(template)
+        }
+
+        try? modelContext.save()
+        dismiss()
+    }
+}
+
+private struct ManageTemplatesSheet: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    if templates.isEmpty {
+                        Text("No saved templates yet.")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        ForEach(templates) { template in
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(template.name)
+                                    .font(SetCraftFont.heading(15))
+                                Text("\(template.primaryMuscle.displayName) · \(template.defaultSetCount) × \(template.defaultReps)")
+                                    .font(SetCraftFont.body(12))
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                        .onDelete(perform: deleteTemplates)
+                    }
+                }
+            }
+            .navigationTitle("Manage Templates")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+
+    private func deleteTemplates(at offsets: IndexSet) {
+        for index in offsets {
+            modelContext.delete(templates[index])
+        }
+        try? modelContext.save()
+    }
+}
+
+#Preview {
+    NavigationStack {
+        QuestDetailView(quest: Quest(name: "Preview Quest", status: .active))
+    }
+    .modelContainer(PersistenceController.previewContainer)
+}

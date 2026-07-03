@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates Setbound.xcodeproj/project.pbxproj"""
+"""Generates SetCraft.xcodeproj/project.pbxproj"""
 
 import os
 
@@ -15,9 +15,9 @@ PROJECT = u(0, 0x01)
 
 # File references
 FR = {
-    "SetboundApp":            u(1, 0x01),
+    "SetCraftApp":            u(1, 0x01),
     "ContentView":             u(1, 0x02),
-    "SetboundTheme":          u(1, 0x03),
+    "SetCraftTheme":          u(1, 0x03),
     "MuscleGroup":             u(1, 0x04),
     "QuestStatus":             u(1, 0x05),
     "ExerciseSet":             u(1, 0x06),
@@ -46,8 +46,8 @@ FR = {
     "PixelDivider":            u(1, 0x1D),
     "QuestCompletionRewardRow": u(1, 0x1E),
     "Assets":                  u(1, 0x1F),
-    "PROD_APP":                u(1, 0x20),  # Setbound.app
-    "PROD_TEST":               u(1, 0x21),  # SetboundTests.xctest
+    "PROD_APP":                u(1, 0x20),  # SetCraft.app
+    "PROD_TEST":               u(1, 0x21),  # SetCraftTests.xctest
     "TEST_Progression":        u(1, 0x22),
     "TEST_Achievement":        u(1, 0x23),
     "TEST_Integration":        u(1, 0x24),
@@ -81,7 +81,7 @@ BF = {k: u(2, i + 1) for i, k in enumerate(FR.keys()) if not k.startswith("PROD_
 GR = {
     "Root":       u(3, 0x01),
     "Products":   u(3, 0x02),
-    "Setbound":   u(3, 0x03),
+    "SetCraft":   u(3, 0x03),
     "Models":     u(3, 0x04),
     "Views":      u(3, 0x05),
     "Components": u(3, 0x06),
@@ -118,11 +118,11 @@ BP_TEST_FRM = u(7, 0x05)
 TD_TEST = u(9, 0x01)
 CI_TEST = u(9, 0x02)
 
-# ── App source files (path relative to Setbound/ folder) ──────────────────
+# ── App source files (path relative to SetCraft/ folder) ──────────────────
 APP_SOURCES = [
-    ("SetboundApp",          "SetboundApp.swift"),
+    ("SetCraftApp",          "SetCraftApp.swift"),
     ("ContentView",           "ContentView.swift"),
-    ("SetboundTheme",        "SetboundTheme.swift"),
+    ("SetCraftTheme",        "SetCraftTheme.swift"),
     ("MuscleGroup",           "Models/MuscleGroup.swift"),
     ("QuestStatus",           "Models/QuestStatus.swift"),
     ("ExerciseSet",           "Models/ExerciseSet.swift"),
@@ -171,12 +171,12 @@ APP_SOURCES = [
 ]
 
 TEST_SOURCES = [
-    ("TEST_Progression", "SetboundTests/ProgressionServiceTests.swift"),
-    ("TEST_Achievement", "SetboundTests/AchievementServiceTests.swift"),
-    ("TEST_Integration", "SetboundTests/IntegrationTests.swift"),
-    ("TEST_RPGSpawn",    "SetboundTests/RPGSpawnServiceTests.swift"),
-    ("TEST_RPGBoss",     "SetboundTests/RPGBossMilestoneTests.swift"),
-    ("TEST_ExerciseTemplate", "SetboundTests/ExerciseTemplateServiceTests.swift"),
+    ("TEST_Progression", "SetCraftTests/ProgressionServiceTests.swift"),
+    ("TEST_Achievement", "SetCraftTests/AchievementServiceTests.swift"),
+    ("TEST_Integration", "SetCraftTests/IntegrationTests.swift"),
+    ("TEST_RPGSpawn",    "SetCraftTests/RPGSpawnServiceTests.swift"),
+    ("TEST_RPGBoss",     "SetCraftTests/RPGBossMilestoneTests.swift"),
+    ("TEST_ExerciseTemplate", "SetCraftTests/ExerciseTemplateServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -211,15 +211,15 @@ def pbxproj():
     a(f"\t\t\tcontainerPortal = {PROJECT} /* Project object */;")
     a(f"\t\t\tproxyType = 1;")
     a(f"\t\t\tremoteGlobalIDString = {TG_APP};")
-    a(f"\t\t\tremoteInfo = Setbound;")
+    a(f"\t\t\tremoteInfo = SetCraft;")
     a(f"\t\t}};")
     a("\t\t/* End PBXContainerItemProxy section */")
     a("")
 
     # ── PBXFileReference ────────────────────────────────────────────────────
     a("\t\t/* Begin PBXFileReference section */")
-    a(f"\t\t{FR['PROD_APP']} /* Setbound.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Setbound.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
-    a(f"\t\t{FR['PROD_TEST']} /* SetboundTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetboundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
+    a(f"\t\t{FR['PROD_APP']} /* SetCraft.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetCraft.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
+    a(f"\t\t{FR['PROD_TEST']} /* SetCraftTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetCraftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
     for key, path in APP_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
@@ -256,8 +256,8 @@ def pbxproj():
     a(f"\t\t{GR['Root']} = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
-    a(f"\t\t\t\t{GR['Setbound']} /* Setbound */,")
-    a(f"\t\t\t\t{GR['Tests']} /* SetboundTests */,")
+    a(f"\t\t\t\t{GR['SetCraft']} /* SetCraft */,")
+    a(f"\t\t\t\t{GR['Tests']} /* SetCraftTests */,")
     a(f"\t\t\t\t{GR['Products']} /* Products */,")
     a(f"\t\t\t);")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -267,27 +267,27 @@ def pbxproj():
     a(f"\t\t{GR['Products']} /* Products */ = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
-    a(f"\t\t\t\t{FR['PROD_APP']} /* Setbound.app */,")
-    a(f"\t\t\t\t{FR['PROD_TEST']} /* SetboundTests.xctest */,")
+    a(f"\t\t\t\t{FR['PROD_APP']} /* SetCraft.app */,")
+    a(f"\t\t\t\t{FR['PROD_TEST']} /* SetCraftTests.xctest */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = Products;")
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
-    # Setbound group (main app folder)
-    a(f"\t\t{GR['Setbound']} /* Setbound */ = {{")
+    # SetCraft group (main app folder)
+    a(f"\t\t{GR['SetCraft']} /* SetCraft */ = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
-    a(f"\t\t\t\t{FR['SetboundApp']} /* SetboundApp.swift */,")
+    a(f"\t\t\t\t{FR['SetCraftApp']} /* SetCraftApp.swift */,")
     a(f"\t\t\t\t{FR['ContentView']} /* ContentView.swift */,")
-    a(f"\t\t\t\t{FR['SetboundTheme']} /* SetboundTheme.swift */,")
+    a(f"\t\t\t\t{FR['SetCraftTheme']} /* SetCraftTheme.swift */,")
     a(f"\t\t\t\t{GR['Models']} /* Models */,")
     a(f"\t\t\t\t{GR['Services']} /* Services */,")
     a(f"\t\t\t\t{GR['Persistence']} /* Persistence */,")
     a(f"\t\t\t\t{GR['Views']} /* Views */,")
     a(f"\t\t\t\t{FR['Assets']} /* Assets.xcassets */,")
     a(f"\t\t\t);")
-    a(f"\t\t\tpath = Setbound;")
+    a(f"\t\t\tpath = SetCraft;")
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
@@ -330,14 +330,14 @@ def pbxproj():
                                                "RPGSpriteView", "RPGSceneView"])
 
     # Tests group
-    a(f"\t\t{GR['Tests']} /* SetboundTests */ = {{")
+    a(f"\t\t{GR['Tests']} /* SetCraftTests */ = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
     for key, path in TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")
     a(f"\t\t\t);")
-    a(f"\t\t\tpath = SetboundTests;")
+    a(f"\t\t\tpath = SetCraftTests;")
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
@@ -346,9 +346,9 @@ def pbxproj():
 
     # ── PBXNativeTarget ────────────────────────────────────────────────────
     a("\t\t/* Begin PBXNativeTarget section */")
-    a(f"\t\t{TG_APP} /* Setbound */ = {{")
+    a(f"\t\t{TG_APP} /* SetCraft */ = {{")
     a(f"\t\t\tisa = PBXNativeTarget;")
-    a(f"\t\t\tbuildConfigurationList = {CL_APP} /* Build configuration list for PBXNativeTarget \"Setbound\" */;")
+    a(f"\t\t\tbuildConfigurationList = {CL_APP} /* Build configuration list for PBXNativeTarget \"SetCraft\" */;")
     a(f"\t\t\tbuildPhases = (")
     a(f"\t\t\t\t{BP_APP_SRC} /* Sources */,")
     a(f"\t\t\t\t{BP_APP_FRM} /* Frameworks */,")
@@ -358,14 +358,14 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\tdependencies = (")
     a(f"\t\t\t);")
-    a(f"\t\t\tname = Setbound;")
-    a(f"\t\t\tproductName = Setbound;")
-    a(f"\t\t\tproductReference = {FR['PROD_APP']} /* Setbound.app */;")
+    a(f"\t\t\tname = SetCraft;")
+    a(f"\t\t\tproductName = SetCraft;")
+    a(f"\t\t\tproductReference = {FR['PROD_APP']} /* SetCraft.app */;")
     a(f"\t\t\tproductType = \"com.apple.product-type.application\";")
     a(f"\t\t}};")
-    a(f"\t\t{TG_TEST} /* SetboundTests */ = {{")
+    a(f"\t\t{TG_TEST} /* SetCraftTests */ = {{")
     a(f"\t\t\tisa = PBXNativeTarget;")
-    a(f"\t\t\tbuildConfigurationList = {CL_TEST} /* Build configuration list for PBXNativeTarget \"SetboundTests\" */;")
+    a(f"\t\t\tbuildConfigurationList = {CL_TEST} /* Build configuration list for PBXNativeTarget \"SetCraftTests\" */;")
     a(f"\t\t\tbuildPhases = (")
     a(f"\t\t\t\t{BP_TEST_SRC} /* Sources */,")
     a(f"\t\t\t\t{BP_TEST_FRM} /* Frameworks */,")
@@ -375,9 +375,9 @@ def pbxproj():
     a(f"\t\t\tdependencies = (")
     a(f"\t\t\t\t{TD_TEST} /* PBXTargetDependency */,")
     a(f"\t\t\t);")
-    a(f"\t\t\tname = SetboundTests;")
-    a(f"\t\t\tproductName = SetboundTests;")
-    a(f"\t\t\tproductReference = {FR['PROD_TEST']} /* SetboundTests.xctest */;")
+    a(f"\t\t\tname = SetCraftTests;")
+    a(f"\t\t\tproductName = SetCraftTests;")
+    a(f"\t\t\tproductReference = {FR['PROD_TEST']} /* SetCraftTests.xctest */;")
     a(f"\t\t\tproductType = \"com.apple.product-type.bundle.unit-test\";")
     a(f"\t\t}};")
     a("\t\t/* End PBXNativeTarget section */")
@@ -405,7 +405,7 @@ def pbxproj():
     a(f"\t\t\t\t\t}};")
     a(f"\t\t\t\t}};")
     a(f"\t\t\t}};")
-    a(f"\t\t\tbuildConfigurationList = {CL_PROJECT} /* Build configuration list for PBXProject \"Setbound\" */;")
+    a(f"\t\t\tbuildConfigurationList = {CL_PROJECT} /* Build configuration list for PBXProject \"SetCraft\" */;")
     a(f"\t\t\tcompatibilityVersion = \"Xcode 14.0\";")
     a(f"\t\t\tdevelopmentRegion = en;")
     a(f"\t\t\thasScannedForEncodings = 0;")
@@ -418,8 +418,8 @@ def pbxproj():
     a(f"\t\t\tprojectDirPath = \"\";")
     a(f"\t\t\tprojectRoot = \"\";")
     a(f"\t\t\ttargets = (")
-    a(f"\t\t\t\t{TG_APP} /* Setbound */,")
-    a(f"\t\t\t\t{TG_TEST} /* SetboundTests */,")
+    a(f"\t\t\t\t{TG_APP} /* SetCraft */,")
+    a(f"\t\t\t\t{TG_TEST} /* SetCraftTests */,")
     a(f"\t\t\t);")
     a(f"\t\t}};")
     a("\t\t/* End PBXProject section */")
@@ -467,7 +467,7 @@ def pbxproj():
     a("\t\t/* Begin PBXTargetDependency section */")
     a(f"\t\t{TD_TEST} /* PBXTargetDependency */ = {{")
     a(f"\t\t\tisa = PBXTargetDependency;")
-    a(f"\t\t\ttarget = {TG_APP} /* Setbound */;")
+    a(f"\t\t\ttarget = {TG_APP} /* SetCraft */;")
     a(f"\t\t\ttargetProxy = {CI_TEST} /* PBXContainerItemProxy */;")
     a(f"\t\t}};")
     a("\t\t/* End PBXTargetDependency section */")
@@ -560,7 +560,7 @@ def pbxproj():
         a(f"\t\t\t\tCURRENT_PROJECT_VERSION = 1;")
         a(f"\t\t\t\tENABLE_PREVIEWS = YES;")
         a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
-        a(f"\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = Setbound;")
+        a(f"\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = SetCraft;")
         a(f"\t\t\t\tINFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;")
@@ -569,7 +569,7 @@ def pbxproj():
         a(f"\t\t\t\tINFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = \"UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait\";")
         a(f"\t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 17.0;")
         a(f"\t\t\t\tMARKETING_VERSION = 1.0;")
-        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.Setbound;")
+        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.SetCraft;")
         a(f"\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
         a(f"\t\t\t\tSDKROOT = iphoneos;")
         a(f"\t\t\t\tSUPPORTED_PLATFORMS = \"iphoneos iphonesimulator\";")
@@ -594,13 +594,13 @@ def pbxproj():
         a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
         a(f"\t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 17.0;")
         a(f"\t\t\t\tMARKETING_VERSION = 1.0;")
-        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.SetboundTests;")
+        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.SetCraftTests;")
         a(f"\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
         a(f"\t\t\t\tSDKROOT = iphoneos;")
         a(f"\t\t\t\tSUPPORTED_PLATFORMS = \"iphoneos iphonesimulator\";")
         a(f"\t\t\t\tSWIFT_VERSION = 6.0;")
         a(f"\t\t\t\tTARGETED_DEVICE_FAMILY = \"1,2\";")
-        a(f"\t\t\t\tTEST_HOST = \"$(BUILT_PRODUCTS_DIR)/Setbound.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Setbound\";")
+        a(f"\t\t\t\tTEST_HOST = \"$(BUILT_PRODUCTS_DIR)/SetCraft.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SetCraft\";")
         a(f"\t\t\t}};")
         a(f"\t\t\tname = {name};")
         a(f"\t\t}};")
@@ -613,7 +613,7 @@ def pbxproj():
 
     # ── XCConfigurationList ─────────────────────────────────────────────────
     a("\t\t/* Begin XCConfigurationList section */")
-    a(f"\t\t{CL_PROJECT} /* Build configuration list for PBXProject \"Setbound\" */ = {{")
+    a(f"\t\t{CL_PROJECT} /* Build configuration list for PBXProject \"SetCraft\" */ = {{")
     a(f"\t\t\tisa = XCConfigurationList;")
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_PROJ_DBG} /* Debug */,")
@@ -622,7 +622,7 @@ def pbxproj():
     a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
     a(f"\t\t\tdefaultConfigurationName = Release;")
     a(f"\t\t}};")
-    a(f"\t\t{CL_APP} /* Build configuration list for PBXNativeTarget \"Setbound\" */ = {{")
+    a(f"\t\t{CL_APP} /* Build configuration list for PBXNativeTarget \"SetCraft\" */ = {{")
     a(f"\t\t\tisa = XCConfigurationList;")
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_APP_DBG} /* Debug */,")
@@ -631,7 +631,7 @@ def pbxproj():
     a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
     a(f"\t\t\tdefaultConfigurationName = Release;")
     a(f"\t\t}};")
-    a(f"\t\t{CL_TEST} /* Build configuration list for PBXNativeTarget \"SetboundTests\" */ = {{")
+    a(f"\t\t{CL_TEST} /* Build configuration list for PBXNativeTarget \"SetCraftTests\" */ = {{")
     a(f"\t\t\tisa = XCConfigurationList;")
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_TEST_DBG} /* Debug */,")
@@ -652,7 +652,7 @@ def pbxproj():
 
 if __name__ == "__main__":
     base = os.path.dirname(os.path.abspath(__file__))
-    proj_dir = os.path.join(base, "Setbound.xcodeproj")
+    proj_dir = os.path.join(base, "SetCraft.xcodeproj")
     os.makedirs(proj_dir, exist_ok=True)
     pbxproj_path = os.path.join(proj_dir, "project.pbxproj")
     content = pbxproj()

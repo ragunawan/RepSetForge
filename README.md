@@ -1,4 +1,4 @@
-# Setbound
+# SetCraft
 
 A pixel-art RPG-themed workout tracker for iOS. Workouts are "quests," exercises earn XP, and completing sets levels up your character and individual muscle groups.
 
@@ -17,13 +17,13 @@ RPG art is currently mid-migration: procedural sprite generation was retired in 
 python3 generate_project.py
 
 # Build
-xcodebuild build -project Setbound.xcodeproj -scheme Setbound -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild build -project SetCraft.xcodeproj -scheme SetCraft -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Run tests
-xcodebuild test -project Setbound.xcodeproj -scheme Setbound -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild test -project SetCraft.xcodeproj -scheme SetCraft -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Open in Xcode
-open Setbound.xcodeproj
+open SetCraft.xcodeproj
 ```
 
 **Launch arguments:**
@@ -33,11 +33,11 @@ open Setbound.xcodeproj
 ## Directory Structure
 
 ```
-Setbound/
-├── Setbound/                      # Main app target
-│   ├── SetboundApp.swift          # Entry point
+SetCraft/
+├── SetCraft/                      # Main app target
+│   ├── SetCraftApp.swift          # Entry point
 │   ├── ContentView.swift           # Tab navigation
-│   ├── SetboundTheme.swift         # Colors, fonts, styles
+│   ├── SetCraftTheme.swift         # Colors, fonts, styles
 │   ├── Models/
 │   │   ├── MuscleGroup.swift       # Enum: chest, back, legs, shoulders, arms, core, cardio
 │   │   ├── QuestStatus.swift       # Enum: planned, active, completed
@@ -88,11 +88,11 @@ Setbound/
 │       ├── AppIcon.appiconset/
 │       │   └── AppIcon.png
 │       └── RPG/                          # Imported chibi art (currently empty — see TODO.md P0)
-├── SetboundTests/
+├── SetCraftTests/
 │   ├── ProgressionServiceTests.swift     # XP calc, leveling
 │   ├── AchievementServiceTests.swift     # Unlock logic
 │   └── IntegrationTests.swift            # Quest completion → XP distribution
-├── Setbound.xcodeproj/
+├── SetCraft.xcodeproj/
 │   └── project.pbxproj
 ├── ArtSource/RPG/                        # Hand-made RPG art source + import manifest
 ├── Docs/ART_GENERATION_README.md         # RPG art import pipeline spec
@@ -104,7 +104,7 @@ Setbound/
 
 ## Phase 1 MVP — Complete
 
-- [x] App scaffolded and named "Setbound"
+- [x] App scaffolded and named "SetCraft"
 - [x] SwiftData models created (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement)
 - [x] XP & leveling services implemented
 - [x] Core persistence & seeding working

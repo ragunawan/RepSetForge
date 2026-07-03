@@ -1,6 +1,6 @@
 # Manual RPG Art Import Manifest
 
-This folder is the source drop zone for manually generated Setbound RPG art.
+This folder is the source drop zone for manually generated SetCraft RPG art.
 Do not use procedural placeholder art. Create finished chibi RPG PNGs, save
 them flat into:
 
@@ -309,7 +309,7 @@ Total background files: 9 PNGs.
 This section is the source of truth for asset completion. Mark an entry
 complete only after the PNGs have been generated, saved in
 `ArtSource/RPG/incoming/`, imported with `python3 scripts/import_rpg_art.py`,
-and accepted into `Setbound/Assets.xcassets/RPG/`.
+and accepted into `SetCraft/Assets.xcassets/RPG/`.
 
 Current import status: 407 / 407 required assets imported.
 

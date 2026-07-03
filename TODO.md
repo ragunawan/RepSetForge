@@ -1,4 +1,4 @@
-# Setbound TODO
+# SetCraft TODO
 
 Prioritized backlog for features and polish beyond Phase 1 MVP (see `CLAUDE.md` → Acceptance Criteria). This is also the canonical home for scope from the original RPG-economy brief — gold, shop, onboarding, per-skill XP, quest scheduling, and more — that goes beyond Phase 1 MVP and isn't built yet.
 
@@ -25,9 +25,9 @@ Prioritized backlog for features and polish beyond Phase 1 MVP (see `CLAUDE.md` 
 
 ## P1 - Onboarding And RPG Economy
 
-Full-economy scope from the original RPG brief: gold, ownable/purchasable equipment, and skills that level from real training instead of just character level. `RPGSkill` and `RPGEquipment` already exist as static, level/class-gated flavor data (`Setbound/Models/RPGSkill.swift`, `RPGEquipment.swift`) — extend them rather than replacing them.
+Full-economy scope from the original RPG brief: gold, ownable/purchasable equipment, and skills that level from real training instead of just character level. `RPGSkill` and `RPGEquipment` already exist as static, level/class-gated flavor data (`SetCraft/Models/RPGSkill.swift`, `RPGEquipment.swift`) — extend them rather than replacing them.
 
-- [ ] First-run onboarding flow: introduce Setbound's concept, seed default player/muscle/skill/achievement/equipment state exactly once, and let the user choose pounds or kilograms.
+- [ ] First-run onboarding flow: introduce SetCraft's concept, seed default player/muscle/skill/achievement/equipment state exactly once, and let the user choose pounds or kilograms.
 - [ ] Add `gold` to `PlayerCharacter` and award it deterministically: small amount per completed set, larger amount per completed quest, bonus on PRs (e.g. totalXP / 10 gold per quest, +25 gold per PR).
 - [ ] Turn `RPGEquipment` into an owned/persisted model (owned + equipped booleans, purchase source) instead of pure static data.
 - [ ] Build an Equipment/Shop screen: browse purchasable items, buy with gold, equip/unequip per slot, insufficient-gold and already-owned states, level/rarity gating.
