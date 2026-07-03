@@ -11,11 +11,18 @@ enum ExerciseTemplateService {
             primaryMuscle: template.primaryMuscle,
             secondaryMuscles: template.secondaryMuscles,
             notes: template.notes,
-            defaultRestSeconds: template.defaultRestSeconds
+            defaultRestSeconds: template.defaultRestSeconds,
+            exerciseType: template.exerciseType
         )
         for index in 0..<max(0, template.defaultSetCount) {
             exercise.sets.append(
-                ExerciseSet(setNumber: index + 1, reps: template.defaultReps, weight: template.defaultWeight)
+                ExerciseSet(
+                    setNumber: index + 1,
+                    reps: template.defaultReps,
+                    weight: template.defaultWeight,
+                    distanceMiles: template.defaultDistanceMiles,
+                    durationSeconds: template.defaultDurationSeconds
+                )
             )
         }
         return exercise
@@ -30,7 +37,10 @@ enum ExerciseTemplateService {
         defaultSetCount: Int,
         defaultReps: Int,
         defaultWeight: Double,
-        defaultRestSeconds: Int = 60
+        defaultRestSeconds: Int = 60,
+        exerciseType: ExerciseType = .strength,
+        defaultDistanceMiles: Double = 0,
+        defaultDurationSeconds: Int = 0
     ) -> ExerciseTemplate {
         ExerciseTemplate(
             name: name,
@@ -40,7 +50,10 @@ enum ExerciseTemplateService {
             defaultSetCount: defaultSetCount,
             defaultReps: defaultReps,
             defaultWeight: defaultWeight,
-            defaultRestSeconds: defaultRestSeconds
+            defaultRestSeconds: defaultRestSeconds,
+            exerciseType: exerciseType,
+            defaultDistanceMiles: defaultDistanceMiles,
+            defaultDurationSeconds: defaultDurationSeconds
         )
     }
 }

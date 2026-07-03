@@ -187,10 +187,13 @@ private struct AddExerciseSheet: View {
     @State private var primaryMuscle: MuscleGroup = .chest
     @State private var secondaryMuscles: Set<MuscleGroup> = []
     @State private var notes = ""
+    @State private var exerciseType: ExerciseType = .strength
     @State private var defaultSetCount = 0
     @State private var defaultReps = 10
     @State private var defaultWeight: Double = 0
     @State private var defaultRestSeconds = 60
+    @State private var defaultDistanceMiles: Double = 0
+    @State private var defaultDurationSeconds = 60
     @State private var saveAsTemplate = false
     @State private var showingManageTemplates = false
 
@@ -246,6 +249,11 @@ private struct AddExerciseSheet: View {
     private var primarySection: some View {
         Section("Skill") {
             TextField("Name", text: $name)
+            Picker("Type", selection: $exerciseType) {
+                ForEach(ExerciseType.allCases) { type in
+                    Text(type.displayName).tag(type)
+                }
+            }
             Picker("Primary Muscle", selection: $primaryMuscle) {
                 ForEach(MuscleGroup.allCases) { group in
                     Text(group.displayName).tag(group)
@@ -262,21 +270,43 @@ private struct AddExerciseSheet: View {
         }
     }
 
+    @ViewBuilder
     private var setSchemeSection: some View {
         Section("Default Set Scheme") {
             Stepper("Sets: \(defaultSetCount)", value: $defaultSetCount, in: 0...10)
-            Stepper("Reps: \(defaultReps)", value: $defaultReps, in: 0...50)
-            HStack {
-                Text("Weight")
-                Spacer()
-                TextField("Weight", value: $defaultWeight, format: .number)
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                    .frame(width: 64)
+            if exerciseType.tracksReps {
+                Stepper("Reps: \(defaultReps)", value: $defaultReps, in: 0...50)
+            }
+            if exerciseType.tracksWeight {
+                HStack {
+                    Text(exerciseType == .assisted ? "Assist Weight" : "Weight")
+                    Spacer()
+                    TextField("Weight", value: $defaultWeight, format: .number)
+                        .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 64)
+                }
+            }
+            if exerciseType.tracksDistance {
+                HStack {
+                    Text("Distance (mi)")
+                    Spacer()
+                    TextField("Distance", value: $defaultDistanceMiles, format: .number)
+                        .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .frame(width: 64)
+                }
+            }
+            if exerciseType.tracksDuration {
+                Stepper("Duration: \(formattedDuration(defaultDurationSeconds))", value: $defaultDurationSeconds, in: 0...3600, step: 15)
             }
             Stepper("Rest: \(defaultRestSeconds)s", value: $defaultRestSeconds, in: 0...300, step: 15)
             Toggle("Save as Template", isOn: $saveAsTemplate)
         }
+    }
+
+    private func formattedDuration(_ seconds: Int) -> String {
+        String(format: "%d:%02d", seconds / 60, seconds % 60)
     }
 
     private func secondaryBinding(for group: MuscleGroup) -> Binding<Bool> {
@@ -293,10 +323,13 @@ private struct AddExerciseSheet: View {
         primaryMuscle = template.primaryMuscle
         secondaryMuscles = Set(template.secondaryMuscles)
         notes = template.notes
+        exerciseType = template.exerciseType
         defaultSetCount = template.defaultSetCount
         defaultReps = template.defaultReps
         defaultWeight = template.defaultWeight
         defaultRestSeconds = template.defaultRestSeconds
+        defaultDistanceMiles = template.defaultDistanceMiles
+        defaultDurationSeconds = template.defaultDurationSeconds
     }
 
     private func addExercise() {
@@ -309,7 +342,10 @@ private struct AddExerciseSheet: View {
                 defaultSetCount: defaultSetCount,
                 defaultReps: defaultReps,
                 defaultWeight: defaultWeight,
-                defaultRestSeconds: defaultRestSeconds
+                defaultRestSeconds: defaultRestSeconds,
+                exerciseType: exerciseType,
+                defaultDistanceMiles: defaultDistanceMiles,
+                defaultDurationSeconds: defaultDurationSeconds
             )
         )
         quest.exercises.append(exercise)
@@ -323,7 +359,10 @@ private struct AddExerciseSheet: View {
                 defaultSetCount: defaultSetCount,
                 defaultReps: defaultReps,
                 defaultWeight: defaultWeight,
-                defaultRestSeconds: defaultRestSeconds
+                defaultRestSeconds: defaultRestSeconds,
+                exerciseType: exerciseType,
+                defaultDistanceMiles: defaultDistanceMiles,
+                defaultDurationSeconds: defaultDurationSeconds
             )
             modelContext.insert(template)
         }

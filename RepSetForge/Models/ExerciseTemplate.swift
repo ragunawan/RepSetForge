@@ -14,6 +14,9 @@ final class ExerciseTemplate {
     var defaultReps: Int
     var defaultWeight: Double
     var defaultRestSeconds: Int = 60
+    var exerciseTypeRaw: String = ExerciseType.strength.rawValue
+    var defaultDistanceMiles: Double = 0
+    var defaultDurationSeconds: Int = 0
 
     init(
         name: String,
@@ -23,7 +26,10 @@ final class ExerciseTemplate {
         defaultSetCount: Int = 3,
         defaultReps: Int = 10,
         defaultWeight: Double = 0,
-        defaultRestSeconds: Int = 60
+        defaultRestSeconds: Int = 60,
+        exerciseType: ExerciseType = .strength,
+        defaultDistanceMiles: Double = 0,
+        defaultDurationSeconds: Int = 0
     ) {
         self.id = UUID()
         self.name = name
@@ -34,11 +40,19 @@ final class ExerciseTemplate {
         self.defaultReps = defaultReps
         self.defaultWeight = defaultWeight
         self.defaultRestSeconds = defaultRestSeconds
+        self.exerciseTypeRaw = exerciseType.rawValue
+        self.defaultDistanceMiles = defaultDistanceMiles
+        self.defaultDurationSeconds = defaultDurationSeconds
     }
 
     var primaryMuscle: MuscleGroup {
         get { MuscleGroup(rawValue: primaryMuscleRaw) ?? .chest }
         set { primaryMuscleRaw = newValue.rawValue }
+    }
+
+    var exerciseType: ExerciseType {
+        get { ExerciseType(rawValue: exerciseTypeRaw) ?? .strength }
+        set { exerciseTypeRaw = newValue.rawValue }
     }
 
     var secondaryMuscles: [MuscleGroup] {

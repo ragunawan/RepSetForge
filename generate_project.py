@@ -81,6 +81,8 @@ FR = {
     "TEST_QuestScheduler":     u(1, 0x40),
     "ProgressionRebuildService": u(1, 0x41),
     "TEST_ProgressionRebuild": u(1, 0x42),
+    "ExerciseType":            u(1, 0x43),
+    "TEST_ExerciseType":       u(1, 0x44),
 }
 
 # Build files
@@ -134,6 +136,7 @@ APP_SOURCES = [
     ("RepSetForgeTheme",        "RepSetForgeTheme.swift"),
     ("MuscleGroup",           "Models/MuscleGroup.swift"),
     ("QuestStatus",           "Models/QuestStatus.swift"),
+    ("ExerciseType",          "Models/ExerciseType.swift"),
     ("ExerciseSet",           "Models/ExerciseSet.swift"),
     ("Exercise",              "Models/Exercise.swift"),
     ("ExerciseTemplate",      "Models/ExerciseTemplate.swift"),
@@ -195,6 +198,7 @@ TEST_SOURCES = [
     ("TEST_QuestDuplication", "RepSetForgeTests/QuestDuplicationServiceTests.swift"),
     ("TEST_QuestScheduler", "RepSetForgeTests/QuestSchedulerTests.swift"),
     ("TEST_ProgressionRebuild", "RepSetForgeTests/ProgressionRebuildServiceTests.swift"),
+    ("TEST_ExerciseType", "RepSetForgeTests/ExerciseTypeTests.swift"),
 ]
 
 def pbxproj():
@@ -322,7 +326,7 @@ def pbxproj():
         a(f"\t\t\tsourceTree = \"<group>\";")
         a(f"\t\t}};")
 
-    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement",
+    simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement",
                                        "RPGClass", "RPGEquipment", "RPGSkill", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
     simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGSkillRegistry",

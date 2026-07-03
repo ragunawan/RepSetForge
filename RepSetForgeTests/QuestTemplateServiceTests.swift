@@ -42,6 +42,24 @@ final class QuestTemplateServiceTests: XCTestCase {
         XCTAssertEqual(quest.exercises[1].sets.count, 4)
     }
 
+    func testMakeQuestCarriesNonStrengthTypeDistanceAndDuration() {
+        let run = QuestExerciseBlueprint(
+            name: "5K Run",
+            primaryMuscle: .cardio,
+            defaultSetCount: 1,
+            exerciseType: .cardio,
+            defaultDistanceMiles: 3.1,
+            defaultDurationSeconds: 1500
+        )
+        let template = QuestTemplate(name: "Cardio Day", exerciseBlueprints: [run])
+
+        let quest = QuestTemplateService.makeQuest(from: template)
+
+        XCTAssertEqual(quest.exercises[0].exerciseType, .cardio)
+        XCTAssertEqual(quest.exercises[0].sets[0].distanceMiles, 3.1)
+        XCTAssertEqual(quest.exercises[0].sets[0].durationSeconds, 1500)
+    }
+
     func testMakeQuestWithZeroSetCountBlueprintCreatesNoSets() {
         let blueprint = QuestExerciseBlueprint(name: "Plank", primaryMuscle: .core, defaultSetCount: 0)
         let template = QuestTemplate(name: "Core Trial", exerciseBlueprints: [blueprint])
@@ -71,6 +89,18 @@ final class QuestTemplateServiceTests: XCTestCase {
         XCTAssertEqual(blueprint.defaultReps, 10)
         XCTAssertEqual(blueprint.defaultWeight, 95)
         XCTAssertEqual(blueprint.defaultRestSeconds, 75)
+    }
+
+    func testMakeTemplateSnapshotsExerciseTypeAndFirstSetDistanceDuration() {
+        let exercise = Exercise(name: "5K Run", primaryMuscle: .cardio, exerciseType: .cardio)
+        exercise.sets = [ExerciseSet(setNumber: 1, distanceMiles: 3.1, durationSeconds: 1500)]
+
+        let template = QuestTemplateService.makeTemplate(name: "Cardio Day", exercises: [exercise])
+
+        let blueprint = template.exerciseBlueprints[0]
+        XCTAssertEqual(blueprint.exerciseType, .cardio)
+        XCTAssertEqual(blueprint.defaultDistanceMiles, 3.1)
+        XCTAssertEqual(blueprint.defaultDurationSeconds, 1500)
     }
 
     func testMakeTemplateFallsBackToDefaultsWhenExerciseHasNoSets() {

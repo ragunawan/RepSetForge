@@ -35,6 +35,7 @@ struct ExerciseLoggingView: View {
             } else {
                 TextField("Name", text: $exercise.name)
             }
+            LabeledContent("Type", value: exercise.exerciseType.displayName)
             LabeledContent("Primary Muscle", value: exercise.primaryMuscle.displayName)
             if !exercise.secondaryMuscles.isEmpty {
                 LabeledContent("Secondary", value: exercise.secondaryMuscles.map(\.displayName).joined(separator: ", "))
@@ -93,11 +94,11 @@ struct ExerciseLoggingView: View {
     private var setRows: some View {
         if isReadOnly {
             ForEach(sortedSets) { set in
-                ExerciseSetRow(set: set, isReadOnly: isReadOnly, onComplete: {})
+                ExerciseSetRow(set: set, exerciseType: exercise.exerciseType, isReadOnly: isReadOnly, onComplete: {})
             }
         } else {
             ForEach(sortedSets) { set in
-                ExerciseSetRow(set: set, isReadOnly: isReadOnly) {
+                ExerciseSetRow(set: set, exerciseType: exercise.exerciseType, isReadOnly: isReadOnly) {
                     restSecondsRemaining = exercise.defaultRestSeconds > 0 ? exercise.defaultRestSeconds : nil
                 }
             }
@@ -120,6 +121,7 @@ struct ExerciseLoggingView: View {
 
 private struct ExerciseSetRow: View {
     @Bindable var set: ExerciseSet
+    var exerciseType: ExerciseType
     var isReadOnly: Bool
     var onComplete: () -> Void
 
@@ -129,7 +131,7 @@ private struct ExerciseSetRow: View {
                 .font(RepSetForgeFont.stat(13))
                 .frame(width: 56, alignment: .leading)
 
-            repsAndWeight
+            setFields
 
             Button {
                 set.completed.toggle()
@@ -146,18 +148,68 @@ private struct ExerciseSetRow: View {
     }
 
     @ViewBuilder
-    private var repsAndWeight: some View {
+    private var setFields: some View {
+        if exerciseType.tracksReps {
+            repsField
+        }
+        if exerciseType.tracksWeight {
+            weightField
+        }
+        if exerciseType.tracksDistance {
+            distanceField
+        }
+        if exerciseType.tracksDuration {
+            durationField
+        }
+    }
+
+    @ViewBuilder
+    private var repsField: some View {
         if isReadOnly {
             Text("\(set.reps) reps")
+        } else {
+            Stepper("\(set.reps) reps", value: $set.reps, in: 0...100)
+        }
+    }
+
+    @ViewBuilder
+    private var weightField: some View {
+        if isReadOnly {
             Spacer()
             Text("\(set.weight, specifier: "%.1f") lb")
         } else {
-            Stepper("\(set.reps) reps", value: $set.reps, in: 0...100)
-            TextField("Weight", value: $set.weight, format: .number)
+            TextField(exerciseType == .assisted ? "Assist" : "Weight", value: $set.weight, format: .number)
                 .keyboardType(.decimalPad)
                 .frame(width: 64)
                 .multilineTextAlignment(.trailing)
         }
+    }
+
+    @ViewBuilder
+    private var distanceField: some View {
+        if isReadOnly {
+            Spacer()
+            Text("\(set.distanceMiles, specifier: "%.2f") mi")
+        } else {
+            TextField("Distance", value: $set.distanceMiles, format: .number)
+                .keyboardType(.decimalPad)
+                .frame(width: 64)
+                .multilineTextAlignment(.trailing)
+        }
+    }
+
+    @ViewBuilder
+    private var durationField: some View {
+        if isReadOnly {
+            Spacer()
+            Text(formattedDuration(set.durationSeconds))
+        } else {
+            Stepper(formattedDuration(set.durationSeconds), value: $set.durationSeconds, in: 0...3600, step: 5)
+        }
+    }
+
+    private func formattedDuration(_ seconds: Int) -> String {
+        String(format: "%d:%02d", seconds / 60, seconds % 60)
     }
 }
 

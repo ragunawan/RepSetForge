@@ -14,11 +14,18 @@ enum QuestTemplateService {
                 primaryMuscle: blueprint.primaryMuscle,
                 secondaryMuscles: blueprint.secondaryMuscles,
                 notes: blueprint.notes,
-                defaultRestSeconds: blueprint.defaultRestSeconds
+                defaultRestSeconds: blueprint.defaultRestSeconds,
+                exerciseType: blueprint.exerciseType
             )
             for index in 0..<max(0, blueprint.defaultSetCount) {
                 exercise.sets.append(
-                    ExerciseSet(setNumber: index + 1, reps: blueprint.defaultReps, weight: blueprint.defaultWeight)
+                    ExerciseSet(
+                        setNumber: index + 1,
+                        reps: blueprint.defaultReps,
+                        weight: blueprint.defaultWeight,
+                        distanceMiles: blueprint.defaultDistanceMiles,
+                        durationSeconds: blueprint.defaultDurationSeconds
+                    )
                 )
             }
             quest.exercises.append(exercise)
@@ -41,7 +48,10 @@ enum QuestTemplateService {
                 defaultSetCount: exercise.sets.count,
                 defaultReps: firstSet?.reps ?? 10,
                 defaultWeight: firstSet?.weight ?? 0,
-                defaultRestSeconds: exercise.defaultRestSeconds
+                defaultRestSeconds: exercise.defaultRestSeconds,
+                exerciseType: exercise.exerciseType,
+                defaultDistanceMiles: firstSet?.distanceMiles ?? 0,
+                defaultDurationSeconds: firstSet?.durationSeconds ?? 0
             )
         }
         return QuestTemplate(name: name, exerciseBlueprints: blueprints)

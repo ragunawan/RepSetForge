@@ -47,6 +47,38 @@ final class ExerciseTemplateServiceTests: XCTestCase {
         XCTAssertTrue(exercise.sets.isEmpty)
     }
 
+    func testMakeExerciseCarriesDurationTypeAndDefaults() {
+        let template = ExerciseTemplate(
+            name: "Plank",
+            primaryMuscle: .core,
+            defaultSetCount: 3,
+            exerciseType: .duration,
+            defaultDurationSeconds: 45
+        )
+
+        let exercise = ExerciseTemplateService.makeExercise(from: template)
+
+        XCTAssertEqual(exercise.exerciseType, .duration)
+        XCTAssertTrue(exercise.sets.allSatisfy { $0.durationSeconds == 45 })
+    }
+
+    func testMakeExerciseCarriesCardioTypeDistanceAndDuration() {
+        let template = ExerciseTemplate(
+            name: "5K Run",
+            primaryMuscle: .cardio,
+            defaultSetCount: 1,
+            exerciseType: .cardio,
+            defaultDistanceMiles: 3.1,
+            defaultDurationSeconds: 1500
+        )
+
+        let exercise = ExerciseTemplateService.makeExercise(from: template)
+
+        XCTAssertEqual(exercise.exerciseType, .cardio)
+        XCTAssertEqual(exercise.sets[0].distanceMiles, 3.1)
+        XCTAssertEqual(exercise.sets[0].durationSeconds, 1500)
+    }
+
     func testMakeTemplateCopiesGivenSkillDefinition() {
         let template = ExerciseTemplateService.makeTemplate(
             name: "Rows",
@@ -67,5 +99,25 @@ final class ExerciseTemplateServiceTests: XCTestCase {
         XCTAssertEqual(template.defaultReps, 10)
         XCTAssertEqual(template.defaultWeight, 95)
         XCTAssertEqual(template.defaultRestSeconds, 45)
+        XCTAssertEqual(template.exerciseType, .strength)
+    }
+
+    func testMakeTemplateCarriesNonStrengthTypeAndMeasurements() {
+        let template = ExerciseTemplateService.makeTemplate(
+            name: "5K Run",
+            primaryMuscle: .cardio,
+            secondaryMuscles: [],
+            notes: "",
+            defaultSetCount: 1,
+            defaultReps: 0,
+            defaultWeight: 0,
+            exerciseType: .cardio,
+            defaultDistanceMiles: 3.1,
+            defaultDurationSeconds: 1500
+        )
+
+        XCTAssertEqual(template.exerciseType, .cardio)
+        XCTAssertEqual(template.defaultDistanceMiles, 3.1)
+        XCTAssertEqual(template.defaultDurationSeconds, 1500)
     }
 }

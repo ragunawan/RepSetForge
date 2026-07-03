@@ -52,6 +52,19 @@ final class QuestDuplicationServiceTests: XCTestCase {
         XCTAssertTrue(copy.exercises[0].sets.isEmpty)
     }
 
+    func testDuplicatePreservesExerciseTypeDistanceAndDuration() {
+        let quest = Quest(name: "Cardio Day", status: .completed)
+        let run = Exercise(name: "5K Run", primaryMuscle: .cardio, exerciseType: .cardio)
+        run.sets = [ExerciseSet(setNumber: 1, completed: true, distanceMiles: 3.1, durationSeconds: 1500)]
+        quest.exercises = [run]
+
+        let copy = QuestDuplicationService.duplicate(quest)
+
+        XCTAssertEqual(copy.exercises[0].exerciseType, .cardio)
+        XCTAssertEqual(copy.exercises[0].sets[0].distanceMiles, 3.1)
+        XCTAssertEqual(copy.exercises[0].sets[0].durationSeconds, 1500)
+    }
+
     func testDuplicateIsIndependentOfSourceQuest() {
         let quest = Quest(name: "Leg Day", status: .completed)
         let squat = Exercise(name: "Squat", primaryMuscle: .legs)

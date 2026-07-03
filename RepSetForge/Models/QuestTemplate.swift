@@ -14,6 +14,9 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
     var defaultReps: Int
     var defaultWeight: Double
     var defaultRestSeconds: Int
+    var exerciseTypeRaw: String
+    var defaultDistanceMiles: Double
+    var defaultDurationSeconds: Int
 
     init(
         name: String,
@@ -23,7 +26,10 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         defaultSetCount: Int = 3,
         defaultReps: Int = 10,
         defaultWeight: Double = 0,
-        defaultRestSeconds: Int = 60
+        defaultRestSeconds: Int = 60,
+        exerciseType: ExerciseType = .strength,
+        defaultDistanceMiles: Double = 0,
+        defaultDurationSeconds: Int = 0
     ) {
         self.id = UUID()
         self.name = name
@@ -34,6 +40,9 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         self.defaultReps = defaultReps
         self.defaultWeight = defaultWeight
         self.defaultRestSeconds = defaultRestSeconds
+        self.exerciseTypeRaw = exerciseType.rawValue
+        self.defaultDistanceMiles = defaultDistanceMiles
+        self.defaultDurationSeconds = defaultDurationSeconds
     }
 
     var primaryMuscle: MuscleGroup {
@@ -46,8 +55,13 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         set { secondaryMuscleRawValues = newValue.map(\.rawValue) }
     }
 
+    var exerciseType: ExerciseType {
+        get { ExerciseType(rawValue: exerciseTypeRaw) ?? .strength }
+        set { exerciseTypeRaw = newValue.rawValue }
+    }
+
     private enum CodingKeys: String, CodingKey {
-        case id, name, primaryMuscleRaw, secondaryMuscleRawValues, notes, defaultSetCount, defaultReps, defaultWeight, defaultRestSeconds
+        case id, name, primaryMuscleRaw, secondaryMuscleRawValues, notes, defaultSetCount, defaultReps, defaultWeight, defaultRestSeconds, exerciseTypeRaw, defaultDistanceMiles, defaultDurationSeconds
     }
 
     init(from decoder: Decoder) throws {
@@ -60,8 +74,11 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
         defaultSetCount = try container.decode(Int.self, forKey: .defaultSetCount)
         defaultReps = try container.decode(Int.self, forKey: .defaultReps)
         defaultWeight = try container.decode(Double.self, forKey: .defaultWeight)
-        // Old saved templates predate this field, so default rather than fail to decode.
+        // Old saved templates predate these fields, so default rather than fail to decode.
         defaultRestSeconds = try container.decodeIfPresent(Int.self, forKey: .defaultRestSeconds) ?? 60
+        exerciseTypeRaw = try container.decodeIfPresent(String.self, forKey: .exerciseTypeRaw) ?? ExerciseType.strength.rawValue
+        defaultDistanceMiles = try container.decodeIfPresent(Double.self, forKey: .defaultDistanceMiles) ?? 0
+        defaultDurationSeconds = try container.decodeIfPresent(Int.self, forKey: .defaultDurationSeconds) ?? 0
     }
 }
 
