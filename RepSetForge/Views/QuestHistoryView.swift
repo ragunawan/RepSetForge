@@ -2,7 +2,10 @@ import SwiftUI
 import SwiftData
 
 struct QuestHistoryView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \Quest.completedDate, order: .reverse) private var allQuests: [Quest]
+
+    @State private var duplicatedQuest: Quest?
 
     private var completedQuests: [Quest] { allQuests.filter { $0.status == .completed } }
 
@@ -30,6 +33,14 @@ struct QuestHistoryView: View {
                             }
                         }
                     }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                        Button {
+                            duplicateQuest(quest)
+                        } label: {
+                            Label("Duplicate", systemImage: "doc.on.doc")
+                        }
+                        .tint(Color.questNavy)
+                    }
                 }
             }
             .listStyle(.plain)
@@ -37,6 +48,9 @@ struct QuestHistoryView: View {
             .scrollContentBackground(.hidden)
             .navigationTitle("History")
             .navigationDestination(for: Quest.self) { quest in
+                QuestDetailView(quest: quest)
+            }
+            .navigationDestination(item: $duplicatedQuest) { quest in
                 QuestDetailView(quest: quest)
             }
             .overlay {
@@ -47,6 +61,12 @@ struct QuestHistoryView: View {
                 }
             }
         }
+    }
+
+    private func duplicateQuest(_ quest: Quest) {
+        let copy = QuestDuplicationService.duplicate(quest)
+        modelContext.insert(copy)
+        duplicatedQuest = copy
     }
 }
 

@@ -75,6 +75,8 @@ FR = {
     "QuestTemplate":           u(1, 0x3A),
     "QuestTemplateService":    u(1, 0x3B),
     "TEST_QuestTemplate":      u(1, 0x3C),
+    "QuestDuplicationService": u(1, 0x3D),
+    "TEST_QuestDuplication":   u(1, 0x3E),
 }
 
 # Build files
@@ -140,6 +142,7 @@ APP_SOURCES = [
     ("AchievementService",    "Services/AchievementService.swift"),
     ("ExerciseTemplateService", "Services/ExerciseTemplateService.swift"),
     ("QuestTemplateService",  "Services/QuestTemplateService.swift"),
+    ("QuestDuplicationService", "Services/QuestDuplicationService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
     ("QuestListView",         "Views/QuestListView.swift"),
@@ -183,6 +186,7 @@ TEST_SOURCES = [
     ("TEST_RPGBoss",     "RepSetForgeTests/RPGBossMilestoneTests.swift"),
     ("TEST_ExerciseTemplate", "RepSetForgeTests/ExerciseTemplateServiceTests.swift"),
     ("TEST_QuestTemplate", "RepSetForgeTests/QuestTemplateServiceTests.swift"),
+    ("TEST_QuestDuplication", "RepSetForgeTests/QuestDuplicationServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -312,7 +316,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "QuestStatus", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement",
                                        "RPGClass", "RPGEquipment", "RPGSkill", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGSkillRegistry",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
