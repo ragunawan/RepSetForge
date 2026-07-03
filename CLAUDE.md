@@ -23,24 +23,24 @@ Setbound is an iOS app where workouts are "quests" and logging sets earns XP to 
 ## Key Files
 
 - `README.md` — Project overview and quick start
-- `IMPLEMENTATION.md` — 9-task roadmap with verification steps (use this to guide work)
+- `TODO.md` — canonical, prioritized backlog; use this to decide what to work on next
 - `generate_project.py` — Xcode project file generator (adapt EggSpend pattern)
-- `Setbound/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement)
-- `Setbound/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic)
+- `Setbound/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement) plus the passive-combat RPG layer (RPGClass, RPGMonster, RPGBoss, RPGSkill, RPGEquipment, RPGEncounterState, RPGProgressionSnapshot — struct/enum-based, not persisted)
+- `Setbound/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic), and the RPG combat layer (MonsterSpawnService, BossMilestoneService, RPGEncounterViewModel, RPGMonsterRegistry, RPGBossRegistry, RPGEquipmentRegistry, RPGSkillRegistry)
 - `Setbound/Persistence/` — PersistenceController (ModelContainer, seeding)
 - `Setbound/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, History, Achievements, Completion)
 - `Setbound/Views/Components/` — Pixel-art UI components (PixelQuestCard, PixelXPBar, PixelBadge, PixelStatPanel, PixelButton, PixelAchievementCard, PixelDivider, QuestCompletionRewardRow)
+- `Docs/ART_GENERATION_README.md` / `ArtSource/RPG/` — manual chibi-art import pipeline for RPG sprites (see `scripts/import_rpg_art.py`)
 
 ## Development Workflow
 
-1. Follow **IMPLEMENTATION.md** task order (1–9). Do not skip ahead.
-2. Each task has a clear "Verification" section — use it before moving to the next task.
-3. Before committing, build the app:
+1. Phase 1 MVP (core quest/XP/leveling loop) is complete. Work from **TODO.md**, top to bottom within each priority tier (P0 before P1 before P2, etc.). Do not skip ahead within a tier without reason.
+2. Before committing, build the app:
    ```bash
    xcodebuild build -project Setbound.xcodeproj -scheme Setbound \
      -destination 'platform=iOS Simulator,name=iPhone 16'
    ```
-4. Run tests:
+3. Run tests:
    ```bash
    xcodebuild test -project Setbound.xcodeproj -scheme Setbound \
      -destination 'platform=iOS Simulator,name=iPhone 16'
@@ -173,20 +173,22 @@ Optional: integration tests for end-to-end quest completion flow.
 
 ## Known TODOs & Limitations
 
-See `TODO.md` for the prioritized backlog. Keep this section as a pointer so feature ideas have one canonical home.
+See `TODO.md` for the prioritized backlog — it is the single canonical home for feature ideas and known gaps, including scope beyond Phase 1 MVP (gold/shop economy, onboarding, quest scheduling, weight units, per-skill XP). Keep this section as a pointer only; do not duplicate backlog items here.
 
 Current limitation highlights:
+- [ ] The RPG combat layer (monsters/bosses/skills/equipment) has no gold, no ownable/purchasable equipment, and no per-skill XP yet — see TODO.md P1 "Onboarding And RPG Economy"
+- [ ] RPG art is mid-migration: procedural sprites were removed in favor of a manual chibi-art import pipeline; import is in progress (29/407 required PNGs imported as of this writing) — see TODO.md P0
 - [ ] Real pixel-art muscle group icons and app icon polish
-- [ ] Pixel-art visual QA and animation polish across core flows
 - [ ] Cardio/timed exercise XP support and additional exercise types
-- [ ] Edit/undo completed quests with XP recalculation
+- [ ] Edit/undo completed quests with full reward recalculation (XP, gold, PRs, achievements, skills)
+- [ ] No first-run onboarding flow, quest scheduling/backdating, or weight-unit (lbs/kg) support
 - [ ] Export/import progress
 - [ ] Apple Watch support, HealthKit, Shortcuts, and social features are post-MVP
 - [ ] Detailed "build analysis" insights in CharacterProgressView
 
-## Acceptance Criteria (MVP)
+## Acceptance Criteria (Phase 1 MVP)
 
-When all tasks in IMPLEMENTATION.md are done, the app must satisfy:
+Phase 1 MVP is complete. The app satisfies:
 
 1. ✓ App builds successfully
 2. ✓ App is named "Setbound" in visible UI
@@ -206,7 +208,7 @@ When all tasks in IMPLEMENTATION.md are done, the app must satisfy:
 16. ✓ Reduce Motion is respected for animated effects
 17. ✓ Workout tracking remains fast, practical, and readable
 
-Verify each with the manual testing checklist in IMPLEMENTATION.md (Task 9).
+This is a deliberately smaller scope than the original RPG-economy brief (gold, shop, inventory, per-skill XP, onboarding, quest scheduling, etc.). That remaining scope lives in `TODO.md` as post-MVP backlog, not as unmet MVP criteria.
 
 ## Code Style
 
@@ -233,4 +235,4 @@ These are parsed in SetboundApp.swift.
 
 ---
 
-**Start here:** Read IMPLEMENTATION.md and work through tasks 1–9 in order.
+**Start here:** Phase 1 MVP is done. Read `TODO.md` and work top-down within the highest open priority tier.

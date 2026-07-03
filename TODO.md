@@ -1,33 +1,50 @@
 # Setbound TODO
 
-Prioritized backlog for features and polish beyond the current MVP roadmap.
+Prioritized backlog for features and polish beyond Phase 1 MVP (see `CLAUDE.md` → Acceptance Criteria). This is also the canonical home for scope from the original RPG-economy brief — gold, shop, onboarding, per-skill XP, quest scheduling, and more — that goes beyond Phase 1 MVP and isn't built yet.
 
-## P0 - Finish And Verify MVP
+## P0 - Finish And Verify Phase 1 MVP
 
-- [ ] Build and test the current app on the target simulator.
-- [ ] Complete the manual acceptance checklist in `IMPLEMENTATION.md`.
-- [ ] Verify the end-to-end flow: create quest, add exercises, log sets, complete quest, award XP, unlock achievements, and show history.
-- [ ] Confirm SwiftData first-launch seeding works on a clean install and with `--preview-data`.
+- [x] Build and test the current app on the target simulator. (iPhone 16 unavailable in this environment; built/tested against iPhone 17 — build and all 25 tests pass.)
+- [x] Complete the manual acceptance checklist (see `CLAUDE.md` → Acceptance Criteria). (Verified visually via screenshots: app name, pixel RPG theme, tab navigation, empty/seeded states. Items requiring live tap interaction were verified via `IntegrationTests.testQuestCompletionFlow()` instead — no UI-automation tooling, e.g. idb/XCUITest, is available in this environment. Recommend a manual pass in Xcode for the Reduce Motion and animation-feel checks specifically.)
+- [x] Verify the end-to-end flow: create quest, add exercises, log sets, complete quest, award XP, unlock achievements, and show history. (Confirmed via passing `IntegrationTests.testQuestCompletionFlow()`.)
+- [x] Confirm SwiftData first-launch seeding works on a clean install and with `--preview-data`. (Verified both: clean install shows Level 1/0 XP/no active quest with no crash; `--preview-data` seeds "Upper Body Strength" sample quest correctly.)
+- [ ] **Finish the manual chibi RPG art import.** The procedural asset generator (`scripts/generate_pixel_assets.py`) was retired in favor of hand-made art. Import is in progress — as of this writing, 29 of 407 required PNGs are imported (knight class frames, training_slime monster frames); 378 remain (65 boss, 207 monster, 80 hero, 9 equipment, 9 background, 8 skill). Continue generating art per `ArtSource/RPG/README.md` and `Docs/ART_GENERATION_README.md`, drop finished PNGs in `ArtSource/RPG/incoming/`, and run `python3 scripts/import_rpg_art.py` until it reports 0 missing.
 
 ## P1 - Core Workout Tracking Improvements
 
 - [ ] Exercise templates: save common exercises with default muscle groups, notes, and set schemes.
 - [ ] Quest templates: create reusable workout plans such as Push Day, Pull Day, Leg Day, and Core Trial.
 - [ ] Duplicate quest: start from a previous completed quest without re-entering every exercise.
-- [ ] Edit or undo completed quests with XP recalculation and achievement consistency checks.
-- [ ] Rest timer between sets, with configurable default durations per exercise.
+- [ ] Quest scheduling: allow creating a quest for today, a future date, or a past date (backdating a workout logged after the fact).
+- [ ] Edit or undo completed quests with full reward recalculation (XP, gold, muscle/skill levels, PRs, achievements) and no duplicate rewards — prefer rebuilding derived progression from completed-quest history over patching old totals in place.
+- [ ] Rest timer between sets, with configurable default durations per exercise; must not slow down set logging.
 - [ ] Add support for bodyweight, assisted, distance, duration, and cardio exercise types.
 - [ ] Add timed exercise XP formula for planks, runs, cycling, rowing, and circuits.
-- [ ] Add personal records for max weight, max reps, best volume, longest duration, and fastest pace.
+- [ ] Add personal records for max weight, max reps, best volume, longest duration, and fastest pace (also the basis for PR bonus gold once the economy below exists).
+- [ ] Weight units: support pounds and kilograms on `ExerciseSet`, selected during onboarding, applied consistently through logging and history; keep unit formatting isolated so kg support doesn't confuse historical entries.
+
+## P1 - Onboarding And RPG Economy
+
+Full-economy scope from the original RPG brief: gold, ownable/purchasable equipment, and skills that level from real training instead of just character level. `RPGSkill` and `RPGEquipment` already exist as static, level/class-gated flavor data (`Setbound/Models/RPGSkill.swift`, `RPGEquipment.swift`) — extend them rather than replacing them.
+
+- [ ] First-run onboarding flow: introduce Setbound's concept, seed default player/muscle/skill/achievement/equipment state exactly once, and let the user choose pounds or kilograms.
+- [ ] Add `gold` to `PlayerCharacter` and award it deterministically: small amount per completed set, larger amount per completed quest, bonus on PRs (e.g. totalXP / 10 gold per quest, +25 gold per PR).
+- [ ] Turn `RPGEquipment` into an owned/persisted model (owned + equipped booleans, purchase source) instead of pure static data.
+- [ ] Build an Equipment/Shop screen: browse purchasable items, buy with gold, equip/unequip per slot, insufficient-gold and already-owned states, level/rarity gating.
+- [ ] Turn `RPGSkill` progression into real XP: primary muscle-group XP grants 100% related skill XP, secondary muscle-group XP grants 40%, PRs grant skill XP bonuses — instead of skills unlocking purely from character level.
+- [ ] Deterministic, occasional equipment drops from completed quests / PR milestones (e.g. every 3 completed quests) — must be idempotent on rebuild/replay, not random per-tap.
+- [ ] Add a Gear/Shop tab to `ContentView` once the shop screen exists; update the `--tab` launch-argument indices and their documentation in `CLAUDE.md` / `README.md` accordingly.
+- [ ] Equipped skill loadout: let the user choose which unlocked skill per category (attack/defense/magic) drives passive battles, instead of always auto-selecting the highest-level one.
 
 ## P1 - Progression And RPG Systems
 
 - [ ] Level-up summary that clearly lists character and muscle group level changes.
 - [ ] Better achievement coverage for streaks, volume, balanced training, first PR, and consistency milestones.
-- [ ] Streak protection rules so rest days and late-night workouts behave predictably.
+- [ ] Streak protection rules so rest days and late-night workouts behave predictably. (Base consecutive-day streak calculation already exists in `RPGProgressionSnapshot.streak` — this item is about edge cases, not the base feature.)
 - [ ] Character titles and badges that reflect training style, not only level.
 - [ ] Build analysis insights in `CharacterProgressView`, such as push/pull balance and neglected muscle groups.
 - [ ] Daily or weekly quests generated from recent training history.
+- [ ] Expand the monster/boss pool and add more background scenes as level ranges grow (see `RPGMonsterRegistry`, `RPGBossRegistry`).
 
 ## P2 - History, Analytics, And Recovery
 
@@ -57,7 +74,7 @@ Prioritized backlog for features and polish beyond the current MVP roadmap.
 - [ ] Import progress from a previous export with conflict handling.
 - [ ] HealthKit integration for workout sessions, active energy, heart rate, and body metrics.
 - [ ] Shortcuts/App Intents for starting a quest, logging a set, and viewing current level.
-- [ ] iCloud sync once the local SwiftData model is stable.
+- [ ] iCloud sync once the local SwiftData model is stable. (The original RPG-economy brief asked for iCloud-backed persistence as a baseline requirement; deferred here since Phase 1 MVP is explicitly local-only per `CLAUDE.md`.)
 - [ ] Privacy settings and clear local-data explanation.
 
 ## P3 - Platform Expansion
@@ -72,6 +89,7 @@ Prioritized backlog for features and polish beyond the current MVP roadmap.
 
 - [ ] Add migration tests before changing SwiftData model schemas.
 - [ ] Expand service tests for XP recalculation, completed quest edits, streak edge cases, and achievement idempotency.
+- [ ] Add tests for gold/reward determinism, equipment ownership rules, and skill XP mapping once the RPG economy above is built.
 - [ ] Add UI tests for the core quest logging flow.
 - [ ] Add snapshot or preview coverage for major SwiftUI states.
 - [ ] Add a lightweight fixture factory for tests and previews.
