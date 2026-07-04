@@ -9,7 +9,7 @@ final class ProgressionRebuildServiceTests: XCTestCase {
     var muscles: [MuscleProgress]!
 
     override func setUpWithError() throws {
-        let schema = Schema([Quest.self, Exercise.self, ExerciseSet.self, PlayerCharacter.self, MuscleProgress.self, Achievement.self])
+        let schema = Schema([Quest.self, Exercise.self, ExerciseSet.self, PlayerCharacter.self, MuscleProgress.self, Achievement.self, PersonalRecord.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         container = try ModelContainer(for: schema, configurations: [config])
         context = ModelContext(container)
@@ -115,6 +115,48 @@ final class ProgressionRebuildServiceTests: XCTestCase {
         let expectedXP = ProgressionService.setXP(reps: 10, weight: 185)
         XCTAssertEqual(quest.totalXP, expectedXP)
         XCTAssertEqual(character.totalXP, expectedXP)
+    }
+
+    func testRebuildAwardsGoldMatchingGoldServiceFormula() throws {
+        _ = completedQuest(name: "Push Day", reps: 5, weight: 185, daysAgo: 0)
+        try context.save()
+
+        ProgressionRebuildService.rebuild(context: context)
+
+        let xp = ProgressionService.setXP(reps: 5, weight: 185)
+        // 1 completed set + questXP/10 + 3 new personal records (maxWeight/maxReps/bestVolume,
+        // all new since this is the first time this strength exercise is logged)
+        let expectedGold = GoldService.totalGold(completedSetCount: 1, questXP: xp, newRecordCount: 3)
+        XCTAssertEqual(character.gold, expectedGold)
+    }
+
+    func testRebuildIsIdempotentForGold() throws {
+        _ = completedQuest(name: "Push Day", reps: 5, weight: 185, daysAgo: 1)
+        _ = completedQuest(name: "Pull Day", reps: 8, weight: 135, daysAgo: 0)
+        try context.save()
+
+        ProgressionRebuildService.rebuild(context: context)
+        let firstGold = character.gold
+
+        ProgressionRebuildService.rebuild(context: context)
+
+        XCTAssertEqual(character.gold, firstGold)
+    }
+
+    func testUndoingCompletionRemovesItsGoldContribution() throws {
+        let keep = completedQuest(name: "Keep", reps: 5, weight: 185, daysAgo: 2)
+        let undone = completedQuest(name: "Undo Me", reps: 8, weight: 135, daysAgo: 1)
+        _ = keep
+        try context.save()
+
+        ProgressionRebuildService.rebuild(context: context)
+        let goldWithBoth = character.gold
+
+        undone.status = .active
+        undone.completedDate = nil
+        ProgressionRebuildService.rebuild(context: context)
+
+        XCTAssertLessThan(character.gold, goldWithBoth)
     }
 
     func testRebuildReDerivesAchievementsFromRemainingHistory() throws {

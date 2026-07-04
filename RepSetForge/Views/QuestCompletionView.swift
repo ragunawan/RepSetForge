@@ -7,6 +7,7 @@ struct QuestCompletionSummary: Identifiable {
     let distribution: ProgressionService.DistributionResult
     let unlockedAchievements: [Achievement]
     let newRecords: [PersonalRecordService.Update]
+    let goldEarned: Int
 }
 
 /// Celebratory summary shown right after a quest is completed: XP earned,
@@ -47,6 +48,20 @@ struct QuestCompletionView: View {
                                 iconName: entry.muscle.iconName,
                                 didLevelUp: summary.distribution.muscleLevelUps[entry.muscle] != nil
                             )
+                        }
+                        if summary.goldEarned > 0 {
+                            HStack {
+                                Image(systemName: "dollarsign.circle.fill")
+                                    .foregroundStyle(Color.questGold)
+                                    .frame(width: 20)
+                                Text("Gold")
+                                    .font(RepSetForgeFont.body())
+                                    .foregroundStyle(Color.questSilver)
+                                Spacer()
+                                Text("+\(summary.goldEarned)")
+                                    .font(RepSetForgeFont.stat())
+                                    .foregroundStyle(Color.questGold)
+                            }
                         }
                     }
                     .padding(RepSetForgeMetrics.paddingMedium)
@@ -115,6 +130,7 @@ struct QuestCompletionView: View {
             muscleLevelUps: [.chest: .init(oldLevel: 2, newLevel: 3)]
         ),
         unlockedAchievements: [],
-        newRecords: []
+        newRecords: [],
+        goldEarned: 42
     ))
 }

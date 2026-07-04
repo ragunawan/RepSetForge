@@ -48,6 +48,17 @@ struct CharacterProgressView: View {
                                 .font(RepSetForgeFont.stat())
                         }
                         .foregroundStyle(Color.questNavy)
+
+                        HStack {
+                            Image(systemName: "dollarsign.circle.fill")
+                                .foregroundStyle(Color.questGold)
+                            Text("Gold")
+                                .font(RepSetForgeFont.body())
+                            Spacer()
+                            Text("\(character.gold)")
+                                .font(RepSetForgeFont.stat())
+                        }
+                        .foregroundStyle(Color.questNavy)
                     }
 
                     if let buildInsight {

@@ -16,6 +16,9 @@ final class PlayerCharacter {
     /// Flips to true once the player finishes the first-run onboarding flow,
     /// so it's shown exactly once.
     var hasCompletedOnboarding: Bool = false
+    /// Currency earned from completed sets, quests, and personal records.
+    /// Spendable once the Equipment/Shop screen exists.
+    var gold: Int = 0
 
     init(
         level: Int = 1,
@@ -25,7 +28,8 @@ final class PlayerCharacter {
         completedQuestCount: Int = 0,
         createdDate: Date = .now,
         preferredWeightUnit: WeightUnit = .pounds,
-        hasCompletedOnboarding: Bool = false
+        hasCompletedOnboarding: Bool = false,
+        gold: Int = 0
     ) {
         self.level = level
         self.currentXP = currentXP
@@ -35,6 +39,7 @@ final class PlayerCharacter {
         self.createdDate = createdDate
         self.preferredWeightUnitRaw = preferredWeightUnit.rawValue
         self.hasCompletedOnboarding = hasCompletedOnboarding
+        self.gold = gold
     }
 
     /// XP required to advance from the current level to the next.

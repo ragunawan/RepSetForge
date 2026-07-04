@@ -1,15 +1,16 @@
 import Foundation
 import SwiftData
 
-/// Recomputes all derived progression — character level/XP, muscle levels/XP,
-/// completed-quest count, achievement unlocks, and personal records — from
-/// scratch by replaying completed-quest history in chronological order.
+/// Recomputes all derived progression — character level/XP/gold, muscle
+/// levels/XP, completed-quest count, achievement unlocks, and personal
+/// records — from scratch by replaying completed-quest history in
+/// chronological order.
 ///
 /// Used whenever completed-quest history changes after the fact (undoing a
 /// completion, or editing a completed quest's sets), instead of patching old
 /// totals in place. Patching in place risks double-counting or leaving stale
-/// XP/achievements behind; rebuilding from the source of truth (the completed
-/// quests themselves) never can.
+/// XP/gold/achievements behind; rebuilding from the source of truth (the
+/// completed quests themselves) never can.
 enum ProgressionRebuildService {
     @discardableResult
     static func rebuild(context: ModelContext) -> PlayerCharacter? {
@@ -21,6 +22,7 @@ enum ProgressionRebuildService {
         character.currentXP = 0
         character.totalXP = 0
         character.completedQuestCount = 0
+        character.gold = 0
         character.title = ProgressionService.title(for: character.level)
 
         for muscle in muscles {
@@ -34,6 +36,10 @@ enum ProgressionRebuildService {
             achievement.unlockedDate = nil
         }
 
+        for record in (try? context.fetch(FetchDescriptor<PersonalRecord>())) ?? [] {
+            context.delete(record)
+        }
+
         let completedRaw = QuestStatus.completed.rawValue
         let completedPredicate = #Predicate<Quest> { $0.statusRaw == completedRaw }
         let completedQuests = ((try? context.fetch(FetchDescriptor(predicate: completedPredicate))) ?? [])
@@ -45,9 +51,11 @@ enum ProgressionRebuildService {
             ProgressionService.distributeXP(questXP: xp, exercises: quest.exercises, to: character, and: muscles)
             character.completedQuestCount += 1
             AchievementService.checkAchievements(character: character, muscles: muscles, context: context, at: quest.completedDate ?? .now)
-        }
 
-        PersonalRecordService.rebuildAll(context: context)
+            let newRecords = PersonalRecordService.evaluateRecords(for: quest.exercises, context: context, achievedDate: quest.completedDate ?? .now)
+            let completedSetCount = quest.exercises.reduce(0) { $0 + $1.completedSets.count }
+            character.gold += GoldService.totalGold(completedSetCount: completedSetCount, questXP: xp, newRecordCount: newRecords.count)
+        }
 
         return character
     }
