@@ -16,18 +16,27 @@ final class PersistenceController {
     static let schema = Schema(versionedSchema: RepSetForgeSchemaV1.self)
 
     private init(inMemory: Bool = false) {
-        // CloudKit-backed for the real on-disk store; an in-memory store
-        // (previews, `inMemory: true` callers) can't sync and doesn't need
-        // to try. `.automatic` uses the container identifier from
-        // RepSetForge.entitlements rather than hardcoding it a second time
-        // here. If no iCloud account is signed in (e.g. this simulator),
-        // SwiftData falls back to local-only storage rather than failing —
-        // sync simply queues until an account becomes available.
-        let config = ModelConfiguration(
-            schema: Self.schema,
-            isStoredInMemoryOnly: inMemory,
-            cloudKitDatabase: inMemory ? .none : .automatic
-        )
+        // CloudKit-backed for the real on-disk store, at the App Group
+        // location `SharedStore` computes (so the widget extension's
+        // timeline provider can read it directly and fast, without a
+        // CloudKit round-trip inside WidgetKit's strict execution budget).
+        // An in-memory store (previews, `inMemory: true` callers) can't
+        // sync or share and doesn't need to try. If no iCloud account is
+        // signed in (e.g. this simulator), SwiftData falls back to
+        // local-only storage rather than failing — sync simply queues
+        // until an account becomes available.
+        let config: ModelConfiguration
+        if inMemory {
+            config = ModelConfiguration(schema: Self.schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
+        } else if let url = SharedStore.containerURL() {
+            config = ModelConfiguration(schema: Self.schema, url: url, cloudKitDatabase: .automatic)
+        } else {
+            // App Group container unavailable for some provisioning reason —
+            // fall back to the default on-disk location rather than fail to
+            // launch. The phone app still works and still syncs via
+            // CloudKit; only the widget's fast local read is lost.
+            config = ModelConfiguration(schema: Self.schema, cloudKitDatabase: .automatic)
+        }
         modelContainer = try! ModelContainer(for: Self.schema, migrationPlan: RepSetForgeMigrationPlan.self, configurations: [config])
         modelContext = ModelContext(modelContainer)
         seedCoreDataIfNeeded()

@@ -150,6 +150,17 @@ FR = {
     "WatchTheme":                    u(1, 0x85),
     "PROD_WATCH":                    u(1, 0x86),  # RepSetForge Watch App.app
     "WatchEntitlements":             u(1, 0x87),
+    "SharedStore":                   u(1, 0x88),
+    "StreakService":                 u(1, 0x89),
+    "TEST_StreakService":            u(1, 0x8A),
+    "RepSetForgeWidgetEntry":        u(1, 0x8B),
+    "RepSetForgeWidgetProvider":     u(1, 0x8C),
+    "RepSetForgeWidgetView":         u(1, 0x8D),
+    "RepSetForgeWidget":             u(1, 0x8E),
+    "RepSetForgeWidgetBundle":       u(1, 0x8F),
+    "PROD_WIDGET":                   u(1, 0x90),  # RepSetForgeWidgets.appex
+    "WidgetEntitlements":            u(1, 0x91),
+    "WidgetInfoPlist":               u(1, 0x92),
 }
 
 # ── watchOS companion app ──────────────────────────────────────────────────
@@ -179,8 +190,31 @@ WATCH_SHARED_KEYS = [
 # target's Sources phase needs its own PBXBuildFile entry pointing at that
 # same reference — these are the watch target's second set, in a UUID range
 # that can't collide with the per-FR-key `BF` dict below.
-BF_WATCH_SHARED = {k: u(2, 500 + i) for i, k in enumerate(WATCH_SHARED_KEYS)}
-BF_EMBED_WATCH = u(2, 900)  # the "Embed Watch Content" copy-files entry, distinct from PROD_WATCH's own file reference
+BF_WATCH_SHARED = {k: u(2, 0xA0 + i) for i, k in enumerate(WATCH_SHARED_KEYS)}
+BF_EMBED_WATCH = u(2, 0xF0)  # the "Embed Watch Content" copy-files entry, distinct from PROD_WATCH's own file reference
+
+# ── Widget/Live Activity extension ─────────────────────────────────────────
+# Reads the App Group–shared store directly (see SharedStore.swift) rather
+# than syncing via CloudKit itself, since a widget's timeline provider runs
+# under a strict execution budget — a CloudKit round-trip could time out.
+WIDGET_APP_SOURCES = [
+    ("RepSetForgeWidgetEntry", "RepSetForgeWidgets/RepSetForgeWidgetEntry.swift"),
+    ("RepSetForgeWidgetProvider", "RepSetForgeWidgets/RepSetForgeWidgetProvider.swift"),
+    ("RepSetForgeWidgetView", "RepSetForgeWidgets/RepSetForgeWidgetView.swift"),
+    ("RepSetForgeWidget", "RepSetForgeWidgets/RepSetForgeWidget.swift"),
+    ("RepSetForgeWidgetBundle", "RepSetForgeWidgets/RepSetForgeWidgetBundle.swift"),
+]
+
+WIDGET_SHARED_KEYS = [
+    "Quest", "Exercise", "ExerciseSet", "ExerciseTemplate", "QuestTemplate",
+    "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecord",
+    "RPGEncounterState", "OwnedEquipment", "SkillProgress",
+    "QuestStatus", "MuscleGroup", "ExerciseType", "WeightUnit", "PersonalRecordType", "RPGClass",
+    "RepSetForgeSchema", "SharedStore", "StreakService",
+]
+
+BF_WIDGET_SHARED = {k: u(2, 0xC8 + i) for i, k in enumerate(WIDGET_SHARED_KEYS)}
+BF_EMBED_WIDGET = u(2, 0xF1)  # the "Embed Foundation Extensions"/PlugIns copy-files entry
 
 # Build files
 BF = {k: u(2, i + 1) for i, k in enumerate(FR.keys()) if not k.startswith("PROD_")}
@@ -199,6 +233,7 @@ GR = {
     "UITests":    u(3, 0x0A),
     "Testing":    u(3, 0x0B),
     "WatchApp":   u(3, 0x0C),
+    "WidgetApp":  u(3, 0x0D),
 }
 
 # Targets
@@ -206,6 +241,7 @@ TG_APP    = u(4, 0x01)
 TG_TEST   = u(4, 0x02)
 TG_UITEST = u(4, 0x03)
 TG_WATCH  = u(4, 0x04)
+TG_WIDGET = u(4, 0x05)
 
 # Config lists
 CL_PROJECT = u(5, 0x01)
@@ -213,6 +249,7 @@ CL_APP     = u(5, 0x02)
 CL_TEST    = u(5, 0x03)
 CL_UITEST  = u(5, 0x04)
 CL_WATCH   = u(5, 0x05)
+CL_WIDGET  = u(5, 0x06)
 
 # Build configurations
 BC_PROJ_DBG   = u(6, 0x01)
@@ -225,6 +262,8 @@ BC_UITEST_DBG = u(6, 0x07)
 BC_UITEST_REL = u(6, 0x08)
 BC_WATCH_DBG  = u(6, 0x09)
 BC_WATCH_REL  = u(6, 0x0A)
+BC_WIDGET_DBG = u(6, 0x0B)
+BC_WIDGET_REL = u(6, 0x0C)
 
 # Build phases
 BP_APP_SRC    = u(7, 0x01)
@@ -237,6 +276,9 @@ BP_UITEST_FRM = u(7, 0x07)
 BP_WATCH_SRC  = u(7, 0x08)
 BP_WATCH_FRM  = u(7, 0x09)
 BP_EMBED_WATCH = u(7, 0x0A)  # "Embed Watch Content" copy-files phase, on the iOS app target
+BP_WIDGET_SRC = u(7, 0x0B)
+BP_WIDGET_FRM = u(7, 0x0C)
+BP_EMBED_WIDGET = u(7, 0x0D)  # PlugIns copy-files phase, on the iOS app target
 
 # Dependencies / proxy
 TD_TEST   = u(9, 0x01)
@@ -245,6 +287,8 @@ TD_UITEST = u(9, 0x03)
 CI_UITEST = u(9, 0x04)
 TD_WATCH  = u(9, 0x05)
 CI_WATCH  = u(9, 0x06)
+TD_WIDGET = u(9, 0x07)
+CI_WIDGET = u(9, 0x08)
 
 # ── App source files (path relative to RepSetForge/ folder) ──────────────────
 APP_SOURCES = [
@@ -293,6 +337,8 @@ APP_SOURCES = [
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("RepSetForgeSchema", "Persistence/RepSetForgeSchema.swift"),
+    ("SharedStore", "Persistence/SharedStore.swift"),
+    ("StreakService", "Services/StreakService.swift"),
     ("Fixtures", "Testing/Fixtures.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
     ("EquipmentShopView",     "Views/EquipmentShopView.swift"),
@@ -375,6 +421,7 @@ TEST_SOURCES = [
     ("TEST_PrivacyDataService", "RepSetForgeTests/PrivacyDataServiceTests.swift"),
     ("TEST_PersistenceMigration", "RepSetForgeTests/PersistenceMigrationTests.swift"),
     ("TEST_Fixtures", "RepSetForgeTests/FixturesTests.swift"),
+    ("TEST_StreakService", "RepSetForgeTests/StreakServiceTests.swift"),
 ]
 
 UI_TEST_SOURCES = [
@@ -414,6 +461,13 @@ def pbxproj():
         filename = app_sources_by_key[key].split("/")[-1]
         a(f"\t\t{BF_WATCH_SHARED[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
     a(f"\t\t{BF_EMBED_WATCH} /* RepSetForge Watch App.app in Embed Watch Content */ = {{isa = PBXBuildFile; fileRef = {FR['PROD_WATCH']} /* RepSetForge Watch App.app */; settings = {{ATTRIBUTES = (RemoveHeadersOnCopy, ); }}; }};")
+    for key, path in WIDGET_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    for key in WIDGET_SHARED_KEYS:
+        filename = app_sources_by_key[key].split("/")[-1]
+        a(f"\t\t{BF_WIDGET_SHARED[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    a(f"\t\t{BF_EMBED_WIDGET} /* RepSetForgeWidgets.appex in Embed Foundation Extensions */ = {{isa = PBXBuildFile; fileRef = {FR['PROD_WIDGET']} /* RepSetForgeWidgets.appex */; settings = {{ATTRIBUTES = (RemoveHeadersOnCopy, ); }}; }};")
     a("\t\t/* End PBXBuildFile section */")
     a("")
 
@@ -440,6 +494,13 @@ def pbxproj():
     a(f"\t\t\tremoteGlobalIDString = {TG_WATCH};")
     a(f"\t\t\tremoteInfo = \"RepSetForge Watch App\";")
     a(f"\t\t}};")
+    a(f"\t\t{CI_WIDGET} /* PBXContainerItemProxy */ = {{")
+    a(f"\t\t\tisa = PBXContainerItemProxy;")
+    a(f"\t\t\tcontainerPortal = {PROJECT} /* Project object */;")
+    a(f"\t\t\tproxyType = 1;")
+    a(f"\t\t\tremoteGlobalIDString = {TG_WIDGET};")
+    a(f"\t\t\tremoteInfo = RepSetForgeWidgets;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXContainerItemProxy section */")
     a("")
 
@@ -449,6 +510,7 @@ def pbxproj():
     a(f"\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
     a(f"\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
     a(f"\t\t{FR['PROD_WATCH']} /* RepSetForge Watch App.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = \"RepSetForge Watch App.app\"; sourceTree = BUILT_PRODUCTS_DIR; }};")
+    a(f"\t\t{FR['PROD_WIDGET']} /* RepSetForgeWidgets.appex */ = {{isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RepSetForgeWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; }};")
     for key, path in APP_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
@@ -463,6 +525,11 @@ def pbxproj():
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
     a(f"\t\t{FR['WatchEntitlements']} /* RepSetForge Watch App.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = \"RepSetForge Watch App.entitlements\"; sourceTree = \"<group>\"; }};")
+    for key, path in WIDGET_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
+    a(f"\t\t{FR['WidgetEntitlements']} /* RepSetForgeWidgets.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RepSetForgeWidgets.entitlements; sourceTree = \"<group>\"; }};")
+    a(f"\t\t{FR['WidgetInfoPlist']} /* Info.plist */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = \"<group>\"; }};")
     a("\t\t/* End PBXFileReference section */")
     a("")
 
@@ -496,6 +563,13 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_WIDGET_FRM} /* Frameworks */ = {{")
+    a(f"\t\t\tisa = PBXFrameworksBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXFrameworksBuildPhase section */")
     a("")
 
@@ -514,6 +588,17 @@ def pbxproj():
     a(f"\t\t\tname = \"Embed Watch Content\";")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_EMBED_WIDGET} /* Embed Foundation Extensions */ = {{")
+    a(f"\t\t\tisa = PBXCopyFilesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tdstPath = \"\";")
+    a(f"\t\t\tdstSubfolderSpec = 13;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t\t{BF_EMBED_WIDGET} /* RepSetForgeWidgets.appex in Embed Foundation Extensions */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tname = \"Embed Foundation Extensions\";")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXCopyFilesBuildPhase section */")
     a("")
 
@@ -528,6 +613,7 @@ def pbxproj():
     a(f"\t\t\t\t{GR['Tests']} /* RepSetForgeTests */,")
     a(f"\t\t\t\t{GR['UITests']} /* RepSetForgeUITests */,")
     a(f"\t\t\t\t{GR['WatchApp']} /* RepSetForge Watch App */,")
+    a(f"\t\t\t\t{GR['WidgetApp']} /* RepSetForgeWidgets */,")
     a(f"\t\t\t\t{GR['Products']} /* Products */,")
     a(f"\t\t\t);")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -541,6 +627,7 @@ def pbxproj():
     a(f"\t\t\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */,")
     a(f"\t\t\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */,")
     a(f"\t\t\t\t{FR['PROD_WATCH']} /* RepSetForge Watch App.app */,")
+    a(f"\t\t\t\t{FR['PROD_WIDGET']} /* RepSetForgeWidgets.appex */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = Products;")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -579,10 +666,10 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService", "StreakService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
-    simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema"])
+    simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema", "SharedStore"])
     simple_group("Testing", "Testing", ["Fixtures"])
 
     # Views group
@@ -640,6 +727,20 @@ def pbxproj():
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
+    # WidgetApp group
+    a(f"\t\t{GR['WidgetApp']} /* RepSetForgeWidgets */ = {{")
+    a(f"\t\t\tisa = PBXGroup;")
+    a(f"\t\t\tchildren = (")
+    for key, path in WIDGET_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{FR[key]} /* {filename} */,")
+    a(f"\t\t\t\t{FR['WidgetEntitlements']} /* RepSetForgeWidgets.entitlements */,")
+    a(f"\t\t\t\t{FR['WidgetInfoPlist']} /* Info.plist */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tpath = RepSetForgeWidgets;")
+    a(f"\t\t\tsourceTree = \"<group>\";")
+    a(f"\t\t}};")
+
     a("\t\t/* End PBXGroup section */")
     a("")
 
@@ -653,11 +754,13 @@ def pbxproj():
     a(f"\t\t\t\t{BP_APP_FRM} /* Frameworks */,")
     a(f"\t\t\t\t{BP_APP_RES} /* Resources */,")
     a(f"\t\t\t\t{BP_EMBED_WATCH} /* Embed Watch Content */,")
+    a(f"\t\t\t\t{BP_EMBED_WIDGET} /* Embed Foundation Extensions */,")
     a(f"\t\t\t);")
     a(f"\t\t\tbuildRules = (")
     a(f"\t\t\t);")
     a(f"\t\t\tdependencies = (")
     a(f"\t\t\t\t{TD_WATCH} /* PBXTargetDependency */,")
+    a(f"\t\t\t\t{TD_WIDGET} /* PBXTargetDependency */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = RepSetForge;")
     a(f"\t\t\tproductName = RepSetForge;")
@@ -714,6 +817,22 @@ def pbxproj():
     a(f"\t\t\tproductReference = {FR['PROD_WATCH']} /* RepSetForge Watch App.app */;")
     a(f"\t\t\tproductType = \"com.apple.product-type.application\";")
     a(f"\t\t}};")
+    a(f"\t\t{TG_WIDGET} /* RepSetForgeWidgets */ = {{")
+    a(f"\t\t\tisa = PBXNativeTarget;")
+    a(f"\t\t\tbuildConfigurationList = {CL_WIDGET} /* Build configuration list for PBXNativeTarget \"RepSetForgeWidgets\" */;")
+    a(f"\t\t\tbuildPhases = (")
+    a(f"\t\t\t\t{BP_WIDGET_SRC} /* Sources */,")
+    a(f"\t\t\t\t{BP_WIDGET_FRM} /* Frameworks */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tbuildRules = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdependencies = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\tname = RepSetForgeWidgets;")
+    a(f"\t\t\tproductName = RepSetForgeWidgets;")
+    a(f"\t\t\tproductReference = {FR['PROD_WIDGET']} /* RepSetForgeWidgets.appex */;")
+    a(f"\t\t\tproductType = \"com.apple.product-type.app-extension\";")
+    a(f"\t\t}};")
     a("\t\t/* End PBXNativeTarget section */")
     a("")
 
@@ -748,6 +867,11 @@ def pbxproj():
     a(f"\t\t\t\t\t\tDevelopmentTeam = 5T5444U7W2;")
     a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
     a(f"\t\t\t\t\t}};")
+    a(f"\t\t\t\t\t{TG_WIDGET} = {{")
+    a(f"\t\t\t\t\t\tCreatedOnToolsVersion = 16.0;")
+    a(f"\t\t\t\t\t\tDevelopmentTeam = 5T5444U7W2;")
+    a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
+    a(f"\t\t\t\t\t}};")
     a(f"\t\t\t\t}};")
     a(f"\t\t\t}};")
     a(f"\t\t\tbuildConfigurationList = {CL_PROJECT} /* Build configuration list for PBXProject \"RepSetForge\" */;")
@@ -767,6 +891,7 @@ def pbxproj():
     a(f"\t\t\t\t{TG_TEST} /* RepSetForgeTests */,")
     a(f"\t\t\t\t{TG_UITEST} /* RepSetForgeUITests */,")
     a(f"\t\t\t\t{TG_WATCH} /* RepSetForge Watch App */,")
+    a(f"\t\t\t\t{TG_WIDGET} /* RepSetForgeWidgets */,")
     a(f"\t\t\t);")
     a(f"\t\t}};")
     a("\t\t/* End PBXProject section */")
@@ -830,6 +955,19 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_WIDGET_SRC} /* Sources */ = {{")
+    a(f"\t\t\tisa = PBXSourcesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    for key, path in WIDGET_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{BF[key]} /* {filename} in Sources */,")
+    for key in WIDGET_SHARED_KEYS:
+        filename = app_sources_by_key[key].split("/")[-1]
+        a(f"\t\t\t\t{BF_WIDGET_SHARED[key]} /* {filename} in Sources */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXSourcesBuildPhase section */")
     a("")
 
@@ -849,6 +987,11 @@ def pbxproj():
     a(f"\t\t\tisa = PBXTargetDependency;")
     a(f"\t\t\ttarget = {TG_WATCH} /* RepSetForge Watch App */;")
     a(f"\t\t\ttargetProxy = {CI_WATCH} /* PBXContainerItemProxy */;")
+    a(f"\t\t}};")
+    a(f"\t\t{TD_WIDGET} /* PBXTargetDependency */ = {{")
+    a(f"\t\t\tisa = PBXTargetDependency;")
+    a(f"\t\t\ttarget = {TG_WIDGET} /* RepSetForgeWidgets */;")
+    a(f"\t\t\ttargetProxy = {CI_WIDGET} /* PBXContainerItemProxy */;")
     a(f"\t\t}};")
     a("\t\t/* End PBXTargetDependency section */")
     a("")
@@ -1047,6 +1190,36 @@ def pbxproj():
     watch_config(BC_WATCH_DBG, "Debug")
     watch_config(BC_WATCH_REL, "Release")
 
+    def widget_config(uuid, name):
+        debug = name == "Debug"
+        a(f"\t\t{uuid} /* {name} */ = {{")
+        a(f"\t\t\tisa = XCBuildConfiguration;")
+        a(f"\t\t\tbuildSettings = {{")
+        a(f"\t\t\t\tCODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;")
+        a(f"\t\t\t\tCODE_SIGN_STYLE = Automatic;")
+        a(f"\t\t\t\tDEVELOPMENT_TEAM = 5T5444U7W2;")
+        if debug:
+            a(f"\t\t\t\tENABLE_TESTABILITY = YES;")
+        a(f"\t\t\t\tCURRENT_PROJECT_VERSION = 1;")
+        a(f"\t\t\t\tENABLE_PREVIEWS = YES;")
+        a(f"\t\t\t\tINFOPLIST_FILE = RepSetForgeWidgets/Info.plist;")
+        a(f"\t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 17.0;")
+        a(f"\t\t\t\tMARKETING_VERSION = 1.0;")
+        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.RepSetForgeWidgets;")
+        a(f"\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
+        a(f"\t\t\t\tSDKROOT = iphoneos;")
+        a(f"\t\t\t\tSKIP_INSTALL = YES;")
+        a(f"\t\t\t\tSUPPORTED_PLATFORMS = \"iphoneos iphonesimulator\";")
+        a(f"\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;")
+        a(f"\t\t\t\tSWIFT_VERSION = 6.0;")
+        a(f"\t\t\t\tTARGETED_DEVICE_FAMILY = \"1,2\";")
+        a(f"\t\t\t}};")
+        a(f"\t\t\tname = {name};")
+        a(f"\t\t}};")
+
+    widget_config(BC_WIDGET_DBG, "Debug")
+    widget_config(BC_WIDGET_REL, "Release")
+
     a("\t\t/* End XCBuildConfiguration section */")
     a("")
 
@@ -1093,6 +1266,15 @@ def pbxproj():
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_WATCH_DBG} /* Debug */,")
     a(f"\t\t\t\t{BC_WATCH_REL} /* Release */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
+    a(f"\t\t\tdefaultConfigurationName = Release;")
+    a(f"\t\t}};")
+    a(f"\t\t{CL_WIDGET} /* Build configuration list for PBXNativeTarget \"RepSetForgeWidgets\" */ = {{")
+    a(f"\t\t\tisa = XCConfigurationList;")
+    a(f"\t\t\tbuildConfigurations = (")
+    a(f"\t\t\t\t{BC_WIDGET_DBG} /* Debug */,")
+    a(f"\t\t\t\t{BC_WIDGET_REL} /* Release */,")
     a(f"\t\t\t);")
     a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
     a(f"\t\t\tdefaultConfigurationName = Release;")
