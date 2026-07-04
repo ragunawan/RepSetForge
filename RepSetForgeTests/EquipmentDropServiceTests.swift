@@ -65,6 +65,40 @@ final class EquipmentDropServiceTests: XCTestCase {
         XCTAssertLessThanOrEqual(grantedCount, knightUsableCount) // stops once exhausted
     }
 
+    func testZeroMilestoneCountNeverDrops() {
+        XCTAssertNil(EquipmentDropService.checkQuestMilestone(completedQuestCount: 0, rpgClass: .knight, context: context))
+        XCTAssertNil(EquipmentDropService.checkPRMilestone(totalPRCount: 0, rpgClass: .knight, context: context))
+    }
+
+    func testPRMilestoneDeterministicAcrossRepeatedCalls() throws {
+        // Same determinism guarantee as the quest-milestone version, since
+        // ProgressionRebuildService replays PR milestones too on every rebuild.
+        let dropA = EquipmentDropService.checkPRMilestone(totalPRCount: 6, rpgClass: .rogue, context: context)
+
+        let schema2 = Schema([OwnedEquipment.self])
+        let config2 = ModelConfiguration(schema: schema2, isStoredInMemoryOnly: true)
+        let container2 = try ModelContainer(for: schema2, configurations: [config2])
+        let context2 = ModelContext(container2)
+        let dropB = EquipmentDropService.checkPRMilestone(totalPRCount: 6, rpgClass: .rogue, context: context2)
+
+        XCTAssertEqual(dropA?.equipmentID, dropB?.equipmentID)
+    }
+
+    func testQuestAndPRMilestonesAtTheSameCountAreIndependentSeeds() {
+        // "quest-3" and "pr-3" are different hash inputs, so a quest-drop and
+        // a PR-drop happening to land on the same milestone number is not
+        // guaranteed to (nor required to) pick the same item — each check
+        // must independently look at its own already-owned set rather than
+        // assume the other's pick.
+        let questDrop = EquipmentDropService.checkQuestMilestone(completedQuestCount: 3, rpgClass: .knight, context: context)
+        let prDrop = EquipmentDropService.checkPRMilestone(totalPRCount: 3, rpgClass: .knight, context: context)
+
+        XCTAssertNotNil(questDrop)
+        XCTAssertNotNil(prDrop)
+        let owned = (try? context.fetch(FetchDescriptor<OwnedEquipment>())) ?? []
+        XCTAssertEqual(owned.count, 2) // both grants persisted as separate rows, never collapsed into one
+    }
+
     func testDeterministicAcrossRepeatedCalls() throws {
         // Simulates two independent "sessions" hitting the exact same milestone from a clean slate.
         let dropA = EquipmentDropService.checkQuestMilestone(completedQuestCount: 3, rpgClass: .rogue, context: context)

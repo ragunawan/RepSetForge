@@ -97,6 +97,21 @@ final class RPGEquipmentServiceTests: XCTestCase {
         XCTAssertTrue(RPGEquipmentService.ownedEquipment(context: context).contains { $0.id == "training_sword" })
     }
 
+    func testPurchasedItemIsOwnedButNotAutomaticallyEquipped() {
+        _ = makeCharacter(level: 1, gold: 100)
+        context.insert(RPGEncounterState(rpgClass: .knight))
+
+        RPGEquipmentService.purchase("training_sword", context: context)
+
+        XCTAssertTrue(RPGEquipmentService.ownedEquipment(context: context).contains { $0.id == "training_sword" })
+        XCTAssertNil(RPGEquipmentService.equippedLoadout(context: context)[.weapon])
+    }
+
+    func testEquippedLoadoutIsEmptyBeforeAnyGearIsSeededOrPurchased() {
+        XCTAssertTrue(RPGEquipmentService.equippedLoadout(context: context).isEmpty)
+        XCTAssertTrue(RPGEquipmentService.ownedEquipment(context: context).isEmpty)
+    }
+
     func testPurchaseFailsWhenAlreadyOwned() {
         let character = makeCharacter(level: 1, gold: 100)
         context.insert(RPGEncounterState(rpgClass: .knight))
