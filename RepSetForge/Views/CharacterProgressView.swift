@@ -21,6 +21,10 @@ struct CharacterProgressView: View {
         TrainingStyleService.style(for: muscles)
     }
 
+    private var insights: [TrainingInsightsService.Insight] {
+        TrainingInsightsService.insights(for: muscles)
+    }
+
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     @State private var showingSettings = false
@@ -102,6 +106,35 @@ struct CharacterProgressView: View {
                             }
                             .padding(RepSetForgeMetrics.paddingSmall)
                             .pixelPanel()
+                        }
+                    }
+
+                    if !insights.isEmpty {
+                        PixelDivider()
+
+                        Text("Insights")
+                            .font(RepSetForgeFont.heading())
+                            .foregroundStyle(Color.questNavy)
+
+                        VStack(spacing: RepSetForgeMetrics.paddingSmall) {
+                            ForEach(insights) { insight in
+                                HStack(alignment: .top) {
+                                    Image(systemName: insight.iconName)
+                                        .foregroundStyle(Color.questGold)
+                                        .frame(width: 20)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(insight.title)
+                                            .font(RepSetForgeFont.body(13))
+                                            .foregroundStyle(Color.questSilver)
+                                        Text(insight.detail)
+                                            .font(RepSetForgeFont.body(12))
+                                            .foregroundStyle(Color.questSilver.opacity(0.7))
+                                    }
+                                    Spacer()
+                                }
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel()
+                            }
                         }
                     }
 
