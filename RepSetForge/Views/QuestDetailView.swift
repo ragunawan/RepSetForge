@@ -126,6 +126,7 @@ struct QuestDetailView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        .accessibilityIdentifier("exerciseRow-\(exercise.name)")
     }
 
     @ViewBuilder

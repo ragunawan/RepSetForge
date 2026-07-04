@@ -51,6 +51,7 @@ struct QuestDashboardView: View {
                                 PixelQuestCard(quest: quest)
                             }
                             .buttonStyle(.plain)
+                            .accessibilityIdentifier("currentQuestCard")
                         }
                     } else {
                         // A true first launch (no quests completed yet) gets

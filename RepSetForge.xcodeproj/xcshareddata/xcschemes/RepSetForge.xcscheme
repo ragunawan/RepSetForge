@@ -35,6 +35,20 @@
                ReferencedContainer = "container:RepSetForge.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AA0400000000000000000003"
+               BuildableName = "RepSetForgeUITests.xctest"
+               BlueprintName = "RepSetForgeUITests"
+               ReferencedContainer = "container:RepSetForge.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -51,6 +65,17 @@
                BlueprintIdentifier = "AA0400000000000000000002"
                BuildableName = "RepSetForgeTests.xctest"
                BlueprintName = "RepSetForgeTests"
+               ReferencedContainer = "container:RepSetForge.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AA0400000000000000000003"
+               BuildableName = "RepSetForgeUITests.xctest"
+               BlueprintName = "RepSetForgeUITests"
                ReferencedContainer = "container:RepSetForge.xcodeproj">
             </BuildableReference>
          </TestableReference>

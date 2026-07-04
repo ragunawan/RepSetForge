@@ -130,10 +130,18 @@
 		AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000078 /* AppIntentServiceTests.swift */; };
 		AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007B /* PrivacyDataServiceTests.swift */; };
 		AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007D /* PersistenceMigrationTests.swift */; };
+		AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007F /* QuestLoggingUITests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
 		AA0900000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA0400000000000000000001;
+			remoteInfo = RepSetForge;
+		};
+		AA0900000000000000000004 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AA0000000000000000000001 /* Project object */;
 			proxyType = 1;
@@ -145,6 +153,7 @@
 		/* Begin PBXFileReference section */
 		AA0100000000000000000020 /* RepSetForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0100000000000000000021 /* RepSetForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA010000000000000000007E /* RepSetForgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0100000000000000000001 /* RepSetForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeApp.swift; sourceTree = "<group>"; };
 		AA0100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000003 /* RepSetForgeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeTheme.swift; sourceTree = "<group>"; };
@@ -268,10 +277,18 @@
 		AA0100000000000000000078 /* AppIntentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000007B /* PrivacyDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000007D /* PersistenceMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceMigrationTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000007F /* QuestLoggingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestLoggingUITests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
 		AA0700000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA0700000000000000000007 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -293,6 +310,7 @@
 			children = (
 				AA0300000000000000000003 /* RepSetForge */,
 				AA0300000000000000000009 /* RepSetForgeTests */,
+				AA030000000000000000000A /* RepSetForgeUITests */,
 				AA0300000000000000000002 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -302,6 +320,7 @@
 			children = (
 				AA0100000000000000000020 /* RepSetForge.app */,
 				AA0100000000000000000021 /* RepSetForgeTests.xctest */,
+				AA010000000000000000007E /* RepSetForgeUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -483,6 +502,14 @@
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
 		};
+		AA030000000000000000000A /* RepSetForgeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AA010000000000000000007F /* QuestLoggingUITests.swift */,
+			);
+			path = RepSetForgeUITests;
+			sourceTree = "<group>";
+		};
 		/* End PBXGroup section */
 
 		/* Begin PBXNativeTarget section */
@@ -520,6 +547,23 @@
 			productReference = AA0100000000000000000021 /* RepSetForgeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		AA0400000000000000000003 /* RepSetForgeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA0500000000000000000004 /* Build configuration list for PBXNativeTarget "RepSetForgeUITests" */;
+			buildPhases = (
+				AA0700000000000000000006 /* Sources */,
+				AA0700000000000000000007 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA0900000000000000000003 /* PBXTargetDependency */,
+			);
+			name = RepSetForgeUITests;
+			productName = RepSetForgeUITests;
+			productReference = AA010000000000000000007E /* RepSetForgeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		/* End PBXNativeTarget section */
 
 		/* Begin PBXProject section */
@@ -536,6 +580,12 @@
 						ProvisioningStyle = Automatic;
 					};
 					AA0400000000000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+						DevelopmentTeam = 5T5444U7W2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = AA0400000000000000000001;
+					};
+					AA0400000000000000000003 = {
 						CreatedOnToolsVersion = 16.0;
 						DevelopmentTeam = 5T5444U7W2;
 						ProvisioningStyle = Automatic;
@@ -558,6 +608,7 @@
 			targets = (
 				AA0400000000000000000001 /* RepSetForge */,
 				AA0400000000000000000002 /* RepSetForgeTests */,
+				AA0400000000000000000003 /* RepSetForgeUITests */,
 			);
 		};
 		/* End PBXProject section */
@@ -710,6 +761,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0700000000000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		/* End PBXSourcesBuildPhase section */
 
 		/* Begin PBXTargetDependency section */
@@ -717,6 +776,11 @@
 			isa = PBXTargetDependency;
 			target = AA0400000000000000000001 /* RepSetForge */;
 			targetProxy = AA0900000000000000000002 /* PBXContainerItemProxy */;
+		};
+		AA0900000000000000000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA0400000000000000000001 /* RepSetForge */;
+			targetProxy = AA0900000000000000000004 /* PBXContainerItemProxy */;
 		};
 		/* End PBXTargetDependency section */
 
@@ -944,6 +1008,44 @@
 			};
 			name = Release;
 		};
+		AA0600000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5T5444U7W2;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RepSetForge;
+			};
+			name = Debug;
+		};
+		AA0600000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5T5444U7W2;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RepSetForge;
+			};
+			name = Release;
+		};
 		/* End XCBuildConfiguration section */
 
 		/* Begin XCConfigurationList section */
@@ -970,6 +1072,15 @@
 			buildConfigurations = (
 				AA0600000000000000000005 /* Debug */,
 				AA0600000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA0500000000000000000004 /* Build configuration list for PBXNativeTarget "RepSetForgeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0600000000000000000007 /* Debug */,
+				AA0600000000000000000008 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

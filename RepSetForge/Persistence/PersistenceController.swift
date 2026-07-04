@@ -43,7 +43,13 @@ final class PersistenceController {
 
     func seedCoreDataIfNeeded() {
         if (try? modelContext.fetch(FetchDescriptor<PlayerCharacter>()))?.isEmpty ?? true {
-            modelContext.insert(PlayerCharacter())
+            // `--skip-onboarding` is a deterministic, CI-friendly alternative
+            // to manually flipping this bit in the SQLite store after the
+            // fact — lets UI tests reach the core app past the first-run
+            // onboarding gate without depending on state left over from a
+            // previous run on the same simulator.
+            let skipOnboarding = ProcessInfo.processInfo.arguments.contains("--skip-onboarding")
+            modelContext.insert(PlayerCharacter(hasCompletedOnboarding: skipOnboarding))
         }
 
         let existingMuscles = (try? modelContext.fetch(FetchDescriptor<MuscleProgress>())) ?? []

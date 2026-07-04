@@ -140,6 +140,8 @@ FR = {
     "TEST_PrivacyDataService":       u(1, 0x7B),
     "RepSetForgeSchema":             u(1, 0x7C),
     "TEST_PersistenceMigration":     u(1, 0x7D),
+    "PROD_UITEST":                   u(1, 0x7E),  # RepSetForgeUITests.xctest
+    "UITEST_QuestLogging":           u(1, 0x7F),
 }
 
 # Build files
@@ -156,35 +158,44 @@ GR = {
     "Services":   u(3, 0x07),
     "Persistence": u(3, 0x08),
     "Tests":      u(3, 0x09),
+    "UITests":    u(3, 0x0A),
 }
 
 # Targets
-TG_APP  = u(4, 0x01)
-TG_TEST = u(4, 0x02)
+TG_APP    = u(4, 0x01)
+TG_TEST   = u(4, 0x02)
+TG_UITEST = u(4, 0x03)
 
 # Config lists
 CL_PROJECT = u(5, 0x01)
 CL_APP     = u(5, 0x02)
 CL_TEST    = u(5, 0x03)
+CL_UITEST  = u(5, 0x04)
 
 # Build configurations
-BC_PROJ_DBG = u(6, 0x01)
-BC_PROJ_REL = u(6, 0x02)
-BC_APP_DBG  = u(6, 0x03)
-BC_APP_REL  = u(6, 0x04)
-BC_TEST_DBG = u(6, 0x05)
-BC_TEST_REL = u(6, 0x06)
+BC_PROJ_DBG   = u(6, 0x01)
+BC_PROJ_REL   = u(6, 0x02)
+BC_APP_DBG    = u(6, 0x03)
+BC_APP_REL    = u(6, 0x04)
+BC_TEST_DBG   = u(6, 0x05)
+BC_TEST_REL   = u(6, 0x06)
+BC_UITEST_DBG = u(6, 0x07)
+BC_UITEST_REL = u(6, 0x08)
 
 # Build phases
-BP_APP_SRC  = u(7, 0x01)
-BP_APP_RES  = u(7, 0x02)
-BP_APP_FRM  = u(7, 0x03)
-BP_TEST_SRC = u(7, 0x04)
-BP_TEST_FRM = u(7, 0x05)
+BP_APP_SRC    = u(7, 0x01)
+BP_APP_RES    = u(7, 0x02)
+BP_APP_FRM    = u(7, 0x03)
+BP_TEST_SRC   = u(7, 0x04)
+BP_TEST_FRM   = u(7, 0x05)
+BP_UITEST_SRC = u(7, 0x06)
+BP_UITEST_FRM = u(7, 0x07)
 
 # Dependencies / proxy
-TD_TEST = u(9, 0x01)
-CI_TEST = u(9, 0x02)
+TD_TEST   = u(9, 0x01)
+CI_TEST   = u(9, 0x02)
+TD_UITEST = u(9, 0x03)
+CI_UITEST = u(9, 0x04)
 
 # ── App source files (path relative to RepSetForge/ folder) ──────────────────
 APP_SOURCES = [
@@ -315,6 +326,10 @@ TEST_SOURCES = [
     ("TEST_PersistenceMigration", "RepSetForgeTests/PersistenceMigrationTests.swift"),
 ]
 
+UI_TEST_SOURCES = [
+    ("UITEST_QuestLogging", "RepSetForgeUITests/QuestLoggingUITests.swift"),
+]
+
 def pbxproj():
     lines = []
     a = lines.append
@@ -337,12 +352,22 @@ def pbxproj():
     for key, path in TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    for key, path in UI_TEST_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
     a("\t\t/* End PBXBuildFile section */")
     a("")
 
     # ── PBXContainerItemProxy ───────────────────────────────────────────────
     a("\t\t/* Begin PBXContainerItemProxy section */")
     a(f"\t\t{CI_TEST} /* PBXContainerItemProxy */ = {{")
+    a(f"\t\t\tisa = PBXContainerItemProxy;")
+    a(f"\t\t\tcontainerPortal = {PROJECT} /* Project object */;")
+    a(f"\t\t\tproxyType = 1;")
+    a(f"\t\t\tremoteGlobalIDString = {TG_APP};")
+    a(f"\t\t\tremoteInfo = RepSetForge;")
+    a(f"\t\t}};")
+    a(f"\t\t{CI_UITEST} /* PBXContainerItemProxy */ = {{")
     a(f"\t\t\tisa = PBXContainerItemProxy;")
     a(f"\t\t\tcontainerPortal = {PROJECT} /* Project object */;")
     a(f"\t\t\tproxyType = 1;")
@@ -356,11 +381,15 @@ def pbxproj():
     a("\t\t/* Begin PBXFileReference section */")
     a(f"\t\t{FR['PROD_APP']} /* RepSetForge.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
     a(f"\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
+    a(f"\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
     for key, path in APP_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
     a(f"\t\t{FR['Assets']} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = \"<group>\"; }};")
     for key, path in TEST_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
+    for key, path in UI_TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
     a("\t\t/* End PBXFileReference section */")
@@ -369,6 +398,13 @@ def pbxproj():
     # ── PBXFrameworksBuildPhase ─────────────────────────────────────────────
     a("\t\t/* Begin PBXFrameworksBuildPhase section */")
     a(f"\t\t{BP_APP_FRM} /* Frameworks */ = {{")
+    a(f"\t\t\tisa = PBXFrameworksBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
+    a(f"\t\t{BP_UITEST_FRM} /* Frameworks */ = {{")
     a(f"\t\t\tisa = PBXFrameworksBuildPhase;")
     a(f"\t\t\tbuildActionMask = 2147483647;")
     a(f"\t\t\tfiles = (")
@@ -394,6 +430,7 @@ def pbxproj():
     a(f"\t\t\tchildren = (")
     a(f"\t\t\t\t{GR['RepSetForge']} /* RepSetForge */,")
     a(f"\t\t\t\t{GR['Tests']} /* RepSetForgeTests */,")
+    a(f"\t\t\t\t{GR['UITests']} /* RepSetForgeUITests */,")
     a(f"\t\t\t\t{GR['Products']} /* Products */,")
     a(f"\t\t\t);")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -405,6 +442,7 @@ def pbxproj():
     a(f"\t\t\tchildren = (")
     a(f"\t\t\t\t{FR['PROD_APP']} /* RepSetForge.app */,")
     a(f"\t\t\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */,")
+    a(f"\t\t\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = Products;")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -477,6 +515,18 @@ def pbxproj():
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
+    # UITests group
+    a(f"\t\t{GR['UITests']} /* RepSetForgeUITests */ = {{")
+    a(f"\t\t\tisa = PBXGroup;")
+    a(f"\t\t\tchildren = (")
+    for key, path in UI_TEST_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{FR[key]} /* {filename} */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tpath = RepSetForgeUITests;")
+    a(f"\t\t\tsourceTree = \"<group>\";")
+    a(f"\t\t}};")
+
     a("\t\t/* End PBXGroup section */")
     a("")
 
@@ -516,6 +566,23 @@ def pbxproj():
     a(f"\t\t\tproductReference = {FR['PROD_TEST']} /* RepSetForgeTests.xctest */;")
     a(f"\t\t\tproductType = \"com.apple.product-type.bundle.unit-test\";")
     a(f"\t\t}};")
+    a(f"\t\t{TG_UITEST} /* RepSetForgeUITests */ = {{")
+    a(f"\t\t\tisa = PBXNativeTarget;")
+    a(f"\t\t\tbuildConfigurationList = {CL_UITEST} /* Build configuration list for PBXNativeTarget \"RepSetForgeUITests\" */;")
+    a(f"\t\t\tbuildPhases = (")
+    a(f"\t\t\t\t{BP_UITEST_SRC} /* Sources */,")
+    a(f"\t\t\t\t{BP_UITEST_FRM} /* Frameworks */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tbuildRules = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdependencies = (")
+    a(f"\t\t\t\t{TD_UITEST} /* PBXTargetDependency */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tname = RepSetForgeUITests;")
+    a(f"\t\t\tproductName = RepSetForgeUITests;")
+    a(f"\t\t\tproductReference = {FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */;")
+    a(f"\t\t\tproductType = \"com.apple.product-type.bundle.ui-testing\";")
+    a(f"\t\t}};")
     a("\t\t/* End PBXNativeTarget section */")
     a("")
 
@@ -539,6 +606,12 @@ def pbxproj():
     a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
     a(f"\t\t\t\t\t\tTestTargetID = {TG_APP};")
     a(f"\t\t\t\t\t}};")
+    a(f"\t\t\t\t\t{TG_UITEST} = {{")
+    a(f"\t\t\t\t\t\tCreatedOnToolsVersion = 16.0;")
+    a(f"\t\t\t\t\t\tDevelopmentTeam = 5T5444U7W2;")
+    a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
+    a(f"\t\t\t\t\t\tTestTargetID = {TG_APP};")
+    a(f"\t\t\t\t\t}};")
     a(f"\t\t\t\t}};")
     a(f"\t\t\t}};")
     a(f"\t\t\tbuildConfigurationList = {CL_PROJECT} /* Build configuration list for PBXProject \"RepSetForge\" */;")
@@ -556,6 +629,7 @@ def pbxproj():
     a(f"\t\t\ttargets = (")
     a(f"\t\t\t\t{TG_APP} /* RepSetForge */,")
     a(f"\t\t\t\t{TG_TEST} /* RepSetForgeTests */,")
+    a(f"\t\t\t\t{TG_UITEST} /* RepSetForgeUITests */,")
     a(f"\t\t\t);")
     a(f"\t\t}};")
     a("\t\t/* End PBXProject section */")
@@ -596,6 +670,16 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_UITEST_SRC} /* Sources */ = {{")
+    a(f"\t\t\tisa = PBXSourcesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    for key, path in UI_TEST_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{BF[key]} /* {filename} in Sources */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXSourcesBuildPhase section */")
     a("")
 
@@ -605,6 +689,11 @@ def pbxproj():
     a(f"\t\t\tisa = PBXTargetDependency;")
     a(f"\t\t\ttarget = {TG_APP} /* RepSetForge */;")
     a(f"\t\t\ttargetProxy = {CI_TEST} /* PBXContainerItemProxy */;")
+    a(f"\t\t}};")
+    a(f"\t\t{TD_UITEST} /* PBXTargetDependency */ = {{")
+    a(f"\t\t\tisa = PBXTargetDependency;")
+    a(f"\t\t\ttarget = {TG_APP} /* RepSetForge */;")
+    a(f"\t\t\ttargetProxy = {CI_UITEST} /* PBXContainerItemProxy */;")
     a(f"\t\t}};")
     a("\t\t/* End PBXTargetDependency section */")
     a("")
@@ -747,6 +836,30 @@ def pbxproj():
     test_config(BC_TEST_DBG, "Debug")
     test_config(BC_TEST_REL, "Release")
 
+    def uitest_config(uuid, name):
+        a(f"\t\t{uuid} /* {name} */ = {{")
+        a(f"\t\t\tisa = XCBuildConfiguration;")
+        a(f"\t\t\tbuildSettings = {{")
+        a(f"\t\t\t\tCODE_SIGN_STYLE = Automatic;")
+        a(f"\t\t\t\tDEVELOPMENT_TEAM = 5T5444U7W2;")
+        a(f"\t\t\t\tCURRENT_PROJECT_VERSION = 1;")
+        a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
+        a(f"\t\t\t\tIPHONEOS_DEPLOYMENT_TARGET = 17.0;")
+        a(f"\t\t\t\tMARKETING_VERSION = 1.0;")
+        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeUITests;")
+        a(f"\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
+        a(f"\t\t\t\tSDKROOT = iphoneos;")
+        a(f"\t\t\t\tSUPPORTED_PLATFORMS = \"iphoneos iphonesimulator\";")
+        a(f"\t\t\t\tSWIFT_VERSION = 6.0;")
+        a(f"\t\t\t\tTARGETED_DEVICE_FAMILY = \"1,2\";")
+        a(f"\t\t\t\tTEST_TARGET_NAME = RepSetForge;")
+        a(f"\t\t\t}};")
+        a(f"\t\t\tname = {name};")
+        a(f"\t\t}};")
+
+    uitest_config(BC_UITEST_DBG, "Debug")
+    uitest_config(BC_UITEST_REL, "Release")
+
     a("\t\t/* End XCBuildConfiguration section */")
     a("")
 
@@ -775,6 +888,15 @@ def pbxproj():
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_TEST_DBG} /* Debug */,")
     a(f"\t\t\t\t{BC_TEST_REL} /* Release */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
+    a(f"\t\t\tdefaultConfigurationName = Release;")
+    a(f"\t\t}};")
+    a(f"\t\t{CL_UITEST} /* Build configuration list for PBXNativeTarget \"RepSetForgeUITests\" */ = {{")
+    a(f"\t\t\tisa = XCConfigurationList;")
+    a(f"\t\t\tbuildConfigurations = (")
+    a(f"\t\t\t\t{BC_UITEST_DBG} /* Debug */,")
+    a(f"\t\t\t\t{BC_UITEST_REL} /* Release */,")
     a(f"\t\t\t);")
     a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
     a(f"\t\t\tdefaultConfigurationName = Release;")

@@ -16,9 +16,10 @@ RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP 
 - **Xcode project:** RepSetForge.xcodeproj
 - **App target:** RepSetForge (shared scheme)
 - **Test target:** RepSetForgeTests
+- **UI test target:** RepSetForgeUITests
 - **Entry point:** RepSetForgeApp.swift in RepSetForge/ folder
 - **Swift version:** Swift 6, iOS 17.0+
-- **Stack:** SwiftUI + SwiftData (local-only, no CloudKit for MVP)
+- **Stack:** SwiftUI + SwiftData, CloudKit-backed (private per-user iCloud sync) with automatic local fallback when no iCloud account is available
 
 ## Key Files
 
@@ -78,6 +79,7 @@ Use these names consistently:
 - **Xcode project:** RepSetForge.xcodeproj
 - **App target/product/scheme:** RepSetForge
 - **Test target:** RepSetForgeTests
+- **UI test target:** RepSetForgeUITests
 - **App entry point:** RepSetForgeApp
 
 In UI, refer to:
@@ -152,7 +154,7 @@ Animations should make progress feel rewarding while keeping workout logging fas
 
 ### SwiftData Models
 
-All models use `@Model` and local SwiftData only (no CloudKit for MVP).
+All models use `@Model`, synced via CloudKit-backed SwiftData (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan` in `Persistence/RepSetForgeSchema.swift`). Every attribute must be Optional or have a default value, and to-many relationships must be Optional at the stored-property level specifically (see `Quest.exercises`/`Exercise.sets`'s private-optional-backing pattern) — both are CloudKit requirements, not local-only SwiftData requirements.
 
 **Relationships:**
 - Quest owns Exercises (cascade delete)
@@ -170,6 +172,8 @@ Write unit tests for:
 4. Achievement unlocking (conditions and dates)
 
 Optional: integration tests for end-to-end quest completion flow.
+
+UI tests (RepSetForgeUITests target) cover the core quest logging flow end to end through the real UI (open the current quest, log a set, complete the quest) — launch with `--preview-data --skip-onboarding` for a deterministic starting state. `xcodebuild test` runs both test targets together via the shared scheme.
 
 ## Known TODOs & Limitations
 
