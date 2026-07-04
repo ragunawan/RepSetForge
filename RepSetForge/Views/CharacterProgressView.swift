@@ -17,11 +17,8 @@ struct CharacterProgressView: View {
         }
     }
 
-    private var buildInsight: String? {
-        guard let strongest = sortedMuscles.max(by: { $0.totalXP < $1.totalXP }), strongest.totalXP > 0 else {
-            return nil
-        }
-        return "Your build leans \(strongest.muscleGroup.displayName)-dominant so far."
+    private var trainingStyle: TrainingStyle {
+        TrainingStyleService.style(for: muscles)
     }
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -61,10 +58,24 @@ struct CharacterProgressView: View {
                         .foregroundStyle(Color.questNavy)
                     }
 
-                    if let buildInsight {
-                        Text(buildInsight)
-                            .font(RepSetForgeFont.body(13))
-                            .foregroundStyle(Color.questNavy.opacity(0.7))
+                    if trainingStyle != .freshRecruit {
+                        HStack(spacing: RepSetForgeMetrics.paddingSmall) {
+                            Image(systemName: trainingStyle.iconName)
+                                .font(.system(size: 20))
+                                .foregroundStyle(Color.questNavy)
+                                .frame(width: 32, height: 32)
+                                .background(Color.questGold)
+                                .clipShape(RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadius, style: .circular))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(trainingStyle.displayName)
+                                    .font(RepSetForgeFont.heading(14))
+                                    .foregroundStyle(Color.questNavy)
+                                Text(trainingStyle.detail)
+                                    .font(RepSetForgeFont.body(12))
+                                    .foregroundStyle(Color.questNavy.opacity(0.7))
+                            }
+                            Spacer()
+                        }
                     }
 
                     PixelDivider()
