@@ -4,6 +4,7 @@ import SwiftData
 private enum HistoryDisplayMode: String, CaseIterable {
     case list = "List"
     case calendar = "Calendar"
+    case charts = "Charts"
 }
 
 struct QuestHistoryView: View {
@@ -25,6 +26,10 @@ struct QuestHistoryView: View {
                     ScrollView {
                         QuestCalendarView(quests: completedQuests)
                     }
+                case .charts:
+                    ScrollView {
+                        TrainingChartsView(quests: completedQuests)
+                    }
                 }
             }
             .background(Color.questParchment.ignoresSafeArea())
@@ -37,7 +42,7 @@ struct QuestHistoryView: View {
                         }
                     }
                     .pickerStyle(.segmented)
-                    .frame(width: 180)
+                    .frame(width: 260)
                 }
             }
             .navigationDestination(for: Quest.self) { quest in
