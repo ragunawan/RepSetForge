@@ -6,6 +6,14 @@ import SwiftData
 /// `RPGEquipmentRegistry` stays the static catalog; this is the per-player
 /// state layered on top of it.
 enum RPGEquipmentService {
+    enum PurchaseResult: Equatable {
+        case success
+        case alreadyOwned
+        case insufficientGold
+        case levelLocked
+        case notFound
+    }
+
     /// Grants the class's starter weapon plus the universal starter armor,
     /// owned and equipped. No-ops if the player already owns anything, so
     /// it's safe to call once after onboarding's class selection.
@@ -61,5 +69,26 @@ enum RPGEquipmentService {
             }
         }
         targetRecord.equipped = true
+    }
+
+    /// Buys the given item with gold, gated by class/level and ownership.
+    /// Deducts gold and records ownership (unequipped by default — the
+    /// player still chooses when to swap it in) only on `.success`.
+    @discardableResult
+    static func purchase(_ equipmentID: String, context: ModelContext) -> PurchaseResult {
+        guard let equipment = RPGEquipmentRegistry.equipment(id: equipmentID) else { return .notFound }
+        guard let character = try? context.fetch(FetchDescriptor<PlayerCharacter>()).first else { return .notFound }
+        let rpgClass = (try? context.fetch(FetchDescriptor<RPGEncounterState>()))?.first?.rpgClass ?? .knight
+
+        guard equipment.isUsable(by: rpgClass, atLevel: character.level) else { return .levelLocked }
+
+        let owned = (try? context.fetch(FetchDescriptor<OwnedEquipment>())) ?? []
+        guard !owned.contains(where: { $0.equipmentID == equipmentID && $0.owned }) else { return .alreadyOwned }
+
+        guard character.gold >= equipment.price else { return .insufficientGold }
+
+        character.gold -= equipment.price
+        context.insert(OwnedEquipment(equipmentID: equipmentID, owned: true, equipped: false, purchaseSource: "shop"))
+        return .success
     }
 }

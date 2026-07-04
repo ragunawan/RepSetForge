@@ -95,6 +95,7 @@ FR = {
     "OwnedEquipment":          u(1, 0x4E),
     "RPGEquipmentService":     u(1, 0x4F),
     "TEST_RPGEquipment":       u(1, 0x50),
+    "EquipmentShopView":       u(1, 0x51),
 }
 
 # Build files
@@ -171,6 +172,7 @@ APP_SOURCES = [
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
+    ("EquipmentShopView",     "Views/EquipmentShopView.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
     ("QuestListView",         "Views/QuestListView.swift"),
     ("QuestDetailView",       "Views/QuestDetailView.swift"),
@@ -361,7 +363,7 @@ def pbxproj():
     a(f"\t\t{GR['Views']} /* Views */ = {{")
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
-    for key in ["OnboardingView", "QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
+    for key in ["OnboardingView", "EquipmentShopView", "QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
                 "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView"]:
         filename = dict(APP_SOURCES)[key].split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")
