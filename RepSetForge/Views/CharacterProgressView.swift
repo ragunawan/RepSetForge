@@ -35,7 +35,13 @@ struct CharacterProgressView: View {
         RecoveryRecommendationService.recommendation(from: allQuests)
     }
 
-    private let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    /// Denser dashboard on iPad (regular width): more columns so the same
+    /// grids show more at once instead of just stretching wider.
+    private var columns: [GridItem] {
+        Array(repeating: GridItem(.flexible()), count: horizontalSizeClass == .regular ? 4 : 2)
+    }
 
     @State private var showingSettings = false
 

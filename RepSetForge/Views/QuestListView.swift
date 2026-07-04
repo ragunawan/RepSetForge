@@ -7,7 +7,7 @@ struct QuestListView: View {
     @Query(sort: \QuestTemplate.name) private var questTemplates: [QuestTemplate]
     @Query private var characters: [PlayerCharacter]
 
-    @State private var newQuest: Quest?
+    @State private var selectedQuest: Quest?
     @State private var showingManageQuestTemplates = false
     @State private var showingScheduleQuest = false
     @State private var showingFilters = false
@@ -24,56 +24,66 @@ struct QuestListView: View {
         filterCriteria.isActive ? QuestFilterService.filter(allQuests, criteria: filterCriteria) : quests
     }
 
+    /// `NavigationSplitView` adapts on its own: a single push-navigation
+    /// stack on compact width (iPhone, unchanged from before), a persistent
+    /// sidebar + detail pane on regular width (iPad) — "side-by-side quest
+    /// editing" comes for free rather than needing a separate branch per
+    /// size class.
     var body: some View {
-        List {
-            ForEach(displayedQuests) { quest in
-                NavigationLink(value: quest) {
+        NavigationSplitView {
+            List(selection: $selectedQuest) {
+                ForEach(displayedQuests) { quest in
                     PixelQuestCard(quest: quest)
+                        .tag(quest)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                 }
-                .listRowSeparator(.hidden)
-                .listRowBackground(Color.clear)
+                .onDelete(perform: deleteQuests)
             }
-            .onDelete(perform: deleteQuests)
-        }
-        .listStyle(.plain)
-        .background(Color.questParchment.ignoresSafeArea())
-        .scrollContentBackground(.hidden)
-        .navigationTitle("All Quests")
-        .searchable(text: $filterCriteria.searchText, prompt: "Search quests or skills")
-        .navigationDestination(for: Quest.self) { quest in
-            QuestDetailView(quest: quest)
-        }
-        .navigationDestination(item: $newQuest) { quest in
-            QuestDetailView(quest: quest)
-        }
-        .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                newQuestMenu
-            }
-            ToolbarItem(placement: .secondaryAction) {
-                Button {
-                    showingFilters = true
-                } label: {
-                    Label("Filters", systemImage: filterCriteria.isActive ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+            .listStyle(.plain)
+            .background(Color.questParchment.ignoresSafeArea())
+            .scrollContentBackground(.hidden)
+            .navigationTitle("All Quests")
+            .searchable(text: $filterCriteria.searchText, prompt: "Search quests or skills")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    newQuestMenu
+                }
+                ToolbarItem(placement: .secondaryAction) {
+                    Button {
+                        showingFilters = true
+                    } label: {
+                        Label("Filters", systemImage: filterCriteria.isActive ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                    }
                 }
             }
-        }
-        .sheet(isPresented: $showingManageQuestTemplates) {
-            ManageQuestTemplatesSheet()
-        }
-        .sheet(isPresented: $showingScheduleQuest) {
-            ScheduleQuestSheet(weightUnit: preferredWeightUnit) { quest in
-                newQuest = quest
+            .sheet(isPresented: $showingManageQuestTemplates) {
+                ManageQuestTemplatesSheet()
             }
-        }
-        .sheet(isPresented: $showingFilters) {
-            QuestFilterSheet(criteria: $filterCriteria)
-        }
-        .overlay {
-            if displayedQuests.isEmpty {
-                Text(filterCriteria.isActive ? "No quests match your filters." : "No quests yet. Tap + to start one.")
-                    .font(RepSetForgeFont.body())
-                    .foregroundStyle(Color.questNavy.opacity(0.6))
+            .sheet(isPresented: $showingScheduleQuest) {
+                ScheduleQuestSheet(weightUnit: preferredWeightUnit) { quest in
+                    selectedQuest = quest
+                }
+            }
+            .sheet(isPresented: $showingFilters) {
+                QuestFilterSheet(criteria: $filterCriteria)
+            }
+            .overlay {
+                if displayedQuests.isEmpty {
+                    Text(filterCriteria.isActive ? "No quests match your filters." : "No quests yet. Tap + to start one.")
+                        .font(RepSetForgeFont.body())
+                        .foregroundStyle(Color.questNavy.opacity(0.6))
+                }
+            }
+        } detail: {
+            if let selectedQuest {
+                QuestDetailView(quest: selectedQuest)
+            } else {
+                ContentUnavailableView(
+                    "Select a Quest",
+                    systemImage: "list.bullet.clipboard",
+                    description: Text("Choose a quest from the list to view or edit it.")
+                )
             }
         }
     }
@@ -113,13 +123,13 @@ struct QuestListView: View {
     private func startBlankQuest() {
         let quest = Quest(name: "New Quest", status: .active)
         modelContext.insert(quest)
-        newQuest = quest
+        selectedQuest = quest
     }
 
     private func startQuest(from template: QuestTemplate) {
         let quest = QuestTemplateService.makeQuest(from: template, unit: preferredWeightUnit)
         modelContext.insert(quest)
-        newQuest = quest
+        selectedQuest = quest
     }
 
     private func deleteQuests(at offsets: IndexSet) {
