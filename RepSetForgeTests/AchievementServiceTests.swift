@@ -130,6 +130,110 @@ final class AchievementServiceTests: XCTestCase {
         XCTAssertFalse(unlocked.contains { $0.key == "thirty_day_streak" })
     }
 
+    func testTenQuestsUnlocksAtExactlyTenCompletedQuests() {
+        let character = PlayerCharacter(completedQuestCount: 10)
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertTrue(unlocked.contains { $0.key == "ten_quests" })
+    }
+
+    func testTenQuestsDoesNotUnlockBelowThreshold() {
+        let character = PlayerCharacter(completedQuestCount: 9)
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertFalse(unlocked.contains { $0.key == "ten_quests" })
+    }
+
+    func testLevel10UnlocksAtExactlyLevel10() {
+        let character = PlayerCharacter(level: 10)
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertTrue(unlocked.contains { $0.key == "level_10" })
+        XCTAssertTrue(unlocked.contains { $0.key == "first_level_up" }) // level 2 threshold also crossed
+    }
+
+    func testLevel10DoesNotUnlockBelowThreshold() {
+        let character = PlayerCharacter(level: 9)
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertFalse(unlocked.contains { $0.key == "level_10" })
+    }
+
+    func testHundredSetsUnlocksAtExactlyOneHundredCompletedSets() throws {
+        let character = PlayerCharacter()
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+        let quest = Quest(name: "Endurance Day", status: .completed)
+        let exercise = Exercise(name: "Push-ups", primaryMuscle: .chest)
+        exercise.sets = (1...100).map { ExerciseSet(setNumber: $0, reps: 1, weight: 0, completed: true) }
+        quest.exercises = [exercise]
+        context.insert(quest)
+        try context.save()
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertTrue(unlocked.contains { $0.key == "hundred_sets" })
+    }
+
+    func testHundredSetsDoesNotCountIncompleteSets() throws {
+        let character = PlayerCharacter()
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+        let quest = Quest(name: "Endurance Day", status: .completed)
+        let exercise = Exercise(name: "Push-ups", primaryMuscle: .chest)
+        exercise.sets = (1...100).map { ExerciseSet(setNumber: $0, reps: 1, weight: 0, completed: $0 <= 99) }
+        quest.exercises = [exercise]
+        context.insert(quest)
+        try context.save()
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertFalse(unlocked.contains { $0.key == "hundred_sets" })
+    }
+
+    func testStreakAchievementUnlockDateDoesNotChangeOnceUnlocked() throws {
+        let character = PlayerCharacter(completedQuestCount: 1)
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+
+        let firstCallDate = Date(timeIntervalSince1970: 1_000_000)
+        AchievementService.checkAchievements(character: character, muscles: muscles, context: context, at: firstCallDate)
+        let afterFirst = try XCTUnwrap(try context.fetch(FetchDescriptor<Achievement>()).first { $0.key == "first_quest" })
+        XCTAssertEqual(afterFirst.unlockedDate, firstCallDate)
+
+        // A second pass, days later, must not overwrite the original unlock date.
+        let laterDate = Date(timeIntervalSince1970: 2_000_000)
+        AchievementService.checkAchievements(character: character, muscles: muscles, context: context, at: laterDate)
+        let afterSecond = try XCTUnwrap(try context.fetch(FetchDescriptor<Achievement>()).first { $0.key == "first_quest" })
+        XCTAssertEqual(afterSecond.unlockedDate, firstCallDate)
+    }
+
+    func testBrokenStreakOnlyCountsTheRunEndingAtTheMostRecentDay() throws {
+        let character = PlayerCharacter()
+        let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }
+        let calendar = Calendar.current
+        // 3 consecutive days long ago (days 10-12 back), a gap, then 3 more
+        // consecutive days ending today. Combined that's 6 quest-days, but no
+        // single unbroken run reaches 7 — only the most-recent 3-day run
+        // should count, and 7-day must NOT unlock despite 6 total quests.
+        for offset in [0, 1, 2, 10, 11, 12] {
+            let quest = Quest(name: "Day \(offset)", status: .completed)
+            quest.completedDate = calendar.date(byAdding: .day, value: -offset, to: .now)
+            context.insert(quest)
+        }
+        try context.save()
+
+        let unlocked = AchievementService.checkAchievements(character: character, muscles: muscles, context: context)
+
+        XCTAssertTrue(unlocked.contains { $0.key == "three_day_streak" })
+        XCTAssertFalse(unlocked.contains { $0.key == "seven_day_streak" })
+    }
+
     func testTenWorkoutDaysCountsDistinctDaysNotConsecutiveness() throws {
         let character = PlayerCharacter()
         let muscles = MuscleGroup.allCases.map { MuscleProgress(muscleGroup: $0) }

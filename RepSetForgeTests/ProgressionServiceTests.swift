@@ -100,6 +100,22 @@ final class ProgressionServiceTests: XCTestCase {
         XCTAssertEqual(character.title, "Iron Trainee")
     }
 
+    func testLevelUpCascadesMultipleLevelsInOneCall() {
+        // Level 1 needs 100 XP, level 2 needs 200, level 3 needs 300 — 650 XP
+        // should cross all three thresholds in a single call, not just the first.
+        let character = PlayerCharacter(level: 1, currentXP: 650)
+        ProgressionService.levelUpIfNeeded(character: character)
+        XCTAssertEqual(character.level, 4)
+        XCTAssertEqual(character.currentXP, 50) // 650 - 100 - 200 - 300
+    }
+
+    func testMuscleLevelUpCascadesMultipleLevelsInOneCall() {
+        let muscle = MuscleProgress(muscleGroup: .chest, level: 1, currentXP: 650)
+        ProgressionService.levelUpIfNeeded(muscle: muscle)
+        XCTAssertEqual(muscle.level, 4)
+        XCTAssertEqual(muscle.currentXP, 50)
+    }
+
     // MARK: muscle distribution
 
     func testMuscleGroupXPDistribution() {
@@ -125,5 +141,46 @@ final class ProgressionServiceTests: XCTestCase {
         XCTAssertNil(result.muscleXP[.legs])
         XCTAssertEqual(character.totalXP, questXP)
         XCTAssertEqual(legs.currentXP, 0)
+    }
+
+    func testDistributeXPReportsCharacterLevelUpInResult() {
+        let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        exercise.sets = [ExerciseSet(setNumber: 1, reps: 50, weight: 200, completed: true)] // well over 100 XP
+        let character = PlayerCharacter(level: 1, currentXP: 90)
+        let chest = MuscleProgress(muscleGroup: .chest)
+
+        let questXP = ProgressionService.questXP(exercises: [exercise])
+        let result = ProgressionService.distributeXP(questXP: questXP, exercises: [exercise], to: character, and: [chest])
+
+        XCTAssertTrue(result.characterLevelUp.didLevelUp)
+        XCTAssertEqual(result.characterLevelUp.oldLevel, 1)
+        XCTAssertEqual(result.characterLevelUp.newLevel, character.level)
+    }
+
+    func testDistributeXPReportsMuscleLevelUpsInResult() throws {
+        let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        exercise.sets = [ExerciseSet(setNumber: 1, reps: 50, weight: 200, completed: true)]
+        let character = PlayerCharacter()
+        let chest = MuscleProgress(muscleGroup: .chest, level: 1, currentXP: 90)
+
+        let questXP = ProgressionService.questXP(exercises: [exercise])
+        let result = ProgressionService.distributeXP(questXP: questXP, exercises: [exercise], to: character, and: [chest])
+
+        let chestLevelUp = try XCTUnwrap(result.muscleLevelUps[.chest])
+        XCTAssertTrue(chestLevelUp.didLevelUp)
+        XCTAssertEqual(chest.level, 2)
+    }
+
+    func testDistributeXPResultReportsNoLevelUpWhenThresholdNotReached() {
+        let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        exercise.sets = [ExerciseSet(setNumber: 1, reps: 1, weight: 0, completed: true)] // tiny XP
+        let character = PlayerCharacter()
+        let chest = MuscleProgress(muscleGroup: .chest)
+
+        let questXP = ProgressionService.questXP(exercises: [exercise])
+        let result = ProgressionService.distributeXP(questXP: questXP, exercises: [exercise], to: character, and: [chest])
+
+        XCTAssertFalse(result.characterLevelUp.didLevelUp)
+        XCTAssertNil(result.muscleLevelUps[.chest])
     }
 }

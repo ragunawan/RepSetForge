@@ -117,6 +117,45 @@ final class ProgressionRebuildServiceTests: XCTestCase {
         XCTAssertEqual(character.totalXP, expectedXP)
     }
 
+    func testRebuildCascadesMultipleCharacterLevelUpsInOneReplay() throws {
+        // Each quest is worth well over 100 XP; replaying all of them in one
+        // rebuild pass should cross several level thresholds at once, not
+        // just the first one reached during the loop.
+        for day in 0..<5 {
+            _ = completedQuest(name: "Day \(day)", reps: 50, weight: 200, daysAgo: day)
+        }
+        try context.save()
+
+        ProgressionRebuildService.rebuild(context: context)
+
+        let perQuestXP = ProgressionService.setXP(reps: 50, weight: 200)
+        let expectedTotalXP = perQuestXP * 5
+        XCTAssertEqual(character.totalXP, expectedTotalXP)
+        XCTAssertGreaterThan(character.level, 2) // crossed multiple 100/200/300... thresholds
+    }
+
+    func testEditingCompletedQuestByRemovingAnExerciseExcludesItFromRebuild() throws {
+        let quest = completedQuest(name: "Push Day", reps: 5, weight: 185, daysAgo: 0)
+        let secondExercise = Exercise(name: "Overhead Press", primaryMuscle: .shoulders)
+        secondExercise.sets = [ExerciseSet(setNumber: 1, reps: 5, weight: 95, completed: true)]
+        quest.exercises.append(secondExercise)
+        try context.save()
+
+        // Confirm both exercises count before the edit.
+        ProgressionRebuildService.rebuild(context: context)
+        let benchXP = ProgressionService.setXP(reps: 5, weight: 185)
+        let pressXP = ProgressionService.setXP(reps: 5, weight: 95)
+        XCTAssertEqual(character.totalXP, benchXP + pressXP)
+
+        // Remove the second exercise entirely, mirroring an in-place edit of a completed quest.
+        quest.exercises.removeAll { $0.name == "Overhead Press" }
+        ProgressionRebuildService.rebuild(context: context)
+
+        XCTAssertEqual(character.totalXP, benchXP)
+        let shoulders = try XCTUnwrap(muscles.first { $0.muscleGroup == .shoulders })
+        XCTAssertEqual(shoulders.totalXP, 0)
+    }
+
     func testRebuildAwardsGoldMatchingGoldServiceFormula() throws {
         _ = completedQuest(name: "Push Day", reps: 5, weight: 185, daysAgo: 0)
         try context.save()
