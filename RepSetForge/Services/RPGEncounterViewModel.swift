@@ -141,14 +141,21 @@ final class RPGEncounterViewModel {
     /// Called by the view whenever SwiftData state changes (level-ups, quest
     /// completions). Safe to call repeatedly; boss activation happens here so
     /// a milestone level reached mid-fight is picked up on the next beat.
-    func configure(snapshot: RPGProgressionSnapshot, state: RPGEncounterState?) {
+    /// `equippedLoadout` is resolved by the caller from persisted
+    /// `OwnedEquipment` (via `RPGEquipmentService.equippedLoadout`), since gear
+    /// is now earned rather than always auto-available.
+    func configure(
+        snapshot: RPGProgressionSnapshot,
+        state: RPGEncounterState?,
+        equippedLoadout: [RPGEquipmentSlot: RPGEquipment] = [:]
+    ) {
         self.snapshot = snapshot
         self.state = state
         if let state {
             playerClass = state.rpgClass
             BossMilestoneService.activateBossIfNeeded(state: state, snapshot: snapshot)
         }
-        equippedLoadout = RPGEquipmentRegistry.loadout(for: playerClass, atLevel: snapshot.currentLevel)
+        self.equippedLoadout = equippedLoadout
     }
 
     var loadout: [RPGEquipmentSlot: RPGEquipment] { equippedLoadout }

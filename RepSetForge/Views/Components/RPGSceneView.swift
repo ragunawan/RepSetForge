@@ -12,8 +12,13 @@ struct RPGSceneView: View {
     @Query private var characters: [PlayerCharacter]
     @Query(filter: #Predicate<Quest> { $0.completedDate != nil }) private var completedQuests: [Quest]
     @Query private var encounterStates: [RPGEncounterState]
+    @Query private var ownedEquipment: [OwnedEquipment]
 
     @State private var viewModel = RPGEncounterViewModel()
+
+    private var equippedLoadout: [RPGEquipmentSlot: RPGEquipment] {
+        RPGEquipmentService.equippedLoadout(from: ownedEquipment)
+    }
 
     private var snapshot: RPGProgressionSnapshot {
         guard let character = characters.first else { return RPGProgressionSnapshot() }
@@ -51,12 +56,12 @@ struct RPGSceneView: View {
         }
         .pixelPanel(fill: .questNavy, border: .questGold)
         .onAppear {
-            viewModel.configure(snapshot: snapshot, state: encounterStates.first)
+            viewModel.configure(snapshot: snapshot, state: encounterStates.first, equippedLoadout: equippedLoadout)
             viewModel.start()
         }
         .onDisappear { viewModel.stop() }
         .onChange(of: snapshot) { _, newValue in
-            viewModel.configure(snapshot: newValue, state: encounterStates.first)
+            viewModel.configure(snapshot: newValue, state: encounterStates.first, equippedLoadout: equippedLoadout)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {

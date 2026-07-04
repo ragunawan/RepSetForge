@@ -20,7 +20,8 @@ final class PersistenceController {
         MuscleProgress.self,
         Achievement.self,
         PersonalRecord.self,
-        RPGEncounterState.self
+        RPGEncounterState.self,
+        OwnedEquipment.self
     ])
 
     private init(inMemory: Bool = false) {

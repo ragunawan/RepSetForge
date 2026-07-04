@@ -107,6 +107,7 @@ struct OnboardingView: View {
         if let encounterState = encounterStates.first {
             encounterState.rpgClass = selectedClass
         }
+        RPGEquipmentService.seedStarterGear(for: selectedClass, context: modelContext)
         try? modelContext.save()
     }
 }

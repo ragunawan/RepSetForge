@@ -53,6 +53,7 @@
 		AA020000000000000000001E /* QuestCompletionRewardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001E /* QuestCompletionRewardRow.swift */; };
 		AA0200000000000000000025 /* RPGClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* RPGClass.swift */; };
 		AA0200000000000000000026 /* RPGEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPGEquipment.swift */; };
+		AA020000000000000000004E /* OwnedEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004E /* OwnedEquipment.swift */; };
 		AA0200000000000000000027 /* RPGSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* RPGSkill.swift */; };
 		AA0200000000000000000028 /* RPGMonster.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000028 /* RPGMonster.swift */; };
 		AA0200000000000000000029 /* RPGBoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000029 /* RPGBoss.swift */; };
@@ -61,6 +62,7 @@
 		AA020000000000000000002C /* RPGMonsterRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* RPGMonsterRegistry.swift */; };
 		AA020000000000000000002D /* RPGBossRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002D /* RPGBossRegistry.swift */; };
 		AA020000000000000000002E /* RPGEquipmentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002E /* RPGEquipmentRegistry.swift */; };
+		AA020000000000000000004F /* RPGEquipmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004F /* RPGEquipmentService.swift */; };
 		AA020000000000000000002F /* RPGSkillRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002F /* RPGSkillRegistry.swift */; };
 		AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000030 /* MonsterSpawnService.swift */; };
 		AA0200000000000000000031 /* BossMilestoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000031 /* BossMilestoneService.swift */; };
@@ -82,6 +84,7 @@
 		AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000048 /* PersonalRecordServiceTests.swift */; };
 		AA020000000000000000004A /* WeightUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004A /* WeightUnitTests.swift */; };
 		AA020000000000000000004D /* GoldServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004D /* GoldServiceTests.swift */; };
+		AA0200000000000000000050 /* RPGEquipmentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -143,6 +146,7 @@
 		AA010000000000000000001E /* QuestCompletionRewardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCompletionRewardRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* RPGClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGClass.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPGEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipment.swift; sourceTree = "<group>"; };
+		AA010000000000000000004E /* OwnedEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedEquipment.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* RPGSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSkill.swift; sourceTree = "<group>"; };
 		AA0100000000000000000028 /* RPGMonster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGMonster.swift; sourceTree = "<group>"; };
 		AA0100000000000000000029 /* RPGBoss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGBoss.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		AA010000000000000000002C /* RPGMonsterRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGMonsterRegistry.swift; sourceTree = "<group>"; };
 		AA010000000000000000002D /* RPGBossRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGBossRegistry.swift; sourceTree = "<group>"; };
 		AA010000000000000000002E /* RPGEquipmentRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentRegistry.swift; sourceTree = "<group>"; };
+		AA010000000000000000004F /* RPGEquipmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentService.swift; sourceTree = "<group>"; };
 		AA010000000000000000002F /* RPGSkillRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSkillRegistry.swift; sourceTree = "<group>"; };
 		AA0100000000000000000030 /* MonsterSpawnService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterSpawnService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000031 /* BossMilestoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BossMilestoneService.swift; sourceTree = "<group>"; };
@@ -172,6 +177,7 @@
 		AA0100000000000000000048 /* PersonalRecordServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000004A /* WeightUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnitTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000004D /* GoldServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +250,7 @@
 				AA0100000000000000000046 /* PersonalRecord.swift */,
 				AA0100000000000000000025 /* RPGClass.swift */,
 				AA0100000000000000000026 /* RPGEquipment.swift */,
+				AA010000000000000000004E /* OwnedEquipment.swift */,
 				AA0100000000000000000027 /* RPGSkill.swift */,
 				AA0100000000000000000028 /* RPGMonster.swift */,
 				AA0100000000000000000029 /* RPGBoss.swift */,
@@ -268,6 +275,7 @@
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
+				AA010000000000000000004F /* RPGEquipmentService.swift */,
 				AA010000000000000000002F /* RPGSkillRegistry.swift */,
 				AA0100000000000000000030 /* MonsterSpawnService.swift */,
 				AA0100000000000000000031 /* BossMilestoneService.swift */,
@@ -335,6 +343,7 @@
 				AA0100000000000000000048 /* PersonalRecordServiceTests.swift */,
 				AA010000000000000000004A /* WeightUnitTests.swift */,
 				AA010000000000000000004D /* GoldServiceTests.swift */,
+				AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -480,6 +489,7 @@
 				AA020000000000000000001E /* QuestCompletionRewardRow.swift in Sources */,
 				AA0200000000000000000025 /* RPGClass.swift in Sources */,
 				AA0200000000000000000026 /* RPGEquipment.swift in Sources */,
+				AA020000000000000000004E /* OwnedEquipment.swift in Sources */,
 				AA0200000000000000000027 /* RPGSkill.swift in Sources */,
 				AA0200000000000000000028 /* RPGMonster.swift in Sources */,
 				AA0200000000000000000029 /* RPGBoss.swift in Sources */,
@@ -488,6 +498,7 @@
 				AA020000000000000000002C /* RPGMonsterRegistry.swift in Sources */,
 				AA020000000000000000002D /* RPGBossRegistry.swift in Sources */,
 				AA020000000000000000002E /* RPGEquipmentRegistry.swift in Sources */,
+				AA020000000000000000004F /* RPGEquipmentService.swift in Sources */,
 				AA020000000000000000002F /* RPGSkillRegistry.swift in Sources */,
 				AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */,
 				AA0200000000000000000031 /* BossMilestoneService.swift in Sources */,
@@ -515,6 +526,7 @@
 				AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */,
 				AA020000000000000000004A /* WeightUnitTests.swift in Sources */,
 				AA020000000000000000004D /* GoldServiceTests.swift in Sources */,
+				AA0200000000000000000050 /* RPGEquipmentServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
