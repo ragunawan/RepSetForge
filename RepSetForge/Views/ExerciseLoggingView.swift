@@ -8,6 +8,7 @@ struct ExerciseLoggingView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var characters: [PlayerCharacter]
     @State private var restSecondsRemaining: Int?
+    @State private var showingMetrics = false
 
     private var sortedSets: [ExerciseSet] {
         exercise.sets.sorted(by: { $0.setNumber < $1.setNumber })
@@ -24,6 +25,20 @@ struct ExerciseLoggingView: View {
             setsSection
         }
         .navigationTitle(exercise.name)
+        .toolbar {
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    showingMetrics = true
+                } label: {
+                    Label("History", systemImage: "chart.xyaxis.line")
+                }
+            }
+        }
+        .sheet(isPresented: $showingMetrics) {
+            NavigationStack {
+                ExerciseMetricsView(exerciseName: exercise.name)
+            }
+        }
         .onReceive(Timer.publish(every: 1, on: .main, in: .common).autoconnect()) { _ in
             guard let remaining = restSecondsRemaining else { return }
             restSecondsRemaining = remaining > 1 ? remaining - 1 : nil

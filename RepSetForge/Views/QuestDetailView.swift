@@ -238,6 +238,8 @@ private struct AddExerciseSheet: View {
     @State private var defaultDurationSeconds = 60
     @State private var saveAsTemplate = false
     @State private var showingManageTemplates = false
+    @State private var showingMetrics = false
+    @State private var metricsExerciseName = ""
 
     var body: some View {
         NavigationStack {
@@ -263,6 +265,11 @@ private struct AddExerciseSheet: View {
             }
             .sheet(isPresented: $showingManageTemplates) {
                 ManageTemplatesSheet()
+            }
+            .sheet(isPresented: $showingMetrics) {
+                NavigationStack {
+                    ExerciseMetricsView(exerciseName: metricsExerciseName)
+                }
             }
         }
     }
@@ -295,9 +302,17 @@ private struct AddExerciseSheet: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: RepSetForgeMetrics.paddingSmall) {
                         ForEach(nameSuggestions, id: \.self) { suggestion in
-                            Button(suggestion) { name = suggestion }
-                                .font(RepSetForgeFont.body(12))
-                                .buttonStyle(.bordered)
+                            HStack(spacing: 4) {
+                                Button(suggestion) { name = suggestion }
+                                Button {
+                                    metricsExerciseName = suggestion
+                                    showingMetrics = true
+                                } label: {
+                                    Image(systemName: "chart.xyaxis.line")
+                                }
+                            }
+                            .font(RepSetForgeFont.body(12))
+                            .buttonStyle(.bordered)
                         }
                     }
                 }
