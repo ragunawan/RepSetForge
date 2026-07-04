@@ -3,8 +3,8 @@ import SwiftData
 
 /// Recomputes all derived progression — character level/XP/gold, muscle
 /// levels/XP, completed-quest count, achievement unlocks, personal records,
-/// and skill XP — from scratch by replaying completed-quest history in
-/// chronological order.
+/// skill XP, and equipment drops — from scratch by replaying completed-quest
+/// history in chronological order.
 ///
 /// Used whenever completed-quest history changes after the fact (undoing a
 /// completion, or editing a completed quest's sets), instead of patching old
@@ -23,7 +23,9 @@ enum ProgressionRebuildService {
         character.totalXP = 0
         character.completedQuestCount = 0
         character.gold = 0
+        character.totalPRCount = 0
         character.title = ProgressionService.title(for: character.level)
+        let rpgClass = (try? context.fetch(FetchDescriptor<RPGEncounterState>()))?.first?.rpgClass ?? .knight
 
         for muscle in muscles {
             muscle.level = 1
@@ -47,6 +49,11 @@ enum ProgressionRebuildService {
             skillProgress.unlockedDate = nil
         }
 
+        let dropSources = Set([EquipmentDropService.questDropSource, EquipmentDropService.prDropSource])
+        for owned in (try? context.fetch(FetchDescriptor<OwnedEquipment>())) ?? [] where dropSources.contains(owned.purchaseSource) {
+            context.delete(owned)
+        }
+
         let completedRaw = QuestStatus.completed.rawValue
         let completedPredicate = #Predicate<Quest> { $0.statusRaw == completedRaw }
         let completedQuests = ((try? context.fetch(FetchDescriptor(predicate: completedPredicate))) ?? [])
@@ -68,6 +75,20 @@ enum ProgressionRebuildService {
                 prExerciseNames: Set(newRecords.map(\.exerciseName)),
                 context: context,
                 at: quest.completedDate ?? .now
+            )
+
+            character.totalPRCount += newRecords.count
+            EquipmentDropService.checkQuestMilestone(
+                completedQuestCount: character.completedQuestCount,
+                rpgClass: rpgClass,
+                context: context,
+                acquiredDate: quest.completedDate ?? .now
+            )
+            EquipmentDropService.checkPRMilestone(
+                totalPRCount: character.totalPRCount,
+                rpgClass: rpgClass,
+                context: context,
+                acquiredDate: quest.completedDate ?? .now
             )
         }
 

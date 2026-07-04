@@ -19,6 +19,11 @@ final class PlayerCharacter {
     /// Currency earned from completed sets, quests, and personal records.
     /// Spendable once the Equipment/Shop screen exists.
     var gold: Int = 0
+    /// Cumulative count of personal-record events (new or re-broken), used to
+    /// gate PR equipment-drop milestones. Not the same as the number of
+    /// distinct `PersonalRecord` rows, since re-breaking an existing record
+    /// counts again here but doesn't add a new row.
+    var totalPRCount: Int = 0
 
     init(
         level: Int = 1,
@@ -29,7 +34,8 @@ final class PlayerCharacter {
         createdDate: Date = .now,
         preferredWeightUnit: WeightUnit = .pounds,
         hasCompletedOnboarding: Bool = false,
-        gold: Int = 0
+        gold: Int = 0,
+        totalPRCount: Int = 0
     ) {
         self.level = level
         self.currentXP = currentXP
@@ -40,6 +46,7 @@ final class PlayerCharacter {
         self.preferredWeightUnitRaw = preferredWeightUnit.rawValue
         self.hasCompletedOnboarding = hasCompletedOnboarding
         self.gold = gold
+        self.totalPRCount = totalPRCount
     }
 
     /// XP required to advance from the current level to the next.

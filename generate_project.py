@@ -99,6 +99,8 @@ FR = {
     "SkillProgress":           u(1, 0x52),
     "SkillProgressionService": u(1, 0x53),
     "TEST_SkillProgression":   u(1, 0x54),
+    "EquipmentDropService":    u(1, 0x55),
+    "TEST_EquipmentDrop":      u(1, 0x56),
 }
 
 # Build files
@@ -207,6 +209,7 @@ APP_SOURCES = [
     ("RPGEquipmentService",   "Services/RPGEquipmentService.swift"),
     ("RPGSkillRegistry",      "Services/RPGSkillRegistry.swift"),
     ("SkillProgressionService", "Services/SkillProgressionService.swift"),
+    ("EquipmentDropService",  "Services/EquipmentDropService.swift"),
     ("MonsterSpawnService",   "Services/MonsterSpawnService.swift"),
     ("BossMilestoneService",  "Services/BossMilestoneService.swift"),
     ("RPGEncounterViewModel", "Services/RPGEncounterViewModel.swift"),
@@ -231,6 +234,7 @@ TEST_SOURCES = [
     ("TEST_GoldService", "RepSetForgeTests/GoldServiceTests.swift"),
     ("TEST_RPGEquipment", "RepSetForgeTests/RPGEquipmentServiceTests.swift"),
     ("TEST_SkillProgression", "RepSetForgeTests/SkillProgressionServiceTests.swift"),
+    ("TEST_EquipmentDrop", "RepSetForgeTests/EquipmentDropServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -361,7 +365,7 @@ def pbxproj():
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
     simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService",
-                                           "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService",
+                                           "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
 

@@ -7,6 +7,7 @@ struct QuestDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var characters: [PlayerCharacter]
     @Query private var muscles: [MuscleProgress]
+    @Query private var encounterStates: [RPGEncounterState]
 
     @State private var showingAddExercise = false
     @State private var showingSaveAsTemplate = false
@@ -170,6 +171,16 @@ struct QuestDetailView: View {
             context: modelContext
         )
 
+        character.totalPRCount += newRecords.count
+        let rpgClass = encounterStates.first?.rpgClass ?? .knight
+        var equipmentDrops: [EquipmentDropService.DropResult] = []
+        if let drop = EquipmentDropService.checkQuestMilestone(completedQuestCount: character.completedQuestCount, rpgClass: rpgClass, context: modelContext) {
+            equipmentDrops.append(drop)
+        }
+        if let drop = EquipmentDropService.checkPRMilestone(totalPRCount: character.totalPRCount, rpgClass: rpgClass, context: modelContext) {
+            equipmentDrops.append(drop)
+        }
+
         try? modelContext.save()
 
         completionSummary = QuestCompletionSummary(
@@ -177,7 +188,8 @@ struct QuestDetailView: View {
             distribution: distribution,
             unlockedAchievements: unlocked,
             newRecords: newRecords,
-            goldEarned: earnedGold
+            goldEarned: earnedGold,
+            equipmentDrops: equipmentDrops
         )
     }
 

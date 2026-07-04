@@ -8,6 +8,7 @@ struct QuestCompletionSummary: Identifiable {
     let unlockedAchievements: [Achievement]
     let newRecords: [PersonalRecordService.Update]
     let goldEarned: Int
+    let equipmentDrops: [EquipmentDropService.DropResult]
 }
 
 /// Celebratory summary shown right after a quest is completed: XP earned,
@@ -101,6 +102,26 @@ struct QuestCompletionView: View {
                         }
                     }
 
+                    if !summary.equipmentDrops.isEmpty {
+                        VStack(alignment: .leading, spacing: RepSetForgeMetrics.paddingSmall) {
+                            Text("Equipment Found!")
+                                .font(RepSetForgeFont.heading())
+                                .foregroundStyle(Color.questNavy)
+                            ForEach(Array(summary.equipmentDrops.enumerated()), id: \.offset) { _, drop in
+                                HStack {
+                                    Image(systemName: "shippingbox.fill")
+                                        .foregroundStyle(Color.questGold)
+                                    Text(drop.name)
+                                        .font(RepSetForgeFont.body(13))
+                                        .foregroundStyle(Color.questNavy)
+                                    Spacer()
+                                }
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel()
+                            }
+                        }
+                    }
+
                     Button("Done") {
                         dismiss()
                     }
@@ -131,6 +152,7 @@ struct QuestCompletionView: View {
         ),
         unlockedAchievements: [],
         newRecords: [],
-        goldEarned: 42
+        goldEarned: 42,
+        equipmentDrops: []
     ))
 }
