@@ -35,6 +35,29 @@ struct QuestCompletionView: View {
                     }
                     .padding(.top, RepSetForgeMetrics.paddingLarge)
 
+                    if !levelUpEntries.isEmpty {
+                        VStack(alignment: .leading, spacing: RepSetForgeMetrics.paddingSmall) {
+                            Text("Level Up!")
+                                .font(RepSetForgeFont.heading())
+                                .foregroundStyle(Color.questNavy)
+                            ForEach(levelUpEntries, id: \.label) { entry in
+                                HStack {
+                                    Image(systemName: "arrow.up.circle.fill")
+                                        .foregroundStyle(Color.questGreen)
+                                    Text(entry.label)
+                                        .font(RepSetForgeFont.body(13))
+                                        .foregroundStyle(Color.questNavy)
+                                    Spacer()
+                                    Text("Lv \(entry.oldLevel) → Lv \(entry.newLevel)")
+                                        .font(RepSetForgeFont.stat(13))
+                                        .foregroundStyle(Color.questGreen)
+                                }
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel(border: .questGreen)
+                            }
+                        }
+                    }
+
                     VStack(spacing: RepSetForgeMetrics.paddingSmall) {
                         QuestCompletionRewardRow(
                             label: "Character",
@@ -138,6 +161,23 @@ struct QuestCompletionView: View {
         summary.distribution.muscleXP
             .map { (muscle: $0.key, xp: $0.value) }
             .sorted { $0.xp > $1.xp }
+    }
+
+    /// Every level change from this quest, character first then muscle groups
+    /// in a stable order — a clear, dedicated summary rather than just the
+    /// inline "LEVEL UP!" tags on the XP rows below.
+    private var levelUpEntries: [(label: String, oldLevel: Int, newLevel: Int)] {
+        var entries: [(label: String, oldLevel: Int, newLevel: Int)] = []
+        if summary.distribution.characterLevelUp.didLevelUp {
+            let levelUp = summary.distribution.characterLevelUp
+            entries.append((label: "Character", oldLevel: levelUp.oldLevel, newLevel: levelUp.newLevel))
+        }
+        for muscle in MuscleGroup.allCases {
+            if let levelUp = summary.distribution.muscleLevelUps[muscle] {
+                entries.append((label: muscle.displayName, oldLevel: levelUp.oldLevel, newLevel: levelUp.newLevel))
+            }
+        }
+        return entries
     }
 }
 
