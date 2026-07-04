@@ -21,7 +21,8 @@ final class PersistenceController {
         Achievement.self,
         PersonalRecord.self,
         RPGEncounterState.self,
-        OwnedEquipment.self
+        OwnedEquipment.self,
+        SkillProgress.self
     ])
 
     private init(inMemory: Bool = false) {
@@ -59,6 +60,8 @@ final class PersistenceController {
         for achievement in AchievementService.seedDefinitions() where !existingKeys.contains(achievement.key) {
             modelContext.insert(achievement)
         }
+
+        SkillProgressionService.seedIfNeeded(context: modelContext)
 
         try? modelContext.save()
     }

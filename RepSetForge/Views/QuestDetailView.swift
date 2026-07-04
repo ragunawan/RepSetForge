@@ -164,6 +164,12 @@ struct QuestDetailView: View {
         let earnedGold = GoldService.totalGold(completedSetCount: completedSetCount, questXP: xp, newRecordCount: newRecords.count)
         character.gold += earnedGold
 
+        SkillProgressionService.distributeSkillXP(
+            exercises: quest.exercises,
+            prExerciseNames: Set(newRecords.map(\.exerciseName)),
+            context: modelContext
+        )
+
         try? modelContext.save()
 
         completionSummary = QuestCompletionSummary(

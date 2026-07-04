@@ -32,6 +32,9 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
     let passiveWeight: Int
     /// Boss-only skills are excluded from ordinary encounters.
     let bossOnly: Bool
+    /// Muscle groups whose training XP feeds this skill's own progression —
+    /// primary-muscle sets grant 100% of that XP, secondary-muscle sets 40%.
+    let relatedMuscles: Set<MuscleGroup>
 
     init(
         id: String,
@@ -44,7 +47,8 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
         animation: AnimationType,
         effect: EffectType,
         passiveWeight: Int = 10,
-        bossOnly: Bool = false
+        bossOnly: Bool = false,
+        relatedMuscles: Set<MuscleGroup> = []
     ) {
         self.id = id
         self.name = name
@@ -57,9 +61,14 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
         self.effect = effect
         self.passiveWeight = passiveWeight
         self.bossOnly = bossOnly
+        self.relatedMuscles = relatedMuscles
     }
 
     func isUsable(by rpgClass: RPGClass, atLevel level: Int, bossFight: Bool) -> Bool {
         classes.contains(rpgClass) && level >= requiredLevel && (!bossOnly || bossFight)
     }
+
+    /// Skill XP required to unlock this skill for real (rather than purely by
+    /// character level) — scales with the same difficulty knob as `requiredLevel`.
+    var unlockThresholdXP: Int { requiredLevel * 100 }
 }

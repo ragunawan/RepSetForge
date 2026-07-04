@@ -13,11 +13,16 @@ struct RPGSceneView: View {
     @Query(filter: #Predicate<Quest> { $0.completedDate != nil }) private var completedQuests: [Quest]
     @Query private var encounterStates: [RPGEncounterState]
     @Query private var ownedEquipment: [OwnedEquipment]
+    @Query private var skillProgress: [SkillProgress]
 
     @State private var viewModel = RPGEncounterViewModel()
 
     private var equippedLoadout: [RPGEquipmentSlot: RPGEquipment] {
         RPGEquipmentService.equippedLoadout(from: ownedEquipment)
+    }
+
+    private var unlockedSkillIDs: Set<String> {
+        SkillProgressionService.unlockedSkillIDs(from: skillProgress)
     }
 
     private var snapshot: RPGProgressionSnapshot {
@@ -56,12 +61,12 @@ struct RPGSceneView: View {
         }
         .pixelPanel(fill: .questNavy, border: .questGold)
         .onAppear {
-            viewModel.configure(snapshot: snapshot, state: encounterStates.first, equippedLoadout: equippedLoadout)
+            viewModel.configure(snapshot: snapshot, state: encounterStates.first, equippedLoadout: equippedLoadout, unlockedSkillIDs: unlockedSkillIDs)
             viewModel.start()
         }
         .onDisappear { viewModel.stop() }
         .onChange(of: snapshot) { _, newValue in
-            viewModel.configure(snapshot: newValue, state: encounterStates.first, equippedLoadout: equippedLoadout)
+            viewModel.configure(snapshot: newValue, state: encounterStates.first, equippedLoadout: equippedLoadout, unlockedSkillIDs: unlockedSkillIDs)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
