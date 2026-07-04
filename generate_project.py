@@ -138,6 +138,8 @@ FR = {
     "RepSetForgeShortcuts":          u(1, 0x79),
     "PrivacyDataService":            u(1, 0x7A),
     "TEST_PrivacyDataService":       u(1, 0x7B),
+    "RepSetForgeSchema":             u(1, 0x7C),
+    "TEST_PersistenceMigration":     u(1, 0x7D),
 }
 
 # Build files
@@ -230,6 +232,7 @@ APP_SOURCES = [
     ("PrivacyDataService", "Services/PrivacyDataService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
+    ("RepSetForgeSchema", "Persistence/RepSetForgeSchema.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
     ("EquipmentShopView",     "Views/EquipmentShopView.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
@@ -309,6 +312,7 @@ TEST_SOURCES = [
     ("TEST_HealthKitService", "RepSetForgeTests/HealthKitServiceTests.swift"),
     ("TEST_AppIntentService", "RepSetForgeTests/AppIntentServiceTests.swift"),
     ("TEST_PrivacyDataService", "RepSetForgeTests/PrivacyDataServiceTests.swift"),
+    ("TEST_PersistenceMigration", "RepSetForgeTests/PersistenceMigrationTests.swift"),
 ]
 
 def pbxproj():
@@ -441,7 +445,7 @@ def pbxproj():
     simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
-    simple_group("Persistence", "Persistence", ["PersistenceController"])
+    simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema"])
 
     # Views group
     a(f"\t\t{GR['Views']} /* Views */ = {{")

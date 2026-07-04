@@ -10,24 +10,14 @@ final class PersistenceController {
     let modelContainer: ModelContainer
     let modelContext: ModelContext
 
-    static let schema = Schema([
-        Quest.self,
-        Exercise.self,
-        ExerciseSet.self,
-        ExerciseTemplate.self,
-        QuestTemplate.self,
-        PlayerCharacter.self,
-        MuscleProgress.self,
-        Achievement.self,
-        PersonalRecord.self,
-        RPGEncounterState.self,
-        OwnedEquipment.self,
-        SkillProgress.self
-    ])
+    /// Built from `RepSetForgeSchemaV1` (see RepSetForgeSchema.swift) rather
+    /// than a flat model list, so the version identifier is embedded and
+    /// `RepSetForgeMigrationPlan` can track it across future schema changes.
+    static let schema = Schema(versionedSchema: RepSetForgeSchemaV1.self)
 
     private init(inMemory: Bool = false) {
         let config = ModelConfiguration(schema: Self.schema, isStoredInMemoryOnly: inMemory)
-        modelContainer = try! ModelContainer(for: Self.schema, configurations: [config])
+        modelContainer = try! ModelContainer(for: Self.schema, migrationPlan: RepSetForgeMigrationPlan.self, configurations: [config])
         modelContext = ModelContext(modelContainer)
         seedCoreDataIfNeeded()
         if ProcessInfo.processInfo.arguments.contains("--preview-data") {
@@ -121,7 +111,7 @@ final class PersistenceController {
     @MainActor
     static let previewContainer: ModelContainer = {
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-        let container = try! ModelContainer(for: schema, configurations: [config])
+        let container = try! ModelContainer(for: schema, migrationPlan: RepSetForgeMigrationPlan.self, configurations: [config])
         let controller = PersistenceController(container: container)
         controller.seedCoreDataIfNeeded()
         controller.seedPreviewQuestsIfNeeded()

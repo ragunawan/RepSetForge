@@ -51,6 +51,7 @@
 		AA020000000000000000007A /* PrivacyDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007A /* PrivacyDataService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
+		AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
 		AA0200000000000000000051 /* EquipmentShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000051 /* EquipmentShopView.swift */; };
 		AA020000000000000000000F /* QuestDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000F /* QuestDashboardView.swift */; };
@@ -128,6 +129,7 @@
 		AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000076 /* HealthKitServiceTests.swift */; };
 		AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000078 /* AppIntentServiceTests.swift */; };
 		AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007B /* PrivacyDataServiceTests.swift */; };
+		AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007D /* PersistenceMigrationTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -187,6 +189,7 @@
 		AA010000000000000000007A /* PrivacyDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		AA010000000000000000007C /* RepSetForgeSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeSchema.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000051 /* EquipmentShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentShopView.swift; sourceTree = "<group>"; };
 		AA010000000000000000000F /* QuestDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDashboardView.swift; sourceTree = "<group>"; };
@@ -264,6 +267,7 @@
 		AA0100000000000000000076 /* HealthKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000078 /* AppIntentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000007B /* PrivacyDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000007D /* PersistenceMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceMigrationTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -394,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				AA010000000000000000000E /* PersistenceController.swift */,
+				AA010000000000000000007C /* RepSetForgeSchema.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -473,6 +478,7 @@
 				AA0100000000000000000076 /* HealthKitServiceTests.swift */,
 				AA0100000000000000000078 /* AppIntentServiceTests.swift */,
 				AA010000000000000000007B /* PrivacyDataServiceTests.swift */,
+				AA010000000000000000007D /* PersistenceMigrationTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -616,6 +622,7 @@
 				AA020000000000000000007A /* PrivacyDataService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
+				AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
 				AA0200000000000000000051 /* EquipmentShopView.swift in Sources */,
 				AA020000000000000000000F /* QuestDashboardView.swift in Sources */,
@@ -699,6 +706,7 @@
 				AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */,
 				AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */,
 				AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */,
+				AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
