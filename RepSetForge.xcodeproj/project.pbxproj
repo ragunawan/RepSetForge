@@ -39,6 +39,7 @@
 		AA020000000000000000005E /* QuestCalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005E /* QuestCalendarService.swift */; };
 		AA0200000000000000000061 /* TrainingChartsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000061 /* TrainingChartsService.swift */; };
 		AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000064 /* MuscleRecoveryService.swift */; };
+		AA0200000000000000000066 /* QuestFilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000066 /* QuestFilterService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -106,6 +107,7 @@
 		AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005F /* QuestCalendarServiceTests.swift */; };
 		AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000062 /* TrainingChartsServiceTests.swift */; };
 		AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */; };
+		AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000067 /* QuestFilterServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -153,6 +155,7 @@
 		AA010000000000000000005E /* QuestCalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000061 /* TrainingChartsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000064 /* MuscleRecoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000066 /* QuestFilterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -220,6 +223,7 @@
 		AA010000000000000000005F /* QuestCalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000062 /* TrainingChartsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000067 /* QuestFilterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +326,7 @@
 				AA010000000000000000005E /* QuestCalendarService.swift */,
 				AA0100000000000000000061 /* TrainingChartsService.swift */,
 				AA0100000000000000000064 /* MuscleRecoveryService.swift */,
+				AA0100000000000000000066 /* QuestFilterService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -407,6 +412,7 @@
 				AA010000000000000000005F /* QuestCalendarServiceTests.swift */,
 				AA0100000000000000000062 /* TrainingChartsServiceTests.swift */,
 				AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */,
+				AA0100000000000000000067 /* QuestFilterServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -538,6 +544,7 @@
 				AA020000000000000000005E /* QuestCalendarService.swift in Sources */,
 				AA0200000000000000000061 /* TrainingChartsService.swift in Sources */,
 				AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */,
+				AA0200000000000000000066 /* QuestFilterService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -611,6 +618,7 @@
 				AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */,
 				AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */,
 				AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */,
+				AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

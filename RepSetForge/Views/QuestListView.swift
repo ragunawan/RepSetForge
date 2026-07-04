@@ -10,13 +10,23 @@ struct QuestListView: View {
     @State private var newQuest: Quest?
     @State private var showingManageQuestTemplates = false
     @State private var showingScheduleQuest = false
+    @State private var showingFilters = false
+    @State private var filterCriteria = QuestFilterCriteria()
 
     private var quests: [Quest] { allQuests.filter { $0.status != .completed } }
     private var preferredWeightUnit: WeightUnit { characters.first?.preferredWeightUnit ?? .pounds }
 
+    /// While no search/filter is active, keep the original default of
+    /// non-completed quests only. Once a filter is active — including a
+    /// status filter — search across every quest, since "status" is one of
+    /// the filterable dimensions and would otherwise be meaningless.
+    private var displayedQuests: [Quest] {
+        filterCriteria.isActive ? QuestFilterService.filter(allQuests, criteria: filterCriteria) : quests
+    }
+
     var body: some View {
         List {
-            ForEach(quests) { quest in
+            ForEach(displayedQuests) { quest in
                 NavigationLink(value: quest) {
                     PixelQuestCard(quest: quest)
                 }
@@ -29,6 +39,7 @@ struct QuestListView: View {
         .background(Color.questParchment.ignoresSafeArea())
         .scrollContentBackground(.hidden)
         .navigationTitle("All Quests")
+        .searchable(text: $filterCriteria.searchText, prompt: "Search quests or skills")
         .navigationDestination(for: Quest.self) { quest in
             QuestDetailView(quest: quest)
         }
@@ -39,6 +50,13 @@ struct QuestListView: View {
             ToolbarItem(placement: .primaryAction) {
                 newQuestMenu
             }
+            ToolbarItem(placement: .secondaryAction) {
+                Button {
+                    showingFilters = true
+                } label: {
+                    Label("Filters", systemImage: filterCriteria.isActive ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                }
+            }
         }
         .sheet(isPresented: $showingManageQuestTemplates) {
             ManageQuestTemplatesSheet()
@@ -48,9 +66,12 @@ struct QuestListView: View {
                 newQuest = quest
             }
         }
+        .sheet(isPresented: $showingFilters) {
+            QuestFilterSheet(criteria: $filterCriteria)
+        }
         .overlay {
-            if quests.isEmpty {
-                Text("No quests yet. Tap + to start one.")
+            if displayedQuests.isEmpty {
+                Text(filterCriteria.isActive ? "No quests match your filters." : "No quests yet. Tap + to start one.")
                     .font(RepSetForgeFont.body())
                     .foregroundStyle(Color.questNavy.opacity(0.6))
             }
@@ -103,7 +124,7 @@ struct QuestListView: View {
 
     private func deleteQuests(at offsets: IndexSet) {
         for index in offsets {
-            modelContext.delete(quests[index])
+            modelContext.delete(displayedQuests[index])
         }
     }
 }
@@ -244,6 +265,85 @@ private struct ScheduleQuestSheet: View {
         modelContext.insert(quest)
         onCreate(quest)
         dismiss()
+    }
+}
+
+private struct QuestFilterSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @Binding var criteria: QuestFilterCriteria
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Status") {
+                    Picker("Status", selection: $criteria.status) {
+                        Text("Any").tag(QuestStatus?.none)
+                        ForEach(QuestStatus.allCases, id: \.self) { status in
+                            Text(status.displayName).tag(Optional(status))
+                        }
+                    }
+                }
+                Section("Muscle Group") {
+                    Picker("Muscle Group", selection: $criteria.muscleGroup) {
+                        Text("Any").tag(MuscleGroup?.none)
+                        ForEach(MuscleGroup.allCases) { group in
+                            Text(group.displayName).tag(Optional(group))
+                        }
+                    }
+                }
+                Section("Date Range") {
+                    optionalDateRow(label: "After", date: $criteria.startDate)
+                    optionalDateRow(label: "Before", date: $criteria.endDate)
+                }
+                Section("XP Range") {
+                    optionalXPRow(label: "Minimum XP", value: $criteria.minXP)
+                    optionalXPRow(label: "Maximum XP", value: $criteria.maxXP)
+                }
+                if criteria.isActive {
+                    Section {
+                        Button("Clear Filters", role: .destructive) {
+                            let searchText = criteria.searchText
+                            criteria = QuestFilterCriteria(searchText: searchText)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Filters")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func optionalDateRow(label: String, date: Binding<Date?>) -> some View {
+        Toggle(label, isOn: Binding(
+            get: { date.wrappedValue != nil },
+            set: { enabled in date.wrappedValue = enabled ? .now : nil }
+        ))
+        if let unwrapped = date.wrappedValue {
+            DatePicker(label, selection: Binding(
+                get: { unwrapped },
+                set: { date.wrappedValue = $0 }
+            ), displayedComponents: .date)
+            .labelsHidden()
+        }
+    }
+
+    @ViewBuilder
+    private func optionalXPRow(label: String, value: Binding<Int?>) -> some View {
+        Toggle(label, isOn: Binding(
+            get: { value.wrappedValue != nil },
+            set: { enabled in value.wrappedValue = enabled ? 0 : nil }
+        ))
+        if let unwrapped = value.wrappedValue {
+            Stepper("\(unwrapped) XP", value: Binding(
+                get: { unwrapped },
+                set: { value.wrappedValue = $0 }
+            ), in: 0...100_000, step: 50)
+        }
     }
 }
 
