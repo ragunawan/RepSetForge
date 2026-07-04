@@ -118,6 +118,8 @@ FR = {
     "TEST_MuscleRecovery":     u(1, 0x65),
     "QuestFilterService":      u(1, 0x66),
     "TEST_QuestFilter":        u(1, 0x67),
+    "PerceivedEffortPicker":   u(1, 0x68),
+    "TEST_QuestJournal":       u(1, 0x69),
 }
 
 # Build files
@@ -240,6 +242,7 @@ APP_SOURCES = [
     ("MonsterSpawnService",   "Services/MonsterSpawnService.swift"),
     ("BossMilestoneService",  "Services/BossMilestoneService.swift"),
     ("RPGEncounterViewModel", "Services/RPGEncounterViewModel.swift"),
+    ("PerceivedEffortPicker", "Views/Components/PerceivedEffortPicker.swift"),
     ("RPGSpriteView",         "Views/Components/RPGSpriteView.swift"),
     ("RPGSceneView",          "Views/Components/RPGSceneView.swift"),
 ]
@@ -269,6 +272,7 @@ TEST_SOURCES = [
     ("TEST_TrainingCharts", "RepSetForgeTests/TrainingChartsServiceTests.swift"),
     ("TEST_MuscleRecovery", "RepSetForgeTests/MuscleRecoveryServiceTests.swift"),
     ("TEST_QuestFilter", "RepSetForgeTests/QuestFilterServiceTests.swift"),
+    ("TEST_QuestJournal", "RepSetForgeTests/QuestJournalTests.swift"),
 ]
 
 def pbxproj():
@@ -419,7 +423,7 @@ def pbxproj():
 
     simple_group("Components", "Components", ["PixelQuestCard", "PixelXPBar", "PixelBadge", "PixelStatPanel",
                                                "PixelButton", "PixelAchievementCard", "PixelDivider", "QuestCompletionRewardRow",
-                                               "RPGSpriteView", "RPGSceneView"])
+                                               "PerceivedEffortPicker", "RPGSpriteView", "RPGSceneView"])
 
     # Tests group
     a(f"\t\t{GR['Tests']} /* RepSetForgeTests */ = {{")

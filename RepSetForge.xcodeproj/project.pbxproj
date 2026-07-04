@@ -81,6 +81,7 @@
 		AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000030 /* MonsterSpawnService.swift */; };
 		AA0200000000000000000031 /* BossMilestoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000031 /* BossMilestoneService.swift */; };
 		AA0200000000000000000032 /* RPGEncounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000032 /* RPGEncounterViewModel.swift */; };
+		AA0200000000000000000068 /* PerceivedEffortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000068 /* PerceivedEffortPicker.swift */; };
 		AA0200000000000000000033 /* RPGSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000033 /* RPGSpriteView.swift */; };
 		AA0200000000000000000034 /* RPGSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000034 /* RPGSceneView.swift */; };
 		AA020000000000000000001F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001F /* Assets.xcassets */; };
@@ -108,6 +109,7 @@
 		AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000062 /* TrainingChartsServiceTests.swift */; };
 		AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */; };
 		AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000067 /* QuestFilterServiceTests.swift */; };
+		AA0200000000000000000069 /* QuestJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000069 /* QuestJournalTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -197,6 +199,7 @@
 		AA0100000000000000000030 /* MonsterSpawnService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterSpawnService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000031 /* BossMilestoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BossMilestoneService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000032 /* RPGEncounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEncounterViewModel.swift; sourceTree = "<group>"; };
+		AA0100000000000000000068 /* PerceivedEffortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerceivedEffortPicker.swift; sourceTree = "<group>"; };
 		AA0100000000000000000033 /* RPGSpriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSpriteView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000034 /* RPGSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSceneView.swift; sourceTree = "<group>"; };
 		AA010000000000000000001F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -224,6 +227,7 @@
 		AA0100000000000000000062 /* TrainingChartsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000067 /* QuestFilterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000069 /* QuestJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestJournalTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -380,6 +384,7 @@
 				AA010000000000000000001C /* PixelAchievementCard.swift */,
 				AA010000000000000000001D /* PixelDivider.swift */,
 				AA010000000000000000001E /* QuestCompletionRewardRow.swift */,
+				AA0100000000000000000068 /* PerceivedEffortPicker.swift */,
 				AA0100000000000000000033 /* RPGSpriteView.swift */,
 				AA0100000000000000000034 /* RPGSceneView.swift */,
 			);
@@ -413,6 +418,7 @@
 				AA0100000000000000000062 /* TrainingChartsServiceTests.swift */,
 				AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */,
 				AA0100000000000000000067 /* QuestFilterServiceTests.swift */,
+				AA0100000000000000000069 /* QuestJournalTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -586,6 +592,7 @@
 				AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */,
 				AA0200000000000000000031 /* BossMilestoneService.swift in Sources */,
 				AA0200000000000000000032 /* RPGEncounterViewModel.swift in Sources */,
+				AA0200000000000000000068 /* PerceivedEffortPicker.swift in Sources */,
 				AA0200000000000000000033 /* RPGSpriteView.swift in Sources */,
 				AA0200000000000000000034 /* RPGSceneView.swift in Sources */,
 			);
@@ -619,6 +626,7 @@
 				AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */,
 				AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */,
 				AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */,
+				AA0200000000000000000069 /* QuestJournalTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

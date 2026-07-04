@@ -76,6 +76,14 @@ struct QuestDetailView: View {
                 DatePicker("Date", selection: $quest.date, displayedComponents: .date)
             }
         }
+
+        // Notes and perceived effort are a post-workout reflection, not
+        // factual workout content, so they stay editable even after
+        // completion — unlike name/date/sets, which lock once isReadOnly.
+        Section("Journal") {
+            TextField("How did this session go?", text: $quest.notes, axis: .vertical)
+            PerceivedEffortPicker(effort: $quest.perceivedEffort)
+        }
     }
 
     @ViewBuilder

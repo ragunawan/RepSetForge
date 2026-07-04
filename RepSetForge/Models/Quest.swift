@@ -10,6 +10,10 @@ final class Quest {
     var statusRaw: String
     var totalXP: Int
     var completedDate: Date?
+    /// Free-form journal entry for the session as a whole (how it felt, what to change next time).
+    var notes: String = ""
+    /// Rate of Perceived Exertion for the session as a whole, 1 (very easy) to 10 (max effort). Optional since not every session gets rated.
+    var perceivedEffort: Int?
 
     @Relationship(deleteRule: .cascade, inverse: \Exercise.quest)
     var exercises: [Exercise] = []
@@ -21,6 +25,8 @@ final class Quest {
         self.statusRaw = status.rawValue
         self.totalXP = 0
         self.completedDate = nil
+        self.notes = ""
+        self.perceivedEffort = nil
     }
 
     var status: QuestStatus {

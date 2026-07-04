@@ -12,6 +12,8 @@ final class Exercise {
     var notes: String
     var defaultRestSeconds: Int = 60
     var exerciseTypeRaw: String = ExerciseType.strength.rawValue
+    /// Rate of Perceived Exertion for this exercise specifically, 1 (very easy) to 10 (max effort). Optional since not every exercise gets rated.
+    var perceivedEffort: Int?
 
     @Relationship(deleteRule: .cascade, inverse: \ExerciseSet.exercise)
     var sets: [ExerciseSet] = []
@@ -33,6 +35,7 @@ final class Exercise {
         self.notes = notes
         self.defaultRestSeconds = defaultRestSeconds
         self.exerciseTypeRaw = exerciseType.rawValue
+        self.perceivedEffort = nil
     }
 
     var primaryMuscle: MuscleGroup {

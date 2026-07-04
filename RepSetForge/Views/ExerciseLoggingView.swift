@@ -44,6 +44,9 @@ struct ExerciseLoggingView: View {
                 LabeledContent("Secondary", value: exercise.secondaryMuscles.map(\.displayName).joined(separator: ", "))
             }
             notesField
+            // Perceived effort is a post-workout reflection, not factual
+            // workout content, so it stays editable even when isReadOnly.
+            PerceivedEffortPicker(effort: $exercise.perceivedEffort)
             if isReadOnly {
                 LabeledContent("Rest", value: "\(exercise.defaultRestSeconds)s")
             } else {
