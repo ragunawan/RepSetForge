@@ -26,5 +26,19 @@ struct PixelAchievementCard: View {
         .padding(RepSetForgeMetrics.paddingMedium)
         .pixelPanel()
         .opacity(achievement.unlocked ? 1 : 0.75)
+        // The badge's SF Symbol (or its "locked" substitute) is the only
+        // visual cue for lock state, but its default VoiceOver label alone
+        // ("lock", a raw glyph name) doesn't clearly say "locked" — combine
+        // everything into one explicit announcement instead.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(achievement.name)
+        .accessibilityValue(accessibilityStatus)
+    }
+
+    private var accessibilityStatus: String {
+        if achievement.unlocked, let date = achievement.unlockedDate {
+            return "Unlocked \(date.formatted(date: .abbreviated, time: .omitted)). \(achievement.detail)"
+        }
+        return "Locked. \(achievement.detail)"
     }
 }

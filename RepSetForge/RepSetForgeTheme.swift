@@ -42,21 +42,32 @@ extension Color {
 // MARK: - Typography
 
 enum RepSetForgeFont {
+    /// Scales a fixed point size by the current Dynamic Type setting, the
+    /// same mechanism `Font.system(.body)` uses internally — lets every
+    /// `RepSetForgeFont` call site keep its exact size *as designed at the
+    /// default content size category* while still growing/shrinking for
+    /// users who've changed their text-size preference. Must be called
+    /// during body evaluation (not cached) so it re-resolves whenever the
+    /// environment's content size category changes.
+    private static func scaled(_ size: CGFloat) -> CGFloat {
+        UIFontMetrics.default.scaledValue(for: size)
+    }
+
     static func title(_ size: CGFloat = 22) -> Font {
-        .system(size: size, weight: .heavy, design: .rounded)
+        .system(size: scaled(size), weight: .heavy, design: .rounded)
     }
 
     static func heading(_ size: CGFloat = 17) -> Font {
-        .system(size: size, weight: .bold, design: .rounded)
+        .system(size: scaled(size), weight: .bold, design: .rounded)
     }
 
     static func body(_ size: CGFloat = 15) -> Font {
-        .system(size: size, weight: .medium, design: .rounded)
+        .system(size: scaled(size), weight: .medium, design: .rounded)
     }
 
     /// Monospaced digits for XP/stat numbers so values don't jitter as they change.
     static func stat(_ size: CGFloat = 15) -> Font {
-        .system(size: size, weight: .bold, design: .monospaced)
+        .system(size: scaled(size), weight: .bold, design: .monospaced)
     }
 }
 
@@ -101,6 +112,9 @@ enum RepSetForgeMetrics {
 //   - .body: everything else — labels, descriptions, detail text.
 //   - .stat: numbers that change often (XP, levels, countdowns) —
 //     monospaced digits so layout doesn't jitter as values update.
+//   - All four scale with Dynamic Type automatically (via `UIFontMetrics`) —
+//     never bypass `RepSetForgeFont` for a raw `.system(size:)` call, or
+//     that text silently stops scaling for users with larger text sizes.
 //
 // Borders, corners, shadows:
 //   - `RepSetForgeMetrics.cornerRadius` (6pt) and `.borderWidth` (3pt) are

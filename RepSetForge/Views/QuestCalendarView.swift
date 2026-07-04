@@ -93,7 +93,10 @@ struct QuestCalendarView: View {
                 changeMonth(by: -1)
             } label: {
                 Image(systemName: "chevron.left")
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
             }
+            .accessibilityLabel("Previous month")
             Spacer()
             Text(Self.monthFormatter.string(from: displayedMonth))
                 .font(RepSetForgeFont.heading())
@@ -103,7 +106,10 @@ struct QuestCalendarView: View {
                 changeMonth(by: 1)
             } label: {
                 Image(systemName: "chevron.right")
+                    .frame(minWidth: 44, minHeight: 44)
+                    .contentShape(Rectangle())
             }
+            .accessibilityLabel("Next month")
         }
         .foregroundStyle(Color.questNavy)
     }
@@ -126,7 +132,7 @@ struct QuestCalendarView: View {
                     .fill(questCount > 0 ? Color.questGold : Color.clear)
                     .frame(width: 5, height: 5)
             }
-            .frame(maxWidth: .infinity, minHeight: 32)
+            .frame(maxWidth: .infinity, minHeight: 44)
             .padding(.vertical, 4)
             .background(isSelected ? Color.questGold.opacity(0.25) : Color.clear)
             .overlay(
@@ -136,6 +142,8 @@ struct QuestCalendarView: View {
             .clipShape(RoundedRectangle(cornerRadius: 4))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(day.formatted(date: .complete, time: .omitted))
+        .accessibilityValue(questCount > 0 ? "\(questCount) quest\(questCount == 1 ? "" : "s") completed" : "No quests completed")
     }
 
     private func changeMonth(by offset: Int) {

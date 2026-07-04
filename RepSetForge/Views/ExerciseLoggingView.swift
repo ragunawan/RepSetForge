@@ -167,13 +167,16 @@ private struct ExerciseSetRow: View {
                 // A quick, native "pop" on completion — skipped under Reduce
                 // Motion since symbolEffect doesn't auto-disable itself.
                 if reduceMotion {
-                    icon
+                    icon.frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
                 } else {
                     icon.symbolEffect(.bounce, value: set.completed)
+                        .frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
                 }
             }
             .buttonStyle(.plain)
             .disabled(isReadOnly)
+            .accessibilityLabel("Set \(set.setNumber)")
+            .accessibilityValue(set.completed ? "Complete" : "Not complete")
         }
     }
 

@@ -310,6 +310,7 @@ private struct AddExerciseSheet: View {
                                 } label: {
                                     Image(systemName: "chart.xyaxis.line")
                                 }
+                                .accessibilityLabel("View history for \(suggestion)")
                             }
                             .font(RepSetForgeFont.body(12))
                             .buttonStyle(.bordered)
