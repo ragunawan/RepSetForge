@@ -30,6 +30,10 @@ struct CharacterProgressView: View {
         MuscleRecoveryService.loadStats(from: allQuests)
     }
 
+    private var recoveryRecommendation: RecoveryRecommendation {
+        RecoveryRecommendationService.recommendation(from: allQuests)
+    }
+
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     @State private var showingSettings = false
@@ -112,6 +116,27 @@ struct CharacterProgressView: View {
                             .padding(RepSetForgeMetrics.paddingSmall)
                             .pixelPanel()
                         }
+                    }
+
+                    if recoveryRecommendation != .allClear {
+                        PixelDivider()
+
+                        HStack(alignment: .top, spacing: RepSetForgeMetrics.paddingSmall) {
+                            Image(systemName: recoveryRecommendation.iconName)
+                                .foregroundStyle(Color.questGold)
+                                .frame(width: 20)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(recoveryRecommendation.title)
+                                    .font(RepSetForgeFont.body(13))
+                                    .foregroundStyle(Color.questSilver)
+                                Text(recoveryRecommendation.detail)
+                                    .font(RepSetForgeFont.body(12))
+                                    .foregroundStyle(Color.questSilver.opacity(0.7))
+                            }
+                            Spacer()
+                        }
+                        .padding(RepSetForgeMetrics.paddingSmall)
+                        .pixelPanel()
                     }
 
                     if !recoveryStats.isEmpty {
