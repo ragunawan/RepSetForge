@@ -58,7 +58,32 @@ struct AchievementsView: View {
     }
 }
 
-#Preview {
+#Preview("Empty — none unlocked") {
     AchievementsView()
         .modelContainer(PersistenceController.previewContainer)
+}
+
+private func achievementsPreviewContainer(unlockedCount: Int) -> ModelContainer {
+    let schema = Schema([Achievement.self])
+    let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+    let context = ModelContext(container)
+    for (index, achievement) in AchievementService.seedDefinitions().enumerated() {
+        if index < unlockedCount {
+            achievement.unlocked = true
+            achievement.unlockedDate = .now
+        }
+        context.insert(achievement)
+    }
+    return container
+}
+
+#Preview("Partially unlocked") {
+    AchievementsView()
+        .modelContainer(achievementsPreviewContainer(unlockedCount: 4))
+}
+
+#Preview("All unlocked") {
+    AchievementsView()
+        .modelContainer(achievementsPreviewContainer(unlockedCount: AchievementService.definitions.count))
 }

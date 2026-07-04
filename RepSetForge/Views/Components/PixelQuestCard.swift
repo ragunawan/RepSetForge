@@ -52,3 +52,23 @@ struct PixelQuestCard: View {
         .pixelPanel()
     }
 }
+
+#Preview {
+    let planned = Quest(name: "Leg Day Dungeon", status: .planned)
+    planned.exercises = [Exercise(name: "Squat", primaryMuscle: .legs)]
+
+    let active = Quest(name: "Upper Body Strength", status: .active)
+    active.exercises = [Exercise(name: "Bench Press", primaryMuscle: .chest), Exercise(name: "Rows", primaryMuscle: .back)]
+
+    let completed = Quest(name: "Core Trial", status: .completed)
+    completed.exercises = [Exercise(name: "Plank", primaryMuscle: .core)]
+    completed.totalXP = 120
+
+    return VStack(spacing: 12) {
+        PixelQuestCard(quest: planned)
+        PixelQuestCard(quest: active)
+        PixelQuestCard(quest: completed)
+    }
+    .padding()
+    .background(Color.questParchment)
+}

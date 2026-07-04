@@ -15,3 +15,19 @@ struct PerceivedEffortPicker: View {
         }
     }
 }
+
+private struct PerceivedEffortPickerPreviewContainer: View {
+    @State private var notRated: Int? = nil
+    @State private var rated: Int? = 7
+
+    var body: some View {
+        Form {
+            PerceivedEffortPicker(effort: $notRated)
+            PerceivedEffortPicker(effort: $rated)
+        }
+    }
+}
+
+#Preview {
+    PerceivedEffortPickerPreviewContainer()
+}

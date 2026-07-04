@@ -33,3 +33,13 @@ struct QuestCompletionRewardRow: View {
         }
     }
 }
+
+#Preview {
+    VStack(spacing: 12) {
+        QuestCompletionRewardRow(label: "Quest XP", xp: 250)
+        QuestCompletionRewardRow(label: "Chest", xp: 180, iconName: "shield.fill")
+        QuestCompletionRewardRow(label: "Back", xp: 90, iconName: "square.stack.3d.up.fill", didLevelUp: true)
+    }
+    .padding()
+    .background(Color.questNavy)
+}

@@ -42,3 +42,25 @@ struct PixelAchievementCard: View {
         return "Locked. \(achievement.detail)"
     }
 }
+
+#Preview {
+    VStack(spacing: 12) {
+        PixelAchievementCard(achievement: Achievement(
+            key: "first_quest",
+            name: "First Quest",
+            detail: "Complete your first quest.",
+            iconName: "flag.checkered",
+            unlocked: true,
+            unlockedDate: .now
+        ))
+        PixelAchievementCard(achievement: Achievement(
+            key: "level_10",
+            name: "Dungeon Athlete",
+            detail: "Reach character level 10.",
+            iconName: "star.circle.fill",
+            unlocked: false
+        ))
+    }
+    .padding()
+    .background(Color.questParchment)
+}

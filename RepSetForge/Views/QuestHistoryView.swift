@@ -123,7 +123,30 @@ struct QuestHistoryView: View {
     }
 }
 
-#Preview {
+#Preview("Empty — no completed quests") {
     QuestHistoryView()
         .modelContainer(PersistenceController.previewContainer)
+}
+
+private func historyPreviewContainer() -> ModelContainer {
+    let schema = Schema([Quest.self, Exercise.self, ExerciseSet.self])
+    let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: schema, configurations: [config])
+    let context = ModelContext(container)
+    let calendar = Calendar.current
+    for daysAgo in [0, 1, 3, 7] {
+        let quest = Quest(name: "Push Day", status: .completed)
+        quest.completedDate = calendar.date(byAdding: .day, value: -daysAgo, to: .now)
+        quest.totalXP = 180
+        let exercise = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        exercise.sets = [ExerciseSet(setNumber: 1, reps: 8, weight: 135, completed: true)]
+        quest.exercises = [exercise]
+        context.insert(quest)
+    }
+    return container
+}
+
+#Preview("Populated") {
+    QuestHistoryView()
+        .modelContainer(historyPreviewContainer())
 }
