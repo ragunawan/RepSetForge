@@ -146,6 +146,8 @@ private struct ExerciseSetRow: View {
     var isReadOnly: Bool
     var onComplete: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         HStack {
             Text("Set \(set.setNumber)")
@@ -160,8 +162,15 @@ private struct ExerciseSetRow: View {
                     onComplete()
                 }
             } label: {
-                Image(systemName: set.completed ? "checkmark.circle.fill" : "circle")
+                let icon = Image(systemName: set.completed ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(set.completed ? Color.questGreen : Color.secondary)
+                // A quick, native "pop" on completion — skipped under Reduce
+                // Motion since symbolEffect doesn't auto-disable itself.
+                if reduceMotion {
+                    icon
+                } else {
+                    icon.symbolEffect(.bounce, value: set.completed)
+                }
             }
             .buttonStyle(.plain)
             .disabled(isReadOnly)

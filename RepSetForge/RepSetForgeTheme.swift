@@ -114,6 +114,15 @@ enum RepSetForgeMetrics {
 //     hard, zero-blur 1pt offset shadow. Never a soft/blurred shadow; that
 //     reads as a modern flat-UI effect, not pixel art.
 //
+// Animation:
+//   - Freshly-earned reward lists (XP rows, level-ups, achievement unlocks)
+//     use `staggeredAppearance(index:)` for a lightweight cascading reveal —
+//     never a single all-at-once fade. It already no-ops under Reduce
+//     Motion, so call sites don't need their own reduceMotion branch for it.
+//   - Anything else worth animating (set-complete checkmarks, etc.) should
+//     still check `@Environment(\.accessibilityReduceMotion)` itself, same
+//     as `RPGSceneView` already does for combat animations.
+//
 // Icon/sprite grid sizes — see `ArtSource/RPG/README.md`'s "Size Summary"
 // table for the authoritative per-category numbers (it's the source of
 // truth the importer validates against). Every sprite is authored on a
@@ -154,5 +163,35 @@ extension View {
     /// alternative to a soft/blurred shadow, which would break the aesthetic.
     func pixelTextShadow(opacity: Double = 0.8) -> some View {
         shadow(color: .black.opacity(opacity), radius: 0, x: 1, y: 1)
+    }
+
+    /// Lightweight staggered fade+slide entrance for a row in a freshly-earned
+    /// list (XP rewards, level-ups, achievement unlocks) so items cascade in
+    /// rather than all popping in at once. Skips the animation (appears
+    /// instantly) under Reduce Motion.
+    func staggeredAppearance(index: Int) -> some View {
+        modifier(StaggeredAppearanceModifier(index: index))
+    }
+}
+
+private struct StaggeredAppearanceModifier: ViewModifier {
+    let index: Int
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var appeared = false
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(appeared ? 1 : 0)
+            .offset(y: appeared ? 0 : 8)
+            .onAppear {
+                guard !reduceMotion else {
+                    appeared = true
+                    return
+                }
+                withAnimation(.easeOut(duration: 0.3).delay(Double(index) * 0.06)) {
+                    appeared = true
+                }
+            }
     }
 }

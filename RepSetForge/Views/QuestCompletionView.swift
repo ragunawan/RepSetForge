@@ -17,6 +17,8 @@ struct QuestCompletionView: View {
     let summary: QuestCompletionSummary
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var headerAppeared = false
 
     var body: some View {
         NavigationStack {
@@ -26,6 +28,8 @@ struct QuestCompletionView: View {
                         Image(systemName: "checkmark.seal.fill")
                             .font(.system(size: 48))
                             .foregroundStyle(Color.questGold)
+                            .scaleEffect(headerAppeared ? 1 : 0.4)
+                            .opacity(headerAppeared ? 1 : 0)
                         Text("Quest Complete!")
                             .font(RepSetForgeFont.title())
                             .foregroundStyle(Color.questNavy)
@@ -34,13 +38,22 @@ struct QuestCompletionView: View {
                             .foregroundStyle(Color.questNavy.opacity(0.7))
                     }
                     .padding(.top, RepSetForgeMetrics.paddingLarge)
+                    .onAppear {
+                        guard !reduceMotion else {
+                            headerAppeared = true
+                            return
+                        }
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                            headerAppeared = true
+                        }
+                    }
 
                     if !levelUpEntries.isEmpty {
                         VStack(alignment: .leading, spacing: RepSetForgeMetrics.paddingSmall) {
                             Text("Level Up!")
                                 .font(RepSetForgeFont.heading())
                                 .foregroundStyle(Color.questNavy)
-                            ForEach(levelUpEntries, id: \.label) { entry in
+                            ForEach(Array(levelUpEntries.enumerated()), id: \.element.label) { index, entry in
                                 HStack {
                                     Image(systemName: "arrow.up.circle.fill")
                                         .foregroundStyle(Color.questGreen)
@@ -54,6 +67,7 @@ struct QuestCompletionView: View {
                                 }
                                 .padding(RepSetForgeMetrics.paddingSmall)
                                 .pixelPanel(border: .questGreen)
+                                .staggeredAppearance(index: index)
                             }
                         }
                     }
@@ -65,13 +79,15 @@ struct QuestCompletionView: View {
                             iconName: "person.fill",
                             didLevelUp: summary.distribution.characterLevelUp.didLevelUp
                         )
-                        ForEach(sortedMuscleXP, id: \.muscle) { entry in
+                        .staggeredAppearance(index: 0)
+                        ForEach(Array(sortedMuscleXP.enumerated()), id: \.element.muscle) { index, entry in
                             QuestCompletionRewardRow(
                                 label: entry.muscle.displayName,
                                 xp: entry.xp,
                                 iconName: entry.muscle.iconName,
                                 didLevelUp: summary.distribution.muscleLevelUps[entry.muscle] != nil
                             )
+                            .staggeredAppearance(index: index + 1)
                         }
                         if summary.goldEarned > 0 {
                             HStack {
@@ -86,6 +102,7 @@ struct QuestCompletionView: View {
                                     .font(RepSetForgeFont.stat())
                                     .foregroundStyle(Color.questGold)
                             }
+                            .staggeredAppearance(index: sortedMuscleXP.count + 1)
                         }
                     }
                     .padding(RepSetForgeMetrics.paddingMedium)
@@ -96,8 +113,9 @@ struct QuestCompletionView: View {
                             Text("Achievements Unlocked")
                                 .font(RepSetForgeFont.heading())
                                 .foregroundStyle(Color.questNavy)
-                            ForEach(summary.unlockedAchievements) { achievement in
+                            ForEach(Array(summary.unlockedAchievements.enumerated()), id: \.element.id) { index, achievement in
                                 PixelAchievementCard(achievement: achievement)
+                                    .staggeredAppearance(index: index)
                             }
                         }
                     }
@@ -107,7 +125,7 @@ struct QuestCompletionView: View {
                             Text("New Personal Records!")
                                 .font(RepSetForgeFont.heading())
                                 .foregroundStyle(Color.questNavy)
-                            ForEach(Array(summary.newRecords.enumerated()), id: \.offset) { _, record in
+                            ForEach(Array(summary.newRecords.enumerated()), id: \.offset) { index, record in
                                 HStack {
                                     Image(systemName: "trophy.fill")
                                         .foregroundStyle(Color.questGold)
@@ -121,6 +139,7 @@ struct QuestCompletionView: View {
                                 }
                                 .padding(RepSetForgeMetrics.paddingSmall)
                                 .pixelPanel()
+                                .staggeredAppearance(index: index)
                             }
                         }
                     }
@@ -130,7 +149,7 @@ struct QuestCompletionView: View {
                             Text("Equipment Found!")
                                 .font(RepSetForgeFont.heading())
                                 .foregroundStyle(Color.questNavy)
-                            ForEach(Array(summary.equipmentDrops.enumerated()), id: \.offset) { _, drop in
+                            ForEach(Array(summary.equipmentDrops.enumerated()), id: \.offset) { index, drop in
                                 HStack {
                                     Image(systemName: "shippingbox.fill")
                                         .foregroundStyle(Color.questGold)
@@ -141,6 +160,7 @@ struct QuestCompletionView: View {
                                 }
                                 .padding(RepSetForgeMetrics.paddingSmall)
                                 .pixelPanel()
+                                .staggeredAppearance(index: index)
                             }
                         }
                     }
