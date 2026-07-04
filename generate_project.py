@@ -142,6 +142,8 @@ FR = {
     "TEST_PersistenceMigration":     u(1, 0x7D),
     "PROD_UITEST":                   u(1, 0x7E),  # RepSetForgeUITests.xctest
     "UITEST_QuestLogging":           u(1, 0x7F),
+    "Fixtures":                      u(1, 0x80),
+    "TEST_Fixtures":                 u(1, 0x81),
 }
 
 # Build files
@@ -159,6 +161,7 @@ GR = {
     "Persistence": u(3, 0x08),
     "Tests":      u(3, 0x09),
     "UITests":    u(3, 0x0A),
+    "Testing":    u(3, 0x0B),
 }
 
 # Targets
@@ -244,6 +247,7 @@ APP_SOURCES = [
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("RepSetForgeSchema", "Persistence/RepSetForgeSchema.swift"),
+    ("Fixtures", "Testing/Fixtures.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
     ("EquipmentShopView",     "Views/EquipmentShopView.swift"),
     ("QuestDashboardView",    "Views/QuestDashboardView.swift"),
@@ -324,6 +328,7 @@ TEST_SOURCES = [
     ("TEST_AppIntentService", "RepSetForgeTests/AppIntentServiceTests.swift"),
     ("TEST_PrivacyDataService", "RepSetForgeTests/PrivacyDataServiceTests.swift"),
     ("TEST_PersistenceMigration", "RepSetForgeTests/PersistenceMigrationTests.swift"),
+    ("TEST_Fixtures", "RepSetForgeTests/FixturesTests.swift"),
 ]
 
 UI_TEST_SOURCES = [
@@ -459,6 +464,7 @@ def pbxproj():
     a(f"\t\t\t\t{GR['Services']} /* Services */,")
     a(f"\t\t\t\t{GR['Persistence']} /* Persistence */,")
     a(f"\t\t\t\t{GR['Views']} /* Views */,")
+    a(f"\t\t\t\t{GR['Testing']} /* Testing */,")
     a(f"\t\t\t\t{FR['Assets']} /* Assets.xcassets */,")
     a(f"\t\t\t);")
     a(f"\t\t\tpath = RepSetForge;")
@@ -484,6 +490,7 @@ def pbxproj():
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema"])
+    simple_group("Testing", "Testing", ["Fixtures"])
 
     # Views group
     a(f"\t\t{GR['Views']} /* Views */ = {{")

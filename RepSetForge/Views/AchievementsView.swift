@@ -64,9 +64,7 @@ struct AchievementsView: View {
 }
 
 private func achievementsPreviewContainer(unlockedCount: Int) -> ModelContainer {
-    let schema = Schema([Achievement.self])
-    let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: schema, configurations: [config])
+    let container = Fixtures.makeContainer(models: [Achievement.self])
     let context = ModelContext(container)
     for (index, achievement) in AchievementService.seedDefinitions().enumerated() {
         if index < unlockedCount {
