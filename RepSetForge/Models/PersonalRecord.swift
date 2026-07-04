@@ -6,11 +6,14 @@ import SwiftData
 /// pair, kept up to date by PersonalRecordService rather than duplicated.
 @Model
 final class PersonalRecord {
-    var id: UUID
-    var exerciseName: String
-    var recordTypeRaw: String
-    var value: Double
-    var achievedDate: Date
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var id: UUID = UUID()
+    var exerciseName: String = ""
+    var recordTypeRaw: String = PersonalRecordType.maxWeight.rawValue
+    var value: Double = 0
+    var achievedDate: Date = Date.now
     /// Unit `value` is expressed in, for weight-based record types
     /// (maxWeight, bestVolume). Nil for reps/duration/pace records, which
     /// carry no weight unit.

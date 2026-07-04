@@ -87,9 +87,12 @@ struct QuestExerciseBlueprint: Codable, Identifiable, Hashable {
 /// exercises and default set schemes without re-entering every skill.
 @Model
 final class QuestTemplate {
-    var id: UUID
-    var name: String
-    var exerciseBlueprints: [QuestExerciseBlueprint]
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var id: UUID = UUID()
+    var name: String = ""
+    var exerciseBlueprints: [QuestExerciseBlueprint] = []
 
     init(name: String, exerciseBlueprints: [QuestExerciseBlueprint] = []) {
         self.id = UUID()

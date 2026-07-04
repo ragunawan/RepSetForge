@@ -356,7 +356,7 @@ private struct SettingsSheet: View {
                 }
 
                 Section("Privacy & Data") {
-                    Text("RepSetForge stores everything — quests, exercises, sets, achievements, and personal records — only on this device. Nothing is sent to any RepSetForge server, because there isn't one. Data only ever leaves the device when you explicitly export it, or if you connect Apple Health above.")
+                    Text("RepSetForge stores everything — quests, exercises, sets, achievements, and personal records — locally on this device, and syncs it to your own private iCloud account so it carries over to your other devices. There's no RepSetForge server; only you and Apple can see this data. It only leaves iCloud sync when you explicitly export it, or if you connect Apple Health above.")
                         .font(RepSetForgeFont.body(12))
                         .foregroundStyle(.secondary)
 

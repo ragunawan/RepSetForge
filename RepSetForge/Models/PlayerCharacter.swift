@@ -4,12 +4,15 @@ import SwiftData
 /// Singleton representing the player's overall RPG progression.
 @Model
 final class PlayerCharacter {
-    var level: Int
-    var currentXP: Int
-    var totalXP: Int
-    var title: String
-    var completedQuestCount: Int
-    var createdDate: Date
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var level: Int = 1
+    var currentXP: Int = 0
+    var totalXP: Int = 0
+    var title: String = "Novice Adventurer"
+    var completedQuestCount: Int = 0
+    var createdDate: Date = Date.now
     /// Unit new sets are logged in by default. Changing this never rewrites
     /// already-logged sets, which each keep their own recorded unit.
     var preferredWeightUnitRaw: String = WeightUnit.pounds.rawValue

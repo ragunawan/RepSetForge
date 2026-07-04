@@ -6,11 +6,14 @@ import SwiftData
 /// PlayerCharacter so boss fights survive app relaunches.
 @Model
 final class RPGEncounterState {
-    var rpgClassRaw: String
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var rpgClassRaw: String = RPGClass.knight.rawValue
     var activeBossID: String?
     var activeMilestoneQuestID: String?
-    var completedBossIDs: [String]
-    var completedMilestoneQuestIDs: [String]
+    var completedBossIDs: [String] = []
+    var completedMilestoneQuestIDs: [String] = []
     var lastDefeatedBossID: String?
     var lastBossDefeatDate: Date?
 

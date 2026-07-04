@@ -16,7 +16,18 @@ final class PersistenceController {
     static let schema = Schema(versionedSchema: RepSetForgeSchemaV1.self)
 
     private init(inMemory: Bool = false) {
-        let config = ModelConfiguration(schema: Self.schema, isStoredInMemoryOnly: inMemory)
+        // CloudKit-backed for the real on-disk store; an in-memory store
+        // (previews, `inMemory: true` callers) can't sync and doesn't need
+        // to try. `.automatic` uses the container identifier from
+        // RepSetForge.entitlements rather than hardcoding it a second time
+        // here. If no iCloud account is signed in (e.g. this simulator),
+        // SwiftData falls back to local-only storage rather than failing —
+        // sync simply queues until an account becomes available.
+        let config = ModelConfiguration(
+            schema: Self.schema,
+            isStoredInMemoryOnly: inMemory,
+            cloudKitDatabase: inMemory ? .none : .automatic
+        )
         modelContainer = try! ModelContainer(for: Self.schema, migrationPlan: RepSetForgeMigrationPlan.self, configurations: [config])
         modelContext = ModelContext(modelContainer)
         seedCoreDataIfNeeded()
@@ -110,7 +121,7 @@ final class PersistenceController {
 
     @MainActor
     static let previewContainer: ModelContainer = {
-        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true, cloudKitDatabase: .none)
         let container = try! ModelContainer(for: schema, migrationPlan: RepSetForgeMigrationPlan.self, configurations: [config])
         let controller = PersistenceController(container: container)
         controller.seedCoreDataIfNeeded()

@@ -5,14 +5,17 @@ import SwiftData
 /// a default set scheme — so common exercises don't need retyping per Quest.
 @Model
 final class ExerciseTemplate {
-    var id: UUID
-    var name: String
-    var primaryMuscleRaw: String
-    var secondaryMuscleRawValues: [String]
-    var notes: String
-    var defaultSetCount: Int
-    var defaultReps: Int
-    var defaultWeight: Double
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var id: UUID = UUID()
+    var name: String = ""
+    var primaryMuscleRaw: String = MuscleGroup.chest.rawValue
+    var secondaryMuscleRawValues: [String] = []
+    var notes: String = ""
+    var defaultSetCount: Int = 3
+    var defaultReps: Int = 10
+    var defaultWeight: Double = 0
     var defaultRestSeconds: Int = 60
     var exerciseTypeRaw: String = ExerciseType.strength.rawValue
     var defaultDistanceMiles: Double = 0

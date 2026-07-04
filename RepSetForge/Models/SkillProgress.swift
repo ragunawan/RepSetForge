@@ -6,10 +6,13 @@ import SwiftData
 /// from accumulated skill XP instead of purely from character level.
 @Model
 final class SkillProgress {
-    var skillID: String
-    var currentXP: Int
-    var totalXP: Int
-    var unlocked: Bool
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var skillID: String = ""
+    var currentXP: Int = 0
+    var totalXP: Int = 0
+    var unlocked: Bool = false
     var unlockedDate: Date?
     /// Whether this skill is the active loadout choice for its category.
     /// At most one skill per `RPGSkillCategory` should be equipped at a time.

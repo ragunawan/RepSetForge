@@ -4,11 +4,14 @@ import SwiftData
 /// A single logged set (reps × weight) within an Exercise.
 @Model
 final class ExerciseSet {
-    var id: UUID
-    var setNumber: Int
-    var reps: Int
-    var weight: Double
-    var completed: Bool
+    // CloudKit requires every SwiftData attribute to be optional or have a
+    // default value — these defaults are never actually relied upon since
+    // init(...) always sets a real value immediately.
+    var id: UUID = UUID()
+    var setNumber: Int = 0
+    var reps: Int = 0
+    var weight: Double = 0
+    var completed: Bool = false
     /// Distance in miles, for `.distance`/`.cardio` exercise types.
     var distanceMiles: Double = 0
     /// Duration in seconds, for `.duration`/`.cardio` exercise types.
