@@ -5,6 +5,7 @@ struct CharacterProgressView: View {
     @Query private var characters: [PlayerCharacter]
     @Query private var muscles: [MuscleProgress]
     @Query(sort: \PersonalRecord.achievedDate, order: .reverse) private var personalRecords: [PersonalRecord]
+    @Query(sort: \Quest.completedDate, order: .reverse) private var allQuests: [Quest]
 
     private var character: PlayerCharacter? { characters.first }
 
@@ -23,6 +24,10 @@ struct CharacterProgressView: View {
 
     private var insights: [TrainingInsightsService.Insight] {
         TrainingInsightsService.insights(for: muscles)
+    }
+
+    private var recoveryStats: [MuscleLoadStat] {
+        MuscleRecoveryService.loadStats(from: allQuests)
     }
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
@@ -109,6 +114,37 @@ struct CharacterProgressView: View {
                         }
                     }
 
+                    if !recoveryStats.isEmpty {
+                        PixelDivider()
+
+                        Text("Recovery")
+                            .font(RepSetForgeFont.heading())
+                            .foregroundStyle(Color.questNavy)
+
+                        LazyVGrid(columns: columns, spacing: RepSetForgeMetrics.paddingMedium) {
+                            ForEach(recoveryStats) { stat in
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack {
+                                        Image(systemName: stat.muscleGroup.iconName)
+                                            .foregroundStyle(recoveryColor(for: stat.status))
+                                        Text(stat.muscleGroup.displayName)
+                                            .font(RepSetForgeFont.body(13))
+                                            .foregroundStyle(Color.questSilver)
+                                    }
+                                    Text(stat.status.rawValue)
+                                        .font(RepSetForgeFont.stat(12))
+                                        .foregroundStyle(recoveryColor(for: stat.status))
+                                    Text(recoveryDetail(for: stat))
+                                        .font(RepSetForgeFont.body(11))
+                                        .foregroundStyle(Color.questSilver.opacity(0.7))
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(RepSetForgeMetrics.paddingSmall)
+                                .pixelPanel(fill: recoveryColor(for: stat.status).opacity(0.18))
+                            }
+                        }
+                    }
+
                     if !insights.isEmpty {
                         PixelDivider()
 
@@ -186,6 +222,24 @@ struct CharacterProgressView: View {
             .sheet(isPresented: $showingSettings) {
                 SettingsSheet()
             }
+        }
+    }
+
+    private func recoveryColor(for status: RecoveryStatus) -> Color {
+        switch status {
+        case .untrained: return Color.questSilver
+        case .fatigued: return .red
+        case .recovering: return .orange
+        case .fresh: return .green
+        }
+    }
+
+    private func recoveryDetail(for stat: MuscleLoadStat) -> String {
+        switch stat.daysSinceLastTrained {
+        case nil: return "Never trained"
+        case 0: return "Trained today"
+        case 1: return "1 day ago"
+        case let days?: return "\(days) days ago"
         }
     }
 }
