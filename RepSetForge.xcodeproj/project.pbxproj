@@ -48,6 +48,7 @@
 		AA0200000000000000000075 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000075 /* HealthKitService.swift */; };
 		AA0200000000000000000077 /* AppIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000077 /* AppIntentService.swift */; };
 		AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000079 /* RepSetForgeShortcuts.swift */; };
+		AA020000000000000000007A /* PrivacyDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007A /* PrivacyDataService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -126,6 +127,7 @@
 		AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000074 /* ProgressImportServiceTests.swift */; };
 		AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000076 /* HealthKitServiceTests.swift */; };
 		AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000078 /* AppIntentServiceTests.swift */; };
+		AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007B /* PrivacyDataServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -182,6 +184,7 @@
 		AA0100000000000000000075 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000077 /* AppIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000079 /* RepSetForgeShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeShortcuts.swift; sourceTree = "<group>"; };
+		AA010000000000000000007A /* PrivacyDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -260,6 +263,7 @@
 		AA0100000000000000000074 /* ProgressImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000076 /* HealthKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000078 /* AppIntentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000007B /* PrivacyDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +375,7 @@
 				AA0100000000000000000075 /* HealthKitService.swift */,
 				AA0100000000000000000077 /* AppIntentService.swift */,
 				AA0100000000000000000079 /* RepSetForgeShortcuts.swift */,
+				AA010000000000000000007A /* PrivacyDataService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -467,6 +472,7 @@
 				AA0100000000000000000074 /* ProgressImportServiceTests.swift */,
 				AA0100000000000000000076 /* HealthKitServiceTests.swift */,
 				AA0100000000000000000078 /* AppIntentServiceTests.swift */,
+				AA010000000000000000007B /* PrivacyDataServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -607,6 +613,7 @@
 				AA0200000000000000000075 /* HealthKitService.swift in Sources */,
 				AA0200000000000000000077 /* AppIntentService.swift in Sources */,
 				AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */,
+				AA020000000000000000007A /* PrivacyDataService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -691,6 +698,7 @@
 				AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */,
 				AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */,
 				AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */,
+				AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

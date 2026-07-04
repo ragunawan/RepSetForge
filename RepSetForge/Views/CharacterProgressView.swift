@@ -284,6 +284,7 @@ private struct SettingsSheet: View {
     @State private var exportError: String?
     @State private var showingImporter = false
     @State private var importResultMessage: String?
+    @State private var showingDeleteConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -347,6 +348,19 @@ private struct SettingsSheet: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+
+                Section("Privacy & Data") {
+                    Text("RepSetForge stores everything — quests, exercises, sets, achievements, and personal records — only on this device. Nothing is sent to any RepSetForge server, because there isn't one. Data only ever leaves the device when you explicitly export it, or if you connect Apple Health above.")
+                        .font(RepSetForgeFont.body(12))
+                        .foregroundStyle(.secondary)
+
+                    Button("Delete All Workout Data", role: .destructive) {
+                        showingDeleteConfirmation = true
+                    }
+                    Text("Erases every quest, exercise, and set, and resets your level, muscle progress, gold, achievements, and personal records to their starting state. Your class, equipment, and weight-unit preference are untouched.")
+                        .font(RepSetForgeFont.body(12))
+                        .foregroundStyle(.secondary)
+                }
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -359,6 +373,17 @@ private struct SettingsSheet: View {
             }
             .fileImporter(isPresented: $showingImporter, allowedContentTypes: [.json]) { result in
                 handleImport(result)
+            }
+            .confirmationDialog(
+                "Delete All Workout Data?",
+                isPresented: $showingDeleteConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Delete Everything", role: .destructive) {
+                    PrivacyDataService.deleteAllWorkoutData(context: modelContext)
+                }
+            } message: {
+                Text("This can't be undone. Every quest, exercise, and set will be erased, and your progression will reset to Level 1.")
             }
         }
     }
