@@ -122,6 +122,8 @@ FR = {
     "TEST_QuestJournal":       u(1, 0x69),
     "RecoveryRecommendationService": u(1, 0x6A),
     "TEST_RecoveryRecommendation":   u(1, 0x6B),
+    "ExerciseNameSuggestionService": u(1, 0x6C),
+    "TEST_ExerciseNameSuggestion":   u(1, 0x6D),
 }
 
 # Build files
@@ -204,6 +206,7 @@ APP_SOURCES = [
     ("MuscleRecoveryService", "Services/MuscleRecoveryService.swift"),
     ("QuestFilterService", "Services/QuestFilterService.swift"),
     ("RecoveryRecommendationService", "Services/RecoveryRecommendationService.swift"),
+    ("ExerciseNameSuggestionService", "Services/ExerciseNameSuggestionService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
@@ -277,6 +280,7 @@ TEST_SOURCES = [
     ("TEST_QuestFilter", "RepSetForgeTests/QuestFilterServiceTests.swift"),
     ("TEST_QuestJournal", "RepSetForgeTests/QuestJournalTests.swift"),
     ("TEST_RecoveryRecommendation", "RepSetForgeTests/RecoveryRecommendationServiceTests.swift"),
+    ("TEST_ExerciseNameSuggestion", "RepSetForgeTests/ExerciseNameSuggestionServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -406,7 +410,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])

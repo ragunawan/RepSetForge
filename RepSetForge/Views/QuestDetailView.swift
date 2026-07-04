@@ -217,8 +217,13 @@ private struct AddExerciseSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \ExerciseTemplate.name) private var templates: [ExerciseTemplate]
     @Query private var characters: [PlayerCharacter]
+    @Query private var allExercises: [Exercise]
 
     private var preferredWeightUnit: WeightUnit { characters.first?.preferredWeightUnit ?? .pounds }
+
+    private var nameSuggestions: [String] {
+        ExerciseNameSuggestionService.suggestions(matching: name, exerciseNames: allExercises.map(\.name))
+    }
 
     @State private var name = ""
     @State private var primaryMuscle: MuscleGroup = .chest
@@ -286,6 +291,19 @@ private struct AddExerciseSheet: View {
     private var primarySection: some View {
         Section("Skill") {
             TextField("Name", text: $name)
+            if !nameSuggestions.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: RepSetForgeMetrics.paddingSmall) {
+                        ForEach(nameSuggestions, id: \.self) { suggestion in
+                            Button(suggestion) { name = suggestion }
+                                .font(RepSetForgeFont.body(12))
+                                .buttonStyle(.bordered)
+                        }
+                    }
+                }
+                .listRowInsets(EdgeInsets())
+                .padding(.horizontal, RepSetForgeMetrics.paddingSmall)
+            }
             Picker("Type", selection: $exerciseType) {
                 ForEach(ExerciseType.allCases) { type in
                     Text(type.displayName).tag(type)

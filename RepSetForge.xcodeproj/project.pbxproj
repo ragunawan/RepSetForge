@@ -41,6 +41,7 @@
 		AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000064 /* MuscleRecoveryService.swift */; };
 		AA0200000000000000000066 /* QuestFilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000066 /* QuestFilterService.swift */; };
 		AA020000000000000000006A /* RecoveryRecommendationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006A /* RecoveryRecommendationService.swift */; };
+		AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006C /* ExerciseNameSuggestionService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -112,6 +113,7 @@
 		AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000067 /* QuestFilterServiceTests.swift */; };
 		AA0200000000000000000069 /* QuestJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000069 /* QuestJournalTests.swift */; };
 		AA020000000000000000006B /* RecoveryRecommendationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */; };
+		AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -161,6 +163,7 @@
 		AA0100000000000000000064 /* MuscleRecoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000066 /* QuestFilterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterService.swift; sourceTree = "<group>"; };
 		AA010000000000000000006A /* RecoveryRecommendationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryRecommendationService.swift; sourceTree = "<group>"; };
+		AA010000000000000000006C /* ExerciseNameSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -232,6 +235,7 @@
 		AA0100000000000000000067 /* QuestFilterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000069 /* QuestJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestJournalTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryRecommendationServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +340,7 @@
 				AA0100000000000000000064 /* MuscleRecoveryService.swift */,
 				AA0100000000000000000066 /* QuestFilterService.swift */,
 				AA010000000000000000006A /* RecoveryRecommendationService.swift */,
+				AA010000000000000000006C /* ExerciseNameSuggestionService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -425,6 +430,7 @@
 				AA0100000000000000000067 /* QuestFilterServiceTests.swift */,
 				AA0100000000000000000069 /* QuestJournalTests.swift */,
 				AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */,
+				AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 				AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */,
 				AA0200000000000000000066 /* QuestFilterService.swift in Sources */,
 				AA020000000000000000006A /* RecoveryRecommendationService.swift in Sources */,
+				AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -635,6 +642,7 @@
 				AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */,
 				AA0200000000000000000069 /* QuestJournalTests.swift in Sources */,
 				AA020000000000000000006B /* RecoveryRecommendationServiceTests.swift in Sources */,
+				AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
