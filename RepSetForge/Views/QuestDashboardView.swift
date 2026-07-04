@@ -9,6 +9,10 @@ struct QuestDashboardView: View {
     private var character: PlayerCharacter? { characters.first }
     private var activeQuests: [Quest] { allQuests.filter { $0.status != .completed } }
 
+    private var suggestedQuest: SuggestedQuestService.Suggestion? {
+        SuggestedQuestService.suggestedQuest(from: allQuests)
+    }
+
     @State private var path = NavigationPath()
 
     var body: some View {
@@ -62,6 +66,36 @@ struct QuestDashboardView: View {
                         .pixelPanel(fill: .questNavy.opacity(0.05), border: .questGold)
                     }
 
+                    if activeQuests.isEmpty, let suggestion = suggestedQuest {
+                        VStack(alignment: .leading, spacing: RepSetForgeMetrics.paddingSmall) {
+                            Text("Suggested Quest")
+                                .font(RepSetForgeFont.heading())
+                                .foregroundStyle(Color.questNavy)
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack {
+                                    Image(systemName: "arrow.triangle.2.circlepath")
+                                        .foregroundStyle(Color.questGold)
+                                    Text(suggestion.name)
+                                        .font(RepSetForgeFont.body())
+                                        .foregroundStyle(Color.questSilver)
+                                }
+                                Text("You've done this \(suggestion.timesRepeated)x, last on \(suggestion.lastCompletedDate.formatted(date: .abbreviated, time: .omitted)). Due again?")
+                                    .font(RepSetForgeFont.body(12))
+                                    .foregroundStyle(Color.questSilver.opacity(0.7))
+
+                                Button("Start Suggested Quest") {
+                                    startSuggestedQuest(suggestion)
+                                }
+                                .buttonStyle(.pixel)
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 4)
+                            }
+                            .padding(RepSetForgeMetrics.paddingSmall)
+                            .pixelPanel()
+                        }
+                    }
+
                     VStack(spacing: RepSetForgeMetrics.paddingSmall) {
                         Button("Start New Quest") {
                             startNewQuest()
@@ -88,6 +122,13 @@ struct QuestDashboardView: View {
 
     private func startNewQuest() {
         let quest = Quest(name: "New Quest", status: .active)
+        modelContext.insert(quest)
+        path.append(quest)
+    }
+
+    private func startSuggestedQuest(_ suggestion: SuggestedQuestService.Suggestion) {
+        let unit = character?.preferredWeightUnit ?? .pounds
+        let quest = SuggestedQuestService.makeQuest(from: suggestion, unit: unit)
         modelContext.insert(quest)
         path.append(quest)
     }
