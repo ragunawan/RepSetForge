@@ -173,7 +173,7 @@ private struct FloatingCombatText: View {
         Text(event.text)
             .font(RepSetForgeFont.stat(13))
             .foregroundStyle(color)
-            .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
+            .pixelTextShadow()
             .offset(x: event.jitter, y: reduceMotion ? 0 : (risen ? -18 : 0))
             .opacity(risen ? 0.2 : 1)
             .onAppear {
