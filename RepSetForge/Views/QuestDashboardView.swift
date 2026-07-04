@@ -53,13 +53,20 @@ struct QuestDashboardView: View {
                             .buttonStyle(.plain)
                         }
                     } else {
+                        // A true first launch (no quests completed yet) gets
+                        // a warmer, more explicit nudge than a returning
+                        // player who's simply between quests.
+                        let isFirstLaunch = (character?.completedQuestCount ?? 0) == 0
                         VStack(spacing: RepSetForgeMetrics.paddingMedium) {
-                            Text("No active quest")
+                            Text(isFirstLaunch ? "Ready for your first quest?" : "No active quest")
                                 .font(RepSetForgeFont.heading())
                                 .foregroundStyle(Color.questNavy)
-                            Text("Begin a new quest to start earning XP.")
+                            Text(isFirstLaunch
+                                ? "Tap \"Start New Quest\" below, add a skill or two, and log your first set to start earning XP."
+                                : "Begin a new quest to start earning XP.")
                                 .font(RepSetForgeFont.body(13))
                                 .foregroundStyle(Color.questNavy.opacity(0.7))
+                                .multilineTextAlignment(.center)
                         }
                         .frame(maxWidth: .infinity)
                         .padding(RepSetForgeMetrics.paddingLarge)

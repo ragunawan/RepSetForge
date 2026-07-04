@@ -15,10 +15,37 @@ struct AchievementsView: View {
         }
     }
 
+    private var unlockedCount: Int { achievements.filter(\.unlocked).count }
+
+    /// Encouraging framing for a fresh save (all locked) vs. genuine progress,
+    /// so a wall of lock icons doesn't read as purely discouraging.
+    private var progressSubtitle: String {
+        guard !achievements.isEmpty else { return "" }
+        if unlockedCount == 0 {
+            return "Complete quests to start unlocking these."
+        }
+        if unlockedCount == achievements.count {
+            return "All achievements unlocked!"
+        }
+        return "Keep training to unlock the rest."
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: RepSetForgeMetrics.paddingSmall) {
+                    if !achievements.isEmpty {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("\(unlockedCount) of \(achievements.count) Unlocked")
+                                .font(RepSetForgeFont.heading())
+                                .foregroundStyle(Color.questNavy)
+                            Text(progressSubtitle)
+                                .font(RepSetForgeFont.body(13))
+                                .foregroundStyle(Color.questNavy.opacity(0.6))
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, RepSetForgeMetrics.paddingSmall)
+                    }
                     ForEach(sorted) { achievement in
                         PixelAchievementCard(achievement: achievement)
                     }

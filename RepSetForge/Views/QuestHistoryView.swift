@@ -52,13 +52,31 @@ struct QuestHistoryView: View {
                 QuestDetailView(quest: quest)
             }
             .overlay {
-                if completedQuests.isEmpty {
-                    Text("No completed quests yet.")
-                        .font(RepSetForgeFont.body())
-                        .foregroundStyle(Color.questNavy.opacity(0.6))
+                // Calendar mode is left alone here: its month grid is still
+                // useful to browse even with no history, and it already
+                // explains "no quests" per selected day at the row level —
+                // an overlay on top would just visually collide with the grid.
+                if completedQuests.isEmpty, displayMode != .calendar {
+                    emptyStateMessage
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private var emptyStateMessage: some View {
+        VStack(spacing: 4) {
+            Text("No completed quests yet.")
+                .font(RepSetForgeFont.body())
+                .foregroundStyle(Color.questNavy.opacity(0.6))
+            if displayMode == .charts {
+                Text("Charts fill in once you complete your first quest.")
+                    .font(RepSetForgeFont.body(12))
+                    .foregroundStyle(Color.questNavy.opacity(0.5))
+            }
+        }
+        .multilineTextAlignment(.center)
+        .padding(RepSetForgeMetrics.paddingLarge)
     }
 
     private var listView: some View {
