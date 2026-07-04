@@ -21,9 +21,9 @@ struct PixelXPBar: View {
             }
         }
         .frame(height: height)
-        .clipShape(RoundedRectangle(cornerRadius: 3, style: .circular))
+        .clipShape(RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadiusSmall, style: .circular))
         .overlay(
-            RoundedRectangle(cornerRadius: 3, style: .circular)
+            RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadiusSmall, style: .circular)
                 .strokeBorder(Color.questSilver, lineWidth: 1.5)
         )
         .accessibilityLabel("XP progress")

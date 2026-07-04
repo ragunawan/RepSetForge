@@ -22,7 +22,7 @@ struct PixelQuestCard: View {
 
     var body: some View {
         HStack(spacing: RepSetForgeMetrics.paddingMedium) {
-            RoundedRectangle(cornerRadius: 3, style: .circular)
+            RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadiusSmall, style: .circular)
                 .fill(statusColor)
                 .frame(width: 6)
 

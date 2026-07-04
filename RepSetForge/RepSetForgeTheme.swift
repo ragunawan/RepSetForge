@@ -65,6 +65,10 @@ enum RepSetForgeFont {
 enum RepSetForgeMetrics {
     /// Squared-off corner radius used throughout for the pixel-art look.
     static let cornerRadius: CGFloat = 6
+    /// Scaled-down corner radius for small elements (XP bar ends, status
+    /// stripes, inline pill-style badges) where the full `cornerRadius`
+    /// would look disproportionately rounded.
+    static let cornerRadiusSmall: CGFloat = 3
     /// Chunky border width for panels and buttons.
     static let borderWidth: CGFloat = 3
     static let paddingSmall: CGFloat = 8
@@ -102,6 +106,10 @@ enum RepSetForgeMetrics {
 //   - `RepSetForgeMetrics.cornerRadius` (6pt) and `.borderWidth` (3pt) are
 //     the two knobs behind the "chunky pixel-art panel" look. Use
 //     `pixelPanel()` rather than hand-rolling a bordered RoundedRectangle.
+//   - `.cornerRadiusSmall` (3pt) is the same squared-off language scaled down
+//     for small elements (XP bar ends, status stripes, inline badges) — but
+//     always a `RoundedRectangle`, never a fully-rounded `Capsule`. A capsule
+//     reads as generic flat-UI chrome, not pixel art.
 //   - Text over busy art (combat numbers, etc.) uses `pixelTextShadow()` — a
 //     hard, zero-blur 1pt offset shadow. Never a soft/blurred shadow; that
 //     reads as a modern flat-UI effect, not pixel art.

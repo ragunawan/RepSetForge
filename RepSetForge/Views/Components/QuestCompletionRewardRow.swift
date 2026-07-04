@@ -24,7 +24,7 @@ struct QuestCompletionRewardRow: View {
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
                     .background(Color.questGreen.opacity(0.15))
-                    .clipShape(Capsule())
+                    .clipShape(RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadiusSmall, style: .circular))
             }
             Spacer()
             Text("+\(xp) XP")

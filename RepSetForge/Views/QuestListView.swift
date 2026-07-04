@@ -140,7 +140,8 @@ private struct ManageQuestTemplatesSheet: View {
                 Section {
                     if templates.isEmpty {
                         Text("No saved quest templates yet. Save one from a quest's detail screen.")
-                            .foregroundStyle(.secondary)
+                            .font(RepSetForgeFont.body(13))
+                            .foregroundStyle(Color.questNavy.opacity(0.6))
                     } else {
                         ForEach(templates) { template in
                             VStack(alignment: .leading, spacing: 2) {
