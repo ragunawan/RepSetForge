@@ -28,7 +28,7 @@ RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP 
 - `RepSetForge/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement) plus the passive-combat RPG layer (RPGClass, RPGMonster, RPGBoss, RPGSkill, RPGEquipment, RPGEncounterState, RPGProgressionSnapshot — struct/enum-based, not persisted)
 - `RepSetForge/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic), and the RPG combat layer (MonsterSpawnService, BossMilestoneService, RPGEncounterViewModel, RPGMonsterRegistry, RPGBossRegistry, RPGEquipmentRegistry, RPGSkillRegistry)
 - `RepSetForge/Persistence/` — PersistenceController (ModelContainer, seeding)
-- `RepSetForge/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, History, Achievements, Completion)
+- `RepSetForge/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, EquipmentShop, History, Achievements, Completion, Onboarding)
 - `RepSetForge/Views/Components/` — Pixel-art UI components (PixelQuestCard, PixelXPBar, PixelBadge, PixelStatPanel, PixelButton, PixelAchievementCard, PixelDivider, QuestCompletionRewardRow)
 - `Docs/ART_GENERATION_README.md` / `ArtSource/RPG/` — manual chibi-art import pipeline for RPG sprites (see `scripts/import_rpg_art.py`)
 
@@ -226,8 +226,8 @@ For testing, the app supports:
 # Seed sample quests and character progression
 --preview-data
 
-# Open to a specific tab (0=Quest Board, 1=Character, 2=History, 3=Achievements)
---tab 2
+# Open to a specific tab (0=Quest Board, 1=Character, 2=Gear, 3=History, 4=Achievements)
+--tab 3
 ```
 
 These are parsed in RepSetForgeApp.swift.

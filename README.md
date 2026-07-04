@@ -28,7 +28,7 @@ open RepSetForge.xcodeproj
 
 **Launch arguments:**
 - `--preview-data` seeds sample quests and character progression
-- `--tab <0|1|2|3>` starts on a specific tab (0=Quest Board, 1=Character, 2=History, 3=Achievements)
+- `--tab <0|1|2|3|4>` starts on a specific tab (0=Quest Board, 1=Character, 2=Gear, 3=History, 4=Achievements)
 
 ## Directory Structure
 
@@ -72,6 +72,7 @@ RepSetForge/
 │   │   ├── QuestDetailView.swift         # Edit quest, add exercises
 │   │   ├── ExerciseLoggingView.swift     # Log sets/reps/weight
 │   │   ├── CharacterProgressView.swift   # Levels, titles
+│   │   ├── EquipmentShopView.swift       # Gear tab: browse, buy, equip
 │   │   ├── QuestHistoryView.swift        # Past quests
 │   │   ├── AchievementsView.swift        # Milestone list
 │   │   ├── QuestCompletionView.swift     # Celebratory summary

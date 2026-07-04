@@ -26,13 +26,17 @@ struct ContentView: View {
                 .tabItem { Label("Character", systemImage: "person.fill") }
                 .tag(1)
 
+            EquipmentShopView()
+                .tabItem { Label("Gear", systemImage: "cart.fill") }
+                .tag(2)
+
             QuestHistoryView()
                 .tabItem { Label("History", systemImage: "clock.fill") }
-                .tag(2)
+                .tag(3)
 
             AchievementsView()
                 .tabItem { Label("Achievements", systemImage: "medal.fill") }
-                .tag(3)
+                .tag(4)
         }
         .tint(.questGold)
         .fullScreenCover(isPresented: .constant(needsOnboarding)) {

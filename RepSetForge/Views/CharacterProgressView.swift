@@ -27,7 +27,6 @@ struct CharacterProgressView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
     @State private var showingSettings = false
-    @State private var showingShop = false
 
     var body: some View {
         NavigationStack {
@@ -139,19 +138,9 @@ struct CharacterProgressView: View {
                         Label("Settings", systemImage: "gearshape.fill")
                     }
                 }
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        showingShop = true
-                    } label: {
-                        Label("Shop", systemImage: "cart.fill")
-                    }
-                }
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsSheet()
-            }
-            .sheet(isPresented: $showingShop) {
-                EquipmentShopView()
             }
         }
     }

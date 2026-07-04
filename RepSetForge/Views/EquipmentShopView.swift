@@ -2,11 +2,9 @@ import SwiftUI
 import SwiftData
 
 /// Browse the equipment catalog, buy items with gold, and equip/unequip per
-/// slot. Not yet reachable from a dedicated tab — that's the next TODO item —
-/// so it's opened as a sheet from the Character screen for now.
+/// slot. Shown as its own "Gear" tab.
 struct EquipmentShopView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
 
     @Query private var characters: [PlayerCharacter]
     @Query private var encounterStates: [RPGEncounterState]
@@ -67,11 +65,6 @@ struct EquipmentShopView: View {
             }
             .background(Color.questParchment.ignoresSafeArea())
             .navigationTitle("Equipment")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
-                }
-            }
         }
     }
 
