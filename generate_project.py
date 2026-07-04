@@ -108,6 +108,9 @@ FR = {
     "TEST_TrainingInsights":   u(1, 0x5B),
     "SuggestedQuestService":   u(1, 0x5C),
     "TEST_SuggestedQuest":     u(1, 0x5D),
+    "QuestCalendarService":    u(1, 0x5E),
+    "TEST_QuestCalendar":      u(1, 0x5F),
+    "QuestCalendarView":       u(1, 0x60),
 }
 
 # Build files
@@ -185,6 +188,7 @@ APP_SOURCES = [
     ("TrainingStyleService",  "Services/TrainingStyleService.swift"),
     ("TrainingInsightsService", "Services/TrainingInsightsService.swift"),
     ("SuggestedQuestService", "Services/SuggestedQuestService.swift"),
+    ("QuestCalendarService", "Services/QuestCalendarService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
@@ -195,6 +199,7 @@ APP_SOURCES = [
     ("ExerciseLoggingView",   "Views/ExerciseLoggingView.swift"),
     ("CharacterProgressView", "Views/CharacterProgressView.swift"),
     ("QuestHistoryView",      "Views/QuestHistoryView.swift"),
+    ("QuestCalendarView",     "Views/QuestCalendarView.swift"),
     ("AchievementsView",      "Views/AchievementsView.swift"),
     ("QuestCompletionView",   "Views/QuestCompletionView.swift"),
     ("PixelQuestCard",        "Views/Components/PixelQuestCard.swift"),
@@ -249,6 +254,7 @@ TEST_SOURCES = [
     ("TEST_TrainingStyle", "RepSetForgeTests/TrainingStyleServiceTests.swift"),
     ("TEST_TrainingInsights", "RepSetForgeTests/TrainingInsightsServiceTests.swift"),
     ("TEST_SuggestedQuest", "RepSetForgeTests/SuggestedQuestServiceTests.swift"),
+    ("TEST_QuestCalendar", "RepSetForgeTests/QuestCalendarServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -378,7 +384,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
@@ -388,7 +394,7 @@ def pbxproj():
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
     for key in ["OnboardingView", "EquipmentShopView", "QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
-                "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView"]:
+                "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView", "QuestCalendarView"]:
         filename = dict(APP_SOURCES)[key].split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")
     a(f"\t\t\t\t{GR['Components']} /* Components */,")

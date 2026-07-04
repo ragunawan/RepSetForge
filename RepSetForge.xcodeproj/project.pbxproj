@@ -36,6 +36,7 @@
 		AA0200000000000000000058 /* TrainingStyleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000058 /* TrainingStyleService.swift */; };
 		AA020000000000000000005A /* TrainingInsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005A /* TrainingInsightsService.swift */; };
 		AA020000000000000000005C /* SuggestedQuestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005C /* SuggestedQuestService.swift */; };
+		AA020000000000000000005E /* QuestCalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005E /* QuestCalendarService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -46,6 +47,7 @@
 		AA0200000000000000000012 /* ExerciseLoggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000012 /* ExerciseLoggingView.swift */; };
 		AA0200000000000000000013 /* CharacterProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000013 /* CharacterProgressView.swift */; };
 		AA0200000000000000000014 /* QuestHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000014 /* QuestHistoryView.swift */; };
+		AA0200000000000000000060 /* QuestCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000060 /* QuestCalendarView.swift */; };
 		AA0200000000000000000015 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000015 /* AchievementsView.swift */; };
 		AA0200000000000000000016 /* QuestCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000016 /* QuestCompletionView.swift */; };
 		AA0200000000000000000017 /* PixelQuestCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000017 /* PixelQuestCard.swift */; };
@@ -98,6 +100,7 @@
 		AA0200000000000000000059 /* TrainingStyleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000059 /* TrainingStyleServiceTests.swift */; };
 		AA020000000000000000005B /* TrainingInsightsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005B /* TrainingInsightsServiceTests.swift */; };
 		AA020000000000000000005D /* SuggestedQuestServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005D /* SuggestedQuestServiceTests.swift */; };
+		AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005F /* QuestCalendarServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -142,6 +145,7 @@
 		AA0100000000000000000058 /* TrainingStyleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingStyleService.swift; sourceTree = "<group>"; };
 		AA010000000000000000005A /* TrainingInsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingInsightsService.swift; sourceTree = "<group>"; };
 		AA010000000000000000005C /* SuggestedQuestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedQuestService.swift; sourceTree = "<group>"; };
+		AA010000000000000000005E /* QuestCalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -152,6 +156,7 @@
 		AA0100000000000000000012 /* ExerciseLoggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLoggingView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000013 /* CharacterProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterProgressView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000014 /* QuestHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestHistoryView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000060 /* QuestCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000015 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000016 /* QuestCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCompletionView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000017 /* PixelQuestCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelQuestCard.swift; sourceTree = "<group>"; };
@@ -204,6 +209,7 @@
 		AA0100000000000000000059 /* TrainingStyleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingStyleServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000005B /* TrainingInsightsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingInsightsServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000005D /* SuggestedQuestServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedQuestServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000005F /* QuestCalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +309,7 @@
 				AA0100000000000000000058 /* TrainingStyleService.swift */,
 				AA010000000000000000005A /* TrainingInsightsService.swift */,
 				AA010000000000000000005C /* SuggestedQuestService.swift */,
+				AA010000000000000000005E /* QuestCalendarService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -338,6 +345,7 @@
 				AA0100000000000000000014 /* QuestHistoryView.swift */,
 				AA0100000000000000000015 /* AchievementsView.swift */,
 				AA0100000000000000000016 /* QuestCompletionView.swift */,
+				AA0100000000000000000060 /* QuestCalendarView.swift */,
 				AA0300000000000000000006 /* Components */,
 			);
 			path = Views;
@@ -383,6 +391,7 @@
 				AA0100000000000000000059 /* TrainingStyleServiceTests.swift */,
 				AA010000000000000000005B /* TrainingInsightsServiceTests.swift */,
 				AA010000000000000000005D /* SuggestedQuestServiceTests.swift */,
+				AA010000000000000000005F /* QuestCalendarServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -511,6 +520,7 @@
 				AA0200000000000000000058 /* TrainingStyleService.swift in Sources */,
 				AA020000000000000000005A /* TrainingInsightsService.swift in Sources */,
 				AA020000000000000000005C /* SuggestedQuestService.swift in Sources */,
+				AA020000000000000000005E /* QuestCalendarService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -521,6 +531,7 @@
 				AA0200000000000000000012 /* ExerciseLoggingView.swift in Sources */,
 				AA0200000000000000000013 /* CharacterProgressView.swift in Sources */,
 				AA0200000000000000000014 /* QuestHistoryView.swift in Sources */,
+				AA0200000000000000000060 /* QuestCalendarView.swift in Sources */,
 				AA0200000000000000000015 /* AchievementsView.swift in Sources */,
 				AA0200000000000000000016 /* QuestCompletionView.swift in Sources */,
 				AA0200000000000000000017 /* PixelQuestCard.swift in Sources */,
@@ -579,6 +590,7 @@
 				AA0200000000000000000059 /* TrainingStyleServiceTests.swift in Sources */,
 				AA020000000000000000005B /* TrainingInsightsServiceTests.swift in Sources */,
 				AA020000000000000000005D /* SuggestedQuestServiceTests.swift in Sources */,
+				AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
