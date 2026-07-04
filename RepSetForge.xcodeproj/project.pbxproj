@@ -44,6 +44,7 @@
 		AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006C /* ExerciseNameSuggestionService.swift */; };
 		AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006E /* ExerciseMetricsService.swift */; };
 		AA0200000000000000000071 /* ProgressExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000071 /* ProgressExportService.swift */; };
+		AA0200000000000000000073 /* ProgressImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000073 /* ProgressImportService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -119,6 +120,7 @@
 		AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */; };
 		AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */; };
 		AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000072 /* ProgressExportServiceTests.swift */; };
+		AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000074 /* ProgressImportServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -171,6 +173,7 @@
 		AA010000000000000000006C /* ExerciseNameSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionService.swift; sourceTree = "<group>"; };
 		AA010000000000000000006E /* ExerciseMetricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000071 /* ProgressExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000073 /* ProgressImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -246,6 +249,7 @@
 		AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000072 /* ProgressExportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000074 /* ProgressImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +357,7 @@
 				AA010000000000000000006C /* ExerciseNameSuggestionService.swift */,
 				AA010000000000000000006E /* ExerciseMetricsService.swift */,
 				AA0100000000000000000071 /* ProgressExportService.swift */,
+				AA0100000000000000000073 /* ProgressImportService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -446,6 +451,7 @@
 				AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */,
 				AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */,
 				AA0100000000000000000072 /* ProgressExportServiceTests.swift */,
+				AA0100000000000000000074 /* ProgressImportServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -582,6 +588,7 @@
 				AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */,
 				AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */,
 				AA0200000000000000000071 /* ProgressExportService.swift in Sources */,
+				AA0200000000000000000073 /* ProgressImportService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -663,6 +670,7 @@
 				AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */,
 				AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */,
 				AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */,
+				AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

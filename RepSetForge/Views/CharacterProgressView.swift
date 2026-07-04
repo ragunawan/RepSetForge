@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UniformTypeIdentifiers
 
 struct CharacterProgressView: View {
     @Query private var characters: [PlayerCharacter]
@@ -281,6 +282,8 @@ private struct SettingsSheet: View {
     @State private var exportFormat: ProgressExportFormat = .json
     @State private var exportedFileURL: URL?
     @State private var exportError: String?
+    @State private var showingImporter = false
+    @State private var importResultMessage: String?
 
     var body: some View {
         NavigationStack {
@@ -324,6 +327,14 @@ private struct SettingsSheet: View {
                             .font(RepSetForgeFont.body(12))
                             .foregroundStyle(.red)
                     }
+
+                    Button("Import Progress…") { showingImporter = true }
+
+                    if let importResultMessage {
+                        Text(importResultMessage)
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(Color.questNavy.opacity(0.7))
+                    }
                 }
             }
             .navigationTitle("Settings")
@@ -335,6 +346,27 @@ private struct SettingsSheet: View {
                     }
                 }
             }
+            .fileImporter(isPresented: $showingImporter, allowedContentTypes: [.json]) { result in
+                handleImport(result)
+            }
+        }
+    }
+
+    private func handleImport(_ result: Result<URL, Error>) {
+        switch result {
+        case .success(let url):
+            let needsAccess = url.startAccessingSecurityScopedResource()
+            defer { if needsAccess { url.stopAccessingSecurityScopedResource() } }
+            do {
+                let data = try Data(contentsOf: url)
+                let importResult = try ProgressImportService.importExport(from: data, context: modelContext)
+                try? modelContext.save()
+                importResultMessage = "Imported \(importResult.importedQuestCount) quest(s); skipped \(importResult.skippedDuplicateQuestCount) already present."
+            } catch {
+                importResultMessage = error.localizedDescription
+            }
+        case .failure(let error):
+            importResultMessage = error.localizedDescription
         }
     }
 

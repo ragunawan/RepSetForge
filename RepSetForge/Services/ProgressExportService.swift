@@ -1,8 +1,12 @@
 import Foundation
 
 /// JSON/CSV export of the player's progress — a portable snapshot for backup
-/// or external analysis, not used for re-import (see the separate "Import
-/// progress" backlog item for that).
+/// or external analysis. JSON is also the format `ProgressImportService`
+/// reads back in, which is why `ExerciseExport`'s muscle/type fields and
+/// `QuestExport.id` are stored as stable raw values rather than display
+/// text — everything else (status, muscle/record-type summaries) is
+/// informational-only, since derived progression is always recomputed by
+/// `ProgressionRebuildService` rather than trusted from the file.
 enum ProgressExportFormat: String, CaseIterable, Identifiable {
     case json = "JSON"
     case csv = "CSV"
@@ -39,13 +43,19 @@ struct ProgressExport: Codable {
 
     struct ExerciseExport: Codable {
         let name: String
+        /// `MuscleGroup.rawValue` — reconstructed on import via `MuscleGroup(rawValue:)`.
         let primaryMuscle: String
         let secondaryMuscles: [String]
+        /// `ExerciseType.rawValue` — reconstructed on import via `ExerciseType(rawValue:)`.
         let exerciseType: String
         let sets: [SetExport]
     }
 
     struct QuestExport: Codable {
+        /// Matches the original `Quest.id` — lets a re-import of the same
+        /// file (or a second export containing overlapping history) detect
+        /// "already imported" instead of duplicating quests.
+        let id: UUID
         let name: String
         let date: Date
         let status: String
@@ -138,6 +148,7 @@ enum ProgressExportService {
 
     private static func makeQuestExport(_ quest: Quest) -> ProgressExport.QuestExport {
         ProgressExport.QuestExport(
+            id: quest.id,
             name: quest.name,
             date: quest.date,
             status: quest.status.displayName,
@@ -164,9 +175,9 @@ enum ProgressExportService {
         }
         return ProgressExport.ExerciseExport(
             name: exercise.name,
-            primaryMuscle: exercise.primaryMuscle.displayName,
-            secondaryMuscles: exercise.secondaryMuscles.map(\.displayName),
-            exerciseType: exercise.exerciseType.displayName,
+            primaryMuscle: exercise.primaryMuscle.rawValue,
+            secondaryMuscles: exercise.secondaryMuscles.map(\.rawValue),
+            exerciseType: exercise.exerciseType.rawValue,
             sets: setExports
         )
     }
