@@ -82,7 +82,7 @@ Full-economy scope from the original RPG brief: gold, ownable/purchasable equipm
 
 ## P3 - Platform Expansion
 
-- [ ] Apple Watch companion for fast set logging and timers.
+- [ ] Apple Watch companion for fast set logging and timers. (**Deliberately skipped this cycle, not blocked** — this is a materially bigger undertaking than anything else done autonomously so far: it needs a brand-new watchOS app *target* in the Xcode project (not just new files, which is all `generate_project.py` has ever been asked to add before), a phone/watch data-sharing architecture decision (App Group–shared SwiftData vs. WatchConnectivity messaging), new entitlements on both targets, and a scheme/embed-watch-content build phase wiring the two targets together. A botched new-target pbxproj edit has a much larger blast radius than any file-level change made so far — it risks the *existing, working* iOS app/test targets, not just the new feature. Asked the user how to proceed given this scope; they chose to skip and revisit outside the autonomous loop rather than attempt it unsupervised. Note for whoever picks this up: a watchOS 26.5 simulator runtime got installed in the process of checking feasibility (`xcodebuild -downloadPlatform watchOS`), so `Apple Watch Series 11/10/9` simulator device types are now available in this environment if that was previously the blocker — the remaining work is purely the target-creation/architecture decision, not tooling availability.)
 - [ ] Widgets for streak, active quest, and current level.
 - [ ] Live Activity for active workouts and rest timers.
 - [ ] iPad layout with denser dashboards and side-by-side quest editing.
