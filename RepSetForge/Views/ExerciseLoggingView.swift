@@ -177,6 +177,12 @@ private struct ExerciseSetRow: View {
             .disabled(isReadOnly)
             .accessibilityLabel("Set \(set.setNumber)")
             .accessibilityValue(set.completed ? "Complete" : "Not complete")
+            // A light tick, not a strong buzz — this fires often (every set,
+            // every workout) so it should never fatigue the way a bigger
+            // celebratory haptic would.
+            .sensoryFeedback(.selection, trigger: set.completed) { _, isNowComplete in
+                isNowComplete
+            }
         }
     }
 

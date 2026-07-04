@@ -174,6 +174,17 @@ struct QuestCompletionView: View {
                 .padding(RepSetForgeMetrics.paddingLarge)
             }
             .background(Color.questParchment.ignoresSafeArea())
+            // Base "you did it" tap whenever the completion screen appears,
+            // with heavier feedback layered on top for the bigger wins —
+            // more happened, more feedback, without needing distinct
+            // per-event SensoryFeedback cases that don't exist.
+            .sensoryFeedback(.success, trigger: headerAppeared) { _, appeared in appeared }
+            .sensoryFeedback(.impact(weight: .heavy), trigger: headerAppeared) { _, appeared in
+                appeared && !levelUpEntries.isEmpty
+            }
+            .sensoryFeedback(.impact(weight: .medium), trigger: headerAppeared) { _, appeared in
+                appeared && !summary.unlockedAchievements.isEmpty
+            }
         }
     }
 

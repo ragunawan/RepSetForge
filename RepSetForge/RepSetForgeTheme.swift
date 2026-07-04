@@ -144,6 +144,16 @@ enum RepSetForgeMetrics {
 //     fields, Add Set) behind an animation's duration — e.g. the rest timer
 //     banner in `ExerciseLoggingView` runs alongside logging, never over it.
 //
+// Haptics — use `.sensoryFeedback(_:trigger:)`, never a raw
+// `UIImpactFeedbackGenerator`:
+//   - Frequent, low-stakes actions (set completion) get `.selection` — a
+//     light tick that won't fatigue across a whole workout.
+//   - Celebratory, rare moments (quest complete, level up, achievement
+//     unlock) layer feedback: a base `.success` for "it happened," plus
+//     `.impact(weight:)` at increasing weight for bigger wins, so more
+//     happening produces more feedback rather than one flat buzz regardless
+//     of magnitude. See `QuestCompletionView`.
+//
 // Icon/sprite grid sizes — see `ArtSource/RPG/README.md`'s "Size Summary"
 // table for the authoritative per-category numbers (it's the source of
 // truth the importer validates against). Every sprite is authored on a
