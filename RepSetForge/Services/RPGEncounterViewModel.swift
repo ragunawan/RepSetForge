@@ -133,10 +133,11 @@ final class RPGEncounterViewModel {
     private var snapshot = RPGProgressionSnapshot()
     private var state: RPGEncounterState?
     private var equippedLoadout: [RPGEquipmentSlot: RPGEquipment] = [:]
-    /// Skills unlocked via real skill XP. `nil` means "not provided" and falls
-    /// back to pure level/class gating (e.g. previews/tests that don't wire
-    /// SkillProgress up); an empty set means seeded but nothing earned yet.
-    private var unlockedSkillIDs: Set<String>?
+    /// Skills the player has actively equipped (one per category, chosen via
+    /// the Gear tab). `nil` means "not provided" and falls back to pure
+    /// level/class gating (e.g. previews/tests that don't wire SkillProgress
+    /// up); an empty set means seeded but nothing equipped yet.
+    private var equippedSkillIDs: Set<String>?
     private var skillCooldowns: [String: Date] = [:]
     private var rng = SystemRandomNumberGenerator()
     private var loopTask: Task<Void, Never>?
@@ -147,17 +148,17 @@ final class RPGEncounterViewModel {
     /// a milestone level reached mid-fight is picked up on the next beat.
     /// `equippedLoadout` is resolved by the caller from persisted
     /// `OwnedEquipment` (via `RPGEquipmentService.equippedLoadout`), since gear
-    /// is now earned rather than always auto-available. `unlockedSkillIDs`
-    /// works the same way via `SkillProgressionService.unlockedSkillIDs`.
+    /// is now earned rather than always auto-available. `equippedSkillIDs`
+    /// works the same way via `SkillProgressionService.equippedSkillIDs`.
     func configure(
         snapshot: RPGProgressionSnapshot,
         state: RPGEncounterState?,
         equippedLoadout: [RPGEquipmentSlot: RPGEquipment] = [:],
-        unlockedSkillIDs: Set<String>? = nil
+        equippedSkillIDs: Set<String>? = nil
     ) {
         self.snapshot = snapshot
         self.state = state
-        self.unlockedSkillIDs = unlockedSkillIDs
+        self.equippedSkillIDs = equippedSkillIDs
         if let state {
             playerClass = state.rpgClass
             BossMilestoneService.activateBossIfNeeded(state: state, snapshot: snapshot)
@@ -371,8 +372,8 @@ final class RPGEncounterViewModel {
         let ready = RPGSkillRegistry
             .usable(by: playerClass, atLevel: snapshot.currentLevel, bossFight: bossFight)
             .filter { skill in
-                guard let unlockedSkillIDs else { return true }
-                return unlockedSkillIDs.contains(skill.id)
+                guard let equippedSkillIDs else { return true }
+                return equippedSkillIDs.contains(skill.id)
             }
             .filter { (skillCooldowns[$0.id] ?? .distantPast) <= now }
         guard !ready.isEmpty else { return nil }

@@ -21,8 +21,8 @@ struct RPGSceneView: View {
         RPGEquipmentService.equippedLoadout(from: ownedEquipment)
     }
 
-    private var unlockedSkillIDs: Set<String> {
-        SkillProgressionService.unlockedSkillIDs(from: skillProgress)
+    private var equippedSkillIDs: Set<String> {
+        SkillProgressionService.equippedSkillIDs(from: skillProgress)
     }
 
     private var snapshot: RPGProgressionSnapshot {
@@ -61,12 +61,12 @@ struct RPGSceneView: View {
         }
         .pixelPanel(fill: .questNavy, border: .questGold)
         .onAppear {
-            viewModel.configure(snapshot: snapshot, state: encounterStates.first, equippedLoadout: equippedLoadout, unlockedSkillIDs: unlockedSkillIDs)
+            viewModel.configure(snapshot: snapshot, state: encounterStates.first, equippedLoadout: equippedLoadout, equippedSkillIDs: equippedSkillIDs)
             viewModel.start()
         }
         .onDisappear { viewModel.stop() }
         .onChange(of: snapshot) { _, newValue in
-            viewModel.configure(snapshot: newValue, state: encounterStates.first, equippedLoadout: equippedLoadout, unlockedSkillIDs: unlockedSkillIDs)
+            viewModel.configure(snapshot: newValue, state: encounterStates.first, equippedLoadout: equippedLoadout, equippedSkillIDs: equippedSkillIDs)
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {

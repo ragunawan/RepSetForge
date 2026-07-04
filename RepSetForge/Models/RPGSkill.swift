@@ -1,5 +1,16 @@
 import Foundation
 
+/// Broad loadout category a skill belongs to. The player equips one unlocked
+/// skill per category to drive passive combat, rather than every unlocked
+/// skill competing at once.
+enum RPGSkillCategory: String, Codable, CaseIterable, Sendable {
+    case attack
+    case defense
+    case magic
+
+    var displayName: String { rawValue.capitalized }
+}
+
 /// An ability the hero triggers automatically during passive combat.
 struct RPGSkill: Identifiable, Equatable, Sendable {
     enum AnimationType: String, Sendable {
@@ -35,6 +46,8 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
     /// Muscle groups whose training XP feeds this skill's own progression —
     /// primary-muscle sets grant 100% of that XP, secondary-muscle sets 40%.
     let relatedMuscles: Set<MuscleGroup>
+    /// Loadout category — the player equips at most one unlocked skill per category.
+    let category: RPGSkillCategory
 
     init(
         id: String,
@@ -48,7 +61,8 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
         effect: EffectType,
         passiveWeight: Int = 10,
         bossOnly: Bool = false,
-        relatedMuscles: Set<MuscleGroup> = []
+        relatedMuscles: Set<MuscleGroup> = [],
+        category: RPGSkillCategory = .attack
     ) {
         self.id = id
         self.name = name
@@ -62,6 +76,7 @@ struct RPGSkill: Identifiable, Equatable, Sendable {
         self.passiveWeight = passiveWeight
         self.bossOnly = bossOnly
         self.relatedMuscles = relatedMuscles
+        self.category = category
     }
 
     func isUsable(by rpgClass: RPGClass, atLevel level: Int, bossFight: Bool) -> Bool {

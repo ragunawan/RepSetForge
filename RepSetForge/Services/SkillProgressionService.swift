@@ -52,6 +52,16 @@ enum SkillProgressionService {
                     progress.unlocked = true
                     progress.unlockedDate = date
                     newlyUnlocked.append(SkillUnlock(skillID: skill.id, name: skill.name))
+
+                    // Auto-equip the first skill unlocked in an empty category so
+                    // combat isn't silent until the player visits the Gear tab;
+                    // never overrides a category the player already has a choice in.
+                    let categoryAlreadyEquipped = progressRecords.contains { record in
+                        record.equipped && RPGSkillRegistry.skill(id: record.skillID)?.category == skill.category
+                    }
+                    if !categoryAlreadyEquipped {
+                        progress.equipped = true
+                    }
                 }
             }
         }
@@ -80,5 +90,30 @@ enum SkillProgressionService {
 
     static func unlockedSkillIDs(from records: [SkillProgress]) -> Set<String> {
         Set(records.filter(\.unlocked).map(\.skillID))
+    }
+
+    /// IDs of the skills actually equipped (one per category at most), which
+    /// is what drives passive combat — not just "unlocked."
+    static func equippedSkillIDs(context: ModelContext) -> Set<String> {
+        equippedSkillIDs(from: (try? context.fetch(FetchDescriptor<SkillProgress>())) ?? [])
+    }
+
+    static func equippedSkillIDs(from records: [SkillProgress]) -> Set<String> {
+        Set(records.filter { $0.unlocked && $0.equipped }.map(\.skillID))
+    }
+
+    /// Equips the given unlocked skill, un-equipping whatever else was
+    /// equipped in the same category. No-ops if the skill isn't unlocked.
+    static func equip(_ skillID: String, context: ModelContext) {
+        guard let target = RPGSkillRegistry.skill(id: skillID) else { return }
+        let records = (try? context.fetch(FetchDescriptor<SkillProgress>())) ?? []
+        guard let targetRecord = records.first(where: { $0.skillID == skillID && $0.unlocked }) else { return }
+
+        for record in records where record.equipped && record.skillID != skillID {
+            if RPGSkillRegistry.skill(id: record.skillID)?.category == target.category {
+                record.equipped = false
+            }
+        }
+        targetRecord.equipped = true
     }
 }

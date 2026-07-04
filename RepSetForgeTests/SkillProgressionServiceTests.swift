@@ -104,4 +104,64 @@ final class SkillProgressionServiceTests: XCTestCase {
 
         XCTAssertEqual(progress("firebolt")?.totalXP, 0) // firebolt relates to shoulders/arms only
     }
+
+    // MARK: equip / auto-equip
+
+    func testFirstSkillUnlockedInACategoryIsAutoEquipped() {
+        // power_strike (category .attack) is the only attack skill chest feeds.
+        let bigBench = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        bigBench.sets = [ExerciseSet(setNumber: 1, reps: 100, weight: 1000, completed: true)]
+
+        SkillProgressionService.distributeSkillXP(exercises: [bigBench], context: context)
+
+        let record = try! XCTUnwrap(progress("power_strike"))
+        XCTAssertTrue(record.equipped)
+        XCTAssertTrue(SkillProgressionService.equippedSkillIDs(context: context).contains("power_strike"))
+    }
+
+    func testAutoEquipDoesNotOverrideAnAlreadyEquippedSkillInCategory() {
+        // Manually equip shadow_dash (also .attack) first, as if the player chose it earlier.
+        let shadowDash = try! XCTUnwrap(progress("shadow_dash"))
+        shadowDash.unlocked = true
+        shadowDash.equipped = true
+
+        let bigBench = Exercise(name: "Bench Press", primaryMuscle: .chest)
+        bigBench.sets = [ExerciseSet(setNumber: 1, reps: 100, weight: 1000, completed: true)]
+        SkillProgressionService.distributeSkillXP(exercises: [bigBench], context: context)
+
+        // power_strike unlocked, but shadow_dash was already the category's choice.
+        XCTAssertTrue(try! XCTUnwrap(progress("power_strike")).unlocked)
+        XCTAssertFalse(try! XCTUnwrap(progress("power_strike")).equipped)
+        XCTAssertTrue(try! XCTUnwrap(progress("shadow_dash")).equipped)
+    }
+
+    func testEquipSwapsWithinCategoryAndLeavesOtherCategoriesAlone() {
+        let powerStrike = try! XCTUnwrap(progress("power_strike")) // attack
+        powerStrike.unlocked = true
+        powerStrike.equipped = true
+        let shadowDash = try! XCTUnwrap(progress("shadow_dash")) // attack
+        shadowDash.unlocked = true
+        let ironGuard = try! XCTUnwrap(progress("iron_guard")) // defense
+        ironGuard.unlocked = true
+        ironGuard.equipped = true
+
+        SkillProgressionService.equip("shadow_dash", context: context)
+
+        XCTAssertFalse(try! XCTUnwrap(progress("power_strike")).equipped)
+        XCTAssertTrue(try! XCTUnwrap(progress("shadow_dash")).equipped)
+        XCTAssertTrue(try! XCTUnwrap(progress("iron_guard")).equipped) // untouched, different category
+    }
+
+    func testEquipLockedSkillIsANoOp() {
+        SkillProgressionService.equip("power_strike", context: context) // never unlocked
+
+        XCTAssertFalse(try! XCTUnwrap(progress("power_strike")).equipped)
+    }
+
+    func testEquippedSkillIDsRequiresBothUnlockedAndEquipped() {
+        let record = try! XCTUnwrap(progress("power_strike"))
+        record.equipped = true // equipped flag set but not unlocked (shouldn't normally happen, but verify the guard)
+
+        XCTAssertFalse(SkillProgressionService.equippedSkillIDs(context: context).contains("power_strike"))
+    }
 }

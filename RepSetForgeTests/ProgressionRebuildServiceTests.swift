@@ -9,7 +9,7 @@ final class ProgressionRebuildServiceTests: XCTestCase {
     var muscles: [MuscleProgress]!
 
     override func setUpWithError() throws {
-        let schema = Schema([Quest.self, Exercise.self, ExerciseSet.self, PlayerCharacter.self, MuscleProgress.self, Achievement.self, PersonalRecord.self])
+        let schema = Schema([Quest.self, Exercise.self, ExerciseSet.self, PlayerCharacter.self, MuscleProgress.self, Achievement.self, PersonalRecord.self, SkillProgress.self, OwnedEquipment.self, RPGEncounterState.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         container = try ModelContainer(for: schema, configurations: [config])
         context = ModelContext(container)
@@ -174,5 +174,45 @@ final class ProgressionRebuildServiceTests: XCTestCase {
         let achievementsAfterUndo = try context.fetch(FetchDescriptor<Achievement>())
         XCTAssertFalse(achievementsAfterUndo.first { $0.key == "first_quest" }?.unlocked ?? true)
         XCTAssertEqual(character.level, 1)
+    }
+
+    private func skillProgress(_ skillID: String) -> SkillProgress? {
+        (try? context.fetch(FetchDescriptor<SkillProgress>()))?.first { $0.skillID == skillID }
+    }
+
+    func testRebuildPreservesEquippedChoiceWhenSkillStaysUnlocked() throws {
+        SkillProgressionService.seedIfNeeded(context: context)
+        // A big bench quest unlocks and auto-equips power_strike (attack).
+        let quest = completedQuest(name: "Push Day", reps: 100, weight: 1000, daysAgo: 1)
+        try context.save()
+        ProgressionRebuildService.rebuild(context: context)
+        XCTAssertTrue(try XCTUnwrap(skillProgress("power_strike")).equipped)
+
+        // Adding and rebuilding again for an unrelated later quest shouldn't
+        // touch an already-settled equipped choice.
+        _ = completedQuest(name: "Another Day", reps: 5, weight: 50, daysAgo: 0)
+        try context.save()
+        ProgressionRebuildService.rebuild(context: context)
+
+        XCTAssertTrue(try XCTUnwrap(skillProgress("power_strike")).equipped)
+        _ = quest
+    }
+
+    func testRebuildClearsOrphanedEquippedFlagWhenSkillNoLongerUnlocks() throws {
+        SkillProgressionService.seedIfNeeded(context: context)
+        let quest = completedQuest(name: "Push Day", reps: 100, weight: 1000, daysAgo: 0)
+        try context.save()
+        ProgressionRebuildService.rebuild(context: context)
+        XCTAssertTrue(try XCTUnwrap(skillProgress("power_strike")).unlocked)
+        XCTAssertTrue(try XCTUnwrap(skillProgress("power_strike")).equipped)
+
+        // Undo the only quest that ever earned power_strike's XP.
+        quest.status = .active
+        quest.completedDate = nil
+        ProgressionRebuildService.rebuild(context: context)
+
+        let record = try XCTUnwrap(skillProgress("power_strike"))
+        XCTAssertFalse(record.unlocked)
+        XCTAssertFalse(record.equipped) // orphaned flag cleared, not left dangling
     }
 }

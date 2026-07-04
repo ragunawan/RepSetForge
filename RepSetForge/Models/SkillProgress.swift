@@ -11,18 +11,23 @@ final class SkillProgress {
     var totalXP: Int
     var unlocked: Bool
     var unlockedDate: Date?
+    /// Whether this skill is the active loadout choice for its category.
+    /// At most one skill per `RPGSkillCategory` should be equipped at a time.
+    var equipped: Bool = false
 
     init(
         skillID: String,
         currentXP: Int = 0,
         totalXP: Int = 0,
         unlocked: Bool = false,
-        unlockedDate: Date? = nil
+        unlockedDate: Date? = nil,
+        equipped: Bool = false
     ) {
         self.skillID = skillID
         self.currentXP = currentXP
         self.totalXP = totalXP
         self.unlocked = unlocked
         self.unlockedDate = unlockedDate
+        self.equipped = equipped
     }
 }

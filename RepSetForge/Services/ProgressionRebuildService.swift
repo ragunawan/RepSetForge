@@ -92,6 +92,15 @@ enum ProgressionRebuildService {
             )
         }
 
+        // A skill's `equipped` flag is deliberately not reset above — it's the
+        // player's own choice and should survive an unrelated quest's rebuild.
+        // But if this specific skill no longer re-unlocked during replay (e.g.
+        // the quest that unlocked it was edited/undone), clear the orphaned
+        // flag so `equippedSkillIDs` doesn't report a locked skill as active.
+        for skillProgress in (try? context.fetch(FetchDescriptor<SkillProgress>())) ?? [] where skillProgress.equipped && !skillProgress.unlocked {
+            skillProgress.equipped = false
+        }
+
         return character
     }
 }
