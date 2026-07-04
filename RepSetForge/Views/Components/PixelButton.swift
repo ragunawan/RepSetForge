@@ -17,6 +17,12 @@ struct PixelButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: RepSetForgeMetrics.cornerRadius, style: .circular)
                     .strokeBorder(Color.questNavy, lineWidth: RepSetForgeMetrics.borderWidth)
             )
+            // Deliberately not gated behind Reduce Motion: this is a tiny
+            // (3%) squish synchronous with the touch itself, not an
+            // independent animation — the same category of feedback system
+            // buttons keep regardless of the setting. Reduce Motion targets
+            // parallax/movement that plays out on its own; see
+            // RepSetForgeTheme.swift's spec comment for where that line is drawn.
             .scaleEffect(configuration.isPressed ? 0.97 : 1)
     }
 }

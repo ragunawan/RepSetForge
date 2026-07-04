@@ -122,6 +122,13 @@ enum RepSetForgeMetrics {
 //   - Anything else worth animating (set-complete checkmarks, etc.) should
 //     still check `@Environment(\.accessibilityReduceMotion)` itself, same
 //     as `RPGSceneView` already does for combat animations.
+//   - Reduce Motion targets movement that plays out on its own (offsets,
+//     rises, parallax) — gate those. A tiny press-down squish synchronous
+//     with the touch itself (see `PixelButtonStyle`) isn't in that category
+//     and doesn't need gating, matching how system buttons behave.
+//   - Never gate or disable a logging control (set checkboxes, reps/weight
+//     fields, Add Set) behind an animation's duration — e.g. the rest timer
+//     banner in `ExerciseLoggingView` runs alongside logging, never over it.
 //
 // Icon/sprite grid sizes — see `ArtSource/RPG/README.md`'s "Size Summary"
 // table for the authoritative per-category numbers (it's the source of
