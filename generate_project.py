@@ -131,6 +131,8 @@ FR = {
     "TEST_ProgressExport":           u(1, 0x72),
     "ProgressImportService":         u(1, 0x73),
     "TEST_ProgressImport":           u(1, 0x74),
+    "HealthKitService":              u(1, 0x75),
+    "TEST_HealthKitService":         u(1, 0x76),
 }
 
 # Build files
@@ -217,6 +219,7 @@ APP_SOURCES = [
     ("ExerciseMetricsService", "Services/ExerciseMetricsService.swift"),
     ("ProgressExportService", "Services/ProgressExportService.swift"),
     ("ProgressImportService", "Services/ProgressImportService.swift"),
+    ("HealthKitService", "Services/HealthKitService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("OnboardingView",        "Views/OnboardingView.swift"),
@@ -295,6 +298,7 @@ TEST_SOURCES = [
     ("TEST_ExerciseMetrics", "RepSetForgeTests/ExerciseMetricsServiceTests.swift"),
     ("TEST_ProgressExport", "RepSetForgeTests/ProgressExportServiceTests.swift"),
     ("TEST_ProgressImport", "RepSetForgeTests/ProgressImportServiceTests.swift"),
+    ("TEST_HealthKitService", "RepSetForgeTests/HealthKitServiceTests.swift"),
 ]
 
 def pbxproj():
@@ -424,7 +428,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController"])
@@ -671,6 +675,7 @@ def pbxproj():
         a(f"\t\t\tbuildSettings = {{")
         a(f"\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;")
         a(f"\t\t\t\tASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;")
+        a(f"\t\t\t\tCODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;")
         a(f"\t\t\t\tCODE_SIGN_STYLE = Automatic;")
         a(f"\t\t\t\tDEVELOPMENT_TEAM = 5T5444U7W2;")
         if debug:
@@ -680,6 +685,8 @@ def pbxproj():
         a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = RepSetForge;")
         a(f"\t\t\t\tINFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;")
+        a(f"\t\t\t\tINFOPLIST_KEY_NSHealthShareUsageDescription = \"RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.\";")
+        a(f"\t\t\t\tINFOPLIST_KEY_NSHealthUpdateUsageDescription = \"RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.\";")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UILaunchScreen_Generation = YES;")

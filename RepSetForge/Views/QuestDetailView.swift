@@ -199,6 +199,16 @@ struct QuestDetailView: View {
             goldEarned: earnedGold,
             equipmentDrops: equipmentDrops
         )
+
+        // Best-effort only: an unauthorized or unavailable Health integration
+        // must never block completing a quest in RepSetForge itself. The
+        // date range is computed synchronously here (Quest isn't Sendable)
+        // and only those plain Date values cross into the async Task.
+        if let range = HealthKitService.workoutDateRange(for: quest) {
+            Task {
+                try? await HealthKitService.saveWorkout(start: range.start, end: range.end)
+            }
+        }
     }
 
     private func undoCompletion() {

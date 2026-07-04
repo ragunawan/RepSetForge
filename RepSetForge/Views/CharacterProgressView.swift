@@ -336,6 +336,17 @@ private struct SettingsSheet: View {
                             .foregroundStyle(Color.questNavy.opacity(0.7))
                     }
                 }
+
+                if HealthKitService.isAvailable {
+                    Section("Apple Health") {
+                        Button("Connect to Apple Health") {
+                            Task { try? await HealthKitService.requestAuthorization() }
+                        }
+                        Text("Completed quests are saved to Health as workouts with an estimated active-energy value. RepSetForge has no wearable sensor, so this is an estimate, not a measured figure.")
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
             .navigationTitle("Settings")
             .toolbar {

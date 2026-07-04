@@ -45,6 +45,7 @@
 		AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006E /* ExerciseMetricsService.swift */; };
 		AA0200000000000000000071 /* ProgressExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000071 /* ProgressExportService.swift */; };
 		AA0200000000000000000073 /* ProgressImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000073 /* ProgressImportService.swift */; };
+		AA0200000000000000000075 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000075 /* HealthKitService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
@@ -121,6 +122,7 @@
 		AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */; };
 		AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000072 /* ProgressExportServiceTests.swift */; };
 		AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000074 /* ProgressImportServiceTests.swift */; };
+		AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000076 /* HealthKitServiceTests.swift */; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -174,6 +176,7 @@
 		AA010000000000000000006E /* ExerciseMetricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000071 /* ProgressExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000073 /* ProgressImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000075 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
 		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -250,6 +253,7 @@
 		AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000072 /* ProgressExportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000074 /* ProgressImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000076 /* HealthKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitServiceTests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -358,6 +362,7 @@
 				AA010000000000000000006E /* ExerciseMetricsService.swift */,
 				AA0100000000000000000071 /* ProgressExportService.swift */,
 				AA0100000000000000000073 /* ProgressImportService.swift */,
+				AA0100000000000000000075 /* HealthKitService.swift */,
 				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
 				AA010000000000000000002D /* RPGBossRegistry.swift */,
 				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
@@ -452,6 +457,7 @@
 				AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */,
 				AA0100000000000000000072 /* ProgressExportServiceTests.swift */,
 				AA0100000000000000000074 /* ProgressImportServiceTests.swift */,
+				AA0100000000000000000076 /* HealthKitServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -589,6 +595,7 @@
 				AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */,
 				AA0200000000000000000071 /* ProgressExportService.swift in Sources */,
 				AA0200000000000000000073 /* ProgressImportService.swift in Sources */,
+				AA0200000000000000000075 /* HealthKitService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
@@ -671,6 +678,7 @@
 				AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */,
 				AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */,
 				AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */,
+				AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +816,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5T5444U7W2;
 				ENABLE_TESTABILITY = YES;
@@ -816,6 +825,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -838,6 +849,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5T5444U7W2;
 				CURRENT_PROJECT_VERSION = 1;
@@ -845,6 +857,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
