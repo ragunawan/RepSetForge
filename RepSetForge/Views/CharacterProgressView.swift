@@ -273,6 +273,14 @@ private struct SettingsSheet: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @Query private var characters: [PlayerCharacter]
+    @Query private var muscles: [MuscleProgress]
+    @Query private var allQuests: [Quest]
+    @Query private var personalRecords: [PersonalRecord]
+    @Query private var achievements: [Achievement]
+
+    @State private var exportFormat: ProgressExportFormat = .json
+    @State private var exportedFileURL: URL?
+    @State private var exportError: String?
 
     var body: some View {
         NavigationStack {
@@ -294,6 +302,29 @@ private struct SettingsSheet: View {
                             .foregroundStyle(.secondary)
                     }
                 }
+
+                Section("Data") {
+                    Picker("Export Format", selection: $exportFormat) {
+                        ForEach(ProgressExportFormat.allCases) { format in
+                            Text(format.rawValue).tag(format)
+                        }
+                    }
+                    .onChange(of: exportFormat) { exportedFileURL = nil }
+
+                    if let exportedFileURL {
+                        ShareLink(item: exportedFileURL) {
+                            Label("Share Export", systemImage: "square.and.arrow.up")
+                        }
+                    } else {
+                        Button("Prepare Export") { prepareExport() }
+                    }
+
+                    if let exportError {
+                        Text(exportError)
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(.red)
+                    }
+                }
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -304,6 +335,35 @@ private struct SettingsSheet: View {
                     }
                 }
             }
+        }
+    }
+
+    private func prepareExport() {
+        exportError = nil
+        let export = ProgressExportService.makeExport(
+            character: characters.first,
+            muscles: muscles,
+            quests: allQuests,
+            personalRecords: personalRecords,
+            achievements: achievements
+        )
+
+        let dateStamp = ISO8601DateFormatter().string(from: .now).prefix(10)
+        let filename = "RepSetForge-Export-\(dateStamp).\(exportFormat.fileExtension)"
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+
+        do {
+            switch exportFormat {
+            case .json:
+                let data = try ProgressExportService.json(from: export)
+                try data.write(to: fileURL, options: .atomic)
+            case .csv:
+                let csv = ProgressExportService.csv(from: export)
+                try csv.write(to: fileURL, atomically: true, encoding: .utf8)
+            }
+            exportedFileURL = fileURL
+        } catch {
+            exportError = "Couldn't prepare the export: \(error.localizedDescription)"
         }
     }
 }
