@@ -133,6 +133,32 @@
 		AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007D /* PersistenceMigrationTests.swift */; };
 		AA0200000000000000000081 /* FixturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000081 /* FixturesTests.swift */; };
 		AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007F /* QuestLoggingUITests.swift */; };
+		AA0200000000000000000082 /* RepSetForgeWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000082 /* RepSetForgeWatchApp.swift */; };
+		AA0200000000000000000083 /* WatchQuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000083 /* WatchQuestView.swift */; };
+		AA0200000000000000000084 /* WatchExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000084 /* WatchExerciseView.swift */; };
+		AA0200000000000000000085 /* WatchTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000085 /* WatchTheme.swift */; };
+		AA020000000000000000001F4 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000008 /* Quest.swift */; };
+		AA020000000000000000001F5 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000007 /* Exercise.swift */; };
+		AA020000000000000000001F6 /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
+		AA020000000000000000001F7 /* ExerciseTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000037 /* ExerciseTemplate.swift */; };
+		AA020000000000000000001F8 /* QuestTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* QuestTemplate.swift */; };
+		AA020000000000000000001F9 /* PlayerCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000009 /* PlayerCharacter.swift */; };
+		AA020000000000000000001FA /* MuscleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000A /* MuscleProgress.swift */; };
+		AA020000000000000000001FB /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000B /* Achievement.swift */; };
+		AA020000000000000000001FC /* PersonalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000046 /* PersonalRecord.swift */; };
+		AA020000000000000000001FD /* RPGEncounterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* RPGEncounterState.swift */; };
+		AA020000000000000000001FE /* OwnedEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004E /* OwnedEquipment.swift */; };
+		AA020000000000000000001FF /* SkillProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000052 /* SkillProgress.swift */; };
+		AA02000000000000000000200 /* QuestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000005 /* QuestStatus.swift */; };
+		AA02000000000000000000201 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000004 /* MuscleGroup.swift */; };
+		AA02000000000000000000202 /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* ExerciseType.swift */; };
+		AA02000000000000000000203 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* WeightUnit.swift */; };
+		AA02000000000000000000204 /* PersonalRecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* PersonalRecordType.swift */; };
+		AA02000000000000000000205 /* RPGClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* RPGClass.swift */; };
+		AA02000000000000000000206 /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
+		AA02000000000000000000207 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000080 /* Fixtures.swift */; };
+		AA02000000000000000000208 /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000D /* AchievementService.swift */; };
+		AA02000000000000000000384 /* RepSetForge Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000086 /* RepSetForge Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		/* End PBXBuildFile section */
 
 		/* Begin PBXContainerItemProxy section */
@@ -150,12 +176,20 @@
 			remoteGlobalIDString = AA0400000000000000000001;
 			remoteInfo = RepSetForge;
 		};
+		AA0900000000000000000006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA0400000000000000000004;
+			remoteInfo = "RepSetForge Watch App";
+		};
 		/* End PBXContainerItemProxy section */
 
 		/* Begin PBXFileReference section */
 		AA0100000000000000000020 /* RepSetForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0100000000000000000021 /* RepSetForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA010000000000000000007E /* RepSetForgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0100000000000000000086 /* RepSetForge Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RepSetForge Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0100000000000000000001 /* RepSetForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeApp.swift; sourceTree = "<group>"; };
 		AA0100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000003 /* RepSetForgeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeTheme.swift; sourceTree = "<group>"; };
@@ -282,6 +316,11 @@
 		AA010000000000000000007D /* PersistenceMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceMigrationTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000081 /* FixturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixturesTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000007F /* QuestLoggingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestLoggingUITests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000082 /* RepSetForgeWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWatchApp.swift; sourceTree = "<group>"; };
+		AA0100000000000000000083 /* WatchQuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchQuestView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000084 /* WatchExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchExerciseView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000085 /* WatchTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTheme.swift; sourceTree = "<group>"; };
+		AA0100000000000000000087 /* RepSetForge Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RepSetForge Watch App.entitlements"; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
 		/* Begin PBXFrameworksBuildPhase section */
@@ -306,7 +345,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0700000000000000000009 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		/* End PBXFrameworksBuildPhase section */
+
+		/* Begin PBXCopyFilesBuildPhase section */
+		AA070000000000000000000A /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				AA02000000000000000000384 /* RepSetForge Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		/* End PBXCopyFilesBuildPhase section */
 
 		/* Begin PBXGroup section */
 		AA0300000000000000000001 = {
@@ -315,6 +375,7 @@
 				AA0300000000000000000003 /* RepSetForge */,
 				AA0300000000000000000009 /* RepSetForgeTests */,
 				AA030000000000000000000A /* RepSetForgeUITests */,
+				AA030000000000000000000C /* RepSetForge Watch App */,
 				AA0300000000000000000002 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -325,6 +386,7 @@
 				AA0100000000000000000020 /* RepSetForge.app */,
 				AA0100000000000000000021 /* RepSetForgeTests.xctest */,
 				AA010000000000000000007E /* RepSetForgeUITests.xctest */,
+				AA0100000000000000000086 /* RepSetForge Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -524,6 +586,18 @@
 			path = RepSetForgeUITests;
 			sourceTree = "<group>";
 		};
+		AA030000000000000000000C /* RepSetForge Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				AA0100000000000000000082 /* RepSetForgeWatchApp.swift */,
+				AA0100000000000000000083 /* WatchQuestView.swift */,
+				AA0100000000000000000084 /* WatchExerciseView.swift */,
+				AA0100000000000000000085 /* WatchTheme.swift */,
+				AA0100000000000000000087 /* RepSetForge Watch App.entitlements */,
+			);
+			path = "RepSetForge Watch App";
+			sourceTree = "<group>";
+		};
 		/* End PBXGroup section */
 
 		/* Begin PBXNativeTarget section */
@@ -534,10 +608,12 @@
 				AA0700000000000000000001 /* Sources */,
 				AA0700000000000000000003 /* Frameworks */,
 				AA0700000000000000000002 /* Resources */,
+				AA070000000000000000000A /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AA0900000000000000000005 /* PBXTargetDependency */,
 			);
 			name = RepSetForge;
 			productName = RepSetForge;
@@ -578,6 +654,22 @@
 			productReference = AA010000000000000000007E /* RepSetForgeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		AA0400000000000000000004 /* RepSetForge Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA0500000000000000000005 /* Build configuration list for PBXNativeTarget "RepSetForge Watch App" */;
+			buildPhases = (
+				AA0700000000000000000008 /* Sources */,
+				AA0700000000000000000009 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RepSetForge Watch App";
+			productName = "RepSetForge Watch App";
+			productReference = AA0100000000000000000086 /* RepSetForge Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 		/* End PBXNativeTarget section */
 
 		/* Begin PBXProject section */
@@ -605,6 +697,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = AA0400000000000000000001;
 					};
+					AA0400000000000000000004 = {
+						CreatedOnToolsVersion = 16.0;
+						DevelopmentTeam = 5T5444U7W2;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = AA0500000000000000000001 /* Build configuration list for PBXProject "RepSetForge" */;
@@ -623,6 +720,7 @@
 				AA0400000000000000000001 /* RepSetForge */,
 				AA0400000000000000000002 /* RepSetForgeTests */,
 				AA0400000000000000000003 /* RepSetForgeUITests */,
+				AA0400000000000000000004 /* RepSetForge Watch App */,
 			);
 		};
 		/* End PBXProject section */
@@ -785,6 +883,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA0700000000000000000008 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0200000000000000000082 /* RepSetForgeWatchApp.swift in Sources */,
+				AA0200000000000000000083 /* WatchQuestView.swift in Sources */,
+				AA0200000000000000000084 /* WatchExerciseView.swift in Sources */,
+				AA0200000000000000000085 /* WatchTheme.swift in Sources */,
+				AA020000000000000000001F4 /* Quest.swift in Sources */,
+				AA020000000000000000001F5 /* Exercise.swift in Sources */,
+				AA020000000000000000001F6 /* ExerciseSet.swift in Sources */,
+				AA020000000000000000001F7 /* ExerciseTemplate.swift in Sources */,
+				AA020000000000000000001F8 /* QuestTemplate.swift in Sources */,
+				AA020000000000000000001F9 /* PlayerCharacter.swift in Sources */,
+				AA020000000000000000001FA /* MuscleProgress.swift in Sources */,
+				AA020000000000000000001FB /* Achievement.swift in Sources */,
+				AA020000000000000000001FC /* PersonalRecord.swift in Sources */,
+				AA020000000000000000001FD /* RPGEncounterState.swift in Sources */,
+				AA020000000000000000001FE /* OwnedEquipment.swift in Sources */,
+				AA020000000000000000001FF /* SkillProgress.swift in Sources */,
+				AA02000000000000000000200 /* QuestStatus.swift in Sources */,
+				AA02000000000000000000201 /* MuscleGroup.swift in Sources */,
+				AA02000000000000000000202 /* ExerciseType.swift in Sources */,
+				AA02000000000000000000203 /* WeightUnit.swift in Sources */,
+				AA02000000000000000000204 /* PersonalRecordType.swift in Sources */,
+				AA02000000000000000000205 /* RPGClass.swift in Sources */,
+				AA02000000000000000000206 /* RepSetForgeSchema.swift in Sources */,
+				AA02000000000000000000207 /* Fixtures.swift in Sources */,
+				AA02000000000000000000208 /* AchievementService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		/* End PBXSourcesBuildPhase section */
 
 		/* Begin PBXTargetDependency section */
@@ -797,6 +927,11 @@
 			isa = PBXTargetDependency;
 			target = AA0400000000000000000001 /* RepSetForge */;
 			targetProxy = AA0900000000000000000004 /* PBXContainerItemProxy */;
+		};
+		AA0900000000000000000005 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA0400000000000000000004 /* RepSetForge Watch App */;
+			targetProxy = AA0900000000000000000006 /* PBXContainerItemProxy */;
 		};
 		/* End PBXTargetDependency section */
 
@@ -1062,6 +1197,55 @@
 			};
 			name = Release;
 		};
+		AA0600000000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5T5444U7W2;
+				ENABLE_TESTABILITY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.gnwn.RepSetForge;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		AA060000000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5T5444U7W2;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.gnwn.RepSetForge;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 		/* End XCBuildConfiguration section */
 
 		/* Begin XCConfigurationList section */
@@ -1097,6 +1281,15 @@
 			buildConfigurations = (
 				AA0600000000000000000007 /* Debug */,
 				AA0600000000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA0500000000000000000005 /* Build configuration list for PBXNativeTarget "RepSetForge Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA0600000000000000000009 /* Debug */,
+				AA060000000000000000000A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

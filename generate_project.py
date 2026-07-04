@@ -144,7 +144,43 @@ FR = {
     "UITEST_QuestLogging":           u(1, 0x7F),
     "Fixtures":                      u(1, 0x80),
     "TEST_Fixtures":                 u(1, 0x81),
+    "RepSetForgeWatchApp":           u(1, 0x82),
+    "WatchQuestView":                u(1, 0x83),
+    "WatchExerciseView":             u(1, 0x84),
+    "WatchTheme":                    u(1, 0x85),
+    "PROD_WATCH":                    u(1, 0x86),  # RepSetForge Watch App.app
+    "WatchEntitlements":             u(1, 0x87),
 }
+
+# ── watchOS companion app ──────────────────────────────────────────────────
+# The watch app shares the @Model classes, their supporting enums, the
+# versioned schema, AchievementService (a dependency of Fixtures), and
+# Fixtures itself with the phone app target — same source files, compiled a
+# second time into a second target. It deliberately does NOT share
+# RepSetForgeTheme.swift (built on UIColor, unavailable on watchOS) or
+# PersistenceController.swift (its seeding logic must run on the phone only
+# — see RepSetForgeWatchApp.swift's doc comment for why).
+WATCH_APP_SOURCES = [
+    ("RepSetForgeWatchApp", "RepSetForge Watch App/RepSetForgeWatchApp.swift"),
+    ("WatchQuestView", "RepSetForge Watch App/WatchQuestView.swift"),
+    ("WatchExerciseView", "RepSetForge Watch App/WatchExerciseView.swift"),
+    ("WatchTheme", "RepSetForge Watch App/WatchTheme.swift"),
+]
+
+WATCH_SHARED_KEYS = [
+    "Quest", "Exercise", "ExerciseSet", "ExerciseTemplate", "QuestTemplate",
+    "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecord",
+    "RPGEncounterState", "OwnedEquipment", "SkillProgress",
+    "QuestStatus", "MuscleGroup", "ExerciseType", "WeightUnit", "PersonalRecordType", "RPGClass",
+    "RepSetForgeSchema", "Fixtures", "AchievementService",
+]
+
+# A file reference can be compiled into more than one target, but each
+# target's Sources phase needs its own PBXBuildFile entry pointing at that
+# same reference — these are the watch target's second set, in a UUID range
+# that can't collide with the per-FR-key `BF` dict below.
+BF_WATCH_SHARED = {k: u(2, 500 + i) for i, k in enumerate(WATCH_SHARED_KEYS)}
+BF_EMBED_WATCH = u(2, 900)  # the "Embed Watch Content" copy-files entry, distinct from PROD_WATCH's own file reference
 
 # Build files
 BF = {k: u(2, i + 1) for i, k in enumerate(FR.keys()) if not k.startswith("PROD_")}
@@ -162,18 +198,21 @@ GR = {
     "Tests":      u(3, 0x09),
     "UITests":    u(3, 0x0A),
     "Testing":    u(3, 0x0B),
+    "WatchApp":   u(3, 0x0C),
 }
 
 # Targets
 TG_APP    = u(4, 0x01)
 TG_TEST   = u(4, 0x02)
 TG_UITEST = u(4, 0x03)
+TG_WATCH  = u(4, 0x04)
 
 # Config lists
 CL_PROJECT = u(5, 0x01)
 CL_APP     = u(5, 0x02)
 CL_TEST    = u(5, 0x03)
 CL_UITEST  = u(5, 0x04)
+CL_WATCH   = u(5, 0x05)
 
 # Build configurations
 BC_PROJ_DBG   = u(6, 0x01)
@@ -184,6 +223,8 @@ BC_TEST_DBG   = u(6, 0x05)
 BC_TEST_REL   = u(6, 0x06)
 BC_UITEST_DBG = u(6, 0x07)
 BC_UITEST_REL = u(6, 0x08)
+BC_WATCH_DBG  = u(6, 0x09)
+BC_WATCH_REL  = u(6, 0x0A)
 
 # Build phases
 BP_APP_SRC    = u(7, 0x01)
@@ -193,12 +234,17 @@ BP_TEST_SRC   = u(7, 0x04)
 BP_TEST_FRM   = u(7, 0x05)
 BP_UITEST_SRC = u(7, 0x06)
 BP_UITEST_FRM = u(7, 0x07)
+BP_WATCH_SRC  = u(7, 0x08)
+BP_WATCH_FRM  = u(7, 0x09)
+BP_EMBED_WATCH = u(7, 0x0A)  # "Embed Watch Content" copy-files phase, on the iOS app target
 
 # Dependencies / proxy
 TD_TEST   = u(9, 0x01)
 CI_TEST   = u(9, 0x02)
 TD_UITEST = u(9, 0x03)
 CI_UITEST = u(9, 0x04)
+TD_WATCH  = u(9, 0x05)
+CI_WATCH  = u(9, 0x06)
 
 # ── App source files (path relative to RepSetForge/ folder) ──────────────────
 APP_SOURCES = [
@@ -360,6 +406,14 @@ def pbxproj():
     for key, path in UI_TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    for key, path in WATCH_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    app_sources_by_key = dict(APP_SOURCES)
+    for key in WATCH_SHARED_KEYS:
+        filename = app_sources_by_key[key].split("/")[-1]
+        a(f"\t\t{BF_WATCH_SHARED[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
+    a(f"\t\t{BF_EMBED_WATCH} /* RepSetForge Watch App.app in Embed Watch Content */ = {{isa = PBXBuildFile; fileRef = {FR['PROD_WATCH']} /* RepSetForge Watch App.app */; settings = {{ATTRIBUTES = (RemoveHeadersOnCopy, ); }}; }};")
     a("\t\t/* End PBXBuildFile section */")
     a("")
 
@@ -379,6 +433,13 @@ def pbxproj():
     a(f"\t\t\tremoteGlobalIDString = {TG_APP};")
     a(f"\t\t\tremoteInfo = RepSetForge;")
     a(f"\t\t}};")
+    a(f"\t\t{CI_WATCH} /* PBXContainerItemProxy */ = {{")
+    a(f"\t\t\tisa = PBXContainerItemProxy;")
+    a(f"\t\t\tcontainerPortal = {PROJECT} /* Project object */;")
+    a(f"\t\t\tproxyType = 1;")
+    a(f"\t\t\tremoteGlobalIDString = {TG_WATCH};")
+    a(f"\t\t\tremoteInfo = \"RepSetForge Watch App\";")
+    a(f"\t\t}};")
     a("\t\t/* End PBXContainerItemProxy section */")
     a("")
 
@@ -387,6 +448,7 @@ def pbxproj():
     a(f"\t\t{FR['PROD_APP']} /* RepSetForge.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; }};")
     a(f"\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
     a(f"\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */ = {{isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; }};")
+    a(f"\t\t{FR['PROD_WATCH']} /* RepSetForge Watch App.app */ = {{isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = \"RepSetForge Watch App.app\"; sourceTree = BUILT_PRODUCTS_DIR; }};")
     for key, path in APP_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
@@ -397,6 +459,10 @@ def pbxproj():
     for key, path in UI_TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
+    for key, path in WATCH_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
+    a(f"\t\t{FR['WatchEntitlements']} /* RepSetForge Watch App.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = \"RepSetForge Watch App.entitlements\"; sourceTree = \"<group>\"; }};")
     a("\t\t/* End PBXFileReference section */")
     a("")
 
@@ -423,7 +489,32 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_WATCH_FRM} /* Frameworks */ = {{")
+    a(f"\t\t\tisa = PBXFrameworksBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXFrameworksBuildPhase section */")
+    a("")
+
+    # ── PBXCopyFilesBuildPhase ──────────────────────────────────────────────
+    # "Embed Watch Content" on the iOS app target — bundles the watch app's
+    # .app product inside RepSetForge.app so a single install carries both.
+    a("\t\t/* Begin PBXCopyFilesBuildPhase section */")
+    a(f"\t\t{BP_EMBED_WATCH} /* Embed Watch Content */ = {{")
+    a(f"\t\t\tisa = PBXCopyFilesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tdstPath = \"$(CONTENTS_FOLDER_PATH)/Watch\";")
+    a(f"\t\t\tdstSubfolderSpec = 16;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t\t{BF_EMBED_WATCH} /* RepSetForge Watch App.app in Embed Watch Content */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tname = \"Embed Watch Content\";")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
+    a("\t\t/* End PBXCopyFilesBuildPhase section */")
     a("")
 
     # ── PBXGroup ─────────────────────────────────────────────────────────────
@@ -436,6 +527,7 @@ def pbxproj():
     a(f"\t\t\t\t{GR['RepSetForge']} /* RepSetForge */,")
     a(f"\t\t\t\t{GR['Tests']} /* RepSetForgeTests */,")
     a(f"\t\t\t\t{GR['UITests']} /* RepSetForgeUITests */,")
+    a(f"\t\t\t\t{GR['WatchApp']} /* RepSetForge Watch App */,")
     a(f"\t\t\t\t{GR['Products']} /* Products */,")
     a(f"\t\t\t);")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -448,6 +540,7 @@ def pbxproj():
     a(f"\t\t\t\t{FR['PROD_APP']} /* RepSetForge.app */,")
     a(f"\t\t\t\t{FR['PROD_TEST']} /* RepSetForgeTests.xctest */,")
     a(f"\t\t\t\t{FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */,")
+    a(f"\t\t\t\t{FR['PROD_WATCH']} /* RepSetForge Watch App.app */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = Products;")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -534,6 +627,19 @@ def pbxproj():
     a(f"\t\t\tsourceTree = \"<group>\";")
     a(f"\t\t}};")
 
+    # WatchApp group
+    a(f"\t\t{GR['WatchApp']} /* RepSetForge Watch App */ = {{")
+    a(f"\t\t\tisa = PBXGroup;")
+    a(f"\t\t\tchildren = (")
+    for key, path in WATCH_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{FR[key]} /* {filename} */,")
+    a(f"\t\t\t\t{FR['WatchEntitlements']} /* RepSetForge Watch App.entitlements */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tpath = \"RepSetForge Watch App\";")
+    a(f"\t\t\tsourceTree = \"<group>\";")
+    a(f"\t\t}};")
+
     a("\t\t/* End PBXGroup section */")
     a("")
 
@@ -546,10 +652,12 @@ def pbxproj():
     a(f"\t\t\t\t{BP_APP_SRC} /* Sources */,")
     a(f"\t\t\t\t{BP_APP_FRM} /* Frameworks */,")
     a(f"\t\t\t\t{BP_APP_RES} /* Resources */,")
+    a(f"\t\t\t\t{BP_EMBED_WATCH} /* Embed Watch Content */,")
     a(f"\t\t\t);")
     a(f"\t\t\tbuildRules = (")
     a(f"\t\t\t);")
     a(f"\t\t\tdependencies = (")
+    a(f"\t\t\t\t{TD_WATCH} /* PBXTargetDependency */,")
     a(f"\t\t\t);")
     a(f"\t\t\tname = RepSetForge;")
     a(f"\t\t\tproductName = RepSetForge;")
@@ -590,6 +698,22 @@ def pbxproj():
     a(f"\t\t\tproductReference = {FR['PROD_UITEST']} /* RepSetForgeUITests.xctest */;")
     a(f"\t\t\tproductType = \"com.apple.product-type.bundle.ui-testing\";")
     a(f"\t\t}};")
+    a(f"\t\t{TG_WATCH} /* RepSetForge Watch App */ = {{")
+    a(f"\t\t\tisa = PBXNativeTarget;")
+    a(f"\t\t\tbuildConfigurationList = {CL_WATCH} /* Build configuration list for PBXNativeTarget \"RepSetForge Watch App\" */;")
+    a(f"\t\t\tbuildPhases = (")
+    a(f"\t\t\t\t{BP_WATCH_SRC} /* Sources */,")
+    a(f"\t\t\t\t{BP_WATCH_FRM} /* Frameworks */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tbuildRules = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdependencies = (")
+    a(f"\t\t\t);")
+    a(f"\t\t\tname = \"RepSetForge Watch App\";")
+    a(f"\t\t\tproductName = \"RepSetForge Watch App\";")
+    a(f"\t\t\tproductReference = {FR['PROD_WATCH']} /* RepSetForge Watch App.app */;")
+    a(f"\t\t\tproductType = \"com.apple.product-type.application\";")
+    a(f"\t\t}};")
     a("\t\t/* End PBXNativeTarget section */")
     a("")
 
@@ -619,6 +743,11 @@ def pbxproj():
     a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
     a(f"\t\t\t\t\t\tTestTargetID = {TG_APP};")
     a(f"\t\t\t\t\t}};")
+    a(f"\t\t\t\t\t{TG_WATCH} = {{")
+    a(f"\t\t\t\t\t\tCreatedOnToolsVersion = 16.0;")
+    a(f"\t\t\t\t\t\tDevelopmentTeam = 5T5444U7W2;")
+    a(f"\t\t\t\t\t\tProvisioningStyle = Automatic;")
+    a(f"\t\t\t\t\t}};")
     a(f"\t\t\t\t}};")
     a(f"\t\t\t}};")
     a(f"\t\t\tbuildConfigurationList = {CL_PROJECT} /* Build configuration list for PBXProject \"RepSetForge\" */;")
@@ -637,6 +766,7 @@ def pbxproj():
     a(f"\t\t\t\t{TG_APP} /* RepSetForge */,")
     a(f"\t\t\t\t{TG_TEST} /* RepSetForgeTests */,")
     a(f"\t\t\t\t{TG_UITEST} /* RepSetForgeUITests */,")
+    a(f"\t\t\t\t{TG_WATCH} /* RepSetForge Watch App */,")
     a(f"\t\t\t);")
     a(f"\t\t}};")
     a("\t\t/* End PBXProject section */")
@@ -687,6 +817,19 @@ def pbxproj():
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
+    a(f"\t\t{BP_WATCH_SRC} /* Sources */ = {{")
+    a(f"\t\t\tisa = PBXSourcesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    for key, path in WATCH_APP_SOURCES:
+        filename = path.split("/")[-1]
+        a(f"\t\t\t\t{BF[key]} /* {filename} in Sources */,")
+    for key in WATCH_SHARED_KEYS:
+        filename = app_sources_by_key[key].split("/")[-1]
+        a(f"\t\t\t\t{BF_WATCH_SHARED[key]} /* {filename} in Sources */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
     a("\t\t/* End PBXSourcesBuildPhase section */")
     a("")
 
@@ -701,6 +844,11 @@ def pbxproj():
     a(f"\t\t\tisa = PBXTargetDependency;")
     a(f"\t\t\ttarget = {TG_APP} /* RepSetForge */;")
     a(f"\t\t\ttargetProxy = {CI_UITEST} /* PBXContainerItemProxy */;")
+    a(f"\t\t}};")
+    a(f"\t\t{TD_WATCH} /* PBXTargetDependency */ = {{")
+    a(f"\t\t\tisa = PBXTargetDependency;")
+    a(f"\t\t\ttarget = {TG_WATCH} /* RepSetForge Watch App */;")
+    a(f"\t\t\ttargetProxy = {CI_WATCH} /* PBXContainerItemProxy */;")
     a(f"\t\t}};")
     a("\t\t/* End PBXTargetDependency section */")
     a("")
@@ -867,6 +1015,38 @@ def pbxproj():
     uitest_config(BC_UITEST_DBG, "Debug")
     uitest_config(BC_UITEST_REL, "Release")
 
+    def watch_config(uuid, name):
+        debug = name == "Debug"
+        a(f"\t\t{uuid} /* {name} */ = {{")
+        a(f"\t\t\tisa = XCBuildConfiguration;")
+        a(f"\t\t\tbuildSettings = {{")
+        a(f"\t\t\t\tCODE_SIGN_ENTITLEMENTS = \"RepSetForge Watch App/RepSetForge Watch App.entitlements\";")
+        a(f"\t\t\t\tCODE_SIGN_STYLE = Automatic;")
+        a(f"\t\t\t\tDEVELOPMENT_TEAM = 5T5444U7W2;")
+        if debug:
+            a(f"\t\t\t\tENABLE_TESTABILITY = YES;")
+        a(f"\t\t\t\tCURRENT_PROJECT_VERSION = 1;")
+        a(f"\t\t\t\tENABLE_PREVIEWS = YES;")
+        a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
+        a(f"\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = RepSetForge;")
+        a(f"\t\t\t\tINFOPLIST_KEY_UISupportedInterfaceOrientations = \"UIInterfaceOrientationPortrait\";")
+        a(f"\t\t\t\tINFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.gnwn.RepSetForge;")
+        a(f"\t\t\t\tMARKETING_VERSION = 1.0;")
+        a(f"\t\t\t\tPRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;")
+        a(f"\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
+        a(f"\t\t\t\tSDKROOT = watchos;")
+        a(f"\t\t\t\tSUPPORTED_PLATFORMS = \"watchsimulator watchos\";")
+        a(f"\t\t\t\tSWIFT_EMIT_LOC_STRINGS = YES;")
+        a(f"\t\t\t\tSWIFT_VERSION = 6.0;")
+        a(f"\t\t\t\tTARGETED_DEVICE_FAMILY = 4;")
+        a(f"\t\t\t\tWATCHOS_DEPLOYMENT_TARGET = 10.0;")
+        a(f"\t\t\t}};")
+        a(f"\t\t\tname = {name};")
+        a(f"\t\t}};")
+
+    watch_config(BC_WATCH_DBG, "Debug")
+    watch_config(BC_WATCH_REL, "Release")
+
     a("\t\t/* End XCBuildConfiguration section */")
     a("")
 
@@ -904,6 +1084,15 @@ def pbxproj():
     a(f"\t\t\tbuildConfigurations = (")
     a(f"\t\t\t\t{BC_UITEST_DBG} /* Debug */,")
     a(f"\t\t\t\t{BC_UITEST_REL} /* Release */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
+    a(f"\t\t\tdefaultConfigurationName = Release;")
+    a(f"\t\t}};")
+    a(f"\t\t{CL_WATCH} /* Build configuration list for PBXNativeTarget \"RepSetForge Watch App\" */ = {{")
+    a(f"\t\t\tisa = XCConfigurationList;")
+    a(f"\t\t\tbuildConfigurations = (")
+    a(f"\t\t\t\t{BC_WATCH_DBG} /* Debug */,")
+    a(f"\t\t\t\t{BC_WATCH_REL} /* Release */,")
     a(f"\t\t\t);")
     a(f"\t\t\tdefaultConfigurationIsVisible = 0;")
     a(f"\t\t\tdefaultConfigurationName = Release;")
