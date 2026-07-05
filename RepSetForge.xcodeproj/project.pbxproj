@@ -49,14 +49,14 @@
 		AA0200000000000000000077 /* AppIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000077 /* AppIntentService.swift */; };
 		AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000079 /* RepSetForgeShortcuts.swift */; };
 		AA020000000000000000007A /* PrivacyDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007A /* PrivacyDataService.swift */; };
-		AA0200000000000000000093 /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */; };
-		AA0200000000000000000094 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000094 /* LiveActivityService.swift */; };
-		AA0200000000000000000096 /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000096 /* LeaderboardService.swift */; };
+		AA0200000000000000000094 /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */; };
+		AA0200000000000000000095 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000094 /* LiveActivityService.swift */; };
+		AA0200000000000000000097 /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000096 /* LeaderboardService.swift */; };
 		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
 		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
 		AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
-		AA0200000000000000000088 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000088 /* SharedStore.swift */; };
-		AA0200000000000000000089 /* StreakService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000089 /* StreakService.swift */; };
+		AA0200000000000000000089 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000088 /* SharedStore.swift */; };
+		AA020000000000000000008A /* StreakService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000089 /* StreakService.swift */; };
 		AA0200000000000000000080 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000080 /* Fixtures.swift */; };
 		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
 		AA0200000000000000000051 /* EquipmentShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000051 /* EquipmentShopView.swift */; };
@@ -70,7 +70,7 @@
 		AA0200000000000000000060 /* QuestCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000060 /* QuestCalendarView.swift */; };
 		AA0200000000000000000063 /* TrainingChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000063 /* TrainingChartsView.swift */; };
 		AA0200000000000000000015 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000015 /* AchievementsView.swift */; };
-		AA0200000000000000000097 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000097 /* LeaderboardView.swift */; };
+		AA0200000000000000000098 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000097 /* LeaderboardView.swift */; };
 		AA0200000000000000000016 /* QuestCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000016 /* QuestCompletionView.swift */; };
 		AA0200000000000000000017 /* PixelQuestCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000017 /* PixelQuestCard.swift */; };
 		AA0200000000000000000018 /* PixelXPBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000018 /* PixelXPBar.swift */; };
@@ -103,6 +103,7 @@
 		AA0200000000000000000033 /* RPGSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000033 /* RPGSpriteView.swift */; };
 		AA0200000000000000000034 /* RPGSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000034 /* RPGSceneView.swift */; };
 		AA020000000000000000001F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001F /* Assets.xcassets */; };
+		AA0200000000000000000088 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000099 /* Assets.xcassets */; };
 		AA0200000000000000000022 /* ProgressionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ProgressionServiceTests.swift */; };
 		AA0200000000000000000023 /* AchievementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000023 /* AchievementServiceTests.swift */; };
 		AA0200000000000000000024 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* IntegrationTests.swift */; };
@@ -138,8 +139,8 @@
 		AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007B /* PrivacyDataServiceTests.swift */; };
 		AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007D /* PersistenceMigrationTests.swift */; };
 		AA0200000000000000000081 /* FixturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000081 /* FixturesTests.swift */; };
-		AA020000000000000000008A /* StreakServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008A /* StreakServiceTests.swift */; };
-		AA0200000000000000000098 /* LeaderboardServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000098 /* LeaderboardServiceTests.swift */; };
+		AA020000000000000000008B /* StreakServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008A /* StreakServiceTests.swift */; };
+		AA0200000000000000000099 /* LeaderboardServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000098 /* LeaderboardServiceTests.swift */; };
 		AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007F /* QuestLoggingUITests.swift */; };
 		AA0200000000000000000082 /* RepSetForgeWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000082 /* RepSetForgeWatchApp.swift */; };
 		AA0200000000000000000083 /* WatchQuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000083 /* WatchQuestView.swift */; };
@@ -167,12 +168,12 @@
 		AA02000000000000000000B3 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000080 /* Fixtures.swift */; };
 		AA02000000000000000000B4 /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000D /* AchievementService.swift */; };
 		AA02000000000000000000F0 /* RepSetForge Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000086 /* RepSetForge Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		AA020000000000000000008B /* RepSetForgeWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */; };
-		AA020000000000000000008C /* RepSetForgeWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */; };
-		AA020000000000000000008D /* RepSetForgeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008D /* RepSetForgeWidgetView.swift */; };
-		AA020000000000000000008E /* RepSetForgeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008E /* RepSetForgeWidget.swift */; };
-		AA020000000000000000008F /* RepSetForgeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008F /* RepSetForgeWidgetBundle.swift */; };
-		AA0200000000000000000095 /* RepSetForgeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000095 /* RepSetForgeLiveActivity.swift */; };
+		AA020000000000000000008C /* RepSetForgeWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */; };
+		AA020000000000000000008D /* RepSetForgeWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */; };
+		AA020000000000000000008E /* RepSetForgeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008D /* RepSetForgeWidgetView.swift */; };
+		AA020000000000000000008F /* RepSetForgeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008E /* RepSetForgeWidget.swift */; };
+		AA0200000000000000000090 /* RepSetForgeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008F /* RepSetForgeWidgetBundle.swift */; };
+		AA0200000000000000000096 /* RepSetForgeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000095 /* RepSetForgeLiveActivity.swift */; };
 		AA02000000000000000000C8 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000008 /* Quest.swift */; };
 		AA02000000000000000000C9 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000007 /* Exercise.swift */; };
 		AA02000000000000000000CA /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
@@ -374,6 +375,7 @@
 		AA0100000000000000000084 /* WatchExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchExerciseView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000085 /* WatchTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTheme.swift; sourceTree = "<group>"; };
 		AA0100000000000000000087 /* RepSetForge Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RepSetForge Watch App.entitlements"; sourceTree = "<group>"; };
+		AA0100000000000000000099 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetEntry.swift; sourceTree = "<group>"; };
 		AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetProvider.swift; sourceTree = "<group>"; };
 		AA010000000000000000008D /* RepSetForgeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetView.swift; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 				AA0100000000000000000084 /* WatchExerciseView.swift */,
 				AA0100000000000000000085 /* WatchTheme.swift */,
 				AA0100000000000000000087 /* RepSetForge Watch App.entitlements */,
+				AA0100000000000000000099 /* Assets.xcassets */,
 			);
 			path = "RepSetForge Watch App";
 			sourceTree = "<group>";
@@ -766,6 +769,7 @@
 			buildPhases = (
 				AA0700000000000000000008 /* Sources */,
 				AA0700000000000000000009 /* Frameworks */,
+				AA070000000000000000000E /* Resources */,
 			);
 			buildRules = (
 			);
@@ -862,6 +866,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AA070000000000000000000E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA0200000000000000000088 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		/* End PBXResourcesBuildPhase section */
 
 		/* Begin PBXSourcesBuildPhase section */
@@ -911,14 +923,14 @@
 				AA0200000000000000000077 /* AppIntentService.swift in Sources */,
 				AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */,
 				AA020000000000000000007A /* PrivacyDataService.swift in Sources */,
-				AA0200000000000000000093 /* RepSetForgeActivityAttributes.swift in Sources */,
-				AA0200000000000000000094 /* LiveActivityService.swift in Sources */,
-				AA0200000000000000000096 /* LeaderboardService.swift in Sources */,
+				AA0200000000000000000094 /* RepSetForgeActivityAttributes.swift in Sources */,
+				AA0200000000000000000095 /* LiveActivityService.swift in Sources */,
+				AA0200000000000000000097 /* LeaderboardService.swift in Sources */,
 				AA020000000000000000004C /* GoldService.swift in Sources */,
 				AA020000000000000000000E /* PersistenceController.swift in Sources */,
 				AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */,
-				AA0200000000000000000088 /* SharedStore.swift in Sources */,
-				AA0200000000000000000089 /* StreakService.swift in Sources */,
+				AA0200000000000000000089 /* SharedStore.swift in Sources */,
+				AA020000000000000000008A /* StreakService.swift in Sources */,
 				AA0200000000000000000080 /* Fixtures.swift in Sources */,
 				AA020000000000000000004B /* OnboardingView.swift in Sources */,
 				AA0200000000000000000051 /* EquipmentShopView.swift in Sources */,
@@ -932,7 +944,7 @@
 				AA0200000000000000000060 /* QuestCalendarView.swift in Sources */,
 				AA0200000000000000000063 /* TrainingChartsView.swift in Sources */,
 				AA0200000000000000000015 /* AchievementsView.swift in Sources */,
-				AA0200000000000000000097 /* LeaderboardView.swift in Sources */,
+				AA0200000000000000000098 /* LeaderboardView.swift in Sources */,
 				AA0200000000000000000016 /* QuestCompletionView.swift in Sources */,
 				AA0200000000000000000017 /* PixelQuestCard.swift in Sources */,
 				AA0200000000000000000018 /* PixelXPBar.swift in Sources */,
@@ -1006,8 +1018,8 @@
 				AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */,
 				AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */,
 				AA0200000000000000000081 /* FixturesTests.swift in Sources */,
-				AA020000000000000000008A /* StreakServiceTests.swift in Sources */,
-				AA0200000000000000000098 /* LeaderboardServiceTests.swift in Sources */,
+				AA020000000000000000008B /* StreakServiceTests.swift in Sources */,
+				AA0200000000000000000099 /* LeaderboardServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1055,12 +1067,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA020000000000000000008B /* RepSetForgeWidgetEntry.swift in Sources */,
-				AA020000000000000000008C /* RepSetForgeWidgetProvider.swift in Sources */,
-				AA020000000000000000008D /* RepSetForgeWidgetView.swift in Sources */,
-				AA020000000000000000008E /* RepSetForgeWidget.swift in Sources */,
-				AA020000000000000000008F /* RepSetForgeWidgetBundle.swift in Sources */,
-				AA0200000000000000000095 /* RepSetForgeLiveActivity.swift in Sources */,
+				AA020000000000000000008C /* RepSetForgeWidgetEntry.swift in Sources */,
+				AA020000000000000000008D /* RepSetForgeWidgetProvider.swift in Sources */,
+				AA020000000000000000008E /* RepSetForgeWidgetView.swift in Sources */,
+				AA020000000000000000008F /* RepSetForgeWidget.swift in Sources */,
+				AA0200000000000000000090 /* RepSetForgeWidgetBundle.swift in Sources */,
+				AA0200000000000000000096 /* RepSetForgeLiveActivity.swift in Sources */,
 				AA02000000000000000000C8 /* Quest.swift in Sources */,
 				AA02000000000000000000C9 /* Exercise.swift in Sources */,
 				AA02000000000000000000CA /* ExerciseSet.swift in Sources */,
@@ -1378,6 +1390,7 @@
 		AA0600000000000000000009 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5T5444U7W2;
@@ -1403,6 +1416,7 @@
 		AA060000000000000000000A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5T5444U7W2;

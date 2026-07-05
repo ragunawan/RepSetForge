@@ -150,6 +150,7 @@ FR = {
     "WatchTheme":                    u(1, 0x85),
     "PROD_WATCH":                    u(1, 0x86),  # RepSetForge Watch App.app
     "WatchEntitlements":             u(1, 0x87),
+    "WatchAssets":                   u(1, 0x99),
     "SharedStore":                   u(1, 0x88),
     "StreakService":                 u(1, 0x89),
     "TEST_StreakService":            u(1, 0x8A),
@@ -282,6 +283,7 @@ BP_UITEST_SRC = u(7, 0x06)
 BP_UITEST_FRM = u(7, 0x07)
 BP_WATCH_SRC  = u(7, 0x08)
 BP_WATCH_FRM  = u(7, 0x09)
+BP_WATCH_RES  = u(7, 0x0E)
 BP_EMBED_WATCH = u(7, 0x0A)  # "Embed Watch Content" copy-files phase, on the iOS app target
 BP_WIDGET_SRC = u(7, 0x0B)
 BP_WIDGET_FRM = u(7, 0x0C)
@@ -459,6 +461,7 @@ def pbxproj():
         filename = path.split("/")[-1]
         a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
     a(f"\t\t{BF['Assets']} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {FR['Assets']} /* Assets.xcassets */; }};")
+    a(f"\t\t{BF['WatchAssets']} /* Assets.xcassets in Resources */ = {{isa = PBXBuildFile; fileRef = {FR['WatchAssets']} /* Assets.xcassets */; }};")
     for key, path in TEST_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{BF[key]} /* {filename} in Sources */ = {{isa = PBXBuildFile; fileRef = {FR[key]} /* {filename} */; }};")
@@ -537,6 +540,7 @@ def pbxproj():
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
     a(f"\t\t{FR['WatchEntitlements']} /* RepSetForge Watch App.entitlements */ = {{isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = \"RepSetForge Watch App.entitlements\"; sourceTree = \"<group>\"; }};")
+    a(f"\t\t{FR['WatchAssets']} /* Assets.xcassets */ = {{isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = \"<group>\"; }};")
     for key, path in WIDGET_APP_SOURCES:
         filename = path.split("/")[-1]
         a(f"\t\t{FR[key]} /* {filename} */ = {{isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = {filename}; sourceTree = \"<group>\"; }};")
@@ -734,6 +738,7 @@ def pbxproj():
         filename = path.split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")
     a(f"\t\t\t\t{FR['WatchEntitlements']} /* RepSetForge Watch App.entitlements */,")
+    a(f"\t\t\t\t{FR['WatchAssets']} /* Assets.xcassets */,")
     a(f"\t\t\t);")
     a(f"\t\t\tpath = \"RepSetForge Watch App\";")
     a(f"\t\t\tsourceTree = \"<group>\";")
@@ -819,6 +824,7 @@ def pbxproj():
     a(f"\t\t\tbuildPhases = (")
     a(f"\t\t\t\t{BP_WATCH_SRC} /* Sources */,")
     a(f"\t\t\t\t{BP_WATCH_FRM} /* Frameworks */,")
+    a(f"\t\t\t\t{BP_WATCH_RES} /* Resources */,")
     a(f"\t\t\t);")
     a(f"\t\t\tbuildRules = (")
     a(f"\t\t\t);")
@@ -916,6 +922,14 @@ def pbxproj():
     a(f"\t\t\tbuildActionMask = 2147483647;")
     a(f"\t\t\tfiles = (")
     a(f"\t\t\t\t{BF['Assets']} /* Assets.xcassets in Resources */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+    a(f"\t\t}};")
+    a(f"\t\t{BP_WATCH_RES} /* Resources */ = {{")
+    a(f"\t\t\tisa = PBXResourcesBuildPhase;")
+    a(f"\t\t\tbuildActionMask = 2147483647;")
+    a(f"\t\t\tfiles = (")
+    a(f"\t\t\t\t{BF['WatchAssets']} /* Assets.xcassets in Resources */,")
     a(f"\t\t\t);")
     a(f"\t\t\trunOnlyForDeploymentPostprocessing = 0;")
     a(f"\t\t}};")
@@ -1176,6 +1190,7 @@ def pbxproj():
         a(f"\t\t{uuid} /* {name} */ = {{")
         a(f"\t\t\tisa = XCBuildConfiguration;")
         a(f"\t\t\tbuildSettings = {{")
+        a(f"\t\t\t\tASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;")
         a(f"\t\t\t\tCODE_SIGN_ENTITLEMENTS = \"RepSetForge Watch App/RepSetForge Watch App.entitlements\";")
         a(f"\t\t\t\tCODE_SIGN_STYLE = Automatic;")
         a(f"\t\t\t\tDEVELOPMENT_TEAM = 5T5444U7W2;")
