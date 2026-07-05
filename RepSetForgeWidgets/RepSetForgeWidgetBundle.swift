@@ -5,5 +5,6 @@ import SwiftUI
 struct RepSetForgeWidgetBundle: WidgetBundle {
     var body: some Widget {
         RepSetForgeWidget()
+        RepSetForgeLiveActivity()
     }
 }

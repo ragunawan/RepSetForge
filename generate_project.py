@@ -161,6 +161,9 @@ FR = {
     "PROD_WIDGET":                   u(1, 0x90),  # RepSetForgeWidgets.appex
     "WidgetEntitlements":            u(1, 0x91),
     "WidgetInfoPlist":               u(1, 0x92),
+    "RepSetForgeActivityAttributes": u(1, 0x93),
+    "LiveActivityService":           u(1, 0x94),
+    "RepSetForgeLiveActivity":       u(1, 0x95),
 }
 
 # ── watchOS companion app ──────────────────────────────────────────────────
@@ -203,6 +206,7 @@ WIDGET_APP_SOURCES = [
     ("RepSetForgeWidgetView", "RepSetForgeWidgets/RepSetForgeWidgetView.swift"),
     ("RepSetForgeWidget", "RepSetForgeWidgets/RepSetForgeWidget.swift"),
     ("RepSetForgeWidgetBundle", "RepSetForgeWidgets/RepSetForgeWidgetBundle.swift"),
+    ("RepSetForgeLiveActivity", "RepSetForgeWidgets/RepSetForgeLiveActivity.swift"),
 ]
 
 WIDGET_SHARED_KEYS = [
@@ -210,7 +214,7 @@ WIDGET_SHARED_KEYS = [
     "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecord",
     "RPGEncounterState", "OwnedEquipment", "SkillProgress",
     "QuestStatus", "MuscleGroup", "ExerciseType", "WeightUnit", "PersonalRecordType", "RPGClass",
-    "RepSetForgeSchema", "SharedStore", "StreakService",
+    "RepSetForgeSchema", "SharedStore", "StreakService", "RepSetForgeActivityAttributes",
 ]
 
 BF_WIDGET_SHARED = {k: u(2, 0xC8 + i) for i, k in enumerate(WIDGET_SHARED_KEYS)}
@@ -334,6 +338,8 @@ APP_SOURCES = [
     ("AppIntentService", "Services/AppIntentService.swift"),
     ("RepSetForgeShortcuts", "Services/RepSetForgeShortcuts.swift"),
     ("PrivacyDataService", "Services/PrivacyDataService.swift"),
+    ("RepSetForgeActivityAttributes", "Services/RepSetForgeActivityAttributes.swift"),
+    ("LiveActivityService", "Services/LiveActivityService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("RepSetForgeSchema", "Persistence/RepSetForgeSchema.swift"),
@@ -666,7 +672,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService", "StreakService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService", "StreakService", "RepSetForgeActivityAttributes", "LiveActivityService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema", "SharedStore"])
@@ -1088,6 +1094,7 @@ def pbxproj():
         a(f"\t\t\t\tINFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;")
         a(f"\t\t\t\tINFOPLIST_KEY_NSHealthShareUsageDescription = \"RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.\";")
         a(f"\t\t\t\tINFOPLIST_KEY_NSHealthUpdateUsageDescription = \"RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.\";")
+        a(f"\t\t\t\tINFOPLIST_KEY_NSSupportsLiveActivities = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UILaunchScreen_Generation = YES;")

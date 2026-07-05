@@ -210,6 +210,8 @@ struct QuestDetailView: View {
                 try? await HealthKitService.saveWorkout(start: range.start, end: range.end)
             }
         }
+
+        Task { await LiveActivityService.endAll() }
     }
 
     private func undoCompletion() {
@@ -218,6 +220,7 @@ struct QuestDetailView: View {
         quest.totalXP = 0
         ProgressionRebuildService.rebuild(context: modelContext)
         try? modelContext.save()
+        Task { await LiveActivityService.endAll() }
     }
 }
 

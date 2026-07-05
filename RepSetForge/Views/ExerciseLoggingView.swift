@@ -120,10 +120,30 @@ struct ExerciseLoggingView: View {
         } else {
             ForEach(sortedSets) { set in
                 ExerciseSetRow(set: set, exerciseType: exercise.exerciseType, isReadOnly: isReadOnly) {
-                    restSecondsRemaining = exercise.defaultRestSeconds > 0 ? exercise.defaultRestSeconds : nil
+                    let restSeconds = exercise.defaultRestSeconds
+                    restSecondsRemaining = restSeconds > 0 ? restSeconds : nil
+                    updateLiveActivity(restSeconds: restSeconds)
                 }
             }
             .onDelete(perform: deleteSets)
+        }
+    }
+
+    /// Starts (on the first set of the quest) or updates the Live Activity
+    /// showing overall progress across every skill in the quest, not just
+    /// this one — `exercise.quest` (the inverse relationship) is how a
+    /// single exercise's logging view reaches the quest-wide totals.
+    private func updateLiveActivity(restSeconds: Int) {
+        guard let quest = exercise.quest else { return }
+        let allSets = quest.exercises.flatMap(\.sets)
+        let restEndDate = restSeconds > 0 ? Date.now.addingTimeInterval(TimeInterval(restSeconds)) : nil
+        Task {
+            await LiveActivityService.startOrUpdate(
+                questName: quest.name,
+                completedSetCount: allSets.filter(\.completed).count,
+                totalSetCount: allSets.count,
+                restEndDate: restEndDate
+            )
         }
     }
 
