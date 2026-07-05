@@ -53,4 +53,26 @@ final class QuestLoggingUITests: XCTestCase {
         // now read-only and showing the XP reward earned for the set just logged.
         XCTAssertTrue(app.staticTexts["Reward"].waitForExistence(timeout: 10))
     }
+
+    /// The leaderboard is opt-in and off by default — confirms the
+    /// opted-out empty state renders (rather than crashing or silently
+    /// attempting a network fetch) on a fresh character.
+    func testLeaderboardShowsOptedOutStateByDefault() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["--preview-data", "--skip-onboarding", "--tab", "1"]
+        app.launch()
+
+        // "Leaderboard" is a secondary-placement toolbar item, which iOS
+        // collapses into an overflow "More" menu alongside "Settings" —
+        // same as "Undo Completion" elsewhere in this suite.
+        let overflowButton = app.buttons["OverflowBarButtonItem"]
+        XCTAssertTrue(overflowButton.waitForExistence(timeout: 10))
+        overflowButton.tap()
+
+        let leaderboardButton = app.buttons["Leaderboard"]
+        XCTAssertTrue(leaderboardButton.waitForExistence(timeout: 10))
+        leaderboardButton.tap()
+
+        XCTAssertTrue(app.staticTexts["Leaderboard Opt-In Required"].waitForExistence(timeout: 10))
+    }
 }

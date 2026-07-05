@@ -164,6 +164,9 @@ FR = {
     "RepSetForgeActivityAttributes": u(1, 0x93),
     "LiveActivityService":           u(1, 0x94),
     "RepSetForgeLiveActivity":       u(1, 0x95),
+    "LeaderboardService":            u(1, 0x96),
+    "LeaderboardView":               u(1, 0x97),
+    "TEST_LeaderboardService":       u(1, 0x98),
 }
 
 # ── watchOS companion app ──────────────────────────────────────────────────
@@ -340,6 +343,7 @@ APP_SOURCES = [
     ("PrivacyDataService", "Services/PrivacyDataService.swift"),
     ("RepSetForgeActivityAttributes", "Services/RepSetForgeActivityAttributes.swift"),
     ("LiveActivityService", "Services/LiveActivityService.swift"),
+    ("LeaderboardService", "Services/LeaderboardService.swift"),
     ("GoldService",           "Services/GoldService.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("RepSetForgeSchema", "Persistence/RepSetForgeSchema.swift"),
@@ -358,6 +362,7 @@ APP_SOURCES = [
     ("QuestCalendarView",     "Views/QuestCalendarView.swift"),
     ("TrainingChartsView",    "Views/TrainingChartsView.swift"),
     ("AchievementsView",      "Views/AchievementsView.swift"),
+    ("LeaderboardView",       "Views/LeaderboardView.swift"),
     ("QuestCompletionView",   "Views/QuestCompletionView.swift"),
     ("PixelQuestCard",        "Views/Components/PixelQuestCard.swift"),
     ("PixelXPBar",            "Views/Components/PixelXPBar.swift"),
@@ -428,6 +433,7 @@ TEST_SOURCES = [
     ("TEST_PersistenceMigration", "RepSetForgeTests/PersistenceMigrationTests.swift"),
     ("TEST_Fixtures", "RepSetForgeTests/FixturesTests.swift"),
     ("TEST_StreakService", "RepSetForgeTests/StreakServiceTests.swift"),
+    ("TEST_LeaderboardService", "RepSetForgeTests/LeaderboardServiceTests.swift"),
 ]
 
 UI_TEST_SOURCES = [
@@ -672,7 +678,7 @@ def pbxproj():
 
     simple_group("Models", "Models", ["MuscleGroup", "WeightUnit", "QuestStatus", "ExerciseType", "ExerciseSet", "Exercise", "ExerciseTemplate", "Quest", "QuestTemplate", "PlayerCharacter", "MuscleProgress", "Achievement", "PersonalRecordType", "PersonalRecord", "TrainingStyle",
                                        "RPGClass", "RPGEquipment", "OwnedEquipment", "RPGSkill", "SkillProgress", "RPGMonster", "RPGBoss", "RPGProgressionSnapshot", "RPGEncounterState"])
-    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService", "StreakService", "RepSetForgeActivityAttributes", "LiveActivityService",
+    simple_group("Services", "Services", ["ProgressionService", "AchievementService", "ExerciseTemplateService", "QuestTemplateService", "QuestDuplicationService", "QuestScheduler", "ProgressionRebuildService", "PersonalRecordService", "GoldService", "TrainingStyleService", "TrainingInsightsService", "SuggestedQuestService", "QuestCalendarService", "TrainingChartsService", "MuscleRecoveryService", "QuestFilterService", "RecoveryRecommendationService", "ExerciseNameSuggestionService", "ExerciseMetricsService", "ProgressExportService", "ProgressImportService", "HealthKitService", "AppIntentService", "RepSetForgeShortcuts", "PrivacyDataService", "StreakService", "RepSetForgeActivityAttributes", "LiveActivityService", "LeaderboardService",
                                            "RPGMonsterRegistry", "RPGBossRegistry", "RPGEquipmentRegistry", "RPGEquipmentService", "RPGSkillRegistry", "SkillProgressionService", "EquipmentDropService",
                                            "MonsterSpawnService", "BossMilestoneService", "RPGEncounterViewModel"])
     simple_group("Persistence", "Persistence", ["PersistenceController", "RepSetForgeSchema", "SharedStore"])
@@ -683,7 +689,7 @@ def pbxproj():
     a(f"\t\t\tisa = PBXGroup;")
     a(f"\t\t\tchildren = (")
     for key in ["OnboardingView", "EquipmentShopView", "QuestDashboardView", "QuestListView", "QuestDetailView", "ExerciseLoggingView",
-                "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView", "QuestCalendarView", "TrainingChartsView", "ExerciseMetricsView"]:
+                "CharacterProgressView", "QuestHistoryView", "AchievementsView", "QuestCompletionView", "QuestCalendarView", "TrainingChartsView", "ExerciseMetricsView", "LeaderboardView"]:
         filename = dict(APP_SOURCES)[key].split("/")[-1]
         a(f"\t\t\t\t{FR[key]} /* {filename} */,")
     a(f"\t\t\t\t{GR['Components']} /* Components */,")

@@ -243,6 +243,13 @@ struct CharacterProgressView: View {
             .navigationTitle("Character")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .secondaryAction) {
+                    NavigationLink {
+                        LeaderboardView()
+                    } label: {
+                        Label("Leaderboard", systemImage: "list.number")
+                    }
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button {
                         showingSettings = true
@@ -366,6 +373,28 @@ private struct SettingsSheet: View {
                     Text("Erases every quest, exercise, and set, and resets your level, muscle progress, gold, achievements, and personal records to their starting state. Your class, equipment, and weight-unit preference are untouched.")
                         .font(RepSetForgeFont.body(12))
                         .foregroundStyle(.secondary)
+                }
+
+                if let character = characters.first {
+                    Section("Leaderboard") {
+                        TextField("Display Name", text: Binding(
+                            get: { character.leaderboardDisplayName },
+                            set: { character.leaderboardDisplayName = $0 }
+                        ))
+                        Toggle("Share to Leaderboard", isOn: Binding(
+                            get: { character.leaderboardOptIn },
+                            set: { newValue in
+                                character.leaderboardOptIn = newValue && !character.leaderboardDisplayName.isEmpty
+                                if !character.leaderboardOptIn {
+                                    Task { try? await LeaderboardService.removeEntry() }
+                                }
+                            }
+                        ))
+                        .disabled(character.leaderboardDisplayName.isEmpty)
+                        Text("Unlike everything else in this app, this publishes your display name, level, streak, and completed-quest count to a global leaderboard every other player can see — a different, public sharing model than the private iCloud sync described above. Off by default; requires a display name first.")
+                            .font(RepSetForgeFont.body(12))
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
             .navigationTitle("Settings")

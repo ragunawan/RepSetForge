@@ -27,6 +27,14 @@ final class PlayerCharacter {
     /// distinct `PersonalRecord` rows, since re-breaking an existing record
     /// counts again here but doesn't add a new row.
     var totalPRCount: Int = 0
+    /// Off by default — publishing to the leaderboard means this character's
+    /// name/level/streak becomes visible to every other player via
+    /// CloudKit's public database, so it's an explicit opt-in, never
+    /// automatic. See `LeaderboardService`.
+    var leaderboardOptIn: Bool = false
+    /// What shows on the leaderboard instead of any real name. Empty until
+    /// the player sets one — opting in requires a non-empty name first.
+    var leaderboardDisplayName: String = ""
 
     init(
         level: Int = 1,
@@ -38,7 +46,9 @@ final class PlayerCharacter {
         preferredWeightUnit: WeightUnit = .pounds,
         hasCompletedOnboarding: Bool = false,
         gold: Int = 0,
-        totalPRCount: Int = 0
+        totalPRCount: Int = 0,
+        leaderboardOptIn: Bool = false,
+        leaderboardDisplayName: String = ""
     ) {
         self.level = level
         self.currentXP = currentXP
@@ -50,6 +60,8 @@ final class PlayerCharacter {
         self.hasCompletedOnboarding = hasCompletedOnboarding
         self.gold = gold
         self.totalPRCount = totalPRCount
+        self.leaderboardOptIn = leaderboardOptIn
+        self.leaderboardDisplayName = leaderboardDisplayName
     }
 
     /// XP required to advance from the current level to the next.
