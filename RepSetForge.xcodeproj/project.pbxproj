@@ -1,1547 +1,214 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 77;
+	classes = {};
+	objectVersion = 56;
 	objects = {
+		021F2B7F3E0C61452C987484 = {isa = PBXGroup; children = (8CEDA7969DF3E20018ADE29A, D8D6F9F883E6FC85755BAEFF, C123A07E755C73927ECA799A, F7274FA43EF4B25DC0D9F954); name = Products; sourceTree = "<group>";};
+		03EFABB86F665BA711C83EA5 = {isa = XCConfigurationList; buildConfigurations = (8DFBB93514DB53EE62D3B44B, 7DB5DFCC8ED86DDD8C423579); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		093ABFD0D1DF3B13366209EE = {isa = PBXBuildFile; fileRef = B30928BB1402943E3C7CE009;};
+		09BC3A3119CFE29CC052AFFD = {isa = PBXBuildFile; fileRef = 3E69BF185DC595A494B7832C;};
+		13F3C112BD1AFC2B1DA93543 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (24AC16927DA1C910EE21AFD1); runOnlyForDeploymentPostprocessing = 0;};
+		15F5FC4F22B2380DCB1C23F4 = {isa = PBXBuildFile; fileRef = DD144EDCFEA66CD4EDDCACDD;};
+		1DB33592A24C9148BFD65F63 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		24AC16927DA1C910EE21AFD1 = {isa = PBXBuildFile; fileRef = F039B007885BF2C7143259E5;};
+		2BF5DE592226D457D3BCDAC0 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		2C135CA110FDB5658326B736 = {isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = B645626E2FC3DB45E109AAC5; remoteInfo = RepSetForge;};
+		2C392AD8ADE10E05413759CE = {isa = PBXNativeTarget; buildConfigurationList = FFF446F067F09552158CA1AC; buildPhases = (13F3C112BD1AFC2B1DA93543, A05070AD1604345718597354, 1DB33592A24C9148BFD65F63); buildRules = (); dependencies = (); name = RepSetForgeWatch; productName = RepSetForgeWatch; productReference = C123A07E755C73927ECA799A; productType = "com.apple.product-type.application";};
+		2E2C5F2C2CCE58D9B4F08777 = {isa = PBXNativeTarget; buildConfigurationList = 895CD05BEE8BAB8F28D9933C; buildPhases = (BBF27171F2E9EBCCAFD3E545, CD5BADB5A91D597E76F60CF4, D7DA8668DC68561CF3B5D465); buildRules = (); dependencies = (768F8B228D9788DC87302A82); name = RepSetForgeTests; productName = RepSetForgeTests; productReference = F7274FA43EF4B25DC0D9F954; productType = "com.apple.product-type.bundle.unit-test";};
+		34B8CC57206F01904C88BA49 = {isa = PBXBuildFile; fileRef = 8422D63737CD5E48813E1830;};
+		3E69BF185DC595A494B7832C = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/LibraryAndSettings.swift"; sourceTree = SOURCE_ROOT;};
+		4163187A501ED788B7D490D2 = {isa = PBXBuildFile; fileRef = F36545DF92B5B6A2A4F4A382;};
+		45A6A88DC85623F57ECF575D = {isa = XCConfigurationList; buildConfigurations = (5E8ACABCCBE1DB5D311988C9, F84FD35CA8548076F2B51EDF); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		468826A83B962F0C47EFF338 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Design/RSTheme.swift"; sourceTree = SOURCE_ROOT;};
+		4B5C49B62512474C57B10522 = {isa = PBXBuildFile; fileRef = D8D6F9F883E6FC85755BAEFF; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };};
+		4D8C5BA960F8645B260F1B3F = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		518E35B85443929954635880 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/RootView.swift"; sourceTree = SOURCE_ROOT;};
+		534E97FE03168657A20C767F = {isa = XCBuildConfiguration; buildSettings = {
 
-		/* Begin PBXBuildFile section */
-		AA0200000000000000000001 /* RepSetForgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000001 /* RepSetForgeApp.swift */; };
-		AA0200000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000002 /* ContentView.swift */; };
-		AA0200000000000000000003 /* RepSetForgeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000003 /* RepSetForgeTheme.swift */; };
-		AA0200000000000000000004 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000004 /* MuscleGroup.swift */; };
-		AA0200000000000000000049 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* WeightUnit.swift */; };
-		AA0200000000000000000005 /* QuestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000005 /* QuestStatus.swift */; };
-		AA0200000000000000000043 /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* ExerciseType.swift */; };
-		AA0200000000000000000006 /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
-		AA0200000000000000000007 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000007 /* Exercise.swift */; };
-		AA0200000000000000000037 /* ExerciseTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000037 /* ExerciseTemplate.swift */; };
-		AA0200000000000000000008 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000008 /* Quest.swift */; };
-		AA020000000000000000003A /* QuestTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* QuestTemplate.swift */; };
-		AA0200000000000000000009 /* PlayerCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000009 /* PlayerCharacter.swift */; };
-		AA020000000000000000000A /* MuscleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000A /* MuscleProgress.swift */; };
-		AA020000000000000000000B /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000B /* Achievement.swift */; };
-		AA0200000000000000000045 /* PersonalRecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* PersonalRecordType.swift */; };
-		AA0200000000000000000057 /* TrainingStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000057 /* TrainingStyle.swift */; };
-		AA0200000000000000000046 /* PersonalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000046 /* PersonalRecord.swift */; };
-		AA020000000000000000000C /* ProgressionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000C /* ProgressionService.swift */; };
-		AA020000000000000000000D /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000D /* AchievementService.swift */; };
-		AA0200000000000000000038 /* ExerciseTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000038 /* ExerciseTemplateService.swift */; };
-		AA020000000000000000003B /* QuestTemplateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003B /* QuestTemplateService.swift */; };
-		AA020000000000000000003D /* QuestDuplicationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003D /* QuestDuplicationService.swift */; };
-		AA020000000000000000003F /* QuestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003F /* QuestScheduler.swift */; };
-		AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000041 /* ProgressionRebuildService.swift */; };
-		AA0200000000000000000047 /* PersonalRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000047 /* PersonalRecordService.swift */; };
-		AA0200000000000000000058 /* TrainingStyleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000058 /* TrainingStyleService.swift */; };
-		AA020000000000000000005A /* TrainingInsightsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005A /* TrainingInsightsService.swift */; };
-		AA020000000000000000005C /* SuggestedQuestService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005C /* SuggestedQuestService.swift */; };
-		AA020000000000000000005E /* QuestCalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005E /* QuestCalendarService.swift */; };
-		AA0200000000000000000061 /* TrainingChartsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000061 /* TrainingChartsService.swift */; };
-		AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000064 /* MuscleRecoveryService.swift */; };
-		AA0200000000000000000066 /* QuestFilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000066 /* QuestFilterService.swift */; };
-		AA020000000000000000006A /* RecoveryRecommendationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006A /* RecoveryRecommendationService.swift */; };
-		AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006C /* ExerciseNameSuggestionService.swift */; };
-		AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006E /* ExerciseMetricsService.swift */; };
-		AA0200000000000000000071 /* ProgressExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000071 /* ProgressExportService.swift */; };
-		AA0200000000000000000073 /* ProgressImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000073 /* ProgressImportService.swift */; };
-		AA0200000000000000000075 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000075 /* HealthKitService.swift */; };
-		AA0200000000000000000077 /* AppIntentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000077 /* AppIntentService.swift */; };
-		AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000079 /* RepSetForgeShortcuts.swift */; };
-		AA020000000000000000007A /* PrivacyDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007A /* PrivacyDataService.swift */; };
-		AA0200000000000000000094 /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */; };
-		AA0200000000000000000095 /* LiveActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000094 /* LiveActivityService.swift */; };
-		AA0200000000000000000097 /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000096 /* LeaderboardService.swift */; };
-		AA020000000000000000004C /* GoldService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004C /* GoldService.swift */; };
-		AA020000000000000000000E /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000E /* PersistenceController.swift */; };
-		AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
-		AA0200000000000000000089 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000088 /* SharedStore.swift */; };
-		AA020000000000000000008A /* StreakService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000089 /* StreakService.swift */; };
-		AA0200000000000000000080 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000080 /* Fixtures.swift */; };
-		AA020000000000000000004B /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* OnboardingView.swift */; };
-		AA0200000000000000000051 /* EquipmentShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000051 /* EquipmentShopView.swift */; };
-		AA020000000000000000000F /* QuestDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000F /* QuestDashboardView.swift */; };
-		AA0200000000000000000010 /* QuestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000010 /* QuestListView.swift */; };
-		AA0200000000000000000011 /* QuestDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000011 /* QuestDetailView.swift */; };
-		AA0200000000000000000012 /* ExerciseLoggingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000012 /* ExerciseLoggingView.swift */; };
-		AA0200000000000000000013 /* CharacterProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000013 /* CharacterProgressView.swift */; };
-		AA0200000000000000000014 /* QuestHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000014 /* QuestHistoryView.swift */; };
-		AA0200000000000000000070 /* ExerciseMetricsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000070 /* ExerciseMetricsView.swift */; };
-		AA0200000000000000000060 /* QuestCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000060 /* QuestCalendarView.swift */; };
-		AA0200000000000000000063 /* TrainingChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000063 /* TrainingChartsView.swift */; };
-		AA0200000000000000000015 /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000015 /* AchievementsView.swift */; };
-		AA0200000000000000000098 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000097 /* LeaderboardView.swift */; };
-		AA0200000000000000000016 /* QuestCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000016 /* QuestCompletionView.swift */; };
-		AA0200000000000000000017 /* PixelQuestCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000017 /* PixelQuestCard.swift */; };
-		AA0200000000000000000018 /* PixelXPBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000018 /* PixelXPBar.swift */; };
-		AA0200000000000000000019 /* PixelBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000019 /* PixelBadge.swift */; };
-		AA020000000000000000001A /* PixelStatPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001A /* PixelStatPanel.swift */; };
-		AA020000000000000000001B /* PixelButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001B /* PixelButton.swift */; };
-		AA020000000000000000001C /* PixelAchievementCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001C /* PixelAchievementCard.swift */; };
-		AA020000000000000000001D /* PixelDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001D /* PixelDivider.swift */; };
-		AA020000000000000000001E /* QuestCompletionRewardRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001E /* QuestCompletionRewardRow.swift */; };
-		AA0200000000000000000025 /* RPGClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* RPGClass.swift */; };
-		AA0200000000000000000026 /* RPGEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPGEquipment.swift */; };
-		AA020000000000000000004E /* OwnedEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004E /* OwnedEquipment.swift */; };
-		AA0200000000000000000027 /* RPGSkill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* RPGSkill.swift */; };
-		AA0200000000000000000052 /* SkillProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000052 /* SkillProgress.swift */; };
-		AA0200000000000000000028 /* RPGMonster.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000028 /* RPGMonster.swift */; };
-		AA0200000000000000000029 /* RPGBoss.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000029 /* RPGBoss.swift */; };
-		AA020000000000000000002A /* RPGProgressionSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002A /* RPGProgressionSnapshot.swift */; };
-		AA020000000000000000002B /* RPGEncounterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* RPGEncounterState.swift */; };
-		AA020000000000000000002C /* RPGMonsterRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* RPGMonsterRegistry.swift */; };
-		AA020000000000000000002D /* RPGBossRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002D /* RPGBossRegistry.swift */; };
-		AA020000000000000000002E /* RPGEquipmentRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002E /* RPGEquipmentRegistry.swift */; };
-		AA020000000000000000004F /* RPGEquipmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004F /* RPGEquipmentService.swift */; };
-		AA020000000000000000002F /* RPGSkillRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002F /* RPGSkillRegistry.swift */; };
-		AA0200000000000000000053 /* SkillProgressionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000053 /* SkillProgressionService.swift */; };
-		AA0200000000000000000055 /* EquipmentDropService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000055 /* EquipmentDropService.swift */; };
-		AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000030 /* MonsterSpawnService.swift */; };
-		AA0200000000000000000031 /* BossMilestoneService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000031 /* BossMilestoneService.swift */; };
-		AA0200000000000000000032 /* RPGEncounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000032 /* RPGEncounterViewModel.swift */; };
-		AA0200000000000000000068 /* PerceivedEffortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000068 /* PerceivedEffortPicker.swift */; };
-		AA0200000000000000000033 /* RPGSpriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000033 /* RPGSpriteView.swift */; };
-		AA0200000000000000000034 /* RPGSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000034 /* RPGSceneView.swift */; };
-		AA020000000000000000001F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001F /* Assets.xcassets */; };
-		AA0200000000000000000088 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000099 /* Assets.xcassets */; };
-		AA0200000000000000000022 /* ProgressionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ProgressionServiceTests.swift */; };
-		AA0200000000000000000023 /* AchievementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000023 /* AchievementServiceTests.swift */; };
-		AA0200000000000000000024 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* IntegrationTests.swift */; };
-		AA0200000000000000000035 /* RPGSpawnServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000035 /* RPGSpawnServiceTests.swift */; };
-		AA0200000000000000000036 /* RPGBossMilestoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000036 /* RPGBossMilestoneTests.swift */; };
-		AA0200000000000000000039 /* ExerciseTemplateServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000039 /* ExerciseTemplateServiceTests.swift */; };
-		AA020000000000000000003C /* QuestTemplateServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003C /* QuestTemplateServiceTests.swift */; };
-		AA020000000000000000003E /* QuestDuplicationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003E /* QuestDuplicationServiceTests.swift */; };
-		AA0200000000000000000040 /* QuestSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000040 /* QuestSchedulerTests.swift */; };
-		AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */; };
-		AA0200000000000000000044 /* ExerciseTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000044 /* ExerciseTypeTests.swift */; };
-		AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000048 /* PersonalRecordServiceTests.swift */; };
-		AA020000000000000000004A /* WeightUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004A /* WeightUnitTests.swift */; };
-		AA020000000000000000004D /* GoldServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004D /* GoldServiceTests.swift */; };
-		AA0200000000000000000050 /* RPGEquipmentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */; };
-		AA0200000000000000000054 /* SkillProgressionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000054 /* SkillProgressionServiceTests.swift */; };
-		AA0200000000000000000056 /* EquipmentDropServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000056 /* EquipmentDropServiceTests.swift */; };
-		AA0200000000000000000059 /* TrainingStyleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000059 /* TrainingStyleServiceTests.swift */; };
-		AA020000000000000000005B /* TrainingInsightsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005B /* TrainingInsightsServiceTests.swift */; };
-		AA020000000000000000005D /* SuggestedQuestServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005D /* SuggestedQuestServiceTests.swift */; };
-		AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000005F /* QuestCalendarServiceTests.swift */; };
-		AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000062 /* TrainingChartsServiceTests.swift */; };
-		AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */; };
-		AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000067 /* QuestFilterServiceTests.swift */; };
-		AA0200000000000000000069 /* QuestJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000069 /* QuestJournalTests.swift */; };
-		AA020000000000000000006B /* RecoveryRecommendationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */; };
-		AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */; };
-		AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */; };
-		AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000072 /* ProgressExportServiceTests.swift */; };
-		AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000074 /* ProgressImportServiceTests.swift */; };
-		AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000076 /* HealthKitServiceTests.swift */; };
-		AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000078 /* AppIntentServiceTests.swift */; };
-		AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007B /* PrivacyDataServiceTests.swift */; };
-		AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007D /* PersistenceMigrationTests.swift */; };
-		AA0200000000000000000081 /* FixturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000081 /* FixturesTests.swift */; };
-		AA020000000000000000008B /* StreakServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008A /* StreakServiceTests.swift */; };
-		AA0200000000000000000099 /* LeaderboardServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000098 /* LeaderboardServiceTests.swift */; };
-		AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007F /* QuestLoggingUITests.swift */; };
-		AA0200000000000000000082 /* RepSetForgeWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000082 /* RepSetForgeWatchApp.swift */; };
-		AA0200000000000000000083 /* WatchQuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000083 /* WatchQuestView.swift */; };
-		AA0200000000000000000084 /* WatchExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000084 /* WatchExerciseView.swift */; };
-		AA0200000000000000000085 /* WatchTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000085 /* WatchTheme.swift */; };
-		AA02000000000000000000A0 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000008 /* Quest.swift */; };
-		AA02000000000000000000A1 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000007 /* Exercise.swift */; };
-		AA02000000000000000000A2 /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
-		AA02000000000000000000A3 /* ExerciseTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000037 /* ExerciseTemplate.swift */; };
-		AA02000000000000000000A4 /* QuestTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* QuestTemplate.swift */; };
-		AA02000000000000000000A5 /* PlayerCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000009 /* PlayerCharacter.swift */; };
-		AA02000000000000000000A6 /* MuscleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000A /* MuscleProgress.swift */; };
-		AA02000000000000000000A7 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000B /* Achievement.swift */; };
-		AA02000000000000000000A8 /* PersonalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000046 /* PersonalRecord.swift */; };
-		AA02000000000000000000A9 /* RPGEncounterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* RPGEncounterState.swift */; };
-		AA02000000000000000000AA /* OwnedEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004E /* OwnedEquipment.swift */; };
-		AA02000000000000000000AB /* SkillProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000052 /* SkillProgress.swift */; };
-		AA02000000000000000000AC /* QuestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000005 /* QuestStatus.swift */; };
-		AA02000000000000000000AD /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000004 /* MuscleGroup.swift */; };
-		AA02000000000000000000AE /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* ExerciseType.swift */; };
-		AA02000000000000000000AF /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* WeightUnit.swift */; };
-		AA02000000000000000000B0 /* PersonalRecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* PersonalRecordType.swift */; };
-		AA02000000000000000000B1 /* RPGClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* RPGClass.swift */; };
-		AA02000000000000000000B2 /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
-		AA02000000000000000000B3 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000080 /* Fixtures.swift */; };
-		AA02000000000000000000B4 /* AchievementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000D /* AchievementService.swift */; };
-		AA02000000000000000000F0 /* RepSetForge Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000086 /* RepSetForge Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		AA020000000000000000008C /* RepSetForgeWidgetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */; };
-		AA020000000000000000008D /* RepSetForgeWidgetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */; };
-		AA020000000000000000008E /* RepSetForgeWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008D /* RepSetForgeWidgetView.swift */; };
-		AA020000000000000000008F /* RepSetForgeWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008E /* RepSetForgeWidget.swift */; };
-		AA0200000000000000000090 /* RepSetForgeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000008F /* RepSetForgeWidgetBundle.swift */; };
-		AA0200000000000000000096 /* RepSetForgeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000095 /* RepSetForgeLiveActivity.swift */; };
-		AA02000000000000000000C8 /* Quest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000008 /* Quest.swift */; };
-		AA02000000000000000000C9 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000007 /* Exercise.swift */; };
-		AA02000000000000000000CA /* ExerciseSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000006 /* ExerciseSet.swift */; };
-		AA02000000000000000000CB /* ExerciseTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000037 /* ExerciseTemplate.swift */; };
-		AA02000000000000000000CC /* QuestTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* QuestTemplate.swift */; };
-		AA02000000000000000000CD /* PlayerCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000009 /* PlayerCharacter.swift */; };
-		AA02000000000000000000CE /* MuscleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000A /* MuscleProgress.swift */; };
-		AA02000000000000000000CF /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000000B /* Achievement.swift */; };
-		AA02000000000000000000D0 /* PersonalRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000046 /* PersonalRecord.swift */; };
-		AA02000000000000000000D1 /* RPGEncounterState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* RPGEncounterState.swift */; };
-		AA02000000000000000000D2 /* OwnedEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004E /* OwnedEquipment.swift */; };
-		AA02000000000000000000D3 /* SkillProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000052 /* SkillProgress.swift */; };
-		AA02000000000000000000D4 /* QuestStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000005 /* QuestStatus.swift */; };
-		AA02000000000000000000D5 /* MuscleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000004 /* MuscleGroup.swift */; };
-		AA02000000000000000000D6 /* ExerciseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* ExerciseType.swift */; };
-		AA02000000000000000000D7 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* WeightUnit.swift */; };
-		AA02000000000000000000D8 /* PersonalRecordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* PersonalRecordType.swift */; };
-		AA02000000000000000000D9 /* RPGClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* RPGClass.swift */; };
-		AA02000000000000000000DA /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000007C /* RepSetForgeSchema.swift */; };
-		AA02000000000000000000DB /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000088 /* SharedStore.swift */; };
-		AA02000000000000000000DC /* StreakService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000089 /* StreakService.swift */; };
-		AA02000000000000000000DD /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */; };
-		AA02000000000000000000F1 /* RepSetForgeWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000090 /* RepSetForgeWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		/* End PBXBuildFile section */
-
-		/* Begin PBXContainerItemProxy section */
-		AA0900000000000000000002 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA0400000000000000000001;
-			remoteInfo = RepSetForge;
-		};
-		AA0900000000000000000004 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA0400000000000000000001;
-			remoteInfo = RepSetForge;
-		};
-		AA0900000000000000000006 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA0400000000000000000004;
-			remoteInfo = "RepSetForge Watch App";
-		};
-		AA0900000000000000000008 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = AA0000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AA0400000000000000000005;
-			remoteInfo = RepSetForgeWidgets;
-		};
-		/* End PBXContainerItemProxy section */
-
-		/* Begin PBXFileReference section */
-		AA0100000000000000000020 /* RepSetForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0100000000000000000021 /* RepSetForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA010000000000000000007E /* RepSetForgeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0100000000000000000086 /* RepSetForge Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RepSetForge Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0100000000000000000090 /* RepSetForgeWidgets.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RepSetForgeWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA0100000000000000000001 /* RepSetForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeApp.swift; sourceTree = "<group>"; };
-		AA0100000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000003 /* RepSetForgeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeTheme.swift; sourceTree = "<group>"; };
-		AA0100000000000000000004 /* MuscleGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleGroup.swift; sourceTree = "<group>"; };
-		AA0100000000000000000049 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
-		AA0100000000000000000005 /* QuestStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestStatus.swift; sourceTree = "<group>"; };
-		AA0100000000000000000043 /* ExerciseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseType.swift; sourceTree = "<group>"; };
-		AA0100000000000000000006 /* ExerciseSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSet.swift; sourceTree = "<group>"; };
-		AA0100000000000000000007 /* Exercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
-		AA0100000000000000000037 /* ExerciseTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTemplate.swift; sourceTree = "<group>"; };
-		AA0100000000000000000008 /* Quest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quest.swift; sourceTree = "<group>"; };
-		AA010000000000000000003A /* QuestTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTemplate.swift; sourceTree = "<group>"; };
-		AA0100000000000000000009 /* PlayerCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCharacter.swift; sourceTree = "<group>"; };
-		AA010000000000000000000A /* MuscleProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleProgress.swift; sourceTree = "<group>"; };
-		AA010000000000000000000B /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
-		AA0100000000000000000045 /* PersonalRecordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordType.swift; sourceTree = "<group>"; };
-		AA0100000000000000000057 /* TrainingStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingStyle.swift; sourceTree = "<group>"; };
-		AA0100000000000000000046 /* PersonalRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecord.swift; sourceTree = "<group>"; };
-		AA010000000000000000000C /* ProgressionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionService.swift; sourceTree = "<group>"; };
-		AA010000000000000000000D /* AchievementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000038 /* ExerciseTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTemplateService.swift; sourceTree = "<group>"; };
-		AA010000000000000000003B /* QuestTemplateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTemplateService.swift; sourceTree = "<group>"; };
-		AA010000000000000000003D /* QuestDuplicationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDuplicationService.swift; sourceTree = "<group>"; };
-		AA010000000000000000003F /* QuestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestScheduler.swift; sourceTree = "<group>"; };
-		AA0100000000000000000041 /* ProgressionRebuildService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000047 /* PersonalRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000058 /* TrainingStyleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingStyleService.swift; sourceTree = "<group>"; };
-		AA010000000000000000005A /* TrainingInsightsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingInsightsService.swift; sourceTree = "<group>"; };
-		AA010000000000000000005C /* SuggestedQuestService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedQuestService.swift; sourceTree = "<group>"; };
-		AA010000000000000000005E /* QuestCalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000061 /* TrainingChartsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000064 /* MuscleRecoveryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000066 /* QuestFilterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterService.swift; sourceTree = "<group>"; };
-		AA010000000000000000006A /* RecoveryRecommendationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryRecommendationService.swift; sourceTree = "<group>"; };
-		AA010000000000000000006C /* ExerciseNameSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionService.swift; sourceTree = "<group>"; };
-		AA010000000000000000006E /* ExerciseMetricsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000071 /* ProgressExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000073 /* ProgressImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000075 /* HealthKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000077 /* AppIntentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000079 /* RepSetForgeShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeShortcuts.swift; sourceTree = "<group>"; };
-		AA010000000000000000007A /* PrivacyDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeActivityAttributes.swift; sourceTree = "<group>"; };
-		AA0100000000000000000094 /* LiveActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000096 /* LeaderboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardService.swift; sourceTree = "<group>"; };
-		AA010000000000000000004C /* GoldService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldService.swift; sourceTree = "<group>"; };
-		AA010000000000000000000E /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		AA010000000000000000007C /* RepSetForgeSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeSchema.swift; sourceTree = "<group>"; };
-		AA0100000000000000000088 /* SharedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStore.swift; sourceTree = "<group>"; };
-		AA0100000000000000000089 /* StreakService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000080 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
-		AA010000000000000000004B /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000051 /* EquipmentShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentShopView.swift; sourceTree = "<group>"; };
-		AA010000000000000000000F /* QuestDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDashboardView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000010 /* QuestListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestListView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000011 /* QuestDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDetailView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000012 /* ExerciseLoggingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseLoggingView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000013 /* CharacterProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterProgressView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000014 /* QuestHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestHistoryView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000070 /* ExerciseMetricsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000060 /* QuestCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000063 /* TrainingChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000015 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000097 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000016 /* QuestCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCompletionView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000017 /* PixelQuestCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelQuestCard.swift; sourceTree = "<group>"; };
-		AA0100000000000000000018 /* PixelXPBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelXPBar.swift; sourceTree = "<group>"; };
-		AA0100000000000000000019 /* PixelBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelBadge.swift; sourceTree = "<group>"; };
-		AA010000000000000000001A /* PixelStatPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelStatPanel.swift; sourceTree = "<group>"; };
-		AA010000000000000000001B /* PixelButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelButton.swift; sourceTree = "<group>"; };
-		AA010000000000000000001C /* PixelAchievementCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelAchievementCard.swift; sourceTree = "<group>"; };
-		AA010000000000000000001D /* PixelDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelDivider.swift; sourceTree = "<group>"; };
-		AA010000000000000000001E /* QuestCompletionRewardRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCompletionRewardRow.swift; sourceTree = "<group>"; };
-		AA0100000000000000000025 /* RPGClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGClass.swift; sourceTree = "<group>"; };
-		AA0100000000000000000026 /* RPGEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipment.swift; sourceTree = "<group>"; };
-		AA010000000000000000004E /* OwnedEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedEquipment.swift; sourceTree = "<group>"; };
-		AA0100000000000000000027 /* RPGSkill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSkill.swift; sourceTree = "<group>"; };
-		AA0100000000000000000052 /* SkillProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillProgress.swift; sourceTree = "<group>"; };
-		AA0100000000000000000028 /* RPGMonster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGMonster.swift; sourceTree = "<group>"; };
-		AA0100000000000000000029 /* RPGBoss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGBoss.swift; sourceTree = "<group>"; };
-		AA010000000000000000002A /* RPGProgressionSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGProgressionSnapshot.swift; sourceTree = "<group>"; };
-		AA010000000000000000002B /* RPGEncounterState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEncounterState.swift; sourceTree = "<group>"; };
-		AA010000000000000000002C /* RPGMonsterRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGMonsterRegistry.swift; sourceTree = "<group>"; };
-		AA010000000000000000002D /* RPGBossRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGBossRegistry.swift; sourceTree = "<group>"; };
-		AA010000000000000000002E /* RPGEquipmentRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentRegistry.swift; sourceTree = "<group>"; };
-		AA010000000000000000004F /* RPGEquipmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentService.swift; sourceTree = "<group>"; };
-		AA010000000000000000002F /* RPGSkillRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSkillRegistry.swift; sourceTree = "<group>"; };
-		AA0100000000000000000053 /* SkillProgressionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillProgressionService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000055 /* EquipmentDropService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentDropService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000030 /* MonsterSpawnService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonsterSpawnService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000031 /* BossMilestoneService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BossMilestoneService.swift; sourceTree = "<group>"; };
-		AA0100000000000000000032 /* RPGEncounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEncounterViewModel.swift; sourceTree = "<group>"; };
-		AA0100000000000000000068 /* PerceivedEffortPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerceivedEffortPicker.swift; sourceTree = "<group>"; };
-		AA0100000000000000000033 /* RPGSpriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSpriteView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000034 /* RPGSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSceneView.swift; sourceTree = "<group>"; };
-		AA010000000000000000001F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AA0100000000000000000022 /* ProgressionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000023 /* AchievementServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000024 /* IntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000035 /* RPGSpawnServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGSpawnServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000036 /* RPGBossMilestoneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGBossMilestoneTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000039 /* ExerciseTemplateServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTemplateServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000003C /* QuestTemplateServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestTemplateServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000003E /* QuestDuplicationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestDuplicationServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000040 /* QuestSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestSchedulerTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRebuildServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000044 /* ExerciseTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTypeTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000048 /* PersonalRecordServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000004A /* WeightUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnitTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000004D /* GoldServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPGEquipmentServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000054 /* SkillProgressionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkillProgressionServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000056 /* EquipmentDropServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentDropServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000059 /* TrainingStyleServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingStyleServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000005B /* TrainingInsightsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingInsightsServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000005D /* SuggestedQuestServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedQuestServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000005F /* QuestCalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestCalendarServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000062 /* TrainingChartsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingChartsServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleRecoveryServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000067 /* QuestFilterServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestFilterServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000069 /* QuestJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestJournalTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryRecommendationServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNameSuggestionServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMetricsServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000072 /* ProgressExportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressExportServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000074 /* ProgressImportServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressImportServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000076 /* HealthKitServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000078 /* AppIntentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntentServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000007B /* PrivacyDataServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDataServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000007D /* PersistenceMigrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceMigrationTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000081 /* FixturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixturesTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000008A /* StreakServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakServiceTests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000098 /* LeaderboardServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardServiceTests.swift; sourceTree = "<group>"; };
-		AA010000000000000000007F /* QuestLoggingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestLoggingUITests.swift; sourceTree = "<group>"; };
-		AA0100000000000000000082 /* RepSetForgeWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWatchApp.swift; sourceTree = "<group>"; };
-		AA0100000000000000000083 /* WatchQuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchQuestView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000084 /* WatchExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchExerciseView.swift; sourceTree = "<group>"; };
-		AA0100000000000000000085 /* WatchTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTheme.swift; sourceTree = "<group>"; };
-		AA0100000000000000000087 /* RepSetForge Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "RepSetForge Watch App.entitlements"; sourceTree = "<group>"; };
-		AA0100000000000000000099 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetEntry.swift; sourceTree = "<group>"; };
-		AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetProvider.swift; sourceTree = "<group>"; };
-		AA010000000000000000008D /* RepSetForgeWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetView.swift; sourceTree = "<group>"; };
-		AA010000000000000000008E /* RepSetForgeWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidget.swift; sourceTree = "<group>"; };
-		AA010000000000000000008F /* RepSetForgeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetBundle.swift; sourceTree = "<group>"; };
-		AA0100000000000000000095 /* RepSetForgeLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeLiveActivity.swift; sourceTree = "<group>"; };
-		AA0100000000000000000091 /* RepSetForgeWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RepSetForgeWidgets.entitlements; sourceTree = "<group>"; };
-		AA0100000000000000000092 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		/* End PBXFileReference section */
-
-		/* Begin PBXFrameworksBuildPhase section */
-		AA0700000000000000000003 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000007 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000005 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000009 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA070000000000000000000C /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		/* End PBXFrameworksBuildPhase section */
-
-		/* Begin PBXCopyFilesBuildPhase section */
-		AA070000000000000000000A /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				AA02000000000000000000F0 /* RepSetForge Watch App.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA070000000000000000000D /* Embed Foundation Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				AA02000000000000000000F1 /* RepSetForgeWidgets.appex in Embed Foundation Extensions */,
-			);
-			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		/* End PBXCopyFilesBuildPhase section */
-
-		/* Begin PBXGroup section */
-		AA0300000000000000000001 = {
-			isa = PBXGroup;
-			children = (
-				AA0300000000000000000003 /* RepSetForge */,
-				AA0300000000000000000009 /* RepSetForgeTests */,
-				AA030000000000000000000A /* RepSetForgeUITests */,
-				AA030000000000000000000C /* RepSetForge Watch App */,
-				AA030000000000000000000D /* RepSetForgeWidgets */,
-				AA0300000000000000000002 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000002 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000020 /* RepSetForge.app */,
-				AA0100000000000000000021 /* RepSetForgeTests.xctest */,
-				AA010000000000000000007E /* RepSetForgeUITests.xctest */,
-				AA0100000000000000000086 /* RepSetForge Watch App.app */,
-				AA0100000000000000000090 /* RepSetForgeWidgets.appex */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000003 /* RepSetForge */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000001 /* RepSetForgeApp.swift */,
-				AA0100000000000000000002 /* ContentView.swift */,
-				AA0100000000000000000003 /* RepSetForgeTheme.swift */,
-				AA0300000000000000000004 /* Models */,
-				AA0300000000000000000007 /* Services */,
-				AA0300000000000000000008 /* Persistence */,
-				AA0300000000000000000005 /* Views */,
-				AA030000000000000000000B /* Testing */,
-				AA010000000000000000001F /* Assets.xcassets */,
-			);
-			path = RepSetForge;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000004 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000004 /* MuscleGroup.swift */,
-				AA0100000000000000000049 /* WeightUnit.swift */,
-				AA0100000000000000000005 /* QuestStatus.swift */,
-				AA0100000000000000000043 /* ExerciseType.swift */,
-				AA0100000000000000000006 /* ExerciseSet.swift */,
-				AA0100000000000000000007 /* Exercise.swift */,
-				AA0100000000000000000037 /* ExerciseTemplate.swift */,
-				AA0100000000000000000008 /* Quest.swift */,
-				AA010000000000000000003A /* QuestTemplate.swift */,
-				AA0100000000000000000009 /* PlayerCharacter.swift */,
-				AA010000000000000000000A /* MuscleProgress.swift */,
-				AA010000000000000000000B /* Achievement.swift */,
-				AA0100000000000000000045 /* PersonalRecordType.swift */,
-				AA0100000000000000000046 /* PersonalRecord.swift */,
-				AA0100000000000000000057 /* TrainingStyle.swift */,
-				AA0100000000000000000025 /* RPGClass.swift */,
-				AA0100000000000000000026 /* RPGEquipment.swift */,
-				AA010000000000000000004E /* OwnedEquipment.swift */,
-				AA0100000000000000000027 /* RPGSkill.swift */,
-				AA0100000000000000000052 /* SkillProgress.swift */,
-				AA0100000000000000000028 /* RPGMonster.swift */,
-				AA0100000000000000000029 /* RPGBoss.swift */,
-				AA010000000000000000002A /* RPGProgressionSnapshot.swift */,
-				AA010000000000000000002B /* RPGEncounterState.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000007 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				AA010000000000000000000C /* ProgressionService.swift */,
-				AA010000000000000000000D /* AchievementService.swift */,
-				AA0100000000000000000038 /* ExerciseTemplateService.swift */,
-				AA010000000000000000003B /* QuestTemplateService.swift */,
-				AA010000000000000000003D /* QuestDuplicationService.swift */,
-				AA010000000000000000003F /* QuestScheduler.swift */,
-				AA0100000000000000000041 /* ProgressionRebuildService.swift */,
-				AA0100000000000000000047 /* PersonalRecordService.swift */,
-				AA010000000000000000004C /* GoldService.swift */,
-				AA0100000000000000000058 /* TrainingStyleService.swift */,
-				AA010000000000000000005A /* TrainingInsightsService.swift */,
-				AA010000000000000000005C /* SuggestedQuestService.swift */,
-				AA010000000000000000005E /* QuestCalendarService.swift */,
-				AA0100000000000000000061 /* TrainingChartsService.swift */,
-				AA0100000000000000000064 /* MuscleRecoveryService.swift */,
-				AA0100000000000000000066 /* QuestFilterService.swift */,
-				AA010000000000000000006A /* RecoveryRecommendationService.swift */,
-				AA010000000000000000006C /* ExerciseNameSuggestionService.swift */,
-				AA010000000000000000006E /* ExerciseMetricsService.swift */,
-				AA0100000000000000000071 /* ProgressExportService.swift */,
-				AA0100000000000000000073 /* ProgressImportService.swift */,
-				AA0100000000000000000075 /* HealthKitService.swift */,
-				AA0100000000000000000077 /* AppIntentService.swift */,
-				AA0100000000000000000079 /* RepSetForgeShortcuts.swift */,
-				AA010000000000000000007A /* PrivacyDataService.swift */,
-				AA0100000000000000000089 /* StreakService.swift */,
-				AA0100000000000000000093 /* RepSetForgeActivityAttributes.swift */,
-				AA0100000000000000000094 /* LiveActivityService.swift */,
-				AA0100000000000000000096 /* LeaderboardService.swift */,
-				AA010000000000000000002C /* RPGMonsterRegistry.swift */,
-				AA010000000000000000002D /* RPGBossRegistry.swift */,
-				AA010000000000000000002E /* RPGEquipmentRegistry.swift */,
-				AA010000000000000000004F /* RPGEquipmentService.swift */,
-				AA010000000000000000002F /* RPGSkillRegistry.swift */,
-				AA0100000000000000000053 /* SkillProgressionService.swift */,
-				AA0100000000000000000055 /* EquipmentDropService.swift */,
-				AA0100000000000000000030 /* MonsterSpawnService.swift */,
-				AA0100000000000000000031 /* BossMilestoneService.swift */,
-				AA0100000000000000000032 /* RPGEncounterViewModel.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000008 /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				AA010000000000000000000E /* PersistenceController.swift */,
-				AA010000000000000000007C /* RepSetForgeSchema.swift */,
-				AA0100000000000000000088 /* SharedStore.swift */,
-			);
-			path = Persistence;
-			sourceTree = "<group>";
-		};
-		AA030000000000000000000B /* Testing */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000080 /* Fixtures.swift */,
-			);
-			path = Testing;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000005 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				AA010000000000000000004B /* OnboardingView.swift */,
-				AA0100000000000000000051 /* EquipmentShopView.swift */,
-				AA010000000000000000000F /* QuestDashboardView.swift */,
-				AA0100000000000000000010 /* QuestListView.swift */,
-				AA0100000000000000000011 /* QuestDetailView.swift */,
-				AA0100000000000000000012 /* ExerciseLoggingView.swift */,
-				AA0100000000000000000013 /* CharacterProgressView.swift */,
-				AA0100000000000000000014 /* QuestHistoryView.swift */,
-				AA0100000000000000000015 /* AchievementsView.swift */,
-				AA0100000000000000000016 /* QuestCompletionView.swift */,
-				AA0100000000000000000060 /* QuestCalendarView.swift */,
-				AA0100000000000000000063 /* TrainingChartsView.swift */,
-				AA0100000000000000000070 /* ExerciseMetricsView.swift */,
-				AA0100000000000000000097 /* LeaderboardView.swift */,
-				AA0300000000000000000006 /* Components */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000006 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000017 /* PixelQuestCard.swift */,
-				AA0100000000000000000018 /* PixelXPBar.swift */,
-				AA0100000000000000000019 /* PixelBadge.swift */,
-				AA010000000000000000001A /* PixelStatPanel.swift */,
-				AA010000000000000000001B /* PixelButton.swift */,
-				AA010000000000000000001C /* PixelAchievementCard.swift */,
-				AA010000000000000000001D /* PixelDivider.swift */,
-				AA010000000000000000001E /* QuestCompletionRewardRow.swift */,
-				AA0100000000000000000068 /* PerceivedEffortPicker.swift */,
-				AA0100000000000000000033 /* RPGSpriteView.swift */,
-				AA0100000000000000000034 /* RPGSceneView.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		AA0300000000000000000009 /* RepSetForgeTests */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000022 /* ProgressionServiceTests.swift */,
-				AA0100000000000000000023 /* AchievementServiceTests.swift */,
-				AA0100000000000000000024 /* IntegrationTests.swift */,
-				AA0100000000000000000035 /* RPGSpawnServiceTests.swift */,
-				AA0100000000000000000036 /* RPGBossMilestoneTests.swift */,
-				AA0100000000000000000039 /* ExerciseTemplateServiceTests.swift */,
-				AA010000000000000000003C /* QuestTemplateServiceTests.swift */,
-				AA010000000000000000003E /* QuestDuplicationServiceTests.swift */,
-				AA0100000000000000000040 /* QuestSchedulerTests.swift */,
-				AA0100000000000000000042 /* ProgressionRebuildServiceTests.swift */,
-				AA0100000000000000000044 /* ExerciseTypeTests.swift */,
-				AA0100000000000000000048 /* PersonalRecordServiceTests.swift */,
-				AA010000000000000000004A /* WeightUnitTests.swift */,
-				AA010000000000000000004D /* GoldServiceTests.swift */,
-				AA0100000000000000000050 /* RPGEquipmentServiceTests.swift */,
-				AA0100000000000000000054 /* SkillProgressionServiceTests.swift */,
-				AA0100000000000000000056 /* EquipmentDropServiceTests.swift */,
-				AA0100000000000000000059 /* TrainingStyleServiceTests.swift */,
-				AA010000000000000000005B /* TrainingInsightsServiceTests.swift */,
-				AA010000000000000000005D /* SuggestedQuestServiceTests.swift */,
-				AA010000000000000000005F /* QuestCalendarServiceTests.swift */,
-				AA0100000000000000000062 /* TrainingChartsServiceTests.swift */,
-				AA0100000000000000000065 /* MuscleRecoveryServiceTests.swift */,
-				AA0100000000000000000067 /* QuestFilterServiceTests.swift */,
-				AA0100000000000000000069 /* QuestJournalTests.swift */,
-				AA010000000000000000006B /* RecoveryRecommendationServiceTests.swift */,
-				AA010000000000000000006D /* ExerciseNameSuggestionServiceTests.swift */,
-				AA010000000000000000006F /* ExerciseMetricsServiceTests.swift */,
-				AA0100000000000000000072 /* ProgressExportServiceTests.swift */,
-				AA0100000000000000000074 /* ProgressImportServiceTests.swift */,
-				AA0100000000000000000076 /* HealthKitServiceTests.swift */,
-				AA0100000000000000000078 /* AppIntentServiceTests.swift */,
-				AA010000000000000000007B /* PrivacyDataServiceTests.swift */,
-				AA010000000000000000007D /* PersistenceMigrationTests.swift */,
-				AA0100000000000000000081 /* FixturesTests.swift */,
-				AA010000000000000000008A /* StreakServiceTests.swift */,
-				AA0100000000000000000098 /* LeaderboardServiceTests.swift */,
-			);
-			path = RepSetForgeTests;
-			sourceTree = "<group>";
-		};
-		AA030000000000000000000A /* RepSetForgeUITests */ = {
-			isa = PBXGroup;
-			children = (
-				AA010000000000000000007F /* QuestLoggingUITests.swift */,
-			);
-			path = RepSetForgeUITests;
-			sourceTree = "<group>";
-		};
-		AA030000000000000000000C /* RepSetForge Watch App */ = {
-			isa = PBXGroup;
-			children = (
-				AA0100000000000000000082 /* RepSetForgeWatchApp.swift */,
-				AA0100000000000000000083 /* WatchQuestView.swift */,
-				AA0100000000000000000084 /* WatchExerciseView.swift */,
-				AA0100000000000000000085 /* WatchTheme.swift */,
-				AA0100000000000000000087 /* RepSetForge Watch App.entitlements */,
-				AA0100000000000000000099 /* Assets.xcassets */,
-			);
-			path = "RepSetForge Watch App";
-			sourceTree = "<group>";
-		};
-		AA030000000000000000000D /* RepSetForgeWidgets */ = {
-			isa = PBXGroup;
-			children = (
-				AA010000000000000000008B /* RepSetForgeWidgetEntry.swift */,
-				AA010000000000000000008C /* RepSetForgeWidgetProvider.swift */,
-				AA010000000000000000008D /* RepSetForgeWidgetView.swift */,
-				AA010000000000000000008E /* RepSetForgeWidget.swift */,
-				AA010000000000000000008F /* RepSetForgeWidgetBundle.swift */,
-				AA0100000000000000000095 /* RepSetForgeLiveActivity.swift */,
-				AA0100000000000000000091 /* RepSetForgeWidgets.entitlements */,
-				AA0100000000000000000092 /* Info.plist */,
-			);
-			path = RepSetForgeWidgets;
-			sourceTree = "<group>";
-		};
-		/* End PBXGroup section */
-
-		/* Begin PBXNativeTarget section */
-		AA0400000000000000000001 /* RepSetForge */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA0500000000000000000002 /* Build configuration list for PBXNativeTarget "RepSetForge" */;
-			buildPhases = (
-				AA0700000000000000000001 /* Sources */,
-				AA0700000000000000000003 /* Frameworks */,
-				AA0700000000000000000002 /* Resources */,
-				AA070000000000000000000A /* Embed Watch Content */,
-				AA070000000000000000000D /* Embed Foundation Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA0900000000000000000005 /* PBXTargetDependency */,
-				AA0900000000000000000007 /* PBXTargetDependency */,
-			);
-			name = RepSetForge;
-			productName = RepSetForge;
-			productReference = AA0100000000000000000020 /* RepSetForge.app */;
-			productType = "com.apple.product-type.application";
-		};
-		AA0400000000000000000002 /* RepSetForgeTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA0500000000000000000003 /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */;
-			buildPhases = (
-				AA0700000000000000000004 /* Sources */,
-				AA0700000000000000000005 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA0900000000000000000001 /* PBXTargetDependency */,
-			);
-			name = RepSetForgeTests;
-			productName = RepSetForgeTests;
-			productReference = AA0100000000000000000021 /* RepSetForgeTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		AA0400000000000000000003 /* RepSetForgeUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA0500000000000000000004 /* Build configuration list for PBXNativeTarget "RepSetForgeUITests" */;
-			buildPhases = (
-				AA0700000000000000000006 /* Sources */,
-				AA0700000000000000000007 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				AA0900000000000000000003 /* PBXTargetDependency */,
-			);
-			name = RepSetForgeUITests;
-			productName = RepSetForgeUITests;
-			productReference = AA010000000000000000007E /* RepSetForgeUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
-		AA0400000000000000000004 /* RepSetForge Watch App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA0500000000000000000005 /* Build configuration list for PBXNativeTarget "RepSetForge Watch App" */;
-			buildPhases = (
-				AA0700000000000000000008 /* Sources */,
-				AA0700000000000000000009 /* Frameworks */,
-				AA070000000000000000000E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "RepSetForge Watch App";
-			productName = "RepSetForge Watch App";
-			productReference = AA0100000000000000000086 /* RepSetForge Watch App.app */;
-			productType = "com.apple.product-type.application";
-		};
-		AA0400000000000000000005 /* RepSetForgeWidgets */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AA0500000000000000000006 /* Build configuration list for PBXNativeTarget "RepSetForgeWidgets" */;
-			buildPhases = (
-				AA070000000000000000000B /* Sources */,
-				AA070000000000000000000C /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RepSetForgeWidgets;
-			productName = RepSetForgeWidgets;
-			productReference = AA0100000000000000000090 /* RepSetForgeWidgets.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
-		/* End PBXNativeTarget section */
-
-		/* Begin PBXProject section */
-		AA0000000000000000000001 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
-				TargetAttributes = {
-					AA0400000000000000000001 = {
-						CreatedOnToolsVersion = 16.0;
-						DevelopmentTeam = 5T5444U7W2;
-						ProvisioningStyle = Automatic;
-					};
-					AA0400000000000000000002 = {
-						CreatedOnToolsVersion = 16.0;
-						DevelopmentTeam = 5T5444U7W2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = AA0400000000000000000001;
-					};
-					AA0400000000000000000003 = {
-						CreatedOnToolsVersion = 16.0;
-						DevelopmentTeam = 5T5444U7W2;
-						ProvisioningStyle = Automatic;
-						TestTargetID = AA0400000000000000000001;
-					};
-					AA0400000000000000000004 = {
-						CreatedOnToolsVersion = 16.0;
-						DevelopmentTeam = 5T5444U7W2;
-						ProvisioningStyle = Automatic;
-					};
-					AA0400000000000000000005 = {
-						CreatedOnToolsVersion = 16.0;
-						DevelopmentTeam = 5T5444U7W2;
-						ProvisioningStyle = Automatic;
-					};
-				};
-			};
-			buildConfigurationList = AA0500000000000000000001 /* Build configuration list for PBXProject "RepSetForge" */;
-			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
-			mainGroup = AA0300000000000000000001;
-			productRefGroup = AA0300000000000000000002 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				AA0400000000000000000001 /* RepSetForge */,
-				AA0400000000000000000002 /* RepSetForgeTests */,
-				AA0400000000000000000003 /* RepSetForgeUITests */,
-				AA0400000000000000000004 /* RepSetForge Watch App */,
-				AA0400000000000000000005 /* RepSetForgeWidgets */,
-			);
-		};
-		/* End PBXProject section */
-
-		/* Begin PBXResourcesBuildPhase section */
-		AA0700000000000000000002 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA020000000000000000001F /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA070000000000000000000E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA0200000000000000000088 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		/* End PBXResourcesBuildPhase section */
-
-		/* Begin PBXSourcesBuildPhase section */
-		AA0700000000000000000001 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA0200000000000000000001 /* RepSetForgeApp.swift in Sources */,
-				AA0200000000000000000002 /* ContentView.swift in Sources */,
-				AA0200000000000000000003 /* RepSetForgeTheme.swift in Sources */,
-				AA0200000000000000000004 /* MuscleGroup.swift in Sources */,
-				AA0200000000000000000049 /* WeightUnit.swift in Sources */,
-				AA0200000000000000000005 /* QuestStatus.swift in Sources */,
-				AA0200000000000000000043 /* ExerciseType.swift in Sources */,
-				AA0200000000000000000006 /* ExerciseSet.swift in Sources */,
-				AA0200000000000000000007 /* Exercise.swift in Sources */,
-				AA0200000000000000000037 /* ExerciseTemplate.swift in Sources */,
-				AA0200000000000000000008 /* Quest.swift in Sources */,
-				AA020000000000000000003A /* QuestTemplate.swift in Sources */,
-				AA0200000000000000000009 /* PlayerCharacter.swift in Sources */,
-				AA020000000000000000000A /* MuscleProgress.swift in Sources */,
-				AA020000000000000000000B /* Achievement.swift in Sources */,
-				AA0200000000000000000045 /* PersonalRecordType.swift in Sources */,
-				AA0200000000000000000057 /* TrainingStyle.swift in Sources */,
-				AA0200000000000000000046 /* PersonalRecord.swift in Sources */,
-				AA020000000000000000000C /* ProgressionService.swift in Sources */,
-				AA020000000000000000000D /* AchievementService.swift in Sources */,
-				AA0200000000000000000038 /* ExerciseTemplateService.swift in Sources */,
-				AA020000000000000000003B /* QuestTemplateService.swift in Sources */,
-				AA020000000000000000003D /* QuestDuplicationService.swift in Sources */,
-				AA020000000000000000003F /* QuestScheduler.swift in Sources */,
-				AA0200000000000000000041 /* ProgressionRebuildService.swift in Sources */,
-				AA0200000000000000000047 /* PersonalRecordService.swift in Sources */,
-				AA0200000000000000000058 /* TrainingStyleService.swift in Sources */,
-				AA020000000000000000005A /* TrainingInsightsService.swift in Sources */,
-				AA020000000000000000005C /* SuggestedQuestService.swift in Sources */,
-				AA020000000000000000005E /* QuestCalendarService.swift in Sources */,
-				AA0200000000000000000061 /* TrainingChartsService.swift in Sources */,
-				AA0200000000000000000064 /* MuscleRecoveryService.swift in Sources */,
-				AA0200000000000000000066 /* QuestFilterService.swift in Sources */,
-				AA020000000000000000006A /* RecoveryRecommendationService.swift in Sources */,
-				AA020000000000000000006C /* ExerciseNameSuggestionService.swift in Sources */,
-				AA020000000000000000006E /* ExerciseMetricsService.swift in Sources */,
-				AA0200000000000000000071 /* ProgressExportService.swift in Sources */,
-				AA0200000000000000000073 /* ProgressImportService.swift in Sources */,
-				AA0200000000000000000075 /* HealthKitService.swift in Sources */,
-				AA0200000000000000000077 /* AppIntentService.swift in Sources */,
-				AA0200000000000000000079 /* RepSetForgeShortcuts.swift in Sources */,
-				AA020000000000000000007A /* PrivacyDataService.swift in Sources */,
-				AA0200000000000000000094 /* RepSetForgeActivityAttributes.swift in Sources */,
-				AA0200000000000000000095 /* LiveActivityService.swift in Sources */,
-				AA0200000000000000000097 /* LeaderboardService.swift in Sources */,
-				AA020000000000000000004C /* GoldService.swift in Sources */,
-				AA020000000000000000000E /* PersistenceController.swift in Sources */,
-				AA020000000000000000007C /* RepSetForgeSchema.swift in Sources */,
-				AA0200000000000000000089 /* SharedStore.swift in Sources */,
-				AA020000000000000000008A /* StreakService.swift in Sources */,
-				AA0200000000000000000080 /* Fixtures.swift in Sources */,
-				AA020000000000000000004B /* OnboardingView.swift in Sources */,
-				AA0200000000000000000051 /* EquipmentShopView.swift in Sources */,
-				AA020000000000000000000F /* QuestDashboardView.swift in Sources */,
-				AA0200000000000000000010 /* QuestListView.swift in Sources */,
-				AA0200000000000000000011 /* QuestDetailView.swift in Sources */,
-				AA0200000000000000000012 /* ExerciseLoggingView.swift in Sources */,
-				AA0200000000000000000013 /* CharacterProgressView.swift in Sources */,
-				AA0200000000000000000014 /* QuestHistoryView.swift in Sources */,
-				AA0200000000000000000070 /* ExerciseMetricsView.swift in Sources */,
-				AA0200000000000000000060 /* QuestCalendarView.swift in Sources */,
-				AA0200000000000000000063 /* TrainingChartsView.swift in Sources */,
-				AA0200000000000000000015 /* AchievementsView.swift in Sources */,
-				AA0200000000000000000098 /* LeaderboardView.swift in Sources */,
-				AA0200000000000000000016 /* QuestCompletionView.swift in Sources */,
-				AA0200000000000000000017 /* PixelQuestCard.swift in Sources */,
-				AA0200000000000000000018 /* PixelXPBar.swift in Sources */,
-				AA0200000000000000000019 /* PixelBadge.swift in Sources */,
-				AA020000000000000000001A /* PixelStatPanel.swift in Sources */,
-				AA020000000000000000001B /* PixelButton.swift in Sources */,
-				AA020000000000000000001C /* PixelAchievementCard.swift in Sources */,
-				AA020000000000000000001D /* PixelDivider.swift in Sources */,
-				AA020000000000000000001E /* QuestCompletionRewardRow.swift in Sources */,
-				AA0200000000000000000025 /* RPGClass.swift in Sources */,
-				AA0200000000000000000026 /* RPGEquipment.swift in Sources */,
-				AA020000000000000000004E /* OwnedEquipment.swift in Sources */,
-				AA0200000000000000000027 /* RPGSkill.swift in Sources */,
-				AA0200000000000000000052 /* SkillProgress.swift in Sources */,
-				AA0200000000000000000028 /* RPGMonster.swift in Sources */,
-				AA0200000000000000000029 /* RPGBoss.swift in Sources */,
-				AA020000000000000000002A /* RPGProgressionSnapshot.swift in Sources */,
-				AA020000000000000000002B /* RPGEncounterState.swift in Sources */,
-				AA020000000000000000002C /* RPGMonsterRegistry.swift in Sources */,
-				AA020000000000000000002D /* RPGBossRegistry.swift in Sources */,
-				AA020000000000000000002E /* RPGEquipmentRegistry.swift in Sources */,
-				AA020000000000000000004F /* RPGEquipmentService.swift in Sources */,
-				AA020000000000000000002F /* RPGSkillRegistry.swift in Sources */,
-				AA0200000000000000000053 /* SkillProgressionService.swift in Sources */,
-				AA0200000000000000000055 /* EquipmentDropService.swift in Sources */,
-				AA0200000000000000000030 /* MonsterSpawnService.swift in Sources */,
-				AA0200000000000000000031 /* BossMilestoneService.swift in Sources */,
-				AA0200000000000000000032 /* RPGEncounterViewModel.swift in Sources */,
-				AA0200000000000000000068 /* PerceivedEffortPicker.swift in Sources */,
-				AA0200000000000000000033 /* RPGSpriteView.swift in Sources */,
-				AA0200000000000000000034 /* RPGSceneView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000004 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA0200000000000000000022 /* ProgressionServiceTests.swift in Sources */,
-				AA0200000000000000000023 /* AchievementServiceTests.swift in Sources */,
-				AA0200000000000000000024 /* IntegrationTests.swift in Sources */,
-				AA0200000000000000000035 /* RPGSpawnServiceTests.swift in Sources */,
-				AA0200000000000000000036 /* RPGBossMilestoneTests.swift in Sources */,
-				AA0200000000000000000039 /* ExerciseTemplateServiceTests.swift in Sources */,
-				AA020000000000000000003C /* QuestTemplateServiceTests.swift in Sources */,
-				AA020000000000000000003E /* QuestDuplicationServiceTests.swift in Sources */,
-				AA0200000000000000000040 /* QuestSchedulerTests.swift in Sources */,
-				AA0200000000000000000042 /* ProgressionRebuildServiceTests.swift in Sources */,
-				AA0200000000000000000044 /* ExerciseTypeTests.swift in Sources */,
-				AA0200000000000000000048 /* PersonalRecordServiceTests.swift in Sources */,
-				AA020000000000000000004A /* WeightUnitTests.swift in Sources */,
-				AA020000000000000000004D /* GoldServiceTests.swift in Sources */,
-				AA0200000000000000000050 /* RPGEquipmentServiceTests.swift in Sources */,
-				AA0200000000000000000054 /* SkillProgressionServiceTests.swift in Sources */,
-				AA0200000000000000000056 /* EquipmentDropServiceTests.swift in Sources */,
-				AA0200000000000000000059 /* TrainingStyleServiceTests.swift in Sources */,
-				AA020000000000000000005B /* TrainingInsightsServiceTests.swift in Sources */,
-				AA020000000000000000005D /* SuggestedQuestServiceTests.swift in Sources */,
-				AA020000000000000000005F /* QuestCalendarServiceTests.swift in Sources */,
-				AA0200000000000000000062 /* TrainingChartsServiceTests.swift in Sources */,
-				AA0200000000000000000065 /* MuscleRecoveryServiceTests.swift in Sources */,
-				AA0200000000000000000067 /* QuestFilterServiceTests.swift in Sources */,
-				AA0200000000000000000069 /* QuestJournalTests.swift in Sources */,
-				AA020000000000000000006B /* RecoveryRecommendationServiceTests.swift in Sources */,
-				AA020000000000000000006D /* ExerciseNameSuggestionServiceTests.swift in Sources */,
-				AA020000000000000000006F /* ExerciseMetricsServiceTests.swift in Sources */,
-				AA0200000000000000000072 /* ProgressExportServiceTests.swift in Sources */,
-				AA0200000000000000000074 /* ProgressImportServiceTests.swift in Sources */,
-				AA0200000000000000000076 /* HealthKitServiceTests.swift in Sources */,
-				AA0200000000000000000078 /* AppIntentServiceTests.swift in Sources */,
-				AA020000000000000000007B /* PrivacyDataServiceTests.swift in Sources */,
-				AA020000000000000000007D /* PersistenceMigrationTests.swift in Sources */,
-				AA0200000000000000000081 /* FixturesTests.swift in Sources */,
-				AA020000000000000000008B /* StreakServiceTests.swift in Sources */,
-				AA0200000000000000000099 /* LeaderboardServiceTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000006 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA020000000000000000007F /* QuestLoggingUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA0700000000000000000008 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA0200000000000000000082 /* RepSetForgeWatchApp.swift in Sources */,
-				AA0200000000000000000083 /* WatchQuestView.swift in Sources */,
-				AA0200000000000000000084 /* WatchExerciseView.swift in Sources */,
-				AA0200000000000000000085 /* WatchTheme.swift in Sources */,
-				AA02000000000000000000A0 /* Quest.swift in Sources */,
-				AA02000000000000000000A1 /* Exercise.swift in Sources */,
-				AA02000000000000000000A2 /* ExerciseSet.swift in Sources */,
-				AA02000000000000000000A3 /* ExerciseTemplate.swift in Sources */,
-				AA02000000000000000000A4 /* QuestTemplate.swift in Sources */,
-				AA02000000000000000000A5 /* PlayerCharacter.swift in Sources */,
-				AA02000000000000000000A6 /* MuscleProgress.swift in Sources */,
-				AA02000000000000000000A7 /* Achievement.swift in Sources */,
-				AA02000000000000000000A8 /* PersonalRecord.swift in Sources */,
-				AA02000000000000000000A9 /* RPGEncounterState.swift in Sources */,
-				AA02000000000000000000AA /* OwnedEquipment.swift in Sources */,
-				AA02000000000000000000AB /* SkillProgress.swift in Sources */,
-				AA02000000000000000000AC /* QuestStatus.swift in Sources */,
-				AA02000000000000000000AD /* MuscleGroup.swift in Sources */,
-				AA02000000000000000000AE /* ExerciseType.swift in Sources */,
-				AA02000000000000000000AF /* WeightUnit.swift in Sources */,
-				AA02000000000000000000B0 /* PersonalRecordType.swift in Sources */,
-				AA02000000000000000000B1 /* RPGClass.swift in Sources */,
-				AA02000000000000000000B2 /* RepSetForgeSchema.swift in Sources */,
-				AA02000000000000000000B3 /* Fixtures.swift in Sources */,
-				AA02000000000000000000B4 /* AchievementService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AA070000000000000000000B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AA020000000000000000008C /* RepSetForgeWidgetEntry.swift in Sources */,
-				AA020000000000000000008D /* RepSetForgeWidgetProvider.swift in Sources */,
-				AA020000000000000000008E /* RepSetForgeWidgetView.swift in Sources */,
-				AA020000000000000000008F /* RepSetForgeWidget.swift in Sources */,
-				AA0200000000000000000090 /* RepSetForgeWidgetBundle.swift in Sources */,
-				AA0200000000000000000096 /* RepSetForgeLiveActivity.swift in Sources */,
-				AA02000000000000000000C8 /* Quest.swift in Sources */,
-				AA02000000000000000000C9 /* Exercise.swift in Sources */,
-				AA02000000000000000000CA /* ExerciseSet.swift in Sources */,
-				AA02000000000000000000CB /* ExerciseTemplate.swift in Sources */,
-				AA02000000000000000000CC /* QuestTemplate.swift in Sources */,
-				AA02000000000000000000CD /* PlayerCharacter.swift in Sources */,
-				AA02000000000000000000CE /* MuscleProgress.swift in Sources */,
-				AA02000000000000000000CF /* Achievement.swift in Sources */,
-				AA02000000000000000000D0 /* PersonalRecord.swift in Sources */,
-				AA02000000000000000000D1 /* RPGEncounterState.swift in Sources */,
-				AA02000000000000000000D2 /* OwnedEquipment.swift in Sources */,
-				AA02000000000000000000D3 /* SkillProgress.swift in Sources */,
-				AA02000000000000000000D4 /* QuestStatus.swift in Sources */,
-				AA02000000000000000000D5 /* MuscleGroup.swift in Sources */,
-				AA02000000000000000000D6 /* ExerciseType.swift in Sources */,
-				AA02000000000000000000D7 /* WeightUnit.swift in Sources */,
-				AA02000000000000000000D8 /* PersonalRecordType.swift in Sources */,
-				AA02000000000000000000D9 /* RPGClass.swift in Sources */,
-				AA02000000000000000000DA /* RepSetForgeSchema.swift in Sources */,
-				AA02000000000000000000DB /* SharedStore.swift in Sources */,
-				AA02000000000000000000DC /* StreakService.swift in Sources */,
-				AA02000000000000000000DD /* RepSetForgeActivityAttributes.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		/* End PBXSourcesBuildPhase section */
-
-		/* Begin PBXTargetDependency section */
-		AA0900000000000000000001 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA0400000000000000000001 /* RepSetForge */;
-			targetProxy = AA0900000000000000000002 /* PBXContainerItemProxy */;
-		};
-		AA0900000000000000000003 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA0400000000000000000001 /* RepSetForge */;
-			targetProxy = AA0900000000000000000004 /* PBXContainerItemProxy */;
-		};
-		AA0900000000000000000005 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA0400000000000000000004 /* RepSetForge Watch App */;
-			targetProxy = AA0900000000000000000006 /* PBXContainerItemProxy */;
-		};
-		AA0900000000000000000007 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = AA0400000000000000000005 /* RepSetForgeWidgets */;
-			targetProxy = AA0900000000000000000008 /* PBXContainerItemProxy */;
-		};
-		/* End PBXTargetDependency section */
-
-		/* Begin XCBuildConfiguration section */
-		AA0600000000000000000001 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_NS_ASSERTIONS = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForgeWatch/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		AA0600000000000000000002 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+
+			}; name = Debug;};
+		596D251FBAD1432CFC93A91F = {isa = XCConfigurationList; buildConfigurations = (7A3DAE032B0E5D1183437EA7, C0BEA2BCF3288F986B1289A9); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		5B52D652D8790AD2308FBE2D = {isa = PBXTargetDependency; target = 91C955795F5E0E56AF892273; targetProxy = 7FA7FA3197DDD3447EC92118;};
+		5BD186B7D3C477B8360BC085 = {isa = PBXBuildFile; fileRef = 6002A4EA3545228B0F520F0D;};
+		5BFE1DDC0B9A1563F3628D4A = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Services/AppServices.swift"; sourceTree = SOURCE_ROOT;};
+		5E8ACABCCBE1DB5D311988C9 = {isa = XCBuildConfiguration; buildSettings = {
+
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
-				ENABLE_NS_ASSERTIONS = NO;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-			};
-			name = Release;
-		};
-		AA0600000000000000000003 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				ENABLE_TESTABILITY = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.";
-				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		AA0600000000000000000004 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+
+			}; name = Debug;};
+		6002A4EA3545228B0F520F0D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeWidgets/RepSetForgeLiveActivityWidget.swift"; sourceTree = SOURCE_ROOT;};
+		66C714C844D0BFA03DC09D81 = {isa = PBXBuildFile; fileRef = 518E35B85443929954635880;};
+		6CFC827E67DCAE34C72B9CED = {isa = PBXGroup; children = (9D2B46629158D5E0D18E42F7, CCC1F3D3455368CE13C7842F, EEDE5D0B67B3FA38304ED102, 9CD01FA7633D4D3A0A8F990B, B1C788C39A33962CBDFB3048, 021F2B7F3E0C61452C987484); sourceTree = "<group>";};
+		6F0DFB68682158FD83DBF8E4 = {isa = XCBuildConfiguration; buildSettings = {
+
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
-				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your workout, heart rate, and body metric history from Health to keep your quest log complete.";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves completed quests to Health as workouts so they show up alongside your other activity.";
-				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		AA0600000000000000000005 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
-			};
-			name = Debug;
-		};
-		AA0600000000000000000006 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
-			};
-			name = Release;
-		};
-		AA0600000000000000000007 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RepSetForge;
-			};
-			name = Debug;
-		};
-		AA0600000000000000000008 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = RepSetForge;
-			};
-			name = Release;
-		};
-		AA0600000000000000000009 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				ENABLE_TESTABILITY = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.gnwn.RepSetForge;
-				MARKETING_VERSION = 1.0;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForgeWatch/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
-				SUPPORTED_PLATFORMS = "watchsimulator watchos";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 4;
 				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Debug;
-		};
-		AA060000000000000000000A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+
+			}; name = Release;};
+		7395CD3B076723358C708BE0 = {isa = PBXBuildFile; fileRef = C123A07E755C73927ECA799A; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };};
+		768F8B228D9788DC87302A82 = {isa = PBXTargetDependency; target = B645626E2FC3DB45E109AAC5; targetProxy = 2C135CA110FDB5658326B736;};
+		7A3DAE032B0E5D1183437EA7 = {isa = XCBuildConfiguration; buildSettings = {
+
+				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForgeWidgets/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+
+			}; name = Debug;};
+		7DB5DFCC8ED86DDD8C423579 = {isa = XCBuildConfiguration; buildSettings = {
+
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "RepSetForge Watch App/RepSetForge Watch App.entitlements";
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = dev.gnwn.RepSetForge;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForge/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SUPPORTED_PLATFORMS = "watchsimulator watchos";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-			};
-			name = Release;
-		};
-		AA060000000000000000000B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;
+
+			}; name = Release;};
+		7FA7FA3197DDD3447EC92118 = {isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = 91C955795F5E0E56AF892273; remoteInfo = RepSetForgeWidgets;};
+		8422D63737CD5E48813E1830 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/MainScreens.swift"; sourceTree = SOURCE_ROOT;};
+		886176CCD022F100EDE51FE8 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		895CD05BEE8BAB8F28D9933C = {isa = XCConfigurationList; buildConfigurations = (A51FF283BDA878CEF9B465DA, A76B9D3B3504C8728F6534B2); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		8CEDA7969DF3E20018ADE29A = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR;};
+		8DFBB93514DB53EE62D3B44B = {isa = XCBuildConfiguration; buildSettings = {
+
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
 				ENABLE_TESTABILITY = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = RepSetForgeWidgets/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.RepSetForgeWidgets;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForge/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		AA060000000000000000000C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+
+			}; name = Debug;};
+		91C955795F5E0E56AF892273 = {isa = PBXNativeTarget; buildConfigurationList = 596D251FBAD1432CFC93A91F; buildPhases = (AC60C995B9A5B193F3CF9C56, 4D8C5BA960F8645B260F1B3F, 886176CCD022F100EDE51FE8); buildRules = (); dependencies = (); name = RepSetForgeWidgets; productName = RepSetForgeWidgets; productReference = D8D6F9F883E6FC85755BAEFF; productType = "com.apple.product-type.app-extension";};
+		98F54143AB4E86B28C3AFEE0 = {isa = PBXProject; attributes = { LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; TargetAttributes = { B645626E2FC3DB45E109AAC5 = { CreatedOnToolsVersion = 26.6; }; 91C955795F5E0E56AF892273 = { CreatedOnToolsVersion = 26.6; }; 2C392AD8ADE10E05413759CE = { CreatedOnToolsVersion = 26.6; }; 2E2C5F2C2CCE58D9B4F08777 = { CreatedOnToolsVersion = 26.6; }; }; }; buildConfigurationList = 45A6A88DC85623F57ECF575D; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 6CFC827E67DCAE34C72B9CED; productRefGroup = 021F2B7F3E0C61452C987484; projectDirPath = ""; projectRoot = ""; targets = (B645626E2FC3DB45E109AAC5, 91C955795F5E0E56AF892273, 2C392AD8ADE10E05413759CE, 2E2C5F2C2CCE58D9B4F08777);};
+		9CD01FA7633D4D3A0A8F990B = {isa = PBXGroup; children = (F039B007885BF2C7143259E5, CE6117A772DB58011AA8DA50); path = RepSetForgeWatch; sourceTree = "<group>";};
+		9D2B46629158D5E0D18E42F7 = {isa = PBXGroup; children = (468826A83B962F0C47EFF338, D039A96F7604883D5BB328CD, E7F648460125A45A0B81F511, DD144EDCFEA66CD4EDDCACDD, 5BFE1DDC0B9A1563F3628D4A, 3E69BF185DC595A494B7832C, 8422D63737CD5E48813E1830, 518E35B85443929954635880, E7B24F1A036D1B004FD41D76); path = RepSetForge; sourceTree = "<group>";};
+		A05070AD1604345718597354 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		A51FF283BDA878CEF9B465DA = {isa = XCBuildConfiguration; buildSettings = {
+
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+
+			}; name = Debug;};
+		A582D4F903CE1245D40003FA = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (4B5C49B62512474C57B10522); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0;};
+		A76B9D3B3504C8728F6534B2 = {isa = XCBuildConfiguration; buildSettings = {
+
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+
+			}; name = Release;};
+		AC60C995B9A5B193F3CF9C56 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (CE6BD6A4F43D4950BAB18B6C, 5BD186B7D3C477B8360BC085); runOnlyForDeploymentPostprocessing = 0;};
+		B1C788C39A33962CBDFB3048 = {isa = PBXGroup; children = (F36545DF92B5B6A2A4F4A382); path = RepSetForgeTests; sourceTree = "<group>";};
+		B30928BB1402943E3C7CE009 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeShared/RepSetForgeActivityAttributes.swift"; sourceTree = SOURCE_ROOT;};
+		B645626E2FC3DB45E109AAC5 = {isa = PBXNativeTarget; buildConfigurationList = 03EFABB86F665BA711C83EA5; buildPhases = (FDBEB636160CC4A63F780304, FA3C5073B463D1BB4154A72F, 2BF5DE592226D457D3BCDAC0, A582D4F903CE1245D40003FA); buildRules = (); dependencies = (5B52D652D8790AD2308FBE2D); name = RepSetForge; productName = RepSetForge; productReference = 8CEDA7969DF3E20018ADE29A; productType = "com.apple.product-type.application";};
+		BBF27171F2E9EBCCAFD3E545 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (4163187A501ED788B7D490D2); runOnlyForDeploymentPostprocessing = 0;};
+		C0BEA2BCF3288F986B1289A9 = {isa = XCBuildConfiguration; buildSettings = {
+
 				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5T5444U7W2;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RepSetForgeWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.RepSetForgeWidgets;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+
+			}; name = Release;};
+		C123A07E755C73927ECA799A = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForgeWatch.app; sourceTree = BUILT_PRODUCTS_DIR;};
+		CCC1F3D3455368CE13C7842F = {isa = PBXGroup; children = (B30928BB1402943E3C7CE009); path = RepSetForgeShared; sourceTree = "<group>";};
+		CD5BADB5A91D597E76F60CF4 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		CE6117A772DB58011AA8DA50 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RepSetForgeWatch/Info.plist"; sourceTree = SOURCE_ROOT;};
+		CE6BD6A4F43D4950BAB18B6C = {isa = PBXBuildFile; fileRef = B30928BB1402943E3C7CE009;};
+		D039A96F7604883D5BB328CD = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Models/AppModels.swift"; sourceTree = SOURCE_ROOT;};
+		D4AABA29BC4DE8A9B240B214 = {isa = PBXBuildFile; fileRef = D039A96F7604883D5BB328CD;};
+		D7DA8668DC68561CF3B5D465 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		D8D6F9F883E6FC85755BAEFF = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RepSetForgeWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR;};
+		DC383D6985E96F0C625D14DE = {isa = PBXBuildFile; fileRef = 468826A83B962F0C47EFF338;};
+		DD144EDCFEA66CD4EDDCACDD = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/RepSetForgeApp.swift"; sourceTree = SOURCE_ROOT;};
+		DD70718FE9E23B3564F06431 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RepSetForgeWidgets/Info.plist"; sourceTree = SOURCE_ROOT;};
+		E0842783B1DD0C533172395B = {isa = PBXBuildFile; fileRef = 5BFE1DDC0B9A1563F3628D4A;};
+		E7B24F1A036D1B004FD41D76 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/WorkoutViews.swift"; sourceTree = SOURCE_ROOT;};
+		E7F648460125A45A0B81F511 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Persistence/PersistenceController.swift"; sourceTree = SOURCE_ROOT;};
+		E9D4387469A0B58F5BC5482F = {isa = PBXBuildFile; fileRef = E7B24F1A036D1B004FD41D76;};
+		EEDE5D0B67B3FA38304ED102 = {isa = PBXGroup; children = (6002A4EA3545228B0F520F0D, DD70718FE9E23B3564F06431); path = RepSetForgeWidgets; sourceTree = "<group>";};
+		F039B007885BF2C7143259E5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeWatch/RepSetForgeWatchApp.swift"; sourceTree = SOURCE_ROOT;};
+		F36545DF92B5B6A2A4F4A382 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeTests/RepSetForgeTests.swift"; sourceTree = SOURCE_ROOT;};
+		F57A69ED7597B84606BA7B10 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = "$(CONTENTS_FOLDER_PATH)/Watch"; dstSubfolderSpec = 16; files = (7395CD3B076723358C708BE0); name = "Embed Watch Content"; runOnlyForDeploymentPostprocessing = 0;};
+		F7274FA43EF4B25DC0D9F954 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR;};
+		F84FD35CA8548076F2B51EDF = {isa = XCBuildConfiguration; buildSettings = {
+
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		/* End XCBuildConfiguration section */
 
-		/* Begin XCConfigurationList section */
-		AA0500000000000000000001 /* Build configuration list for PBXProject "RepSetForge" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0600000000000000000001 /* Debug */,
-				AA0600000000000000000002 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA0500000000000000000002 /* Build configuration list for PBXNativeTarget "RepSetForge" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0600000000000000000003 /* Debug */,
-				AA0600000000000000000004 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA0500000000000000000003 /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0600000000000000000005 /* Debug */,
-				AA0600000000000000000006 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA0500000000000000000004 /* Build configuration list for PBXNativeTarget "RepSetForgeUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0600000000000000000007 /* Debug */,
-				AA0600000000000000000008 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA0500000000000000000005 /* Build configuration list for PBXNativeTarget "RepSetForge Watch App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA0600000000000000000009 /* Debug */,
-				AA060000000000000000000A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AA0500000000000000000006 /* Build configuration list for PBXNativeTarget "RepSetForgeWidgets" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AA060000000000000000000B /* Debug */,
-				AA060000000000000000000C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		/* End XCConfigurationList section */
-
+			}; name = Release;};
+		FA3C5073B463D1BB4154A72F = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		FCC84A159A22FC149BD70F27 = {isa = PBXBuildFile; fileRef = E7F648460125A45A0B81F511;};
+		FDBEB636160CC4A63F780304 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (DC383D6985E96F0C625D14DE, D4AABA29BC4DE8A9B240B214, FCC84A159A22FC149BD70F27, 15F5FC4F22B2380DCB1C23F4, E0842783B1DD0C533172395B, 09BC3A3119CFE29CC052AFFD, 34B8CC57206F01904C88BA49, 66C714C844D0BFA03DC09D81, E9D4387469A0B58F5BC5482F, 093ABFD0D1DF3B13366209EE); runOnlyForDeploymentPostprocessing = 0;};
+		FFF446F067F09552158CA1AC = {isa = XCConfigurationList; buildConfigurations = (534E97FE03168657A20C767F, 6F0DFB68682158FD83DBF8E4); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
 	};
-	rootObject = AA0000000000000000000001 /* Project object */;
+	rootObject = 98F54143AB4E86B28C3AFEE0;
 }
