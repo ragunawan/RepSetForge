@@ -126,14 +126,18 @@ struct RoutineLibraryView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List(exercises) { exercise in
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(exercise.name)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(RepSetForgeTheme.Colors.textPrimary)
-                        if !exercise.muscleGroups.isEmpty {
-                            Text(exercise.muscleGroups.map(\.displayName).joined(separator: " · "))
-                                .font(.system(size: 12))
-                                .foregroundStyle(RepSetForgeTheme.Colors.textSecondary)
+                    NavigationLink {
+                        ExerciseDetailView(exercise: exercise)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(exercise.name)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(RepSetForgeTheme.Colors.textPrimary)
+                            if !exercise.muscleGroups.isEmpty {
+                                Text(exercise.muscleGroups.map(\.displayName).joined(separator: " · "))
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(RepSetForgeTheme.Colors.textSecondary)
+                            }
                         }
                     }
                     .listRowBackground(RepSetForgeTheme.Colors.surfaceRaised)

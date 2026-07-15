@@ -225,16 +225,8 @@ struct ExerciseFocusView: View {
 
     private var trendPoints: [ExerciseTrendChart.Point] {
         guard let exerciseID = sessionExercise.exercise?.id else { return [] }
-        let relevant = allSetEntries.filter {
-            $0.completedAt != nil && $0.sessionExercise?.exercise?.id == exerciseID
-        }
-        let grouped = Dictionary(grouping: relevant) { $0.sessionExercise?.session?.id }
-        let points = grouped.values.compactMap { entries -> ExerciseTrendChart.Point? in
-            guard let date = entries.first?.sessionExercise?.session?.startedAt,
-                  let bestE1RM = entries.compactMap(\.estimatedOneRepMax).max() else { return nil }
-            return ExerciseTrendChart.Point(date: date, e1RM: bestE1RM)
-        }
-        return points.sorted { $0.date < $1.date }
+        let qualifying = ExerciseHistoryService.qualifyingSets(exerciseID: exerciseID, in: allSetEntries)
+        return ExerciseHistoryService.trendPoints(from: qualifying)
     }
 
     // MARK: - Coaching prompt

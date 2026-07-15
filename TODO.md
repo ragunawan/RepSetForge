@@ -47,10 +47,10 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [x] Progression ladder engine (`ProgressionLadderService`): generates levels from `ProgressionRule` + a base weight (the most recent working-set weight logged for that exercise), level-completion logic (≥ `qualifyingSetsRequired` matching sets in one session at RPE ≤ max), the level-up entry past the top of the rep range. `ProgressionPanelView` (mockup frame 2c) displays it; the bottom pill's PROG button now opens it when the session came from a routine (disabled stub otherwise, e.g. ad-hoc workouts). New `RoutineItem`s get a default `ProgressionRule()` since the rule *editor* UI isn't built — tap-to-edit rows on the rule fields are still TODO.
 
 ### 7. History, Progress, PR engine backfill
-- [ ] History screen (mockup frame 7): calendar grid + list view, completed vs. planned, filters
+- [x] History screen (`HistoryView`, mockup frame 7): List view (default) + a Monday-first Calendar grid marking completed-session days. Not done: "planned" (dashed) future sessions — no scheduling feature exists (that's separate TODO scope) — and the muscle/routine filter chips.
 - [ ] Progress screen (mockup frame 8): weekly volume, frequency/consistency, muscle distribution vs. target, locked states for insufficient data
-- [ ] Exercise Detail screen (mockup frame 6): best/e1RM/volume stats, e1RM trend chart with insight sentence, PR timeline, recent sessions
-- [ ] Historical edit invalidation chain (dev spec §5): editing/deleting a past session → PR recompute → ladder recompute → weekly rollup invalidation → HealthKit re-write, one background transaction
+- [x] Exercise Detail screen (`ExerciseDetailView`, mockup frame 6): best/e1RM/volume stats, e1RM trend chart with insight sentence, PR timeline, recent sessions. Shares `ExerciseHistoryService` with `ExerciseFocusView`'s in-context chart (refactored out of that view rather than duplicated). No 4W/3M/1Y range toggle — same simplification as the Focus screen's chart.
+- [ ] Historical edit invalidation chain (dev spec §5): editing/deleting a past session → PR recompute → ladder recompute → weekly rollup invalidation → HealthKit re-write, one background transaction. Can't be built yet anyway — there's no way to edit a completed session's sets at all.
 
 ### 8. Settings, CSV, first-run placeholders, light mode, accessibility audit
 - [ ] Settings screen (mockup frame 10): units (kg/lb), default rest, RPE visibility toggle, plate calculator config, bodyweight entry, CSV import/export, iCloud sync status, theme, Delete all data (double confirm + typed word)
