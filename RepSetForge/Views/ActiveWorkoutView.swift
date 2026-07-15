@@ -5,8 +5,9 @@ import SwiftData
 /// Hosts one `ExerciseFocusView` per `SessionExercise` in a paged TabView.
 /// Minimize dismisses back to the tab shell without ending the session —
 /// swipe-to-dismiss is blocked so it can't happen by accident (dev spec §1).
-/// The full restore-UX rules (silent resume under 4h, resume/finish/discard
-/// sheet beyond that) are still TODO.md work.
+/// Restore-UX staleness handling (silent resume under 4h, resume/finish/
+/// discard sheet beyond that) lives one level up in `ContentView`, since it
+/// has to gate presentation of this view rather than run inside it.
 struct ActiveWorkoutView: View {
     let session: WorkoutSession
     let onMinimize: () -> Void

@@ -35,6 +35,7 @@
 		AA0200000000000000000036 /* ExerciseHistoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000036 /* ExerciseHistoryService.swift */; };
 		AA020000000000000000003A /* ProgressStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* ProgressStatsService.swift */; };
 		AA020000000000000000003D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003D /* AppSettings.swift */; };
+		AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */; };
 		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
@@ -51,6 +52,7 @@
 		AA0200000000000000000038 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000038 /* HistoryView.swift */; };
 		AA020000000000000000003B /* ProgressScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003B /* ProgressScreenView.swift */; };
 		AA020000000000000000003E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003E /* SettingsView.swift */; };
+		AA020000000000000000003F /* UnfinishedSessionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003F /* UnfinishedSessionSheet.swift */; };
 		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
 		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
 		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
@@ -64,6 +66,7 @@
 		AA0200000000000000000035 /* ProgressionLadderServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000035 /* ProgressionLadderServiceTests.swift */; };
 		AA0200000000000000000039 /* ExerciseHistoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000039 /* ExerciseHistoryServiceTests.swift */; };
 		AA020000000000000000003C /* ProgressStatsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003C /* ProgressStatsServiceTests.swift */; };
+		AA0200000000000000000041 /* WorkoutSessionRestoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */; };
 		AA020000000000000000001D /* RepSetForgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001D /* RepSetForgeUITests.swift */; };
 		/* End PBXBuildFile section */
 
@@ -116,6 +119,7 @@
 		AA0100000000000000000036 /* ExerciseHistoryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryService.swift; sourceTree = "<group>"; };
 		AA010000000000000000003A /* ProgressStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatsService.swift; sourceTree = "<group>"; };
 		AA010000000000000000003D /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionRestoreService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 		AA0100000000000000000038 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		AA010000000000000000003B /* ProgressScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressScreenView.swift; sourceTree = "<group>"; };
 		AA010000000000000000003E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		AA010000000000000000003F /* UnfinishedSessionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfinishedSessionSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
@@ -146,6 +151,7 @@
 		AA0100000000000000000035 /* ProgressionLadderServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionLadderServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000039 /* ExerciseHistoryServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000003C /* ProgressStatsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatsServiceTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionRestoreServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000001D /* RepSetForgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeUITests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
@@ -243,6 +249,7 @@
 				AA0100000000000000000036 /* ExerciseHistoryService.swift */,
 				AA010000000000000000003A /* ProgressStatsService.swift */,
 				AA010000000000000000003D /* AppSettings.swift */,
+				AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -275,6 +282,7 @@
 				AA0100000000000000000038 /* HistoryView.swift */,
 				AA010000000000000000003B /* ProgressScreenView.swift */,
 				AA010000000000000000003E /* SettingsView.swift */,
+				AA010000000000000000003F /* UnfinishedSessionSheet.swift */,
 				AA030000000000000000000A /* Components */,
 			);
 			path = Views;
@@ -302,6 +310,7 @@
 				AA0100000000000000000035 /* ProgressionLadderServiceTests.swift */,
 				AA0100000000000000000039 /* ExerciseHistoryServiceTests.swift */,
 				AA010000000000000000003C /* ProgressStatsServiceTests.swift */,
+				AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -461,6 +470,7 @@
 				AA0200000000000000000036 /* ExerciseHistoryService.swift in Sources */,
 				AA020000000000000000003A /* ProgressStatsService.swift in Sources */,
 				AA020000000000000000003D /* AppSettings.swift in Sources */,
+				AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */,
 				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
@@ -477,6 +487,7 @@
 				AA0200000000000000000038 /* HistoryView.swift in Sources */,
 				AA020000000000000000003B /* ProgressScreenView.swift in Sources */,
 				AA020000000000000000003E /* SettingsView.swift in Sources */,
+				AA020000000000000000003F /* UnfinishedSessionSheet.swift in Sources */,
 				AA0200000000000000000025 /* SetRowView.swift in Sources */,
 				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
 				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,
@@ -496,6 +507,7 @@
 				AA0200000000000000000035 /* ProgressionLadderServiceTests.swift in Sources */,
 				AA0200000000000000000039 /* ExerciseHistoryServiceTests.swift in Sources */,
 				AA020000000000000000003C /* ProgressStatsServiceTests.swift in Sources */,
+				AA0200000000000000000041 /* WorkoutSessionRestoreServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
