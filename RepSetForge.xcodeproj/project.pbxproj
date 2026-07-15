@@ -41,7 +41,7 @@
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
 		AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000023 /* StartWorkoutSheet.swift */; };
-		AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* AddExerciseSheet.swift */; };
+		AA0200000000000000000024 /* ExerciseSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* ExerciseSelectionSheet.swift */; };
 		AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */; };
 		AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* WorkoutSummaryView.swift */; };
 		AA020000000000000000002F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002F /* HomeView.swift */; };
@@ -127,7 +127,7 @@
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000023 /* StartWorkoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkoutSheet.swift; sourceTree = "<group>"; };
-		AA0100000000000000000024 /* AddExerciseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseSheet.swift; sourceTree = "<group>"; };
+		AA0100000000000000000024 /* ExerciseSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSelectionSheet.swift; sourceTree = "<group>"; };
 		AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishWorkoutConfirmationSheet.swift; sourceTree = "<group>"; };
 		AA010000000000000000002C /* WorkoutSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSummaryView.swift; sourceTree = "<group>"; };
 		AA010000000000000000002F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 				AA0100000000000000000021 /* ExerciseIndexSheet.swift */,
 				AA0100000000000000000022 /* ActiveWorkoutView.swift */,
 				AA0100000000000000000023 /* StartWorkoutSheet.swift */,
-				AA0100000000000000000024 /* AddExerciseSheet.swift */,
+				AA0100000000000000000024 /* ExerciseSelectionSheet.swift */,
 				AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */,
 				AA010000000000000000002C /* WorkoutSummaryView.swift */,
 				AA010000000000000000002F /* HomeView.swift */,
@@ -482,7 +482,7 @@
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
 				AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */,
-				AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */,
+				AA0200000000000000000024 /* ExerciseSelectionSheet.swift in Sources */,
 				AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */,
 				AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */,
 				AA020000000000000000002F /* HomeView.swift in Sources */,

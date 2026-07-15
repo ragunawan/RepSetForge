@@ -57,7 +57,7 @@ FR = {
     "ExerciseIndexSheet":    u(1, 0x21),
     "ActiveWorkoutView":     u(1, 0x22),
     "StartWorkoutSheet":     u(1, 0x23),
-    "AddExerciseSheet":      u(1, 0x24),
+    "ExerciseSelectionSheet": u(1, 0x24),
     "SetRowView":            u(1, 0x25),
     "RPEChipRow":            u(1, 0x26),
     "ExerciseTrendChart":    u(1, 0x27),
@@ -180,7 +180,7 @@ APP_SOURCES = [
     ("ExerciseIndexSheet",    "Views/ExerciseIndexSheet.swift"),
     ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
     ("StartWorkoutSheet",     "Views/StartWorkoutSheet.swift"),
-    ("AddExerciseSheet",      "Views/AddExerciseSheet.swift"),
+    ("ExerciseSelectionSheet", "Views/ExerciseSelectionSheet.swift"),
     ("FinishWorkoutConfirmationSheet", "Views/FinishWorkoutConfirmationSheet.swift"),
     ("WorkoutSummaryView",    "Views/WorkoutSummaryView.swift"),
     ("HomeView",              "Views/HomeView.swift"),
@@ -212,7 +212,7 @@ SERVICE_KEYS = [
 ]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [
-    "ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet",
+    "ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "ExerciseSelectionSheet",
     "FinishWorkoutConfirmationSheet", "WorkoutSummaryView", "HomeView", "LogBodyMetricSheet",
     "RoutineLibraryView", "RoutineBuilderView", "ProgressionPanelView", "ProgressionRuleEditorSheet",
     "ExerciseDetailView", "HistoryView", "ProgressScreenView", "SettingsView", "UnfinishedSessionSheet",

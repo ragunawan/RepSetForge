@@ -59,7 +59,7 @@ struct ActiveWorkoutView: View {
             RestTimerNotificationScheduler.reschedule(endDate: newEndDate)
         }
         .sheet(isPresented: $isPresentingAddExercise) {
-            AddExerciseSheet { exercise in addExercise(exercise) }
+            ExerciseSelectionSheet { exercise in addExercise(exercise) }
         }
         .sheet(isPresented: $isPresentingIndex) {
             ExerciseIndexSheet(

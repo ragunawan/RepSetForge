@@ -2,8 +2,8 @@ import SwiftUI
 import SwiftData
 
 /// dev spec §5, mockup frame 5 — routines/exercises segmented list. The
-/// "Exercises" tab reuses the same `Exercise` data `AddExerciseSheet`
-/// creates; full search/filter chips are TODO.md build-order step 4 territory.
+/// "Exercises" tab reuses the same `Exercise` data `ExerciseSelectionSheet`
+/// creates; this tab itself doesn't have its own search/filter chips yet.
 struct RoutineLibraryView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Routine.name) private var routines: [Routine]

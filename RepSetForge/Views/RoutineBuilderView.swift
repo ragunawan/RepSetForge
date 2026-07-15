@@ -66,7 +66,7 @@ struct RoutineBuilderView: View {
             }
         }
         .sheet(isPresented: $isPresentingAddExercise) {
-            AddExerciseSheet { exercise in addItem(for: exercise) }
+            ExerciseSelectionSheet { exercise in addItem(for: exercise) }
         }
         .sheet(item: $editingProgressionRuleItem) { item in
             if let rule = item.progressionRule {
