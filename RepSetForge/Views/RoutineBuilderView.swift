@@ -2,8 +2,9 @@ import SwiftUI
 import SwiftData
 
 /// dev spec §5, mockup frame 9 — create or edit a routine. Superset grouping
-/// (shared `groupID`) and the progression-rule editor rows aren't built yet;
-/// items are a flat, reorderable, deletable list for now.
+/// (shared `groupID`) isn't built yet; items are a flat, reorderable,
+/// deletable list. The progression-rule editor is wired via
+/// `ProgressionRuleEditorSheet` (tap the row's "Progression" line).
 ///
 /// Note on Cancel: for a brand-new routine (`routine == nil`), nothing is
 /// inserted into the model context until Save, so Cancel discards cleanly.
@@ -21,6 +22,7 @@ struct RoutineBuilderView: View {
     @State private var name: String
     @State private var items: [RoutineItem]
     @State private var isPresentingAddExercise = false
+    @State private var editingProgressionRuleItem: RoutineItem?
 
     init(routine: Routine?) {
         self.routine = routine
@@ -66,6 +68,11 @@ struct RoutineBuilderView: View {
         .sheet(isPresented: $isPresentingAddExercise) {
             AddExerciseSheet { exercise in addItem(for: exercise) }
         }
+        .sheet(item: $editingProgressionRuleItem) { item in
+            if let rule = item.progressionRule {
+                ProgressionRuleEditorSheet(rule: rule)
+            }
+        }
     }
 
     private func itemRow(_ item: RoutineItem) -> some View {
@@ -80,15 +87,39 @@ struct RoutineBuilderView: View {
             )
             .font(RepSetForgeTheme.Typography.mono(13))
             .foregroundStyle(RepSetForgeTheme.Colors.textSecondary)
+
+            Button {
+                if item.progressionRule == nil {
+                    // Explicit insert (matches this codebase's convention of
+                    // never relying on implicit relationship insertion) —
+                    // needed here specifically because `save()` only inserts
+                    // rules for brand-new items, and this lazily creates one
+                    // for a pre-existing item that never had one.
+                    let rule = ProgressionRule()
+                    item.progressionRule = rule
+                    modelContext.insert(rule)
+                }
+                editingProgressionRuleItem = item
+            } label: {
+                Text("Progression: \(progressionSummary(for: item))")
+                    .font(RepSetForgeTheme.Typography.mono(12, weight: .semibold))
+                    .foregroundStyle(RepSetForgeTheme.Colors.signal)
+            }
+            .buttonStyle(.plain)
         }
         .listRowBackground(RepSetForgeTheme.Colors.surfaceRaised)
+    }
+
+    private func progressionSummary(for item: RoutineItem) -> String {
+        guard let rule = item.progressionRule else { return "off" }
+        return "\(rule.repRangeLow)–\(rule.repRangeHigh) reps · +\(Self.formatDecimal(rule.incrementKg)) kg"
     }
 
     private func addItem(for exercise: Exercise) {
         // Every item gets a default double-progression rule so the Exercise
         // Focus screen's PROG panel has something to show once a workout is
-        // started from this routine — the rule editor UI itself isn't built
-        // yet (TODO.md), so these defaults are all a user can get for now.
+        // started from this routine; tap the row's "Progression" line to
+        // customize it via `ProgressionRuleEditorSheet`.
         items.append(RoutineItem(exercise: exercise, order: items.count, progressionRule: ProgressionRule()))
     }
 
@@ -125,5 +156,9 @@ struct RoutineBuilderView: View {
         }
         targetRoutine.items = items
         dismiss()
+    }
+
+    private static func formatDecimal(_ value: Decimal) -> String {
+        NSDecimalNumber(decimal: value).stringValue
     }
 }

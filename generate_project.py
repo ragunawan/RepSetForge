@@ -87,6 +87,7 @@ FR = {
     "UnfinishedSessionSheet": u(1, 0x3F),
     "WorkoutSessionRestoreService": u(1, 0x40),
     "TEST_WorkoutSessionRestore": u(1, 0x41),
+    "ProgressionRuleEditorSheet": u(1, 0x42),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -185,6 +186,7 @@ APP_SOURCES = [
     ("RoutineLibraryView",    "Views/RoutineLibraryView.swift"),
     ("RoutineBuilderView",    "Views/RoutineBuilderView.swift"),
     ("ProgressionPanelView",  "Views/ProgressionPanelView.swift"),
+    ("ProgressionRuleEditorSheet", "Views/ProgressionRuleEditorSheet.swift"),
     ("ExerciseDetailView",    "Views/ExerciseDetailView.swift"),
     ("HistoryView",           "Views/HistoryView.swift"),
     ("ProgressScreenView",    "Views/ProgressScreenView.swift"),
@@ -210,8 +212,8 @@ PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [
     "ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet",
     "FinishWorkoutConfirmationSheet", "WorkoutSummaryView", "HomeView", "LogBodyMetricSheet",
-    "RoutineLibraryView", "RoutineBuilderView", "ProgressionPanelView", "ExerciseDetailView", "HistoryView",
-    "ProgressScreenView", "SettingsView", "UnfinishedSessionSheet",
+    "RoutineLibraryView", "RoutineBuilderView", "ProgressionPanelView", "ProgressionRuleEditorSheet",
+    "ExerciseDetailView", "HistoryView", "ProgressScreenView", "SettingsView", "UnfinishedSessionSheet",
 ]
 COMPONENT_KEYS = ["SetRowView", "RPEChipRow", "ExerciseTrendChart", "RestTimerPill"]
 

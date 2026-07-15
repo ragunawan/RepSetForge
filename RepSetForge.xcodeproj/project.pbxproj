@@ -48,6 +48,7 @@
 		AA0200000000000000000031 /* RoutineLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000031 /* RoutineLibraryView.swift */; };
 		AA0200000000000000000032 /* RoutineBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000032 /* RoutineBuilderView.swift */; };
 		AA0200000000000000000034 /* ProgressionPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000034 /* ProgressionPanelView.swift */; };
+		AA0200000000000000000042 /* ProgressionRuleEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000042 /* ProgressionRuleEditorSheet.swift */; };
 		AA0200000000000000000037 /* ExerciseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000037 /* ExerciseDetailView.swift */; };
 		AA0200000000000000000038 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000038 /* HistoryView.swift */; };
 		AA020000000000000000003B /* ProgressScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003B /* ProgressScreenView.swift */; };
@@ -132,6 +133,7 @@
 		AA0100000000000000000031 /* RoutineLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineLibraryView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000032 /* RoutineBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineBuilderView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000034 /* ProgressionPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionPanelView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000042 /* ProgressionRuleEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionRuleEditorSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000037 /* ExerciseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000038 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		AA010000000000000000003B /* ProgressScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressScreenView.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 				AA0100000000000000000031 /* RoutineLibraryView.swift */,
 				AA0100000000000000000032 /* RoutineBuilderView.swift */,
 				AA0100000000000000000034 /* ProgressionPanelView.swift */,
+				AA0100000000000000000042 /* ProgressionRuleEditorSheet.swift */,
 				AA0100000000000000000037 /* ExerciseDetailView.swift */,
 				AA0100000000000000000038 /* HistoryView.swift */,
 				AA010000000000000000003B /* ProgressScreenView.swift */,
@@ -483,6 +486,7 @@
 				AA0200000000000000000031 /* RoutineLibraryView.swift in Sources */,
 				AA0200000000000000000032 /* RoutineBuilderView.swift in Sources */,
 				AA0200000000000000000034 /* ProgressionPanelView.swift in Sources */,
+				AA0200000000000000000042 /* ProgressionRuleEditorSheet.swift in Sources */,
 				AA0200000000000000000037 /* ExerciseDetailView.swift in Sources */,
 				AA0200000000000000000038 /* HistoryView.swift in Sources */,
 				AA020000000000000000003B /* ProgressScreenView.swift in Sources */,
