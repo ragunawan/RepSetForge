@@ -1,16 +1,40 @@
-# Xcode user state
-*.xcuserstate
-xcuserdata/
-
-# Build products
-DerivedData/
+## Xcode
 build/
-*.ipa
-*.dSYM.zip
-*.dSYM
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+.DS_Store
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
 
-# Swift Package Manager
+## Swift Package Manager
+.swiftpm/
 .build/
 
-# macOS
-.DS_Store
+## CocoaPods (not used, kept defensively)
+Pods/
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+## Obj-C/Swift specific
+*.hmap
+
+## Python (generate_project.py)
+__pycache__/
+*.pyc
+
+## Fastlane / CI artifacts
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output

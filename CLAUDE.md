@@ -1,14 +1,20 @@
-# CLAUDE.md — RepSetForge MVP
+# CLAUDE.md — RepSetForge
 
 Guidance for Claude Code when working on RepSetForge.
 
 ## Project Focus
 
-Work on the RepSetForge codebase in `/Users/ai/Documents/Dev/RepSetForge`.
-
-RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP to level up your character and muscle groups.
+RepSetForge is an iOS strength-training logger: routines, sets/reps/weight/RPE logging, rest timers, double-progression ladders, PR tracking, and Apple Health export. This is a from-scratch rebuild (July 2026) — the previous RPG/quest-XP concept has been fully retired. There is no gamification layer in this codebase; do not reintroduce quests, XP, or leveling.
 
 **Do not** mix this with sibling projects (EggSpend, FitBoard, etc.) unless explicitly asked.
+
+## Source of Truth
+
+The product spec lives in `Docs/`:
+- `Docs/repsetforge-dev-spec.md` — the canonical developer implementation spec: architecture, data model, screen behavior contracts, accessibility, performance/reliability rules, App Store submission checklist, and the build order.
+- `Docs/repsetforge-hifi.html` — hi-fi screen mockups and component states (open in a browser). Companion to the dev spec; token values referenced there as `gymchalk-tokens.json` were not provided and are approximated in `RepSetForgeTheme.swift` from the mockup's inline CSS custom properties — reconcile if a real tokens file ever arrives.
+
+Read the dev spec before making architectural or data-model changes. This CLAUDE.md summarizes it for quick reference; the dev spec wins on any conflict.
 
 ## Project Overview
 
@@ -19,23 +25,25 @@ RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP 
 - **UI test target:** RepSetForgeUITests
 - **Entry point:** RepSetForgeApp.swift in RepSetForge/ folder
 - **Swift version:** Swift 6, iOS 17.0+
-- **Stack:** SwiftUI + SwiftData, CloudKit-backed (private per-user iCloud sync) with automatic local fallback when no iCloud account is available
+- **Stack:** SwiftUI + SwiftData, CloudKit-backed (private per-user iCloud sync) with automatic local fallback when no iCloud account is available. WidgetKit/ActivityKit for Live Activities (v1.0, once built), watchOS companion (v1.1, deferred — see TODO.md).
+- **Monetization:** none. Free app, no IAP/paywall, no gating scaffolding.
+- **Exercise database:** ships empty. Users create their own exercises; canonical-name dedup (see below) is load-bearing because every name is user-typed.
 
 ## Key Files
 
-- `README.md` — Project overview and quick start
-- `TODO.md` — canonical, prioritized backlog; use this to decide what to work on next
-- `generate_project.py` — Xcode project file generator (adapt EggSpend pattern)
-- `RepSetForge/Models/` — @Model classes (Quest, Exercise, ExerciseSet, PlayerCharacter, MuscleProgress, Achievement) plus the passive-combat RPG layer (RPGClass, RPGMonster, RPGBoss, RPGSkill, RPGEquipment, RPGEncounterState, RPGProgressionSnapshot — struct/enum-based, not persisted)
-- `RepSetForge/Services/` — ProgressionService (XP calc, leveling), AchievementService (unlock logic), and the RPG combat layer (MonsterSpawnService, BossMilestoneService, RPGEncounterViewModel, RPGMonsterRegistry, RPGBossRegistry, RPGEquipmentRegistry, RPGSkillRegistry)
-- `RepSetForge/Persistence/` — PersistenceController (ModelContainer, seeding)
-- `RepSetForge/Views/` — Screen views (Dashboard, QuestList, QuestDetail, ExerciseLogging, Character, EquipmentShop, History, Achievements, Completion, Onboarding)
-- `RepSetForge/Views/Components/` — Pixel-art UI components (PixelQuestCard, PixelXPBar, PixelBadge, PixelStatPanel, PixelButton, PixelAchievementCard, PixelDivider, QuestCompletionRewardRow)
-- `Docs/ART_GENERATION_README.md` / `ArtSource/RPG/` — manual chibi-art import pipeline for RPG sprites (see `scripts/import_rpg_art.py`)
+- `README.md` — project overview and quick start
+- `TODO.md` — canonical, prioritized backlog, structured around the dev spec's "Build order" (§9); use this to decide what to work on next
+- `generate_project.py` — Xcode project file generator
+- `RepSetForge/Models/` — `@Model` classes: `Exercise`, `Routine`, `RoutineItem`, `ProgressionRule`, `WorkoutSession`, `SessionExercise`, `SetEntry`, `PRRecord`, `BodyMetric`, plus supporting enums (`MuscleGroup`, `Equipment`, `SetType`, `ProgressionRuleType`, `WorkoutSessionStatus`, `PRKind`)
+- `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match). More services land per TODO.md's build order (progression ladder engine, PR engine, rest timer manager, HealthKit export, Live Activity, CSV import/export, etc.)
+- `RepSetForge/Persistence/` — `PersistenceController` (ModelContainer, CloudKit config), `RepSetForgeSchema` (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan`)
+- `RepSetForge/Views/` — screen views (Home, Library, History, Progress land per TODO.md; `RootView`/`ContentView` is the current minimal tab shell)
+- `RepSetForge/Views/Components/` — reusable UI components (empty for now — populate as screens are built)
+- `RepSetForge/RepSetForgeTheme.swift` — design tokens translated from the hi-fi mockup's CSS custom properties (surfaces, signal/pr/warn/destructive colors, radii, monospace type)
 
 ## Development Workflow
 
-1. Phase 1 MVP (core quest/XP/leveling loop) is complete. Work from **TODO.md**, top to bottom within each priority tier (P0 before P1 before P2, etc.). Do not skip ahead within a tier without reason.
+1. Work from **TODO.md**, top to bottom within each priority tier. TODO.md mirrors the dev spec's build order (§9) — data model first, then the Exercise Focus logging screen (the product lives or dies here), then rest timer/Live Activity, then the rest.
 2. Before committing, build the app:
    ```bash
    xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForge \
@@ -46,6 +54,8 @@ RepSetForge is an iOS app where workouts are "quests" and logging sets earns XP 
    xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge \
      -destination 'platform=iOS Simulator,name=iPhone 16'
    ```
+
+   Note: `xcodebuild` requires macOS + Xcode. If you're working in a Linux remote environment with no Swift/Xcode toolchain available, you cannot run these — say so explicitly rather than claiming a build passed. Review Swift syntax carefully by hand and flag anything you couldn't verify.
 
 ## Common Commands
 
@@ -73,169 +83,93 @@ python3 generate_project.py
 
 ## Naming Conventions
 
-Use these names consistently:
-
 - **Repository/folder:** RepSetForge
 - **Xcode project:** RepSetForge.xcodeproj
 - **App target/product/scheme:** RepSetForge
 - **Test target:** RepSetForgeTests
 - **UI test target:** RepSetForgeUITests
 - **App entry point:** RepSetForgeApp
+- **Bundle ID:** dev.gnwn.RepSetForge (see dev spec §8b for entitlement/usage-string requirements once HealthKit lands)
 
-In UI, refer to:
-- Workouts as **"Quests"**
-- Exercises as **"Skills"** or leave as "Exercises" (not "Encounters" in UI)
-- Muscle groups as **"(Chest, Back, Legs, etc.)"**
-- Character progression as **"Level" and "XP"**
+Weights are stored in kg as `Decimal`; unit conversion (kg/lb) is presentation-only (Settings, dev spec §6).
+
+## Data Model (dev spec §2)
+
+```
+Exercise        id, name, muscleGroups[], secondaryMuscles[], equipment, isFavorite,
+                isCustom, notes(pinned), createdAt, canonicalNameKey (dedup)
+Routine         id, name, orderedItems[RoutineItem], archivedAt?, lastPerformedAt
+RoutineItem     exerciseRef, order, groupID? (superset/circuit), targetSets,
+                targetRepsLow/High, targetRPE?, restSeconds, note, progressionRule?
+ProgressionRule type(.ladder), repRangeLow, repRangeHigh, maxQualifyingRPE, qualifyingSetsRequired, incrementKg
+WorkoutSession  id, name, routineRef?, startedAt, endedAt?, notes, status(.active/.completed)
+SessionExercise sessionRef, exerciseRef, order, groupID?, note
+SetEntry        id, sessionExerciseRef, index, type(.warmup/.working/.drop/.failure/.bodyweight),
+                weightKg?, reps?, rpe?, completedAt?, isPR:Bool (denormalized)
+PRRecord        exerciseRef, kind(.bestWeight/.bestE1RM/.bestVolume/.repsAtWeight),
+                value, setRef, achievedAt
+BodyMetric      date, bodyweightKg, bodyFatPct?
+```
+
+- e1RM: Epley `w × (1 + r/30)`, computed property on `SetEntry`, capped at reps ≤ 12 for validity.
+- `canonicalNameKey` = lowercased, punctuation-stripped name. `ExerciseDedupService` fuzzy-matches (Levenshtein ≤ 2 or token subset) against existing keys on custom-exercise creation — this is what powers the "Similar exists" row in the create-exercise flow. See dev spec §2 and the Exercise Selection screen (mockup frame 3).
+- `ProgressionRule.type` is an enum so future progression methodologies (5/3/1, percentage waves, RIR autoregulation — dev spec §9 item 11, v1.1) land as new cases without a data-model migration. Only `.ladder` (double progression) is implemented for v1.0; don't add the other cases until they have real logic behind them.
+- SwiftData/CloudKit requirement: every attribute must be Optional or have a default value, and to-many relationships must be Optional at the stored-property level specifically — use the private-optional-backing pattern (see `Routine.items` / `WorkoutSession.sessionExercises` for the reference implementation) even though the public accessor is non-optional.
 
 ## Design Decisions
 
-### XP & Leveling Formula
+See the dev spec for the full detail — this is a pointer, not a duplicate:
+- **§1** — app architecture & navigation (`RootView` → `TabView` (Home/History/Progress/Library) + FAB, `ActiveWorkoutSheet` full-screen cover, restore-UX rules for an unfinished session)
+- **§3** — the Active Workout / Exercise Focus screen (the core logging surface — one exercise per page, full-bleed, no cards; read-only Exercise Index sheet for navigation; set row behavior contract; superset handling)
+- **§4 / §4b / §4c** — rest timer, Live Activity/Dynamic Island (v1.0), Apple Health export (v1.0, phone-only path first), Apple Watch companion (v1.1, deferred)
+- **§7 / §7a** — accessibility (ship-blocking checklist, Dynamic Type tiers, the AX2+ stacked set row)
+- **§8 / §8b** — performance/reliability contracts, App Store submission package
+- **§9** — build order (this is what TODO.md is structured around)
 
-**Per-set XP:**
-```
-base = reps × 2
-bonus = weight / 10
-setXP = base + bonus
-```
+### Visual Theme
 
-Bodyweight exercises have weight = 0 (no bonus).
+Dark-primary, monospaced-throughout design (`Docs/repsetforge-hifi.html` "Direction A"). Signal green (`#30E585` dark / `#1FA968` light) for completion/actions/progression; gold (`#F5C542` dark / `#B8860B` light) for PRs only — never reuse gold for anything else. Warning orange for overtime/under-target states, red only for destructive actions. `RepSetForgeTheme.swift` holds the token translation from the mockup's CSS custom properties; keep new UI aligned with it rather than hardcoding colors/radii inline.
 
-**Quest XP = sum of exercise XPs from completed sets only.**
+### Animation & Accessibility Baseline
 
-**XP distribution on quest completion:**
-- **Primary muscle:** 100% of exercise XP
-- **Secondary muscles:** 40% of exercise XP
-- **Overall player:** 100% of total quest XP
-
-**Leveling:**
-```
-nextLevelXP = currentLevel × 100
-```
-Example: Level 1→2 requires 100 XP, 2→3 requires 200 XP, 3→4 requires 300 XP.
-
-When XP exceeds the threshold, level up immediately and carry over excess XP.
-
-### Character Titles
-
-By level:
-- 1–4: "Novice Adventurer"
-- 5–9: "Iron Trainee"
-- 10–14: "Dungeon Athlete"
-- 15–19: "Strength Knight"
-- 20–24: "Elite Champion"
-- 25+: "Mythic Hero"
-
-### Pixel-Art Theme
-
-Use SwiftUI shapes, typography, SF Symbols, and borders — **no custom asset packs required for MVP.**
-
-- Color palette: navy, gold, silver, green, light/dark mode aware
-- Squared corners, chunky borders, retro panel styling
-- XP bars with segmented/block-like appearance
-- Badges shaped like RPG medals
-- Icons from SF Symbols (placeholders for future custom pixel art)
-- Pixel styling should appear across cards, panels, buttons, empty states, achievements, and completion rewards
-- Treat pixel-art polish as part of the product feel, not as isolated decoration
-
-**TODO:** Replace SF Symbol placeholders with hand-drawn pixel-art muscle group icons before shipping.
-
-### Animation Feel
-
-Animations should make progress feel rewarding while keeping workout logging fast.
-
-- Set completion: immediate, subtle feedback such as a checkmark, pulse, or XP tick
-- XP gain: brief segmented bar movement or number tick
-- Level-up: distinct celebratory state change, separate from ordinary XP gain
-- Achievement unlock: noticeable but short badge reveal
-- Quest completion: short reward sequence for total XP, muscle XP, level-ups, and achievements
-- Respect Reduce Motion by avoiding large movement and using opacity, scale, or static state changes instead
-- Avoid long, blocking, or looping animations in the logging flow
-
-### SwiftData Models
-
-All models use `@Model`, synced via CloudKit-backed SwiftData (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan` in `Persistence/RepSetForgeSchema.swift`). Every attribute must be Optional or have a default value, and to-many relationships must be Optional at the stored-property level specifically (see `Quest.exercises`/`Exercise.sets`'s private-optional-backing pattern) — both are CloudKit requirements, not local-only SwiftData requirements.
-
-**Relationships:**
-- Quest owns Exercises (cascade delete)
-- Exercise owns ExerciseSets (cascade delete)
-- PlayerCharacter is a singleton (one per app)
-- MuscleProgress is seeded at app startup (one per MuscleGroup)
-- Achievement is seeded with all definitions at startup
+- Set completion tap → visual response < 50ms (optimistic UI; persistence async, per dev spec §8).
+- Respect Reduce Motion: springs → fades, no parallax.
+- Dynamic Type to AX5; the six-column set table collapses to the AX2+ stacked set row per §7a — any new set-row feature must land in all three Dynamic Type tiers or it doesn't merge.
+- Completed state is never color-only (icon + dim, per §7).
 
 ## Testing Requirements
 
 Write unit tests for:
-1. XP calculation (setXP formula)
-2. Leveling logic (level-up conditions, excess XP carry-over)
-3. Muscle group XP distribution (primary 100%, secondary 40%)
-4. Achievement unlocking (conditions and dates)
+1. e1RM calculation (Epley formula, reps > 12 cap behavior)
+2. `ExerciseDedupService` canonical-key generation and fuzzy matching (Levenshtein ≤ 2, token subset)
+3. Progression ladder generation and level-completion logic, once the ladder engine lands (TODO.md build order step 6)
+4. PR detection logic, once the PR engine lands (build order step 7)
+5. Historical-edit invalidation chain (PR recompute → ladder recompute → weekly rollup invalidation → Health re-write), once editing past sessions lands — see dev spec §5 "Historical edit invalidation chain"
 
-Optional: integration tests for end-to-end quest completion flow.
+UI tests (RepSetForgeUITests target) should cover the core logging flow end to end through the real UI once it exists (start a workout, log a set, finish) — not yet meaningful with only a data-model foundation in place. `xcodebuild test` runs both test targets together via the shared scheme.
 
-UI tests (RepSetForgeUITests target) cover the core quest logging flow end to end through the real UI (open the current quest, log a set, complete the quest) — launch with `--preview-data --skip-onboarding` for a deterministic starting state. `xcodebuild test` runs both test targets together via the shared scheme.
+## Known Limitations (current state)
 
-## Known TODOs & Limitations
+This is a freshly rebuilt foundation, not a feature-complete app. Current state:
+- [x] SwiftData models + CloudKit-ready schema (dev spec §2)
+- [x] `PersistenceController` with CloudKit config + local fallback
+- [x] `ExerciseDedupService` (canonical key + fuzzy match)
+- [x] `RepSetForgeTheme.swift` token translation
+- [x] Minimal `RootView` tab shell (placeholder screens only — no real logging UI yet)
+- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list, starting with the Exercise Focus logging screen (step 2)
 
-See `TODO.md` for the prioritized backlog — it is the single canonical home for feature ideas and known gaps, including scope beyond Phase 1 MVP (gold/shop economy, onboarding, quest scheduling, weight units, per-skill XP). Keep this section as a pointer only; do not duplicate backlog items here.
+## Acceptance Criteria
 
-Current limitation highlights:
-- [ ] The RPG combat layer (monsters/bosses/skills/equipment) has no gold, no ownable/purchasable equipment, and no per-skill XP yet — see TODO.md P1 "Onboarding And RPG Economy"
-- [ ] Real pixel-art muscle group icons and app icon polish
-- [ ] Cardio/timed exercise XP support and additional exercise types
-- [ ] Edit/undo completed quests with full reward recalculation (XP, gold, PRs, achievements, skills)
-- [ ] No first-run onboarding flow, quest scheduling/backdating, or weight-unit (lbs/kg) support
-- [ ] Export/import progress
-- [ ] Apple Watch support, HealthKit, Shortcuts, and social features are post-MVP
-- [ ] Detailed "build analysis" insights in CharacterProgressView
-
-## Acceptance Criteria (Phase 1 MVP)
-
-Phase 1 MVP is complete. The app satisfies:
-
-1. ✓ App builds successfully
-2. ✓ App is named "RepSetForge" in visible UI
-3. ✓ User can create a quest/workout
-4. ✓ User can add exercises to the quest
-5. ✓ User can log sets, reps, and weight
-6. ✓ User can complete a quest
-7. ✓ Completing a quest awards XP
-8. ✓ Overall character XP and level update correctly
-9. ✓ Muscle group XP and levels update correctly
-10. ✓ Completed quests appear in history
-11. ✓ Quest completion screen shows earned XP and level-ups
-12. ✓ Basic achievements can unlock
-13. ✓ UI clearly communicates a pixel art RPG theme
-14. ✓ Pixel-art styling is consistent across core screens, empty states, and reward moments
-15. ✓ Set completion, XP gain, level-up, achievement, and quest completion animations polish the feel without blocking logging
-16. ✓ Reduce Motion is respected for animated effects
-17. ✓ Workout tracking remains fast, practical, and readable
-
-This is a deliberately smaller scope than the original RPG-economy brief (gold, shop, inventory, per-skill XP, onboarding, quest scheduling, etc.). That remaining scope lives in `TODO.md` as post-MVP backlog, not as unmet MVP criteria.
+Not yet applicable — no MVP has shipped under this concept. TODO.md's build order stands in for acceptance criteria until v1.0 (dev spec §9, steps 1–9) is complete and ready for App Store submission (§8b).
 
 ## Code Style
 
-- Follow existing Swift conventions (same as EggSpend if familiar)
+- Follow existing Swift conventions
 - Keep domain logic in models/services, not in views
-- Use `Decimal` for financial calculations (not applicable here, but maintain precision with large numbers if needed)
-- Keep UI changes aligned with RepSetForgeTheme.swift before adding one-off styling
-- Keep animations brief, meaningful, and accessible; workout logging must remain fast
+- Use `Decimal` for weights (kg) and other precision-sensitive numeric values — never `Double` for a value a user will compare against a PR
+- Keep UI changes aligned with `RepSetForgeTheme.swift` before adding one-off styling
 - Comment only the non-obvious: formulas, constraints, workarounds
-
-## Launch Arguments
-
-For testing, the app supports:
-
-```bash
-# Seed sample quests and character progression
---preview-data
-
-# Open to a specific tab (0=Quest Board, 1=Character, 2=Gear, 3=History, 4=Achievements)
---tab 3
-```
-
-These are parsed in RepSetForgeApp.swift.
 
 ---
 
-**Start here:** Phase 1 MVP is done. Read `TODO.md` and work top-down within the highest open priority tier.
+**Start here:** Read `Docs/repsetforge-dev-spec.md` in full before touching the Exercise Focus screen or the progression ladder — the behavior contracts there are detailed and load-bearing. Then read `TODO.md` and work top-down within the highest open priority tier.

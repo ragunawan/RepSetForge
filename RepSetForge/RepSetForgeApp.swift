@@ -3,12 +3,16 @@ import SwiftData
 
 @main
 struct RepSetForgeApp: App {
-    let persistence = PersistenceController.shared
+    let modelContainer: ModelContainer
+
+    init() {
+        modelContainer = PersistenceController.makeContainer()
+    }
 
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(persistence.modelContainer)
+        .modelContainer(modelContainer)
     }
 }

@@ -1,30 +1,33 @@
 import Foundation
 
-/// The major training areas that level up independently as the player logs sets.
-enum MuscleGroup: String, Codable, CaseIterable, Identifiable, Hashable {
+enum MuscleGroup: String, Codable, CaseIterable, Identifiable {
     case chest
     case back
-    case legs
     case shoulders
-    case arms
+    case biceps
+    case triceps
+    case forearms
     case core
-    case cardio
+    case quads
+    case hamstrings
+    case glutes
+    case calves
 
     var id: String { rawValue }
 
-    var displayName: String { rawValue.capitalized }
-
-    /// SF Symbol placeholder standing in for hand-drawn pixel art icons.
-    /// TODO: swap for custom pixel-art muscle group glyphs.
-    var iconName: String {
+    var displayName: String {
         switch self {
-        case .chest: return "shield.fill"
-        case .back: return "square.stack.3d.up.fill"
-        case .legs: return "figure.walk"
-        case .shoulders: return "triangle.fill"
-        case .arms: return "bolt.fill"
-        case .core: return "circle.grid.cross.fill"
-        case .cardio: return "heart.fill"
+        case .chest: return "Chest"
+        case .back: return "Back"
+        case .shoulders: return "Shoulders"
+        case .biceps: return "Biceps"
+        case .triceps: return "Triceps"
+        case .forearms: return "Forearms"
+        case .core: return "Core"
+        case .quads: return "Quads"
+        case .hamstrings: return "Hamstrings"
+        case .glutes: return "Glutes"
+        case .calves: return "Calves"
         }
     }
 }
