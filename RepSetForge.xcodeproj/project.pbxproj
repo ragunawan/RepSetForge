@@ -35,6 +35,8 @@
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
 		AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000023 /* StartWorkoutSheet.swift */; };
 		AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* AddExerciseSheet.swift */; };
+		AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */; };
+		AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* WorkoutSummaryView.swift */; };
 		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
 		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
 		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
@@ -96,6 +98,8 @@
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000023 /* StartWorkoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkoutSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000024 /* AddExerciseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseSheet.swift; sourceTree = "<group>"; };
+		AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishWorkoutConfirmationSheet.swift; sourceTree = "<group>"; };
+		AA010000000000000000002C /* WorkoutSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSummaryView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
@@ -219,6 +223,8 @@
 				AA0100000000000000000022 /* ActiveWorkoutView.swift */,
 				AA0100000000000000000023 /* StartWorkoutSheet.swift */,
 				AA0100000000000000000024 /* AddExerciseSheet.swift */,
+				AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */,
+				AA010000000000000000002C /* WorkoutSummaryView.swift */,
 				AA030000000000000000000A /* Components */,
 			);
 			path = Views;
@@ -401,6 +407,8 @@
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
 				AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */,
 				AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */,
+				AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */,
+				AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */,
 				AA0200000000000000000025 /* SetRowView.swift in Sources */,
 				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
 				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,

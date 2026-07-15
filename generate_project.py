@@ -64,6 +64,8 @@ FR = {
     "RestTimerPill":         u(1, 0x28),
     "TEST_PersonalRecord":   u(1, 0x29),
     "TEST_RestTimer":        u(1, 0x2A),
+    "FinishWorkoutConfirmationSheet": u(1, 0x2B),
+    "WorkoutSummaryView":    u(1, 0x2C),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -149,6 +151,8 @@ APP_SOURCES = [
     ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
     ("StartWorkoutSheet",     "Views/StartWorkoutSheet.swift"),
     ("AddExerciseSheet",      "Views/AddExerciseSheet.swift"),
+    ("FinishWorkoutConfirmationSheet", "Views/FinishWorkoutConfirmationSheet.swift"),
+    ("WorkoutSummaryView",    "Views/WorkoutSummaryView.swift"),
     ("SetRowView",            "Views/Components/SetRowView.swift"),
     ("RPEChipRow",            "Views/Components/RPEChipRow.swift"),
     ("ExerciseTrendChart",    "Views/Components/ExerciseTrendChart.swift"),
@@ -162,7 +166,10 @@ MODEL_KEYS = [
 ]
 SERVICE_KEYS = ["ExerciseDedupService", "RestTimerManager", "PersonalRecordService"]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
-VIEW_KEYS = ["ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet"]
+VIEW_KEYS = [
+    "ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet",
+    "FinishWorkoutConfirmationSheet", "WorkoutSummaryView",
+]
 COMPONENT_KEYS = ["SetRowView", "RPEChipRow", "ExerciseTrendChart", "RestTimerPill"]
 
 TEST_SOURCES = [

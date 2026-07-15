@@ -59,8 +59,17 @@ struct ContentView: View {
             }
         }
         .fullScreenCover(item: $activeWorkoutSession) { session in
-            ActiveWorkoutView(session: session) {
-                activeWorkoutSession = nil
+            // Same presentation throughout — re-renders in place from
+            // ActiveWorkoutView to WorkoutSummaryView once `finishWorkout()`
+            // flips `session.status`, rather than dismissing and re-presenting.
+            if session.status == .completed {
+                WorkoutSummaryView(session: session) {
+                    activeWorkoutSession = nil
+                }
+            } else {
+                ActiveWorkoutView(session: session) {
+                    activeWorkoutSession = nil
+                }
             }
         }
     }

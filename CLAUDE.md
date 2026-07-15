@@ -37,7 +37,7 @@ Read the dev spec before making architectural or data-model changes. This CLAUDE
 - `RepSetForge/Models/` — `@Model` classes: `Exercise`, `Routine`, `RoutineItem`, `ProgressionRule`, `WorkoutSession`, `SessionExercise`, `SetEntry`, `PRRecord`, `BodyMetric`, plus supporting enums (`MuscleGroup`, `Equipment`, `SetType`, `ProgressionRuleType`, `WorkoutSessionStatus`, `PRKind`)
 - `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match), `RestTimerManager` (wall-clock rest timer), `PersonalRecordService` (PR detection on set commit). More land per TODO.md's build order (progression ladder engine, HealthKit export, Live Activity, CSV import/export, etc.)
 - `RepSetForge/Persistence/` — `PersistenceController` (ModelContainer, CloudKit config), `RepSetForgeSchema` (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan`)
-- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell — Home/History/Progress/Library are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview, frame 2), `StartWorkoutSheet`, `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4)
+- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell — Home/History/Progress/Library are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview + Finish/Cancel actions, frame 2), `FinishWorkoutConfirmationSheet`, `WorkoutSummaryView` (post-workout summary, frame 4), `StartWorkoutSheet`, `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4)
 - `RepSetForge/Views/Components/` — `SetRowView` (the set-table row), `RPEChipRow`, `ExerciseTrendChart` (Swift Charts e1RM trend), `RestTimerPill`
 - `RepSetForge/RepSetForgeTheme.swift` — design tokens translated from the hi-fi mockup's CSS custom properties (surfaces, signal/pr/warn/destructive colors, radii, monospace type)
 
@@ -159,8 +159,9 @@ This is a freshly rebuilt foundation, not a feature-complete app. Current state:
 - [x] Exercise Focus logging screen (`ExerciseFocusView`) + set row (`SetRowView`) + read-only Exercise Index sheet — TODO.md build-order step 2, with noted simplifications (no superset paging, no progression panel, chart is e1RM-trend-only)
 - [x] Rest timer (`RestTimerManager`) + in-app rest pill — build-order step 3's non-Live-Activity half
 - [x] PR detection (`PersonalRecordService`) — `.bestWeight`/`.bestE1RM`/`.bestVolume`; `.repsAtWeight` not yet
+- [x] Finish/Cancel workout + `WorkoutSummaryView` — the core logging loop (start → log → finish → summary) is now closeable end to end
 - [ ] `AddExerciseSheet` is a deliberately minimal create/select-exercise flow, not the real Exercise Selection screen (mockup frame 3, build-order step 4)
-- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: Live Activity/Dynamic Island, the real Exercise Selection screen, and `WorkoutSession` restore-UX rules.
+- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: the real Exercise Selection screen, the Home screen, `WorkoutSession` restore-UX rules, and Live Activity/Dynamic Island.
 
 ## Acceptance Criteria
 

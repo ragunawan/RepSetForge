@@ -16,6 +16,7 @@ struct ActiveWorkoutView: View {
     @State private var selectedExerciseID: UUID?
     @State private var isPresentingAddExercise = false
     @State private var isPresentingIndex = false
+    @State private var isPresentingFinishConfirmation = false
 
     private var sessionExercises: [SessionExercise] {
         session.sessionExercises.sorted { $0.order < $1.order }
@@ -55,8 +56,21 @@ struct ActiveWorkoutView: View {
                 onAddExercise: {
                     isPresentingIndex = false
                     isPresentingAddExercise = true
+                },
+                onFinish: {
+                    isPresentingIndex = false
+                    isPresentingFinishConfirmation = true
+                },
+                onCancelWorkout: {
+                    isPresentingIndex = false
+                    cancelWorkout()
                 }
             )
+        }
+        .sheet(isPresented: $isPresentingFinishConfirmation) {
+            FinishWorkoutConfirmationSheet(session: session) {
+                finishWorkout()
+            }
         }
     }
 
@@ -104,5 +118,22 @@ struct ActiveWorkoutView: View {
         sessionExercise.session = session
         modelContext.insert(sessionExercise)
         selectedExerciseID = sessionExercise.id
+    }
+
+    /// Flips the session to `.completed`; the caller's `fullScreenCover`
+    /// re-renders in place from `ActiveWorkoutView` to `WorkoutSummaryView`
+    /// once it observes `session.status` change (see `ContentView`).
+    private func finishWorkout() {
+        session.endedAt = .now
+        session.status = .completed
+        isPresentingFinishConfirmation = false
+    }
+
+    /// "Cancel workout lives behind the ⋯ overflow with a destructive
+    /// confirmation" (dev spec §1) — deletes the session entirely, cascading
+    /// to its SessionExercises/SetEntries, and returns to the tab shell.
+    private func cancelWorkout() {
+        modelContext.delete(session)
+        onMinimize()
     }
 }

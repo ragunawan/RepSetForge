@@ -12,6 +12,7 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [x] `RepSetForgeTheme` — token translation from the hi-fi mockup's CSS custom properties
 - [ ] `WorkoutSession` singleton draft persistence: autosave on every mutation, restore-on-launch rules (< 4h silent resume, ≥ 4h resume/finish-as-is/discard sheet, ≥ 12h or midnight-crossing auto-suggests finish-as-is) — dev spec §1. Currently a session just stays `.active` in SwiftData and the FAB routes back into it — no staleness handling at all yet.
 - [x] `RootView` navigation shell wired to real state: `TabView` (Home · History · Progress · Library) + FAB, `StartWorkoutSheet`, `ActiveWorkoutSheet` (`ActiveWorkoutView`) as `.fullScreenCover` with `interactiveDismissDisabled` + minimize-not-dismiss swipe behavior
+- [x] Finish requires: Finish button → confirmation sheet with mini-summary → commit (`FinishWorkoutConfirmationSheet`); Cancel workout behind the ⋯ overflow with a destructive confirmation — both live in `ExerciseIndexSheet`/`ActiveWorkoutView` per dev spec §1
 
 ### 2. Exercise Focus view + set row (the product lives or dies here) + read-only Index sheet
 - [x] Exercise Focus screen (dev spec §3, mockup frame 2b): telemetry header, exercise identity row, in-context chart with collapse-on-first-set, coaching prompt banner, set table, bottom pill/pager. Simplifications to revisit: chart is e1RM-trend-only (no volume bars, no %1RM overlay, no date-range toggle), "SET n/total" counts all sets across the whole session rather than tracking planned-vs-completed against routine targets (no routines yet), rest duration is a hardcoded 90s default (no `RoutineItem.restSeconds` to read from yet).
@@ -35,7 +36,7 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 ### 5. Home, Summary, routine-update prompt, HealthKit export (phone-only path)
 - [ ] Home screen (mockup frame 1): resume-workout banner, recommended-next card, week-at-a-glance strip, Body module (weight + body-fat dual-axis chart)
 - [ ] First-run placeholder modules per Home/Progress/History card (dev spec §5) — same layout skeleton, dimmed, states its own unlock condition
-- [ ] Workout Summary screen (mockup frame 4): duration/sets/reps/volume, PR callouts, vs.-last-session deltas, muscles-trained chips
+- [x] Workout Summary screen (`WorkoutSummaryView`, mockup frame 4): duration/sets/reps/volume, PR callouts, vs.-last-session deltas (falls back to same-name matching since routines don't exist yet), muscles-trained chips
 - [ ] Post-workout routine-update diff sheet
 - [ ] HealthKit export, phone-only path (dev spec §4b): `HKWorkoutBuilder`, permission requested at first workout completion (not onboarding), duplicate-write guard via `WorkoutSession.healthKitUUID`
 
