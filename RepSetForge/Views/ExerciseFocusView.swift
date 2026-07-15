@@ -5,9 +5,10 @@ import SwiftData
 /// lives or dies here." One exercise per page; the caller (`ActiveWorkoutView`)
 /// hosts one of these per `SessionExercise` inside a paged `TabView`.
 ///
-/// Superset paging, the progression panel, and the exercise `⋯` menu
-/// (Reorder/Replace/Remove) are still TODO.md work — this covers the
-/// telemetry header, chart, coaching prompt, and the set table itself.
+/// Superset paging and the exercise `⋯` menu (Reorder/Replace/Remove) are
+/// still TODO.md work — this covers the telemetry header, chart, coaching
+/// prompt, the set table itself, and (when the session came from a routine)
+/// the progression panel.
 struct ExerciseFocusView: View {
     let session: WorkoutSession
     var sessionExercise: SessionExercise
@@ -30,6 +31,7 @@ struct ExerciseFocusView: View {
 
     @State private var isChartExpanded = true
     @State private var hasAutoCollapsedChart = false
+    @State private var isPresentingProgressionPanel = false
 
     private var sets: [SetEntry] {
         sessionExercise.setEntries.sorted { $0.index < $1.index }
@@ -81,6 +83,11 @@ struct ExerciseFocusView: View {
         .background(RepSetForgeTheme.Colors.surface)
         .safeAreaInset(edge: .bottom) {
             bottomPill
+        }
+        .sheet(isPresented: $isPresentingProgressionPanel) {
+            if let rule = sessionExercise.routineItem?.progressionRule {
+                ProgressionPanelView(sessionExercise: sessionExercise, rule: rule)
+            }
         }
     }
 
@@ -341,6 +348,24 @@ struct ExerciseFocusView: View {
 
     // MARK: - Bottom pill
 
+    /// Only enabled when this session came from a routine with a
+    /// `ProgressionRule` attached — an ad-hoc workout has no ladder to show.
+    private var progButton: some View {
+        let isAvailable = sessionExercise.routineItem?.progressionRule != nil
+        return Button {
+            isPresentingProgressionPanel = true
+        } label: {
+            Text("PROG")
+                .font(RepSetForgeTheme.Typography.mono(10, weight: .semibold))
+                .padding(.horizontal, 9)
+                .padding(.vertical, 4)
+                .background(RepSetForgeTheme.Colors.surfaceInput, in: Capsule())
+                .foregroundStyle(isAvailable ? RepSetForgeTheme.Colors.textSecondary : RepSetForgeTheme.Colors.textTertiary)
+                .opacity(isAvailable ? 1 : 0.4)
+        }
+        .disabled(!isAvailable)
+    }
+
     private var bottomPill: some View {
         VStack(spacing: 8) {
             if restTimer.isResting {
@@ -358,14 +383,7 @@ struct ExerciseFocusView: View {
                         .foregroundStyle(RepSetForgeTheme.Colors.textTertiary)
                 }
 
-                // Progression panel is TODO.md build-order step 6 — no ladder engine yet.
-                Text("PROG")
-                    .font(RepSetForgeTheme.Typography.mono(10, weight: .semibold))
-                    .padding(.horizontal, 9)
-                    .padding(.vertical, 4)
-                    .background(RepSetForgeTheme.Colors.surfaceInput, in: Capsule())
-                    .foregroundStyle(RepSetForgeTheme.Colors.textTertiary)
-                    .opacity(0.4)
+                progButton
 
                 Spacer()
 

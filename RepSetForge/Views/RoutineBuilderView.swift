@@ -85,7 +85,11 @@ struct RoutineBuilderView: View {
     }
 
     private func addItem(for exercise: Exercise) {
-        items.append(RoutineItem(exercise: exercise, order: items.count))
+        // Every item gets a default double-progression rule so the Exercise
+        // Focus screen's PROG panel has something to show once a workout is
+        // started from this routine — the rule editor UI itself isn't built
+        // yet (TODO.md), so these defaults are all a user can get for now.
+        items.append(RoutineItem(exercise: exercise, order: items.count, progressionRule: ProgressionRule()))
     }
 
     private func moveItems(from source: IndexSet, to destination: Int) {
@@ -115,6 +119,9 @@ struct RoutineBuilderView: View {
         for item in items where item.routine == nil {
             item.routine = targetRoutine
             modelContext.insert(item)
+            if let rule = item.progressionRule {
+                modelContext.insert(rule)
+            }
         }
         targetRoutine.items = items
         dismiss()

@@ -35,9 +35,9 @@ Read the dev spec before making architectural or data-model changes. This CLAUDE
 - `TODO.md` — canonical, prioritized backlog, structured around the dev spec's "Build order" (§9); use this to decide what to work on next
 - `generate_project.py` — Xcode project file generator
 - `RepSetForge/Models/` — `@Model` classes: `Exercise`, `Routine`, `RoutineItem`, `ProgressionRule`, `WorkoutSession`, `SessionExercise`, `SetEntry`, `PRRecord`, `BodyMetric`, plus supporting enums (`MuscleGroup`, `Equipment`, `SetType`, `ProgressionRuleType`, `WorkoutSessionStatus`, `PRKind`)
-- `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match), `RestTimerManager` (wall-clock rest timer), `PersonalRecordService` (PR detection on set commit), `HomeStatsService` (weekly session/volume/streak aggregation for Home). More land per TODO.md's build order (progression ladder engine, HealthKit export, Live Activity, CSV import/export, etc.)
+- `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match), `RestTimerManager` (wall-clock rest timer), `PersonalRecordService` (PR detection on set commit), `HomeStatsService` (weekly session/volume/streak aggregation for Home), `ProgressionLadderService` (double-progression ladder generation + level-completion). More land per TODO.md's build order (HealthKit export, Live Activity, CSV import/export, etc.)
 - `RepSetForge/Persistence/` — `PersistenceController` (ModelContainer, CloudKit config), `RepSetForgeSchema` (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan`)
-- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell), `HomeView` (mockup frame 1), `RoutineLibraryView`/`RoutineBuilderView` (mockup frames 5/9 — History/Progress are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview + Finish/Cancel actions, frame 2), `FinishWorkoutConfirmationSheet`, `WorkoutSummaryView` (post-workout summary, frame 4), `StartWorkoutSheet` (quick-start or start from a routine), `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4), `LogBodyMetricSheet`
+- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell), `HomeView` (mockup frame 1), `RoutineLibraryView`/`RoutineBuilderView` (mockup frames 5/9 — History/Progress are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview + Finish/Cancel actions, frame 2), `ProgressionPanelView` (mockup frame 2c), `FinishWorkoutConfirmationSheet`, `WorkoutSummaryView` (post-workout summary, frame 4), `StartWorkoutSheet` (quick-start or start from a routine), `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4), `LogBodyMetricSheet`
 - `RepSetForge/Views/Components/` — `SetRowView` (the set-table row), `RPEChipRow`, `ExerciseTrendChart` (Swift Charts e1RM trend), `RestTimerPill`
 - `RepSetForge/RepSetForgeTheme.swift` — design tokens translated from the hi-fi mockup's CSS custom properties (surfaces, signal/pr/warn/destructive colors, radii, monospace type)
 
@@ -140,13 +140,14 @@ Dark-primary, monospaced-throughout design (`Docs/repsetforge-hifi.html` "Direct
 ## Testing Requirements
 
 Write unit tests for:
-1. e1RM calculation (Epley formula, reps > 12 cap behavior)
-2. `ExerciseDedupService` canonical-key generation and fuzzy matching (Levenshtein ≤ 2, token subset)
-3. Progression ladder generation and level-completion logic, once the ladder engine lands (TODO.md build order step 6)
-4. PR detection logic, once the PR engine lands (build order step 7)
-5. Historical-edit invalidation chain (PR recompute → ladder recompute → weekly rollup invalidation → Health re-write), once editing past sessions lands — see dev spec §5 "Historical edit invalidation chain"
+1. e1RM calculation (Epley formula, reps > 12 cap behavior) — done, `SetEntryE1RMTests`
+2. `ExerciseDedupService` canonical-key generation and fuzzy matching (Levenshtein ≤ 2, token subset) — done, `ExerciseDedupServiceTests`
+3. Progression ladder generation and level-completion logic — done, `ProgressionLadderServiceTests`
+4. PR detection logic — done, `PersonalRecordServiceTests`
+5. `HomeStatsService` week-bucketing and streak logic — done, `HomeStatsServiceTests`
+6. Historical-edit invalidation chain (PR recompute → ladder recompute → weekly rollup invalidation → Health re-write), once editing past sessions lands — see dev spec §5 "Historical edit invalidation chain"; not built yet (TODO.md build-order step 7)
 
-UI tests (RepSetForgeUITests target) should cover the core logging flow end to end through the real UI once it exists (start a workout, log a set, finish) — not yet meaningful with only a data-model foundation in place. `xcodebuild test` runs both test targets together via the shared scheme.
+UI tests (RepSetForgeUITests target) should cover the core logging flow end to end through the real UI (start a workout, log a set, finish) now that the flow actually exists — the current `RepSetForgeUITests.swift` only checks the tab bar renders; expanding it to drive the real flow is still open. `xcodebuild test` runs both test targets together via the shared scheme.
 
 ## Known Limitations (current state)
 
@@ -162,8 +163,9 @@ This is a freshly rebuilt foundation, not a feature-complete app. Current state:
 - [x] Finish/Cancel workout + `WorkoutSummaryView` — the core logging loop (start → log → finish → summary) is now closeable end to end
 - [x] Home screen (`HomeView`) — resume banner, week-at-a-glance, Body module; recommended-next is a placeholder (routines exist now, but the ranking logic isn't built)
 - [x] Routine Library + Builder (`RoutineLibraryView`/`RoutineBuilderView`) + "start from a routine" in `StartWorkoutSheet` — no superset grouping or progression-rule editor rows yet
+- [x] Progression ladder engine (`ProgressionLadderService`) + `ProgressionPanelView` — build-order step 6 is now fully closed out
 - [ ] `AddExerciseSheet` is a deliberately minimal create/select-exercise flow, not the real Exercise Selection screen (mockup frame 3, build-order step 4)
-- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: the progression ladder engine, the real Exercise Selection screen, `WorkoutSession` restore-UX rules, Live Activity/Dynamic Island, and History/Progress.
+- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: History/Progress/Exercise Detail (step 7), the real Exercise Selection screen, `WorkoutSession` restore-UX rules, and Live Activity/Dynamic Island.
 
 ## Acceptance Criteria
 
