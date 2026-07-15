@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 /// The core logging surface (dev spec §3, mockup frame 2b) — "the product
 /// lives or dies here." One exercise per page; the caller (`ActiveWorkoutView`)
@@ -19,6 +20,7 @@ struct ExerciseFocusView: View {
     var pageCount: Int
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     // Fetched unfiltered and matched against the exercise in-memory — SwiftData's
     // #Predicate macro has historically been fragile across multi-hop optional
@@ -52,6 +54,8 @@ struct ExerciseFocusView: View {
                 SetRowView(
                     set: set,
                     displayIndex: displayIndex(for: set, in: sets),
+                    exerciseName: sessionExercise.exercise?.name ?? "Exercise",
+                    totalSetsInExercise: sets.count,
                     ghostWeight: ghostValues[offset].weight,
                     ghostReps: ghostValues[offset].reps,
                     ghostRPE: ghostValues[offset].rpe,
@@ -199,7 +203,7 @@ struct ExerciseFocusView: View {
 
     private var collapsedChartRow: some View {
         Button {
-            withAnimation(.easeInOut(duration: 0.2)) { isChartExpanded = true }
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) { isChartExpanded = true }
         } label: {
             HStack {
                 Text("CHART")
@@ -314,11 +318,14 @@ struct ExerciseFocusView: View {
     private func handleCompletion(of set: SetEntry) {
         if let exercise = sessionExercise.exercise {
             let existing = allPRRecords.filter { $0.exercise?.id == exercise.id }
-            PersonalRecordService.evaluate(set: set, exercise: exercise, existingRecords: existing, context: modelContext)
+            let newRecords = PersonalRecordService.evaluate(set: set, exercise: exercise, existingRecords: existing, context: modelContext)
+            if !newRecords.isEmpty {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            }
         }
 
         if !hasAutoCollapsedChart {
-            withAnimation(.easeInOut(duration: 0.2)) { isChartExpanded = false }
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) { isChartExpanded = false }
             hasAutoCollapsedChart = true
         }
 

@@ -166,6 +166,7 @@ This is a freshly rebuilt foundation, not a feature-complete app. Current state:
 - [x] Progression ladder engine (`ProgressionLadderService`) + `ProgressionPanelView` — build-order step 6 is now fully closed out
 - [x] History (`HistoryView`) + Exercise Detail (`ExerciseDetailView`) + Progress (`ProgressScreenView`) — build-order step 7 is now fully closed out except the historical-edit invalidation chain (there's no way to edit a completed session yet, so nothing to invalidate)
 - [x] Settings (`SettingsView`) — default rest, RPE visibility, and theme are genuinely wired into the app; units (kg/lb) is stored but not yet threaded through display call sites; no CSV import/export or plate calculator config
+- [x] Accessibility pass on the set row (`SetRowView`/`ExerciseFocusView`, dev spec §7/§7a) — AX2+ stacked layout, 44×44 tap targets, VoiceOver label/action, haptics, Reduce Motion; snapshot testing and the light-mode contrast pass are still open (no simulator in this environment)
 - [ ] `AddExerciseSheet` is a deliberately minimal create/select-exercise flow, not the real Exercise Selection screen (mockup frame 3, build-order step 4)
 - [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: the real Exercise Selection screen, `WorkoutSession` restore-UX rules, and Live Activity/Dynamic Island.
 
