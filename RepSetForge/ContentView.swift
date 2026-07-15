@@ -2,8 +2,8 @@ import SwiftUI
 import SwiftData
 
 /// Minimal stand-in for the `RootView` architecture in dev spec §1 — the
-/// TabView shell exists, the FAB starts/resumes a workout, and Home/
-/// History/Library are now real; Progress is still a placeholder.
+/// TabView shell exists, the FAB starts/resumes a workout, and all four
+/// tabs (Home/History/Progress/Library) are now real.
 struct ContentView: View {
     private enum Tab: Hashable {
         case home, history, progress, library
@@ -12,6 +12,8 @@ struct ContentView: View {
     @State private var selectedTab: Tab = .home
     @State private var isPresentingStartWorkout = false
     @State private var activeWorkoutSession: WorkoutSession?
+
+    @AppStorage(AppSettingsKeys.theme) private var theme: ThemePreference = .system
 
     // Fetched unfiltered and matched in-memory rather than via a #Predicate
     // filter — see ExerciseFocusView's note on relationship-predicate risk.
@@ -36,7 +38,7 @@ struct ContentView: View {
                     .tabItem { Label("History", systemImage: "list.bullet") }
                     .tag(Tab.history)
 
-                ProgressPlaceholderView()
+                ProgressScreenView()
                     .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
                     .tag(Tab.progress)
 
@@ -54,6 +56,7 @@ struct ContentView: View {
             }
             .padding(.bottom, 50)
         }
+        .preferredColorScheme(theme.colorScheme)
         .sheet(isPresented: $isPresentingStartWorkout) {
             StartWorkoutSheet { session in
                 activeWorkoutSession = session
@@ -89,19 +92,6 @@ private struct StartWorkoutFAB: View {
                 .background(RepSetForgeTheme.Colors.signal, in: Circle())
         }
         .accessibilityLabel(isActive ? "Resume workout" : "Start workout")
-    }
-}
-
-private struct ProgressPlaceholderView: View {
-    var body: some View {
-        NavigationStack {
-            ContentUnavailableView(
-                "Progress",
-                systemImage: "chart.line.uptrend.xyaxis",
-                description: Text("The Progress screen (dev spec §5, mockup frame 8) hasn't been built yet.")
-            )
-            .navigationTitle("Progress")
-        }
     }
 }
 

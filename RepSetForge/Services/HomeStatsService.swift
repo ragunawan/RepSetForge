@@ -65,11 +65,14 @@ enum HomeStatsService {
         return streak
     }
 
-    private static func weeklyVolumes(
+    /// Oldest-to-newest total volume per week, going back `weeks` weeks from
+    /// the current one. Not `private` — `ProgressStatsService` reuses this
+    /// rather than duplicating the bucketing logic for its own range toggle.
+    static func weeklyVolumes(
         completedSessions: [WorkoutSession],
         weeks: Int,
-        now: Date,
-        calendar: Calendar
+        now: Date = .now,
+        calendar: Calendar = .current
     ) -> [Decimal] {
         var result: [Decimal] = []
         var weekStart = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? now

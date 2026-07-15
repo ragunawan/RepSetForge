@@ -33,6 +33,8 @@ struct ExerciseFocusView: View {
     @State private var hasAutoCollapsedChart = false
     @State private var isPresentingProgressionPanel = false
 
+    @AppStorage(AppSettingsKeys.defaultRestSeconds) private var defaultRestSeconds = 90
+
     private var sets: [SetEntry] {
         sessionExercise.setEntries.sorted { $0.index < $1.index }
     }
@@ -320,7 +322,7 @@ struct ExerciseFocusView: View {
             hasAutoCollapsedChart = true
         }
 
-        restTimer.start(duration: 90)
+        restTimer.start(duration: TimeInterval(defaultRestSeconds))
 
         if set.index == sets.map(\.index).max() {
             addSet()

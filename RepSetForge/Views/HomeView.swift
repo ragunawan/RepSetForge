@@ -4,10 +4,11 @@ import SwiftData
 /// dev spec §5 "Home (v1.7 — four modules)" / mockup frame 1. Each module
 /// swaps from placeholder to live individually as its data arrives — the
 /// screen never reorganizes, it fills in (dev spec §5 "First-run placeholder
-/// modules"). Recommended-next is always a placeholder for now since
-/// routines don't exist yet (TODO.md build-order step 6), and the Body
-/// module shows the latest entry + delta rather than the full dual-axis
-/// weight/body-fat chart with W/M/Y range paging.
+/// modules"). Recommended-next is still always a placeholder — routines
+/// exist now (TODO.md build-order step 6), but the actual "least-recently-
+/// performed routine" ranking logic isn't built. The Body module shows the
+/// latest entry + delta rather than the full dual-axis weight/body-fat
+/// chart with W/M/Y range paging.
 struct HomeView: View {
     let activeSession: WorkoutSession?
     let onResume: (WorkoutSession) -> Void
@@ -19,6 +20,7 @@ struct HomeView: View {
     @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
 
     @State private var isPresentingLogWeight = false
+    @State private var isPresentingSettings = false
 
     private var completedSessions: [WorkoutSession] {
         allSessions.filter { $0.status == .completed }
@@ -43,9 +45,22 @@ struct HomeView: View {
             }
             .background(RepSetForgeTheme.Colors.surface)
             .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isPresentingSettings = true
+                    } label: {
+                        Image(systemName: "person.circle")
+                    }
+                    .accessibilityLabel("Settings")
+                }
+            }
         }
         .sheet(isPresented: $isPresentingLogWeight) {
             LogBodyMetricSheet()
+        }
+        .sheet(isPresented: $isPresentingSettings) {
+            SettingsView()
         }
     }
 

@@ -14,6 +14,7 @@ struct SetRowView: View {
     var onComplete: () -> Void
 
     @State private var isEditingRPE = false
+    @AppStorage(AppSettingsKeys.showRPE) private var showRPE = true
 
     private var isCompleted: Bool { set.completedAt != nil }
 
@@ -27,7 +28,9 @@ struct SetRowView: View {
                 } else {
                     weightField
                     repsField
-                    rpeField
+                    if showRPE {
+                        rpeField
+                    }
                 }
 
                 Spacer(minLength: 0)
@@ -80,8 +83,10 @@ struct SetRowView: View {
                 .frame(width: 58, alignment: .leading)
             Text(set.reps.map(String.init) ?? "—")
                 .frame(width: 40, alignment: .leading)
-            Text(set.rpe.map(Self.formatRPE) ?? "—")
-                .frame(width: 38, alignment: .leading)
+            if showRPE {
+                Text(set.rpe.map(Self.formatRPE) ?? "—")
+                    .frame(width: 38, alignment: .leading)
+            }
         }
         .font(RepSetForgeTheme.Typography.mono(13))
         .foregroundStyle(RepSetForgeTheme.Colors.textPrimary)
