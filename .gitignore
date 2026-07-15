@@ -1,16 +1,8 @@
-# Xcode user state
-*.xcuserstate
-xcuserdata/
-
-# Build products
+.DS_Store
 DerivedData/
 build/
-*.ipa
-*.dSYM.zip
-*.dSYM
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
 
-# Swift Package Manager
-.build/
-
-# macOS
-.DS_Store
