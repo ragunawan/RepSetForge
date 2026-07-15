@@ -3,18 +3,29 @@ import SwiftData
 
 /// Post-workout summary (dev spec §5, mockup frame 4). PR callouts key off
 /// `PRRecord.setEntry`'s session rather than a separate "PRs this session"
-/// list, so no extra bookkeeping is needed at commit time. The
-/// routine-update diff sheet and HealthKit "Saved to Health" row are still
-/// TODO.md work (build-order step 5) — there's no routine or HealthKit
-/// integration to hook into yet.
+/// list, so no extra bookkeeping is needed at commit time. The HealthKit
+/// "Saved to Health" row is still TODO.md work (build-order step 5) —
+/// there's no HealthKit integration to hook into yet. The routine-update
+/// diff is a tappable card rather than an auto-presented sheet (dev spec §5
+/// says "if diff non-empty → sheet", but an unprompted extra sheet stacked
+/// on top of this one didn't fit this app's otherwise non-modal-happy style
+/// — same reasoning as the inline PR badges/coaching prompt elsewhere).
 struct WorkoutSummaryView: View {
     let session: WorkoutSession
     let onDone: () -> Void
+
+    @Environment(\.modelContext) private var modelContext
+    @State private var isPresentingRoutineDiff = false
 
     // Fetched unfiltered and matched in-memory — see ExerciseFocusView's
     // note on relationship-#Predicate risk in this environment.
     @Query private var allSessions: [WorkoutSession]
     @Query private var allPRRecords: [PRRecord]
+
+    private var routineChanges: [RoutineDiffService.Change] {
+        guard let routine = session.routine else { return [] }
+        return RoutineDiffService.diff(session: session, routine: routine)
+    }
 
     private var completedSets: [SetEntry] {
         session.sessionExercises.flatMap(\.setEntries)
@@ -86,6 +97,9 @@ struct WorkoutSummaryView: View {
                     if !muscleSetCounts.isEmpty {
                         musclesCard
                     }
+                    if !routineChanges.isEmpty {
+                        routineDiffCard
+                    }
                 }
                 .padding(14)
             }
@@ -94,6 +108,64 @@ struct WorkoutSummaryView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done", action: onDone)
+                }
+            }
+        }
+        .sheet(isPresented: $isPresentingRoutineDiff) {
+            if let routine = session.routine {
+                RoutineUpdateDiffSheet(
+                    routine: routine,
+                    changes: routineChanges,
+                    onApply: { selectedIDs in applyRoutineChanges(selectedIDs, to: routine) },
+                    onSkip: {}
+                )
+            }
+        }
+    }
+
+    private var routineDiffCard: some View {
+        Button {
+            isPresentingRoutineDiff = true
+        } label: {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("ROUTINE CHANGED")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(RepSetForgeTheme.Colors.textTertiary)
+                    Text("\(routineChanges.count) change\(routineChanges.count == 1 ? "" : "s") from the template")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(RepSetForgeTheme.Colors.textPrimary)
+                }
+                Spacer()
+                Text("Review ▸")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(RepSetForgeTheme.Colors.signal)
+            }
+            .padding(12)
+            .card()
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// Applies only the toggled-on changes back onto the routine's
+    /// `RoutineItem`s. Newly-added items get an explicit `modelContext`
+    /// insert (matches this codebase's convention — see
+    /// `RoutineBuilderView`'s note on the same pattern).
+    private func applyRoutineChanges(_ selectedIDs: Set<String>, to routine: Routine) {
+        for change in routineChanges where selectedIDs.contains(change.id) {
+            switch change.kind {
+            case .exerciseAdded(let setCount):
+                let nextOrder = (routine.items.map(\.order).max() ?? -1) + 1
+                let item = RoutineItem(exercise: change.exercise, order: nextOrder, targetSets: setCount)
+                item.routine = routine
+                modelContext.insert(item)
+            case .exerciseRemoved:
+                if let item = routine.items.first(where: { $0.exercise?.id == change.exercise.id }) {
+                    modelContext.delete(item)
+                }
+            case .setCountChanged(_, let to):
+                if let item = routine.items.first(where: { $0.exercise?.id == change.exercise.id }) {
+                    item.targetSets = to
                 }
             }
         }

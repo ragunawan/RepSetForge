@@ -89,6 +89,9 @@ FR = {
     "TEST_WorkoutSessionRestore": u(1, 0x41),
     "ProgressionRuleEditorSheet": u(1, 0x42),
     "RestTimerNotificationScheduler": u(1, 0x43),
+    "RoutineDiffService":    u(1, 0x45),
+    "RoutineUpdateDiffSheet": u(1, 0x46),
+    "TEST_RoutineDiff":      u(1, 0x47),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -176,6 +179,7 @@ APP_SOURCES = [
     ("AppSettings",           "Services/AppSettings.swift"),
     ("WorkoutSessionRestoreService", "Services/WorkoutSessionRestoreService.swift"),
     ("RestTimerNotificationScheduler", "Services/RestTimerNotificationScheduler.swift"),
+    ("RoutineDiffService",    "Services/RoutineDiffService.swift"),
     ("ExerciseFocusView",     "Views/ExerciseFocusView.swift"),
     ("ExerciseIndexSheet",    "Views/ExerciseIndexSheet.swift"),
     ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
@@ -194,6 +198,7 @@ APP_SOURCES = [
     ("ProgressScreenView",    "Views/ProgressScreenView.swift"),
     ("SettingsView",          "Views/SettingsView.swift"),
     ("UnfinishedSessionSheet", "Views/UnfinishedSessionSheet.swift"),
+    ("RoutineUpdateDiffSheet", "Views/RoutineUpdateDiffSheet.swift"),
     ("SetRowView",            "Views/Components/SetRowView.swift"),
     ("RPEChipRow",            "Views/Components/RPEChipRow.swift"),
     ("ExerciseTrendChart",    "Views/Components/ExerciseTrendChart.swift"),
@@ -208,7 +213,7 @@ MODEL_KEYS = [
 SERVICE_KEYS = [
     "ExerciseDedupService", "RestTimerManager", "PersonalRecordService", "HomeStatsService",
     "ProgressionLadderService", "ExerciseHistoryService", "ProgressStatsService", "AppSettings",
-    "WorkoutSessionRestoreService", "RestTimerNotificationScheduler",
+    "WorkoutSessionRestoreService", "RestTimerNotificationScheduler", "RoutineDiffService",
 ]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [
@@ -216,6 +221,7 @@ VIEW_KEYS = [
     "FinishWorkoutConfirmationSheet", "WorkoutSummaryView", "HomeView", "LogBodyMetricSheet",
     "RoutineLibraryView", "RoutineBuilderView", "ProgressionPanelView", "ProgressionRuleEditorSheet",
     "ExerciseDetailView", "HistoryView", "ProgressScreenView", "SettingsView", "UnfinishedSessionSheet",
+    "RoutineUpdateDiffSheet",
 ]
 COMPONENT_KEYS = ["SetRowView", "RPEChipRow", "ExerciseTrendChart", "RestTimerPill"]
 
@@ -229,6 +235,7 @@ TEST_SOURCES = [
     ("TEST_ExerciseHistory", "RepSetForgeTests/ExerciseHistoryServiceTests.swift"),
     ("TEST_ProgressStats", "RepSetForgeTests/ProgressStatsServiceTests.swift"),
     ("TEST_WorkoutSessionRestore", "RepSetForgeTests/WorkoutSessionRestoreServiceTests.swift"),
+    ("TEST_RoutineDiff", "RepSetForgeTests/RoutineDiffServiceTests.swift"),
 ]
 
 UI_TEST_SOURCES = [
