@@ -34,8 +34,8 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [ ] First-run empty state: "Create your first exercise" leads the picker
 
 ### 5. Home, Summary, routine-update prompt, HealthKit export (phone-only path)
-- [ ] Home screen (mockup frame 1): resume-workout banner, recommended-next card, week-at-a-glance strip, Body module (weight + body-fat dual-axis chart)
-- [ ] First-run placeholder modules per Home/Progress/History card (dev spec §5) — same layout skeleton, dimmed, states its own unlock condition
+- [x] Home screen (`HomeView`, mockup frame 1): resume-workout banner, recommended-next card (always a placeholder — no routines to recommend yet), week-at-a-glance strip (`HomeStatsService`: sessions/volume/sets/PRs/streak/sparkline), Body module. Simplified: Body module shows the latest `BodyMetric` entry + delta from the previous one (`LogBodyMetricSheet`) rather than the full dual-axis weight/body-fat chart with W/M/Y range paging.
+- [x] First-run placeholder modules per Home card (dev spec §5) — same layout skeleton, dashed border, states its own unlock condition. Progress/History's own placeholder states are separate work (steps 7).
 - [x] Workout Summary screen (`WorkoutSummaryView`, mockup frame 4): duration/sets/reps/volume, PR callouts, vs.-last-session deltas (falls back to same-name matching since routines don't exist yet), muscles-trained chips
 - [ ] Post-workout routine-update diff sheet
 - [ ] HealthKit export, phone-only path (dev spec §4b): `HKWorkoutBuilder`, permission requested at first workout completion (not onboarding), duplicate-write guard via `WorkoutSession.healthKitUUID`

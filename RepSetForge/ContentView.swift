@@ -2,9 +2,8 @@ import SwiftUI
 import SwiftData
 
 /// Minimal stand-in for the `RootView` architecture in dev spec §1 — the
-/// TabView shell exists and the FAB now starts/resumes a workout
-/// (ExerciseFocusView, TODO.md build-order step 2), but Home/History/
-/// Progress/Library themselves are still placeholders.
+/// TabView shell exists, the FAB starts/resumes a workout, and Home is now
+/// real (dev spec §5); History/Progress/Library are still placeholders.
 struct ContentView: View {
     private enum Tab: Hashable {
         case home, history, progress, library
@@ -27,9 +26,11 @@ struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $selectedTab) {
-                HomePlaceholderView()
-                    .tabItem { Label("Home", systemImage: "house.fill") }
-                    .tag(Tab.home)
+                HomeView(activeSession: activeSession) { session in
+                    activeWorkoutSession = session
+                }
+                .tabItem { Label("Home", systemImage: "house.fill") }
+                .tag(Tab.home)
 
                 HistoryPlaceholderView()
                     .tabItem { Label("History", systemImage: "list.bullet") }
@@ -88,19 +89,6 @@ private struct StartWorkoutFAB: View {
                 .background(RepSetForgeTheme.Colors.signal, in: Circle())
         }
         .accessibilityLabel(isActive ? "Resume workout" : "Start workout")
-    }
-}
-
-private struct HomePlaceholderView: View {
-    var body: some View {
-        NavigationStack {
-            ContentUnavailableView(
-                "Home",
-                systemImage: "house",
-                description: Text("The Home screen (dev spec §5, mockup frame 1) hasn't been built yet.")
-            )
-            .navigationTitle("Home")
-        }
     }
 }
 

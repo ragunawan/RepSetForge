@@ -30,6 +30,7 @@
 		AA0200000000000000000015 /* ExerciseDedupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000015 /* ExerciseDedupService.swift */; };
 		AA020000000000000000001E /* RestTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001E /* RestTimerManager.swift */; };
 		AA020000000000000000001F /* PersonalRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001F /* PersonalRecordService.swift */; };
+		AA020000000000000000002D /* HomeStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002D /* HomeStatsService.swift */; };
 		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
@@ -37,6 +38,8 @@
 		AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* AddExerciseSheet.swift */; };
 		AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */; };
 		AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* WorkoutSummaryView.swift */; };
+		AA020000000000000000002F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002F /* HomeView.swift */; };
+		AA020000000000000000002E /* LogBodyMetricSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002E /* LogBodyMetricSheet.swift */; };
 		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
 		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
 		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
@@ -46,6 +49,7 @@
 		AA020000000000000000001C /* SetEntryE1RMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001C /* SetEntryE1RMTests.swift */; };
 		AA0200000000000000000029 /* PersonalRecordServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000029 /* PersonalRecordServiceTests.swift */; };
 		AA020000000000000000002A /* RestTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002A /* RestTimerManagerTests.swift */; };
+		AA0200000000000000000030 /* HomeStatsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000030 /* HomeStatsServiceTests.swift */; };
 		AA020000000000000000001D /* RepSetForgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001D /* RepSetForgeUITests.swift */; };
 		/* End PBXBuildFile section */
 
@@ -93,6 +97,7 @@
 		AA0100000000000000000015 /* ExerciseDedupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDedupService.swift; sourceTree = "<group>"; };
 		AA010000000000000000001E /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
 		AA010000000000000000001F /* PersonalRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordService.swift; sourceTree = "<group>"; };
+		AA010000000000000000002D /* HomeStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeStatsService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
@@ -100,6 +105,8 @@
 		AA0100000000000000000024 /* AddExerciseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseSheet.swift; sourceTree = "<group>"; };
 		AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishWorkoutConfirmationSheet.swift; sourceTree = "<group>"; };
 		AA010000000000000000002C /* WorkoutSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSummaryView.swift; sourceTree = "<group>"; };
+		AA010000000000000000002F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		AA010000000000000000002E /* LogBodyMetricSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBodyMetricSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
@@ -110,6 +117,7 @@
 		AA010000000000000000001C /* SetEntryE1RMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEntryE1RMTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000029 /* PersonalRecordServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000002A /* RestTimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManagerTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000030 /* HomeStatsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeStatsServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000001D /* RepSetForgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeUITests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
@@ -202,6 +210,7 @@
 				AA0100000000000000000015 /* ExerciseDedupService.swift */,
 				AA010000000000000000001E /* RestTimerManager.swift */,
 				AA010000000000000000001F /* PersonalRecordService.swift */,
+				AA010000000000000000002D /* HomeStatsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -225,6 +234,8 @@
 				AA0100000000000000000024 /* AddExerciseSheet.swift */,
 				AA010000000000000000002B /* FinishWorkoutConfirmationSheet.swift */,
 				AA010000000000000000002C /* WorkoutSummaryView.swift */,
+				AA010000000000000000002F /* HomeView.swift */,
+				AA010000000000000000002E /* LogBodyMetricSheet.swift */,
 				AA030000000000000000000A /* Components */,
 			);
 			path = Views;
@@ -248,6 +259,7 @@
 				AA010000000000000000001C /* SetEntryE1RMTests.swift */,
 				AA0100000000000000000029 /* PersonalRecordServiceTests.swift */,
 				AA010000000000000000002A /* RestTimerManagerTests.swift */,
+				AA0100000000000000000030 /* HomeStatsServiceTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -402,6 +414,7 @@
 				AA0200000000000000000015 /* ExerciseDedupService.swift in Sources */,
 				AA020000000000000000001E /* RestTimerManager.swift in Sources */,
 				AA020000000000000000001F /* PersonalRecordService.swift in Sources */,
+				AA020000000000000000002D /* HomeStatsService.swift in Sources */,
 				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
@@ -409,6 +422,8 @@
 				AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */,
 				AA020000000000000000002B /* FinishWorkoutConfirmationSheet.swift in Sources */,
 				AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */,
+				AA020000000000000000002F /* HomeView.swift in Sources */,
+				AA020000000000000000002E /* LogBodyMetricSheet.swift in Sources */,
 				AA0200000000000000000025 /* SetRowView.swift in Sources */,
 				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
 				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,
@@ -424,6 +439,7 @@
 				AA020000000000000000001C /* SetEntryE1RMTests.swift in Sources */,
 				AA0200000000000000000029 /* PersonalRecordServiceTests.swift in Sources */,
 				AA020000000000000000002A /* RestTimerManagerTests.swift in Sources */,
+				AA0200000000000000000030 /* HomeStatsServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
