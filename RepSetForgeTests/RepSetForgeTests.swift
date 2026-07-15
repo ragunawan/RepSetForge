@@ -1,4 +1,5 @@
 import XCTest
+import SwiftData
 @testable import RepSetForge
 
 final class RepSetForgeTests: XCTestCase {
@@ -23,6 +24,20 @@ final class RepSetForgeTests: XCTestCase {
         let rest = RestTimerState(startedAt: start, duration: 90)
         XCTAssertEqual(rest.remaining(at: Date(timeIntervalSince1970: 130)), 60)
         XCTAssertEqual(rest.overtime(at: Date(timeIntervalSince1970: 200)), 10)
+    }
+
+    @MainActor
+    func testRestTimerReschedulesNotificationsWhenExtended() async {
+        let scheduler = SpyRestNotificationScheduler()
+        let manager = RestTimerManager(scheduler: scheduler)
+        manager.start(duration: 60, now: Date())
+        await Task.yield()
+        manager.extend(seconds: 30)
+        await Task.yield()
+
+        XCTAssertEqual(scheduler.scheduledDurations.count, 2)
+        XCTAssertEqual(scheduler.scheduledDurations.first, 60)
+        XCTAssertEqual(scheduler.scheduledDurations.last ?? 0, 90, accuracy: 1)
     }
 
     func testRestorePolicy() {
@@ -106,5 +121,142 @@ final class RepSetForgeTests: XCTestCase {
         XCTAssertEqual(rows[0].rpe, 8.5)
 
         XCTAssertThrowsError(try CSVService().parseSets(from: "bad,header"))
+    }
+
+    @MainActor
+    func testCSVImportCreatesCompletedSessionsExercisesAndPRs() throws {
+        let container = PersistenceController.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let csv = """
+        date,exercise,set_type,weight_kg,reps,rpe
+        1970-01-01T00:00:10Z,Bench Press,working,100,8,8.5
+        1970-01-01T00:02:10Z,Bench Press,working,105,6,9
+        1970-01-02T00:00:10Z,Cable Row,working,70,10,8
+        """
+
+        let result = try CSVService().importSets(from: csv, context: context)
+
+        XCTAssertEqual(result.sessionCount, 2)
+        XCTAssertEqual(result.setCount, 3)
+        XCTAssertEqual(result.createdExerciseCount, 2)
+        let sessions = try context.fetch(FetchDescriptor<WorkoutSession>())
+        XCTAssertEqual(sessions.filter { $0.status == .completed }.count, 2)
+        XCTAssertEqual(sessions.reduce(0) { $0 + $1.completedSetCount }, 3)
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<Exercise>()), 2)
+        XCTAssertGreaterThan(try context.fetchCount(FetchDescriptor<PRRecord>()), 0)
+    }
+
+    @MainActor
+    func testPRRebuildClearsHistoricalRecordsWhenSetIsEditedLower() throws {
+        let container = PersistenceController.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let exercise = Exercise(name: "Bench Press", primary: .chest)
+        let sessionExercise = SessionExercise(exercise: exercise, order: 0, targetSets: 1)
+        let set = sessionExercise.sets!.first!
+        set.weightKg = 120
+        set.reps = 5
+        set.completedAt = Date(timeIntervalSince1970: 10)
+        let session = WorkoutSession(name: "Imported", exercises: [sessionExercise])
+        session.startedAt = Date(timeIntervalSince1970: 0)
+        session.endedAt = Date(timeIntervalSince1970: 600)
+        session.status = .completed
+        context.insert(exercise)
+        context.insert(session)
+
+        XCTAssertEqual(PRRebuildService().rebuildAll(context: context, bodyweightKg: nil), 3)
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<PRRecord>()), 3)
+
+        set.weightKg = 0
+        set.reps = 0
+        XCTAssertEqual(PRRebuildService().rebuildAll(context: context, bodyweightKg: nil), 0)
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<PRRecord>()), 0)
+        XCTAssertFalse(set.isPR)
+    }
+
+    @MainActor
+    func testHistoricalChangeRebuildsPRsAndRewritesExistingHealthWorkout() async throws {
+        let container = PersistenceController.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let exporter = SpyHealthExporter()
+        let store = AppStore(healthExporter: exporter, liveActivity: NoopLiveActivityCoordinator())
+        let exercise = Exercise(name: "Bench Press", primary: .chest)
+        let sessionExercise = SessionExercise(exercise: exercise, order: 0, targetSets: 1)
+        let set = sessionExercise.sets!.first!
+        set.weightKg = 100
+        set.reps = 8
+        set.completedAt = Date(timeIntervalSince1970: 10)
+        let session = WorkoutSession(name: "Historical", exercises: [sessionExercise])
+        session.status = .completed
+        session.healthKitUUID = UUID()
+        context.insert(exercise)
+        context.insert(session)
+
+        store.persistHistoricalChange(session: session, context: context, bodyweightKg: nil)
+        await waitFor { exporter.savedSessionIDs.count == 1 }
+
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<PRRecord>()), 3)
+        XCTAssertEqual(exporter.savedSessionIDs, [session.id])
+    }
+
+    @MainActor
+    func testDeletingHistoricalSessionRebuildsPRsAndDeletesHealthWorkout() async throws {
+        let container = PersistenceController.makeContainer(inMemory: true)
+        let context = container.mainContext
+        let exporter = SpyHealthExporter()
+        let store = AppStore(healthExporter: exporter, liveActivity: NoopLiveActivityCoordinator())
+        let healthID = UUID()
+        let exercise = Exercise(name: "Bench Press", primary: .chest)
+        let session = WorkoutSession(name: "Historical", exercises: [SessionExercise(exercise: exercise, order: 0, targetSets: 1)])
+        session.status = .completed
+        session.healthKitUUID = healthID
+        context.insert(exercise)
+        context.insert(session)
+
+        store.deleteHistoricalSession(session, context: context, bodyweightKg: nil)
+        await waitFor { exporter.deletedUUIDs.count == 1 }
+
+        XCTAssertEqual(try context.fetchCount(FetchDescriptor<WorkoutSession>()), 0)
+        XCTAssertEqual(exporter.deletedUUIDs, [healthID])
+    }
+
+    @MainActor
+    private func waitFor(_ predicate: @escaping @MainActor () -> Bool) async {
+        for _ in 0..<50 {
+            if predicate() { return }
+            try? await Task.sleep(nanoseconds: 10_000_000)
+        }
+    }
+}
+
+@MainActor
+private final class SpyRestNotificationScheduler: RestNotificationScheduling {
+    var scheduledDurations: [TimeInterval] = []
+    var cancelCount = 0
+
+    func scheduleRestComplete(after seconds: TimeInterval) async {
+        scheduledDurations.append(seconds)
+    }
+
+    func cancelRestComplete() async {
+        cancelCount += 1
+    }
+}
+
+@MainActor
+private final class SpyHealthExporter: HealthExporting {
+    var savedSessionIDs: [UUID] = []
+    var deletedUUIDs: [UUID] = []
+
+    func requestAuthorizationIfNeeded() async -> Bool {
+        true
+    }
+
+    func saveWorkout(_ session: WorkoutSession, bodyweightKg: Double?) async throws -> UUID {
+        savedSessionIDs.append(session.id)
+        return session.healthKitUUID ?? UUID()
+    }
+
+    func deleteWorkout(uuid: UUID) async throws {
+        deletedUUIDs.append(uuid)
     }
 }

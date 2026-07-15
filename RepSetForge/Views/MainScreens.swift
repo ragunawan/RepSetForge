@@ -218,19 +218,128 @@ struct CompletedSessionList: View {
                 EmptyStateCard(title: "Your first session will appear here", message: "Finish a workout to populate history and charts.")
             } else {
                 ForEach(completed) { session in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(session.name).font(RSTheme.mono(14, weight: .bold))
-                            Text("\(session.completedSetCount) sets · \(session.startedAt.formatted(date: .abbreviated, time: .omitted))").font(RSTheme.mono(11)).foregroundStyle(RSTheme.textSecondary)
+                    NavigationLink {
+                        HistoricalSessionDetailView(session: session)
+                    } label: {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(session.name).font(RSTheme.mono(14, weight: .bold))
+                                Text("\(session.completedSetCount) sets · \(session.startedAt.formatted(date: .abbreviated, time: .omitted))").font(RSTheme.mono(11)).foregroundStyle(RSTheme.textSecondary)
+                            }
+                            Spacer()
+                            RSChip(text: "Edit")
                         }
-                        Spacer()
-                        RSChip(text: "View")
+                        .padding(.vertical, 6)
                     }
-                    .padding(.vertical, 6)
+                    .buttonStyle(.plain)
                 }
             }
         }
         .hairlineCard()
+    }
+}
+
+struct HistoricalSessionDetailView: View {
+    @EnvironmentObject private var store: AppStore
+    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
+    @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
+    @Bindable var session: WorkoutSession
+    @State private var showingDelete = false
+
+    var body: some View {
+        Form {
+            Section("Workout") {
+                TextField("Name", text: $session.name)
+                    .onSubmit(save)
+                DatePicker("Started", selection: $session.startedAt)
+                DatePicker("Ended", selection: Binding(get: { session.endedAt ?? session.startedAt }, set: { session.endedAt = $0 }), displayedComponents: [.date, .hourAndMinute])
+                Text("\(session.completedSetCount) sets")
+                    .foregroundStyle(.secondary)
+            }
+
+            ForEach((session.exercises ?? []).sorted { $0.order < $1.order }) { exercise in
+                Section(exercise.exerciseName) {
+                    ForEach((exercise.sets ?? []).sorted { $0.index < $1.index }) { set in
+                        HistoricalSetEditRow(set: set, save: save)
+                    }
+                    .onDelete { offsets in
+                        var sorted = (exercise.sets ?? []).sorted { $0.index < $1.index }
+                        sorted.remove(atOffsets: offsets)
+                        for (index, set) in sorted.enumerated() {
+                            set.index = index + 1
+                        }
+                        exercise.sets = sorted
+                        save()
+                    }
+                }
+            }
+
+            Section {
+                Button("Recalculate records", action: save)
+                Button("Delete workout", role: .destructive) { showingDelete = true }
+            }
+        }
+        .navigationTitle(session.name)
+        .toolbar {
+            Button("Save", action: save)
+        }
+        .confirmationDialog("Delete this workout?", isPresented: $showingDelete, titleVisibility: .visible) {
+            Button("Delete workout", role: .destructive) {
+                store.deleteHistoricalSession(session, context: context, bodyweightKg: bodyMetrics.first?.bodyweightKg)
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This removes the session, rebuilds PR history, and deletes the matching Apple Health workout if RepSetForge exported one.")
+        }
+    }
+
+    private func save() {
+        store.persistHistoricalChange(session: session, context: context, bodyweightKg: bodyMetrics.first?.bodyweightKg)
+    }
+}
+
+struct HistoricalSetEditRow: View {
+    @Bindable var set: SetEntry
+    let save: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Set \(set.index)")
+                    .font(RSTheme.mono(13, weight: .bold))
+                Spacer()
+                if set.isPR {
+                    RSChip(text: "PR", selected: true)
+                }
+            }
+            Picker("Type", selection: Binding(get: { set.type }, set: { set.type = $0; save() })) {
+                ForEach(SetKind.allCases) { kind in
+                    Text(kind.title).tag(kind)
+                }
+            }
+            .pickerStyle(.menu)
+
+            HStack {
+                TextField("kg", value: Binding(get: { set.weightKg ?? 0 }, set: { set.weightKg = $0; set.touchedWeight = true }), format: .number.precision(.fractionLength(0...1)))
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(save)
+                TextField("reps", value: Binding(get: { set.reps ?? 0 }, set: { set.reps = $0; set.touchedReps = true }), format: .number)
+                    .keyboardType(.numberPad)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(save)
+                TextField("RPE", value: Binding(get: { set.rpe ?? 0 }, set: { set.rpe = $0 > 0 ? $0 : nil }), format: .number.precision(.fractionLength(0...1)))
+                    .keyboardType(.decimalPad)
+                    .textFieldStyle(.roundedBorder)
+                    .onSubmit(save)
+            }
+            DatePicker("Completed", selection: Binding(get: { set.completedAt ?? Date() }, set: { set.completedAt = $0; save() }), displayedComponents: [.date, .hourAndMinute])
+                .font(.caption)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("historicalSetRow.\(set.index)")
     }
 }
 

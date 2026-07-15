@@ -85,7 +85,7 @@ The repository was intentionally emptied before this implementation. The new app
 | R-027 | Progression panel double progression rule editor and ladder | Spec §3 | Progression | Implemented | Unit/UI | Ladder engine implemented. |
 | R-027A | Additional progression methodologies: 5/3/1, percentage waves, RIR autoregulation | Spec §3/§9 v1.1 | Progression | Implemented | Unit/UI | `ProgressionRuleType` cases, type-driven editor rows, deterministic prescriptions. Defaults selected because spec names methodologies but does not define all cycle parameters. |
 | R-027B | Rule editor row list driven by selected progression type | Spec §3 | Progression | Implemented | Build/manual | Picker switches editable rows for ladder, 5/3/1, percentage waves, and RIR. |
-| R-028 | Superset group one page with group rest semantics | Spec §3 | Active workout | Partially complete | Unit | Data model and UI grouped display; auto-scroll limited. |
+| R-028 | Superset group one page with group rest semantics | Spec §3 | Active workout | Implemented | Build/manual | Grouped adjacent exercises now collapse into one workout page with group header, set totals, and rest-after-group copy. |
 | R-029 | Set row inherits values as ghost until touched/completed | Spec §3 | Set row | Implemented | Unit/UI | Tracks touched fields. |
 | R-030 | Inline decimal keyboard with steppers | Spec §3 | Set row | Implemented | UI | Native decimal pad + +/- controls. |
 | R-031 | Long-press plate calculator | Spec §3 | Set row | Implemented | UI | Popover/sheet calculator. |
@@ -94,25 +94,25 @@ The repository was intentionally emptied before this implementation. The new app
 | R-034 | RPE chip row 6-10 half steps | Spec §3 | Set row | Implemented | UI | Inline selector. |
 | R-035 | Set type menu and warmup/bodyweight rules | Spec §3 | Set row/services | Implemented | Unit/UI | Warmups excluded from volume/PR. |
 | R-036 | Swipe delete, edit reorder | Spec §3 | Set row | Implemented | UI | Swipe/action delete, reorder via index sheet. |
-| R-037 | Exercise overflow: reorder/replace/superset/remove | Spec §3 | Exercise focus | Partially complete | UI | Replace/remove/superset implemented; full reorder via index. |
+| R-037 | Exercise overflow: reorder/replace/superset/remove | Spec §3 | Exercise focus | Implemented | Build/manual | Exercise menu exposes move up/down, superset previous/next, ungroup, replace, and remove-empty-exercise actions. |
 | R-038 | RestTimerManager wall-clock math survives background | Spec §4 | Rest timer | Implemented | Unit | Date-derived remaining/overtime. |
 | R-039 | In-app rest pill with extend/skip/overtime | Spec §4, Wireframe comp | Rest timer | Implemented | Unit/UI | Countdown UI. |
 | R-040 | Live Activity attributes/state and update hooks | Spec §4 | Live Activity | Implemented | Build/manual | Shared `RepSetForgeActivityAttributes`, production ActivityKit coordinator, lock-screen widget, compact/minimal/expanded Dynamic Island layouts, and `NSSupportsLiveActivities` are present. Device behavior still requires signed-device validation. |
-| R-041 | Local notification at rest completion | Spec §4 | Notifications | Implemented | Build/manual | Testable scheduler interface plus `UNUserNotificationCenter` implementation. Permission is requested lazily. |
+| R-041 | Local notification at 10s remaining and rest completion | Spec §4 | Notifications | Implemented | Unit/build | Testable scheduler interface plus `UNUserNotificationCenter` implementation schedules a 10-second warning and completion alert, and reschedules after rest extensions. Permission is requested lazily. |
 | R-042 | HealthKit export on commit | Spec §4b | Health | Implemented | Build/manual | `HealthKitWorkoutExporter` requests HealthKit authorization, writes indoor traditional strength workouts, estimates active energy, and rewrites existing HK workouts by UUID. Real Health database validation requires signed physical-device testing. |
 | R-043 | Health permissions requested at first completion | Spec §4b | Summary/Health | Implemented | Unit/UI | Finish flow calls `HealthExporting.requestAuthorizationIfNeeded`; app default uses the concrete HKHealthStore-backed exporter with simulator-safe availability checks. |
-| R-044 | Watch companion app with mirrored HKWorkoutSession and Watch UI | Spec §4c/§9 v1.1 | Watch | Partially complete | Build/manual | watchOS target and SwiftUI workout/rest/vitals surfaces build. Real HKWorkoutSession mirroring, WatchConnectivity confirmation transport, Smart Stack, AOD tuning, and device reconnection/backfill validation remain external-device work. |
+| R-044 | Watch companion app with mirrored HKWorkoutSession and Watch UI | Spec §4c/§9 v1.1 | Watch | Partially complete | Build/manual | watchOS target has explicit workout/rest/vitals tabs, local set completion feedback, rest extend/skip states, stale vitals behavior, reduced-motion/AOD-friendly styling, and accessibility labels. Real HKWorkoutSession mirroring, WatchConnectivity confirmation transport, Smart Stack integration, and device reconnection/backfill validation remain external-device work. |
 | R-044A | Phone-side Watch telemetry payload with 5s staleness behavior | Spec §4c | Watch/Telemetry | Implemented | Unit | `WorkoutTelemetrySnapshot.visible(at:)` hides stale HR/kcal instead of freezing. |
-| R-044B | Phone remains authoritative for Watch set/rest intents | Spec §4c | Watch/Session | Partially complete | Build/manual | `WatchWorkoutCoordinating` exposes intent methods and the watch UI models complete/extend/skip affordances locally; production WatchConnectivity confirmation transport remains. |
+| R-044B | Phone remains authoritative for Watch set/rest intents | Spec §4c | Watch/Session | Partially complete | Build/manual | `WatchWorkoutCoordinating` exposes intent methods and the watch UI now models complete/extend/skip confirmation states locally; production WatchConnectivity confirmation transport remains. |
 | R-045 | Home four modules and placeholders | Spec §5, Wireframe 1 | Home | Implemented | UI | Resume, week, recommendation, body chart. |
 | R-046 | Exercise picker recents/favorites/all/search/chips/history preview | Spec §5, Wireframe 3 | Picker | Implemented | UI/unit | Debounced search approximated with searchable text. |
 | R-047 | Summary deltas and share card | Spec §5, Wireframe 4 | Summary | Implemented | UI | Summary metrics and share text/card are implemented. |
 | R-048 | History month grid, filters, planned dashed state | Spec §5, Wireframe 7 | History | Implemented | UI | Calendar/list segments. |
-| R-049 | Historical edit invalidation chain | Spec §5 | Services | Missing | Audit | Current implementation creates PRs on set completion, but does not implement full edit/delete recompute for PRs, ladder, weekly rollups, and Health rewrite. |
+| R-049 | Historical edit invalidation chain | Spec §5 | Services/History | Partially complete | Unit/build | History rows now open an editor for workout metadata and set values/deletes. Saving rebuilds PR records and rewrites existing Apple Health exports through `HealthExporting`; deleting a session rebuilds PRs and deletes the linked Health workout. Ladder/weekly rollup invalidation remains derived at read-time or future deeper integration. |
 | R-050 | Progress chart cards and locked states | Spec §5, Wireframe 8 | Progress | Implemented | UI | ChartCard equivalents. |
 | R-051 | Routine builder with reorder/superset/save validation | Spec §5, Wireframe 9 | Library | Implemented | UI/unit | Save validation. |
 | R-052 | Post-workout routine update prompt | Spec §5 | Summary | Implemented | UI | Per-change toggles. |
-| R-053 | Settings units/rest/RPE/plates/bodyweight/CSV/iCloud/theme/delete data | Spec §6, Wireframe 10 | Partially complete | Unit/UI | Includes settings, manual body metric logging, CSV export, CSV validation, and delete double confirm. CSV import does not yet materialize sessions/sets. |
+| R-053 | Settings units/rest/RPE/plates/bodyweight/CSV/iCloud/theme/delete data | Spec §6, Wireframe 10 | Implemented | Unit/UI | Includes settings, manual body metric logging, CSV export, CSV import into completed workouts/sets, PR rebuild, and delete double confirm. |
 | R-054 | Dynamic Type AX stacked set row | Spec §7a, Wireframe C1 | Set row | Implemented | UI | Branch at accessibility sizes. |
 | R-055 | Accessibility labels, targets, contrast, reduced motion | Spec §7 | App-wide | Implemented | UI/manual | VoiceOver labels and reduce motion branches. |
 | R-056 | Performance optimistic UI and async persistence | Spec §8 | Services/UI | Implemented | Unit | Local saves after mutations. |
@@ -158,7 +158,12 @@ The repository was intentionally emptied before this implementation. The new app
 - `python3 generate_project.py` regenerated `RepSetForge.xcodeproj`.
 - `xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForge -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO` succeeded on 2026-07-15.
 - `xcodebuild build -project RepSetForge.xcodeproj -scheme RepSetForgeWatch -destination 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)' CODE_SIGNING_ALLOWED=NO` succeeded on 2026-07-15.
-- `xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO` succeeded on 2026-07-15: 11 tests, 0 failures.
+- `xcodebuild test -project RepSetForge.xcodeproj -scheme RepSetForge -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO` succeeded on 2026-07-15: 16 tests, 0 failures.
+- CSV import now materializes completed SwiftData workout sessions/sets, creates missing user exercises, and rebuilds PR records. Covered by in-memory SwiftData unit tests.
+- Rest notifications now include the required 10-second warning and reschedule after rest extensions. Covered by a scheduler spy unit test.
+- History editing now supports set/session mutation, session delete, PR rebuild, and Health rewrite/delete hooks. Covered by Health exporter spy unit tests.
+- Active workout now has native exercise reorder, replace, remove, superset, and ungroup menu actions, with grouped exercise pages.
+- Watch app local UI now has workout/rest/vitals tabs with local completion/rest/vitals states and accessibility identifiers.
 - Simulator screenshots generated on 2026-07-15: `docs/qa-screenshots/v1.1-ios-home.png` and `docs/qa-screenshots/v1.1-watch-home.png`.
 - Unfinished-work scan across app, tests, docs, and project scripts found no relevant app TODO/FIXME/fatalError. The remaining empty closures are intentional native cancel buttons or inert injectable adapters.
 - Independent final audit completed on 2026-07-15. Actionable documentation accuracy findings were applied; remaining findings are external/device integrations or larger missing production features listed in the traceability matrix.

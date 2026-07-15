@@ -45,6 +45,7 @@ struct RestTimerState: Equatable {
         guard var current = state else { return }
         current.duration += seconds
         state = current
+        Task { await scheduler.scheduleRestComplete(after: current.remaining()) }
     }
 
     func skip() {
@@ -60,12 +61,24 @@ struct RestTimerState: Equatable {
 
 @MainActor final class LocalRestNotificationScheduler: RestNotificationScheduling {
     private let identifier = "repsetforge.rest.complete"
+    private let warningIdentifier = "repsetforge.rest.warning"
 
     func scheduleRestComplete(after seconds: TimeInterval) async {
         guard seconds >= 1 else { return }
         let center = UNUserNotificationCenter.current()
         _ = try? await center.requestAuthorization(options: [.alert, .sound])
-        center.removePendingNotificationRequests(withIdentifiers: [identifier])
+        center.removePendingNotificationRequests(withIdentifiers: [identifier, warningIdentifier])
+
+        if seconds > 10 {
+            let warningContent = UNMutableNotificationContent()
+            warningContent.title = "10 seconds left"
+            warningContent.body = "Get ready for your next set."
+            warningContent.sound = .default
+
+            let warningTrigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds - 10, repeats: false)
+            let warningRequest = UNNotificationRequest(identifier: warningIdentifier, content: warningContent, trigger: warningTrigger)
+            try? await center.add(warningRequest)
+        }
 
         let content = UNMutableNotificationContent()
         content.title = "Rest complete"
@@ -78,7 +91,7 @@ struct RestTimerState: Equatable {
     }
 
     func cancelRestComplete() async {
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier])
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [identifier, warningIdentifier])
     }
 }
 
@@ -410,6 +423,13 @@ struct CSVService {
         let rpe: Double?
     }
 
+    struct ImportResult: Equatable {
+        let sessionCount: Int
+        let setCount: Int
+        let createdExerciseCount: Int
+        let rebuiltPRCount: Int
+    }
+
     func export(sessions: [WorkoutSession]) -> String {
         var rows = ["date,exercise,set_type,weight_kg,reps,rpe"]
         for session in sessions where session.status == .completed {
@@ -447,6 +467,120 @@ struct CSVService {
             else { throw CSVError.invalidRow(offset + 2) }
             return ImportedSet(date: date, exercise: fields[1], kind: kind, weightKg: weight, reps: reps, rpe: Double(fields[5]))
         }
+    }
+
+    @MainActor
+    func importSets(from csv: String, context: ModelContext) throws -> ImportResult {
+        let rows = try parseSets(from: csv).sorted { $0.date < $1.date }
+        guard !rows.isEmpty else {
+            return ImportResult(sessionCount: 0, setCount: 0, createdExerciseCount: 0, rebuiltPRCount: 0)
+        }
+
+        var exercisesByKey = Dictionary(uniqueKeysWithValues: ((try? context.fetch(FetchDescriptor<Exercise>())) ?? []).map { ($0.canonicalNameKey, $0) })
+        var createdExercises = 0
+        var sessionsCreated = 0
+
+        for group in Dictionary(grouping: rows, by: importSessionKey(for:)).values.sorted(by: { ($0.first?.date ?? .distantPast) < ($1.first?.date ?? .distantPast) }) {
+            let session = WorkoutSession(name: "Imported Workout")
+            session.startedAt = group.first?.date ?? Date()
+            session.endedAt = group.last?.date.addingTimeInterval(60) ?? session.startedAt
+            session.status = .completed
+            session.exercises = []
+
+            let exerciseGroups = Dictionary(grouping: group, by: { TrainingMath.canonicalNameKey($0.exercise) })
+            for (order, exerciseGroup) in exerciseGroups.values.sorted(by: { ($0.first?.date ?? .distantPast) < ($1.first?.date ?? .distantPast) }).enumerated() {
+                guard let first = exerciseGroup.first else { continue }
+                let key = TrainingMath.canonicalNameKey(first.exercise)
+                let exercise: Exercise
+                if let existing = exercisesByKey[key] {
+                    exercise = existing
+                } else {
+                    let created = Exercise(name: first.exercise, primary: .chest)
+                    context.insert(created)
+                    exercisesByKey[key] = created
+                    createdExercises += 1
+                    exercise = created
+                }
+
+                let sessionExercise = SessionExercise(exercise: exercise, order: order, targetSets: 0)
+                sessionExercise.sets = exerciseGroup.enumerated().map { index, row in
+                    let set = SetEntry(index: index + 1, type: row.kind, weightKg: row.weightKg, reps: row.reps)
+                    set.rpe = row.rpe
+                    set.completedAt = row.date
+                    set.touchedWeight = true
+                    set.touchedReps = true
+                    return set
+                }
+                session.exercises?.append(sessionExercise)
+            }
+
+            context.insert(session)
+            sessionsCreated += 1
+        }
+
+        let rebuilt = PRRebuildService().rebuildAll(context: context, bodyweightKg: nil)
+        try context.save()
+        return ImportResult(sessionCount: sessionsCreated, setCount: rows.count, createdExerciseCount: createdExercises, rebuiltPRCount: rebuilt)
+    }
+
+    private func importSessionKey(for row: ImportedSet) -> String {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.string(from: row.date)
+    }
+}
+
+struct PRRebuildService {
+    @MainActor
+    @discardableResult
+    func rebuildAll(context: ModelContext, bodyweightKg: Double?) -> Int {
+        let existing = (try? context.fetch(FetchDescriptor<PRRecord>())) ?? []
+        existing.forEach(context.delete)
+
+        let sessions = ((try? context.fetch(FetchDescriptor<WorkoutSession>())) ?? [])
+            .filter { $0.status == .completed }
+            .sorted { $0.startedAt < $1.startedAt }
+
+        for session in sessions {
+            for exercise in session.exercises ?? [] {
+                for set in exercise.sets ?? [] {
+                    set.isPR = false
+                }
+            }
+        }
+
+        var bestByExerciseAndKind: [String: Double] = [:]
+        var inserted = 0
+        for session in sessions {
+            for exercise in session.exercises ?? [] {
+                let sortedSets = (exercise.sets ?? []).sorted { ($0.completedAt ?? session.startedAt) < ($1.completedAt ?? session.startedAt) }
+                for set in sortedSets where set.isCompleted && set.type != .warmup {
+                    let weight = set.type == .bodyweight ? (bodyweightKg ?? set.weightKg ?? 0) : (set.weightKg ?? 0)
+                    guard let reps = set.reps, reps > 0 else { continue }
+                    let values: [(String, Double)] = [
+                        ("bestWeight", weight),
+                        ("bestVolume", TrainingMath.volumeKg(weightKg: weight, reps: reps, kind: set.type, latestBodyweightKg: bodyweightKg)),
+                        ("bestE1RM", TrainingMath.e1RM(weightKg: weight, reps: reps) ?? 0)
+                    ].filter { $0.1 > 0 }
+
+                    var setWasPR = false
+                    for (kind, value) in values {
+                        let key = "\(TrainingMath.canonicalNameKey(exercise.exerciseName))|\(kind)"
+                        if value > (bestByExerciseAndKind[key] ?? 0) {
+                            bestByExerciseAndKind[key] = value
+                            context.insert(PRRecord(exerciseName: exercise.exerciseName, kind: kind, value: value, setID: set.id, achievedAt: set.completedAt ?? session.startedAt))
+                            setWasPR = true
+                            inserted += 1
+                        }
+                    }
+                    set.isPR = setWasPR
+                }
+            }
+        }
+        return inserted
     }
 }
 
@@ -547,6 +681,36 @@ struct CSVService {
                 await MainActor.run { healthStatusMessage = "Health access off — enable in Settings › Health" }
             }
             await liveActivity.end(session: session, discarded: false)
+        }
+    }
+
+    func persistHistoricalChange(session: WorkoutSession, context: ModelContext, bodyweightKg: Double?) {
+        session.updatedAt = Date()
+        _ = PRRebuildService().rebuildAll(context: context, bodyweightKg: bodyweightKg)
+        try? context.save()
+
+        guard session.status == .completed, session.healthKitUUID != nil else { return }
+        Task {
+            if let uuid = try? await healthExporter.saveWorkout(session, bodyweightKg: bodyweightKg) {
+                await MainActor.run {
+                    session.healthKitUUID = uuid
+                    healthStatusMessage = "Updated Apple Health export"
+                    try? context.save()
+                }
+            }
+        }
+    }
+
+    func deleteHistoricalSession(_ session: WorkoutSession, context: ModelContext, bodyweightKg: Double?) {
+        let healthUUID = session.healthKitUUID
+        context.delete(session)
+        _ = PRRebuildService().rebuildAll(context: context, bodyweightKg: bodyweightKg)
+        try? context.save()
+
+        guard let healthUUID else { return }
+        Task {
+            try? await healthExporter.deleteWorkout(uuid: healthUUID)
+            await MainActor.run { healthStatusMessage = "Removed Apple Health export" }
         }
     }
 }

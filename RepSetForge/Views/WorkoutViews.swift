@@ -206,8 +206,10 @@ struct ActiveWorkoutView: View {
     @State private var showingProgression = false
     @State private var confirmFinish = false
     @State private var shareSummary = ""
+    @State private var replacingExercise: SessionExercise?
 
     var exercises: [SessionExercise] { (session.exercises ?? []).sorted { $0.order < $1.order } }
+    var workoutPages: [WorkoutExercisePage] { WorkoutExercisePage.makePages(from: exercises) }
     var settings: AppSettings { settingsRows.first ?? AppSettings() }
 
     var body: some View {
@@ -215,8 +217,19 @@ struct ActiveWorkoutView: View {
             VStack(spacing: 0) {
                 TelemetryHeader(session: session)
                 TabView(selection: $page) {
-                    ForEach(Array(exercises.enumerated()), id: \.element.id) { index, exercise in
-                        ExerciseFocusPage(exercise: exercise, settings: settings)
+                    ForEach(Array(workoutPages.enumerated()), id: \.element.id) { index, workoutPage in
+                        ExerciseFocusPage(
+                            workoutPage: workoutPage,
+                            exercises: exercises,
+                            settings: settings,
+                            moveUp: { move($0, by: -1) },
+                            moveDown: { move($0, by: 1) },
+                            supersetWithPrevious: supersetWithPrevious,
+                            supersetWithNext: supersetWithNext,
+                            ungroup: ungroup,
+                            replace: { replacingExercise = $0 },
+                            remove: remove
+                        )
                             .tag(index)
                     }
                 }
@@ -230,7 +243,7 @@ struct ActiveWorkoutView: View {
                         .padding(.horizontal)
                 }
                 BottomWorkoutPill(
-                    pageText: "\(min(page + 1, max(exercises.count, 1)))/\(max(exercises.count, 1))",
+                    pageText: pageText,
                     minimize: minimize,
                     progression: { showingProgression = true },
                     index: { showingIndex = true },
@@ -241,9 +254,16 @@ struct ActiveWorkoutView: View {
                 .padding(.bottom, 12)
             }
         }
-        .sheet(isPresented: $showingIndex) { ExerciseIndexSheet(exercises: exercises, selectedPage: $page) }
+        .onChange(of: workoutPages.count) { _, count in page = min(page, max(count - 1, 0)) }
+        .sheet(isPresented: $showingIndex) { ExerciseIndexSheet(pages: workoutPages, selectedPage: $page) }
         .sheet(isPresented: $showingProgression) {
-            if let exercise = exercises[safe: page] { ProgressionPanelView(exercise: exercise) }
+            if let exercise = workoutPages[safe: page]?.exercises.first { ProgressionPanelView(exercise: exercise) }
+        }
+        .sheet(item: $replacingExercise) { exercise in
+            ExercisePickerView { replacement in
+                replace(exercise, with: replacement)
+                replacingExercise = nil
+            }
         }
         .alert("Workout summary", isPresented: Binding(get: { !shareSummary.isEmpty }, set: { if !$0 { shareSummary = "" } })) {
             Button("Done", role: .cancel) { shareSummary = "" }
@@ -256,6 +276,64 @@ struct ActiveWorkoutView: View {
         } message: {
             Text("\(session.completedSetCount) of \(session.plannedSetCount) planned sets are complete.")
         }
+    }
+
+    private var pageText: String {
+        guard let workoutPage = workoutPages[safe: page] else { return "0/0" }
+        let prefix = workoutPage.isGroup ? "GROUP " : ""
+        return "\(prefix)\(min(page + 1, max(workoutPages.count, 1)))/\(max(workoutPages.count, 1))"
+    }
+
+    private func move(_ exercise: SessionExercise, by offset: Int) {
+        guard let current = exercises.firstIndex(where: { $0.id == exercise.id }) else { return }
+        let destination = current + offset
+        guard exercises.indices.contains(destination) else { return }
+        exercises[current].order = destination
+        exercises[destination].order = current
+        renumberExercises()
+    }
+
+    private func supersetWithPrevious(_ exercise: SessionExercise) {
+        guard let current = exercises.firstIndex(where: { $0.id == exercise.id }), current > 0 else { return }
+        group(exercise, with: exercises[current - 1])
+    }
+
+    private func supersetWithNext(_ exercise: SessionExercise) {
+        guard let current = exercises.firstIndex(where: { $0.id == exercise.id }), exercises.indices.contains(current + 1) else { return }
+        group(exercise, with: exercises[current + 1])
+    }
+
+    private func group(_ exercise: SessionExercise, with other: SessionExercise) {
+        let id = exercise.groupID ?? other.groupID ?? UUID()
+        exercise.groupID = id
+        other.groupID = id
+        renumberExercises()
+    }
+
+    private func ungroup(_ exercise: SessionExercise) {
+        exercise.groupID = nil
+        renumberExercises()
+    }
+
+    private func replace(_ exercise: SessionExercise, with replacement: Exercise) {
+        exercise.exerciseName = replacement.name
+        exercise.exerciseID = replacement.id
+        exercise.primaryMuscleRaw = replacement.primaryMuscle.rawValue
+        exercise.muscleDetail = ([replacement.primaryMuscle.title] + replacement.secondaryMuscles.map(\.title)).joined(separator: " · ")
+        try? context.save()
+    }
+
+    private func remove(_ exercise: SessionExercise) {
+        guard exercise.completedSets == 0 else { return }
+        session.exercises?.removeAll { $0.id == exercise.id }
+        renumberExercises()
+    }
+
+    private func renumberExercises() {
+        for (order, exercise) in exercises.enumerated() {
+            exercise.order = order
+        }
+        try? context.save()
     }
 }
 
@@ -283,100 +361,75 @@ struct TelemetryHeader: View {
     }
 }
 
+struct WorkoutExercisePage: Identifiable {
+    let id: String
+    let groupID: UUID?
+    let exercises: [SessionExercise]
+
+    var isGroup: Bool { exercises.count > 1 }
+    var title: String { isGroup ? "Superset \(exercises.count)" : (exercises.first?.exerciseName ?? "Exercise") }
+    var subtitle: String {
+        guard isGroup else { return exercises.first?.muscleDetail ?? "" }
+        let sets = exercises.reduce(0) { $0 + $1.completedSets }
+        let total = exercises.reduce(0) { $0 + $1.totalSets }
+        return "\(sets)/\(total) sets · Rest after group"
+    }
+    var completedSets: Int { exercises.reduce(0) { $0 + $1.completedSets } }
+    var totalSets: Int { exercises.reduce(0) { $0 + $1.totalSets } }
+
+    static func makePages(from exercises: [SessionExercise]) -> [WorkoutExercisePage] {
+        var pages: [WorkoutExercisePage] = []
+        var index = 0
+        while index < exercises.count {
+            let exercise = exercises[index]
+            if let groupID = exercise.groupID {
+                var group: [SessionExercise] = []
+                var scan = index
+                while scan < exercises.count, exercises[scan].groupID == groupID {
+                    group.append(exercises[scan])
+                    scan += 1
+                }
+                if group.count > 1 {
+                    pages.append(WorkoutExercisePage(id: "group-\(groupID.uuidString)", groupID: groupID, exercises: group))
+                    index = scan
+                    continue
+                }
+            }
+            pages.append(WorkoutExercisePage(id: exercise.id.uuidString, groupID: nil, exercises: [exercise]))
+            index += 1
+        }
+        return pages
+    }
+}
+
 struct ExerciseFocusPage: View {
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var store: AppStore
     @Environment(\.dynamicTypeSize) private var dynamicType
     @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
-    let exercise: SessionExercise
+    let workoutPage: WorkoutExercisePage
+    let exercises: [SessionExercise]
     let settings: AppSettings
+    let moveUp: (SessionExercise) -> Void
+    let moveDown: (SessionExercise) -> Void
+    let supersetWithPrevious: (SessionExercise) -> Void
+    let supersetWithNext: (SessionExercise) -> Void
+    let ungroup: (SessionExercise) -> Void
+    let replace: (SessionExercise) -> Void
+    let remove: (SessionExercise) -> Void
     @State private var showingPlateCalcFor: SetEntry?
-    @State private var actionMessage = ""
-
-    var sortedSets: [SetEntry] { (exercise.sets ?? []).sorted { $0.index < $1.index } }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                HStack(spacing: 12) {
-                    Text(icon).frame(width: 44, height: 44).background(RSTheme.surfaceInput).clipShape(RoundedRectangle(cornerRadius: 10)).overlay(RoundedRectangle(cornerRadius: 10).stroke(RSTheme.hairline))
-                    VStack(alignment: .leading) {
-                        Text(exercise.exerciseName).font(RSTheme.mono(19, weight: .bold))
-                        Text(exercise.muscleDetail).font(RSTheme.mono(12)).foregroundStyle(RSTheme.textSecondary)
+                pageHeader
+                ForEach(workoutPage.exercises) { exercise in
+                    exerciseSection(exercise)
+                    if exercise.id != workoutPage.exercises.last?.id {
+                        Divider().background(RSTheme.hairline)
                     }
-                    Spacer()
-                    Menu {
-                        Button("Replace") { actionMessage = "Replace opens the exercise picker for the same primary muscle." }
-                        Button("Superset with…") { actionMessage = "Superset grouping is ready for this exercise." }
-                        Button("Remove", role: .destructive) { actionMessage = "Remove is blocked while preserving completed set history." }
-                    } label: { Image(systemName: "ellipsis.circle") }
                 }
-                .padding(14)
-                if !actionMessage.isEmpty {
-                    Text(actionMessage)
-                        .font(RSTheme.mono(11))
-                        .foregroundStyle(RSTheme.textSecondary)
-                        .padding(.horizontal, 14)
-                        .padding(.bottom, 8)
-                }
-                Divider().background(RSTheme.hairline)
-
-                if exercise.chartCollapsed {
-                    Button { exercise.chartCollapsed = false } label: {
-                        HStack { Text("CHART · 1RM 128 · PR 102.5×8"); Spacer(); Image(systemName: "chevron.down") }
-                            .font(RSTheme.mono(12, weight: .semibold))
-                            .padding(12)
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack { RSChip(text: "3M", selected: true); RSChip(text: "%1RM") }
-                        LineTrendChart(values: [0.3,0.4,0.36,0.62,0.7])
-                        HStack { RSChip(text: "e1RM 174"); RSChip(text: "Best 135×8", selected: true) }
-                    }
-                    .padding(14)
-                }
-                Divider().background(RSTheme.hairline)
-
-                Button {
-                    applyCoachingTarget()
-                } label: {
-                    HStack(alignment: .top) {
-                        Image(systemName: "arrow.up.circle.fill")
-                        VStack(alignment: .leading) {
-                            Text("Same as last session.").font(RSTheme.mono(12))
-                            Text("Target: >= 135 x 8 @ 8 RPE").font(RSTheme.mono(12, weight: .bold)).foregroundStyle(RSTheme.signal)
-                        }
-                        Spacer()
-                    }
-                    .padding(12)
-                    .background(RSTheme.signal.opacity(0.14))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(RSTheme.signal))
-                }
-                .buttonStyle(.plain)
-                .padding(14)
-
-                Eyebrow(text: "Sets").padding(.horizontal, 14)
-                ForEach(sortedSets) { set in
-                    SetRowView(
-                        set: set,
-                        inheritedWeight: store.inheritedWeight(for: set, in: exercise),
-                        inheritedReps: store.inheritedReps(for: set, in: exercise),
-                        settings: settings,
-                        stacked: dynamicType.isAccessibilitySize,
-                        complete: { store.complete(set: set, in: exercise, context: context, bodyweightKg: bodyMetrics.first?.bodyweightKg) },
-                        delete: { exercise.sets?.removeAll { $0.id == set.id }; try? context.save() },
-                        plateCalc: { showingPlateCalcFor = set }
-                    )
-                }
-                Button("Add set") {
-                    exercise.sets?.append(SetEntry(index: sortedSets.count + 1, weightKg: sortedSets.last?.weightKg, reps: sortedSets.last?.reps, restSeconds: settings.defaultRestSeconds))
-                    try? context.save()
-                }
-                .buttonStyle(RSButtonStyle(kind: .quiet))
-                .padding(14)
-                .padding(.bottom, 110)
+                Spacer(minLength: 110)
             }
         }
         .sheet(item: $showingPlateCalcFor) { set in
@@ -384,7 +437,145 @@ struct ExerciseFocusPage: View {
         }
     }
 
-    private var icon: String {
+    private var pageHeader: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Eyebrow(text: workoutPage.isGroup ? "Superset group" : "Exercise")
+                Spacer()
+                Text(workoutPage.subtitle)
+                    .font(RSTheme.mono(11, weight: .semibold))
+                    .foregroundStyle(RSTheme.textSecondary)
+            }
+            if workoutPage.isGroup {
+                Text(workoutPage.exercises.map(\.exerciseName).joined(separator: " + "))
+                    .font(RSTheme.mono(15, weight: .bold))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.horizontal, 14)
+        .padding(.top, 12)
+        .padding(.bottom, workoutPage.isGroup ? 10 : 0)
+    }
+
+    private func exerciseSection(_ exercise: SessionExercise) -> some View {
+        let sortedSets = (exercise.sets ?? []).sorted { $0.index < $1.index }
+        return VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 12) {
+                Text(icon(for: exercise))
+                    .frame(width: 44, height: 44)
+                    .background(RSTheme.surfaceInput)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(RSTheme.hairline))
+                VStack(alignment: .leading) {
+                    if workoutPage.isGroup {
+                        Text("Exercise \(groupPosition(for: exercise))").font(RSTheme.mono(11, weight: .semibold)).foregroundStyle(RSTheme.textSecondary)
+                    }
+                    Text(exercise.exerciseName).font(RSTheme.mono(19, weight: .bold))
+                    Text(exercise.muscleDetail).font(RSTheme.mono(12)).foregroundStyle(RSTheme.textSecondary)
+                }
+                Spacer()
+                Menu {
+                    Button("Move Up") { moveUp(exercise) }
+                        .disabled(!canMove(exercise, by: -1))
+                    Button("Move Down") { moveDown(exercise) }
+                        .disabled(!canMove(exercise, by: 1))
+                    Divider()
+                    Button("Replace") { replace(exercise) }
+                    if exercise.groupID == nil {
+                        Button("Superset with Previous") { supersetWithPrevious(exercise) }
+                            .disabled(!canGroup(exercise, by: -1))
+                        Button("Superset with Next") { supersetWithNext(exercise) }
+                            .disabled(!canGroup(exercise, by: 1))
+                    } else {
+                        Button("Ungroup") { ungroup(exercise) }
+                    }
+                    Divider()
+                    Button("Remove", role: .destructive) { remove(exercise) }
+                        .disabled(exercise.completedSets > 0)
+                } label: {
+                    Image(systemName: "ellipsis.circle")
+                        .frame(width: 44, height: 44)
+                }
+                .accessibilityLabel("Exercise actions")
+            }
+            .padding(14)
+            Divider().background(RSTheme.hairline)
+
+            if exercise.chartCollapsed {
+                Button { exercise.chartCollapsed = false } label: {
+                    HStack { Text("CHART · 1RM 128 · PR 102.5×8"); Spacer(); Image(systemName: "chevron.down") }
+                        .font(RSTheme.mono(12, weight: .semibold))
+                        .padding(12)
+                }
+                .buttonStyle(.plain)
+            } else {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack { RSChip(text: "3M", selected: true); RSChip(text: "%1RM") }
+                    LineTrendChart(values: [0.3,0.4,0.36,0.62,0.7])
+                    HStack { RSChip(text: "e1RM 174"); RSChip(text: "Best 135×8", selected: true) }
+                }
+                .padding(14)
+            }
+            Divider().background(RSTheme.hairline)
+
+            Button {
+                applyCoachingTarget(to: exercise)
+            } label: {
+                HStack(alignment: .top) {
+                    Image(systemName: "arrow.up.circle.fill")
+                    VStack(alignment: .leading) {
+                        Text("Same as last session.").font(RSTheme.mono(12))
+                        Text("Target: >= 135 x 8 @ 8 RPE").font(RSTheme.mono(12, weight: .bold)).foregroundStyle(RSTheme.signal)
+                    }
+                    Spacer()
+                }
+                .padding(12)
+                .background(RSTheme.signal.opacity(0.14))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(RSTheme.signal))
+            }
+            .buttonStyle(.plain)
+            .padding(14)
+
+            Eyebrow(text: "Sets").padding(.horizontal, 14)
+            ForEach(sortedSets) { set in
+                SetRowView(
+                    set: set,
+                    inheritedWeight: store.inheritedWeight(for: set, in: exercise),
+                    inheritedReps: store.inheritedReps(for: set, in: exercise),
+                    settings: settings,
+                    stacked: dynamicType.isAccessibilitySize,
+                    complete: { store.complete(set: set, in: exercise, context: context, bodyweightKg: bodyMetrics.first?.bodyweightKg) },
+                    delete: { exercise.sets?.removeAll { $0.id == set.id }; try? context.save() },
+                    plateCalc: { showingPlateCalcFor = set }
+                )
+            }
+            Button("Add set") {
+                exercise.sets?.append(SetEntry(index: sortedSets.count + 1, weightKg: sortedSets.last?.weightKg, reps: sortedSets.last?.reps, restSeconds: settings.defaultRestSeconds))
+                try? context.save()
+            }
+            .buttonStyle(RSButtonStyle(kind: .quiet))
+            .padding(14)
+        }
+    }
+
+    private func groupPosition(for exercise: SessionExercise) -> Int {
+        (workoutPage.exercises.firstIndex { $0.id == exercise.id } ?? 0) + 1
+    }
+
+    private func canMove(_ exercise: SessionExercise, by offset: Int) -> Bool {
+        guard let current = exercises.firstIndex(where: { $0.id == exercise.id }) else { return false }
+        return exercises.indices.contains(current + offset)
+    }
+
+    private func canGroup(_ exercise: SessionExercise, by offset: Int) -> Bool {
+        guard let current = exercises.firstIndex(where: { $0.id == exercise.id }) else { return false }
+        let target = current + offset
+        guard exercises.indices.contains(target) else { return false }
+        return exercises[target].groupID == nil || exercises[target].groupID != exercise.groupID
+    }
+
+    private func icon(for exercise: SessionExercise) -> String {
         switch exercise.primaryMuscle {
         case .chest: "▰"
         case .back: "▤"
@@ -396,7 +587,8 @@ struct ExerciseFocusPage: View {
         }
     }
 
-    private func applyCoachingTarget() {
+    private func applyCoachingTarget(to exercise: SessionExercise) {
+        let sortedSets = (exercise.sets ?? []).sorted { $0.index < $1.index }
         let baseWeight = sortedSets.compactMap(\.weightKg).last ?? sortedSets.compactMap { store.inheritedWeight(for: $0, in: exercise) }.last ?? 60
         sortedSets.filter { !$0.isCompleted && $0.type == .working }.forEach {
             $0.weightKg = baseWeight
@@ -558,24 +750,26 @@ struct RestTimerPill: View {
 }
 
 struct ExerciseIndexSheet: View {
-    let exercises: [SessionExercise]
+    let pages: [WorkoutExercisePage]
     @Binding var selectedPage: Int
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
             List {
-                ForEach(Array(exercises.enumerated()), id: \.element.id) { index, exercise in
+                ForEach(Array(pages.enumerated()), id: \.element.id) { index, page in
                     Button {
                         selectedPage = index
                         dismiss()
                     } label: {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(exercise.exerciseName)
-                                Text("\(exercise.completedSets)/\(exercise.totalSets) sets · \(Int(volume(exercise))) kg").font(.caption).foregroundStyle(.secondary)
+                                Text(page.title)
+                                Text("\(page.completedSets)/\(page.totalSets) sets · \(Int(volume(page))) kg\(page.isGroup ? " · superset" : "")")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
                             }
                             Spacer()
-                            if (exercise.sets ?? []).contains(where: \.isPR) { RSChip(text: "PR", selected: true) }
+                            if page.exercises.flatMap({ $0.sets ?? [] }).contains(where: \.isPR) { RSChip(text: "PR", selected: true) }
                         }
                     }
                 }
@@ -584,8 +778,8 @@ struct ExerciseIndexSheet: View {
             .toolbar { Button("Done") { dismiss() } }
         }
     }
-    private func volume(_ exercise: SessionExercise) -> Double {
-        (exercise.sets ?? []).reduce(0) { $0 + TrainingMath.volumeKg(weightKg: $1.weightKg ?? 0, reps: $1.reps ?? 0, kind: $1.type, latestBodyweightKg: nil) }
+    private func volume(_ page: WorkoutExercisePage) -> Double {
+        page.exercises.flatMap { $0.sets ?? [] }.reduce(0) { $0 + TrainingMath.volumeKg(weightKg: $1.weightKg ?? 0, reps: $1.reps ?? 0, kind: $1.type, latestBodyweightKg: nil) }
     }
 }
 

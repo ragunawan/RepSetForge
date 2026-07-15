@@ -242,7 +242,7 @@ struct SettingsView: View {
                         TextEditor(text: $importCSV)
                             .font(RSTheme.mono(12))
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(RSTheme.hairline))
-                        Button("Validate import", action: validateImport)
+                        Button("Import CSV", action: importRows)
                             .buttonStyle(RSButtonStyle(kind: .primary))
                     }
                     .padding()
@@ -270,10 +270,11 @@ struct SettingsView: View {
         bodyFat = 0
     }
 
-    private func validateImport() {
+    private func importRows() {
         do {
-            let rows = try csvService.parseSets(from: importCSV)
-            dataMessage = "\(rows.count) CSV set rows validated. Import review is ready."
+            let result = try csvService.importSets(from: importCSV, context: context)
+            dataMessage = "Imported \(result.setCount) sets into \(result.sessionCount) workouts. Created \(result.createdExerciseCount) exercises and rebuilt \(result.rebuiltPRCount) PR records."
+            importCSV = ""
             showingImport = false
         } catch {
             dataMessage = error.localizedDescription
