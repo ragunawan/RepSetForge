@@ -34,16 +34,17 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [ ] First-run empty state: "Create your first exercise" leads the picker
 
 ### 5. Home, Summary, routine-update prompt, HealthKit export (phone-only path)
-- [x] Home screen (`HomeView`, mockup frame 1): resume-workout banner, recommended-next card (always a placeholder — no routines to recommend yet), week-at-a-glance strip (`HomeStatsService`: sessions/volume/sets/PRs/streak/sparkline), Body module. Simplified: Body module shows the latest `BodyMetric` entry + delta from the previous one (`LogBodyMetricSheet`) rather than the full dual-axis weight/body-fat chart with W/M/Y range paging.
-- [x] First-run placeholder modules per Home card (dev spec §5) — same layout skeleton, dashed border, states its own unlock condition. Progress/History's own placeholder states are separate work (steps 7).
-- [x] Workout Summary screen (`WorkoutSummaryView`, mockup frame 4): duration/sets/reps/volume, PR callouts, vs.-last-session deltas (falls back to same-name matching since routines don't exist yet), muscles-trained chips
+- [x] Home screen (`HomeView`, mockup frame 1): resume-workout banner, recommended-next card, week-at-a-glance strip (`HomeStatsService`: sessions/volume/sets/PRs/streak/sparkline), Body module. Simplified: Body module shows the latest `BodyMetric` entry + delta from the previous one (`LogBodyMetricSheet`) rather than the full dual-axis weight/body-fat chart with W/M/Y range paging. Recommended-next is still always a placeholder — routines exist now (step 6), but the actual "least-recently-performed routine, tie-broken by lowest muscle-group weekly set count" ranking (dev spec §5) isn't implemented yet.
+- [x] First-run placeholder modules per Home card (dev spec §5) — same layout skeleton, dashed border, states its own unlock condition. Progress/History's own placeholder states are separate work (step 7).
+- [x] Workout Summary screen (`WorkoutSummaryView`, mockup frame 4): duration/sets/reps/volume, PR callouts, vs.-last-session deltas (prefers matching by `routine`, falls back to matching by name per dev spec §5), muscles-trained chips
 - [ ] Post-workout routine-update diff sheet
 - [ ] HealthKit export, phone-only path (dev spec §4b): `HKWorkoutBuilder`, permission requested at first workout completion (not onboarding), duplicate-write guard via `WorkoutSession.healthKitUUID`
 
 ### 6. Routine builder + library + double-progression ladder
-- [ ] Routine Library screen (mockup frame 5): routines/exercises segmented list, empty state
-- [ ] Routine Builder screen (mockup frame 9): reorderable items, superset grouping (shared `groupID`), save validation
-- [ ] Progression ladder engine: generate levels from `ProgressionRule` + current weight, level-completion logic, level-up regeneration — dev spec §3 "Progression panel"
+- [x] Routine Library screen (`RoutineLibraryView`, mockup frame 5): routines/exercises segmented list, empty state
+- [x] Routine Builder screen (`RoutineBuilderView`, mockup frame 9): reorderable items (drag + `EditButton`), save validation (non-empty name + ≥1 exercise). Not done: superset grouping (shared `groupID`), the progression-rule editor rows. Cancel doesn't roll back live edits to an *existing* routine's items (reorder/target-stepper edits and deletes apply immediately) — see the doc comment on the view; a new routine's Cancel is clean since nothing's inserted until Save.
+- [x] `StartWorkoutSheet` now offers "start from a routine", pre-populating `SessionExercise`s + empty `SetEntry`s from each `RoutineItem`'s `targetSets`, and tags each `SessionExercise.routineItem` for the (still unbuilt) progression panel to use later
+- [ ] Progression ladder engine: generate levels from `ProgressionRule` + current weight, level-completion logic, level-up regeneration — dev spec §3 "Progression panel". The bottom pill's PROG button is still a disabled stub.
 
 ### 7. History, Progress, PR engine backfill
 - [ ] History screen (mockup frame 7): calendar grid + list view, completed vs. planned, filters

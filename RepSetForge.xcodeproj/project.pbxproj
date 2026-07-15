@@ -40,6 +40,8 @@
 		AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002C /* WorkoutSummaryView.swift */; };
 		AA020000000000000000002F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002F /* HomeView.swift */; };
 		AA020000000000000000002E /* LogBodyMetricSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002E /* LogBodyMetricSheet.swift */; };
+		AA0200000000000000000031 /* RoutineLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000031 /* RoutineLibraryView.swift */; };
+		AA0200000000000000000032 /* RoutineBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000032 /* RoutineBuilderView.swift */; };
 		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
 		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
 		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
@@ -107,6 +109,8 @@
 		AA010000000000000000002C /* WorkoutSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSummaryView.swift; sourceTree = "<group>"; };
 		AA010000000000000000002F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AA010000000000000000002E /* LogBodyMetricSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBodyMetricSheet.swift; sourceTree = "<group>"; };
+		AA0100000000000000000031 /* RoutineLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineLibraryView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000032 /* RoutineBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineBuilderView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 				AA010000000000000000002C /* WorkoutSummaryView.swift */,
 				AA010000000000000000002F /* HomeView.swift */,
 				AA010000000000000000002E /* LogBodyMetricSheet.swift */,
+				AA0100000000000000000031 /* RoutineLibraryView.swift */,
+				AA0100000000000000000032 /* RoutineBuilderView.swift */,
 				AA030000000000000000000A /* Components */,
 			);
 			path = Views;
@@ -424,6 +430,8 @@
 				AA020000000000000000002C /* WorkoutSummaryView.swift in Sources */,
 				AA020000000000000000002F /* HomeView.swift in Sources */,
 				AA020000000000000000002E /* LogBodyMetricSheet.swift in Sources */,
+				AA0200000000000000000031 /* RoutineLibraryView.swift in Sources */,
+				AA0200000000000000000032 /* RoutineBuilderView.swift in Sources */,
 				AA0200000000000000000025 /* SetRowView.swift in Sources */,
 				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
 				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,

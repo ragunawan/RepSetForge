@@ -40,11 +40,20 @@ struct WorkoutSummaryView: View {
     }
 
     /// dev spec §5: "deltas computed vs. most recent completed session
-    /// sharing the same routineRef (fallback: same name)" — no routines
-    /// exist yet, so this always falls back to matching by name.
+    /// sharing the same routineRef (fallback: same name)".
     private var previousSession: WorkoutSession? {
-        allSessions
-            .filter { $0.id != session.id && $0.status == .completed && $0.name == session.name }
+        let candidates = allSessions.filter { $0.id != session.id && $0.status == .completed }
+
+        if let routine = session.routine,
+           let routineMatch = candidates
+               .filter({ $0.routine?.id == routine.id })
+               .sorted(by: { $0.startedAt > $1.startedAt })
+               .first {
+            return routineMatch
+        }
+
+        return candidates
+            .filter { $0.name == session.name }
             .sorted { $0.startedAt > $1.startedAt }
             .first
     }

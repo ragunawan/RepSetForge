@@ -126,6 +126,7 @@ struct ActiveWorkoutView: View {
     private func finishWorkout() {
         session.endedAt = .now
         session.status = .completed
+        session.routine?.lastPerformedAt = .now
         isPresentingFinishConfirmation = false
     }
 

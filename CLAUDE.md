@@ -37,7 +37,7 @@ Read the dev spec before making architectural or data-model changes. This CLAUDE
 - `RepSetForge/Models/` — `@Model` classes: `Exercise`, `Routine`, `RoutineItem`, `ProgressionRule`, `WorkoutSession`, `SessionExercise`, `SetEntry`, `PRRecord`, `BodyMetric`, plus supporting enums (`MuscleGroup`, `Equipment`, `SetType`, `ProgressionRuleType`, `WorkoutSessionStatus`, `PRKind`)
 - `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match), `RestTimerManager` (wall-clock rest timer), `PersonalRecordService` (PR detection on set commit), `HomeStatsService` (weekly session/volume/streak aggregation for Home). More land per TODO.md's build order (progression ladder engine, HealthKit export, Live Activity, CSV import/export, etc.)
 - `RepSetForge/Persistence/` — `PersistenceController` (ModelContainer, CloudKit config), `RepSetForgeSchema` (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan`)
-- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell), `HomeView` (mockup frame 1 — History/Progress/Library are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview + Finish/Cancel actions, frame 2), `FinishWorkoutConfirmationSheet`, `WorkoutSummaryView` (post-workout summary, frame 4), `StartWorkoutSheet`, `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4), `LogBodyMetricSheet`
+- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell), `HomeView` (mockup frame 1), `RoutineLibraryView`/`RoutineBuilderView` (mockup frames 5/9 — History/Progress are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview + Finish/Cancel actions, frame 2), `FinishWorkoutConfirmationSheet`, `WorkoutSummaryView` (post-workout summary, frame 4), `StartWorkoutSheet` (quick-start or start from a routine), `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4), `LogBodyMetricSheet`
 - `RepSetForge/Views/Components/` — `SetRowView` (the set-table row), `RPEChipRow`, `ExerciseTrendChart` (Swift Charts e1RM trend), `RestTimerPill`
 - `RepSetForge/RepSetForgeTheme.swift` — design tokens translated from the hi-fi mockup's CSS custom properties (surfaces, signal/pr/warn/destructive colors, radii, monospace type)
 
@@ -160,9 +160,10 @@ This is a freshly rebuilt foundation, not a feature-complete app. Current state:
 - [x] Rest timer (`RestTimerManager`) + in-app rest pill — build-order step 3's non-Live-Activity half
 - [x] PR detection (`PersonalRecordService`) — `.bestWeight`/`.bestE1RM`/`.bestVolume`; `.repsAtWeight` not yet
 - [x] Finish/Cancel workout + `WorkoutSummaryView` — the core logging loop (start → log → finish → summary) is now closeable end to end
-- [x] Home screen (`HomeView`) — resume banner, week-at-a-glance, Body module; recommended-next is always a placeholder (no routines yet)
+- [x] Home screen (`HomeView`) — resume banner, week-at-a-glance, Body module; recommended-next is a placeholder (routines exist now, but the ranking logic isn't built)
+- [x] Routine Library + Builder (`RoutineLibraryView`/`RoutineBuilderView`) + "start from a routine" in `StartWorkoutSheet` — no superset grouping or progression-rule editor rows yet
 - [ ] `AddExerciseSheet` is a deliberately minimal create/select-exercise flow, not the real Exercise Selection screen (mockup frame 3, build-order step 4)
-- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: the real Exercise Selection screen, `WorkoutSession` restore-UX rules, Live Activity/Dynamic Island, and History/Progress.
+- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: the progression ladder engine, the real Exercise Selection screen, `WorkoutSession` restore-UX rules, Live Activity/Dynamic Island, and History/Progress.
 
 ## Acceptance Criteria
 

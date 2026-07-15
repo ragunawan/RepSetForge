@@ -70,6 +70,8 @@ FR = {
     "LogBodyMetricSheet":    u(1, 0x2E),
     "HomeView":              u(1, 0x2F),
     "TEST_HomeStats":        u(1, 0x30),
+    "RoutineLibraryView":    u(1, 0x31),
+    "RoutineBuilderView":    u(1, 0x32),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -160,6 +162,8 @@ APP_SOURCES = [
     ("WorkoutSummaryView",    "Views/WorkoutSummaryView.swift"),
     ("HomeView",              "Views/HomeView.swift"),
     ("LogBodyMetricSheet",    "Views/LogBodyMetricSheet.swift"),
+    ("RoutineLibraryView",    "Views/RoutineLibraryView.swift"),
+    ("RoutineBuilderView",    "Views/RoutineBuilderView.swift"),
     ("SetRowView",            "Views/Components/SetRowView.swift"),
     ("RPEChipRow",            "Views/Components/RPEChipRow.swift"),
     ("ExerciseTrendChart",    "Views/Components/ExerciseTrendChart.swift"),
@@ -176,6 +180,7 @@ PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [
     "ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet",
     "FinishWorkoutConfirmationSheet", "WorkoutSummaryView", "HomeView", "LogBodyMetricSheet",
+    "RoutineLibraryView", "RoutineBuilderView",
 ]
 COMPONENT_KEYS = ["SetRowView", "RPEChipRow", "ExerciseTrendChart", "RestTimerPill"]
 

@@ -40,7 +40,7 @@ struct ContentView: View {
                     .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
                     .tag(Tab.progress)
 
-                LibraryPlaceholderView()
+                RoutineLibraryView()
                     .tabItem { Label("Library", systemImage: "square.stack.3d.up.fill") }
                     .tag(Tab.library)
             }
@@ -114,19 +114,6 @@ private struct ProgressPlaceholderView: View {
                 description: Text("The Progress screen (dev spec §5, mockup frame 8) hasn't been built yet.")
             )
             .navigationTitle("Progress")
-        }
-    }
-}
-
-private struct LibraryPlaceholderView: View {
-    var body: some View {
-        NavigationStack {
-            ContentUnavailableView(
-                "Library",
-                systemImage: "square.stack.3d.up",
-                description: Text("The Routine Library screen (dev spec §5, mockup frame 5) hasn't been built yet.")
-            )
-            .navigationTitle("Library")
         }
     }
 }
