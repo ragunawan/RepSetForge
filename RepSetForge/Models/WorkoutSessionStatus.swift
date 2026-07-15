@@ -1,6 +1,6 @@
 import Foundation
 
-enum WorkoutSessionStatus: String, Codable, CaseIterable, Identifiable {
+enum WorkoutSessionStatus: String, Codable, CaseIterable, Identifiable, Hashable {
     case active
     case completed
 

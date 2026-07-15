@@ -51,6 +51,19 @@ FR = {
     "TEST_ExerciseDedup":    u(1, 0x1B),
     "TEST_SetEntryE1RM":     u(1, 0x1C),
     "UITEST_App":            u(1, 0x1D),
+    "RestTimerManager":      u(1, 0x1E),
+    "PersonalRecordService": u(1, 0x1F),
+    "ExerciseFocusView":     u(1, 0x20),
+    "ExerciseIndexSheet":    u(1, 0x21),
+    "ActiveWorkoutView":     u(1, 0x22),
+    "StartWorkoutSheet":     u(1, 0x23),
+    "AddExerciseSheet":      u(1, 0x24),
+    "SetRowView":            u(1, 0x25),
+    "RPEChipRow":            u(1, 0x26),
+    "ExerciseTrendChart":    u(1, 0x27),
+    "RestTimerPill":         u(1, 0x28),
+    "TEST_PersonalRecord":   u(1, 0x29),
+    "TEST_RestTimer":        u(1, 0x2A),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -66,6 +79,8 @@ GR = {
     "Persistence": u(3, 0x06),
     "Tests":       u(3, 0x07),
     "UITests":     u(3, 0x08),
+    "Views":       u(3, 0x09),
+    "Components":  u(3, 0x0A),
 }
 
 # Targets
@@ -127,6 +142,17 @@ APP_SOURCES = [
     ("RepSetForgeSchema",     "Persistence/RepSetForgeSchema.swift"),
     ("PersistenceController", "Persistence/PersistenceController.swift"),
     ("ExerciseDedupService",  "Services/ExerciseDedupService.swift"),
+    ("RestTimerManager",      "Services/RestTimerManager.swift"),
+    ("PersonalRecordService", "Services/PersonalRecordService.swift"),
+    ("ExerciseFocusView",     "Views/ExerciseFocusView.swift"),
+    ("ExerciseIndexSheet",    "Views/ExerciseIndexSheet.swift"),
+    ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
+    ("StartWorkoutSheet",     "Views/StartWorkoutSheet.swift"),
+    ("AddExerciseSheet",      "Views/AddExerciseSheet.swift"),
+    ("SetRowView",            "Views/Components/SetRowView.swift"),
+    ("RPEChipRow",            "Views/Components/RPEChipRow.swift"),
+    ("ExerciseTrendChart",    "Views/Components/ExerciseTrendChart.swift"),
+    ("RestTimerPill",         "Views/Components/RestTimerPill.swift"),
 ]
 
 MODEL_KEYS = [
@@ -134,12 +160,16 @@ MODEL_KEYS = [
     "Exercise", "Routine", "RoutineItem", "ProgressionRule", "WorkoutSession",
     "SessionExercise", "SetEntry", "PRRecord", "BodyMetric",
 ]
-SERVICE_KEYS = ["ExerciseDedupService"]
+SERVICE_KEYS = ["ExerciseDedupService", "RestTimerManager", "PersonalRecordService"]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
+VIEW_KEYS = ["ExerciseFocusView", "ExerciseIndexSheet", "ActiveWorkoutView", "StartWorkoutSheet", "AddExerciseSheet"]
+COMPONENT_KEYS = ["SetRowView", "RPEChipRow", "ExerciseTrendChart", "RestTimerPill"]
 
 TEST_SOURCES = [
     ("TEST_ExerciseDedup", "RepSetForgeTests/ExerciseDedupServiceTests.swift"),
     ("TEST_SetEntryE1RM",  "RepSetForgeTests/SetEntryE1RMTests.swift"),
+    ("TEST_PersonalRecord", "RepSetForgeTests/PersonalRecordServiceTests.swift"),
+    ("TEST_RestTimer",     "RepSetForgeTests/RestTimerManagerTests.swift"),
 ]
 
 UI_TEST_SOURCES = [
@@ -260,6 +290,7 @@ def pbxproj():
     a(f"\t\t\t\t{GR['Models']} /* Models */,")
     a(f"\t\t\t\t{GR['Services']} /* Services */,")
     a(f"\t\t\t\t{GR['Persistence']} /* Persistence */,")
+    a(f"\t\t\t\t{GR['Views']} /* Views */,")
     a(f"\t\t\t\t{FR['Assets']} /* Assets.xcassets */,")
     a(f"\t\t\t\t{FR['Entitlements']} /* RepSetForge.entitlements */,")
     a(f"\t\t\t);")
@@ -284,6 +315,20 @@ def pbxproj():
     simple_group("Models", "Models", MODEL_KEYS)
     simple_group("Services", "Services", SERVICE_KEYS)
     simple_group("Persistence", "Persistence", PERSISTENCE_KEYS)
+
+    a(f"\t\t{GR['Views']} /* Views */ = {{")
+    a(f"\t\t\tisa = PBXGroup;")
+    a(f"\t\t\tchildren = (")
+    for fk in VIEW_KEYS:
+        filename = app_sources_by_key[fk].split("/")[-1]
+        a(f"\t\t\t\t{FR[fk]} /* {filename} */,")
+    a(f"\t\t\t\t{GR['Components']} /* Components */,")
+    a(f"\t\t\t);")
+    a(f"\t\t\tpath = Views;")
+    a(f"\t\t\tsourceTree = \"<group>\";")
+    a(f"\t\t}};")
+
+    simple_group("Components", "Components", COMPONENT_KEYS)
 
     a(f"\t\t{GR['Tests']} /* RepSetForgeTests */ = {{")
     a(f"\t\t\tisa = PBXGroup;")

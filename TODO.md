@@ -10,26 +10,26 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [x] `RepSetForgeSchema` — versioned schema (`RepSetForgeSchemaV1`) + migration plan scaffold
 - [x] `ExerciseDedupService` — canonical-name key + fuzzy match (Levenshtein ≤ 2, token subset)
 - [x] `RepSetForgeTheme` — token translation from the hi-fi mockup's CSS custom properties
-- [ ] `WorkoutSession` singleton draft persistence: autosave on every mutation, restore-on-launch rules (< 4h silent resume, ≥ 4h resume/finish-as-is/discard sheet, ≥ 12h or midnight-crossing auto-suggests finish-as-is) — dev spec §1
-- [ ] `RootView` navigation shell wired to real state: `TabView` (Home · History · Progress · Library) + FAB, `StartWorkoutSheet`, `ActiveWorkoutSheet` as `.fullScreenCover` with `interactiveDismissDisabled` + minimize-not-dismiss swipe behavior
+- [ ] `WorkoutSession` singleton draft persistence: autosave on every mutation, restore-on-launch rules (< 4h silent resume, ≥ 4h resume/finish-as-is/discard sheet, ≥ 12h or midnight-crossing auto-suggests finish-as-is) — dev spec §1. Currently a session just stays `.active` in SwiftData and the FAB routes back into it — no staleness handling at all yet.
+- [x] `RootView` navigation shell wired to real state: `TabView` (Home · History · Progress · Library) + FAB, `StartWorkoutSheet`, `ActiveWorkoutSheet` (`ActiveWorkoutView`) as `.fullScreenCover` with `interactiveDismissDisabled` + minimize-not-dismiss swipe behavior
 
 ### 2. Exercise Focus view + set row (the product lives or dies here) + read-only Index sheet
-- [ ] Exercise Focus screen (dev spec §3, mockup frame 2b): telemetry header, exercise identity row, in-context chart with collapse-on-first-set, coaching prompt banner, set table, bottom pill/pager
-- [ ] Set row component: ghost-text inheritance, inline numpad + plate steppers, PR check on commit, RPE chip row, set-type menu, swipe-to-delete — full behavior contract in dev spec §3
+- [x] Exercise Focus screen (dev spec §3, mockup frame 2b): telemetry header, exercise identity row, in-context chart with collapse-on-first-set, coaching prompt banner, set table, bottom pill/pager. Simplifications to revisit: chart is e1RM-trend-only (no volume bars, no %1RM overlay, no date-range toggle), "SET n/total" counts all sets across the whole session rather than tracking planned-vs-completed against routine targets (no routines yet), rest duration is a hardcoded 90s default (no `RoutineItem.restSeconds` to read from yet).
+- [x] Set row component: ghost-text inheritance, PR check on commit, RPE chip row, set-type menu, swipe-to-delete — full behavior contract in dev spec §3. Not done: inline numpad accessory (uses the system decimal/number pad instead) and the long-press plate calculator.
 - [ ] Superset handling: one page per group, intra-superset auto-advance, group-level rest timer
-- [ ] Read-only Exercise Index sheet (mockup frame 2, replaces old list view — navigation/orientation only, no set entry)
-- [ ] Progression panel (mockup frame 2c): rule editor rows, generated ladder, per-session qualifying checkmarks — **double progression (`.ladder`) only**; don't add other `ProgressionRuleType` cases yet
-- [ ] PR engine: compare against `PRRecord` per kind on set commit, inline gold PR badge, no modal
+- [x] Read-only Exercise Index sheet (mockup frame 2, replaces old list view — navigation/orientation only, no set entry). Reorder is still TODO.
+- [ ] Progression panel (mockup frame 2c): rule editor rows, generated ladder, per-session qualifying checkmarks — **double progression (`.ladder`) only**; don't add other `ProgressionRuleType` cases yet. The bottom pill's PROG button is currently a disabled stub.
+- [x] PR engine (`PersonalRecordService`): compare against `PRRecord` per kind on set commit, inline gold PR badge, no modal. Covers `.bestWeight`/`.bestE1RM`/`.bestVolume`; `.repsAtWeight` still needs a per-weight-keyed record shape (see the service's doc comment) — not implemented.
 
 ### 3. Rest timer + Live Activity + Dynamic Island
-- [ ] `RestTimerManager` — wall-clock `Date` math, not a running timer (survives backgrounding); start/extend/skip
-- [ ] Rest pill UI (in-app) with overtime state (counts up, warning color)
+- [x] `RestTimerManager` — wall-clock `Date` math, not a running timer (survives backgrounding); start/extend/skip
+- [x] Rest pill UI (in-app, `RestTimerPill`) with overtime state (counts up, warning color)
 - [ ] ActivityKit Live Activity: lock screen, Dynamic Island compact/minimal/expanded, all per dev spec §4 — requires adding a Widget Extension target (not yet in `generate_project.py`)
 - [ ] Local notification at rest completion when backgrounded
 
 ### 4. Exercise picker + dedup + create-exercise flow
-- [ ] Exercise Selection screen (mockup frame 3): searchable, Recents/Favorites/All sections, muscle+equipment chip filters, inline history preview on row tap
-- [ ] Create-exercise flow: name + muscle groups + equipment, one screen, "Similar exists" row wired to `ExerciseDedupService`
+- [ ] Exercise Selection screen (mockup frame 3): searchable, Recents/Favorites/All sections, muscle+equipment chip filters, inline history preview on row tap. `AddExerciseSheet` is a **minimal stand-in** for this (plain list + create form) built just to unblock the Exercise Focus flow — replace it, don't build alongside it.
+- [x] Create-exercise flow: name + muscle groups + equipment, one screen, "Similar exists" row wired to `ExerciseDedupService` — done inside `AddExerciseSheet`; needs to move into the real picker above.
 - [ ] First-run empty state: "Create your first exercise" leads the picker
 
 ### 5. Home, Summary, routine-update prompt, HealthKit export (phone-only path)

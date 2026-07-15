@@ -35,10 +35,10 @@ Read the dev spec before making architectural or data-model changes. This CLAUDE
 - `TODO.md` — canonical, prioritized backlog, structured around the dev spec's "Build order" (§9); use this to decide what to work on next
 - `generate_project.py` — Xcode project file generator
 - `RepSetForge/Models/` — `@Model` classes: `Exercise`, `Routine`, `RoutineItem`, `ProgressionRule`, `WorkoutSession`, `SessionExercise`, `SetEntry`, `PRRecord`, `BodyMetric`, plus supporting enums (`MuscleGroup`, `Equipment`, `SetType`, `ProgressionRuleType`, `WorkoutSessionStatus`, `PRKind`)
-- `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match). More services land per TODO.md's build order (progression ladder engine, PR engine, rest timer manager, HealthKit export, Live Activity, CSV import/export, etc.)
+- `RepSetForge/Services/` — `ExerciseDedupService` (canonical-name key + fuzzy match), `RestTimerManager` (wall-clock rest timer), `PersonalRecordService` (PR detection on set commit). More land per TODO.md's build order (progression ladder engine, HealthKit export, Live Activity, CSV import/export, etc.)
 - `RepSetForge/Persistence/` — `PersistenceController` (ModelContainer, CloudKit config), `RepSetForgeSchema` (`RepSetForgeSchemaV1`/`RepSetForgeMigrationPlan`)
-- `RepSetForge/Views/` — screen views (Home, Library, History, Progress land per TODO.md; `RootView`/`ContentView` is the current minimal tab shell)
-- `RepSetForge/Views/Components/` — reusable UI components (empty for now — populate as screens are built)
+- `RepSetForge/Views/` — `ContentView` (the `RootView` tab shell — Home/History/Progress/Library are still placeholders), `ActiveWorkoutView` (the full-screen workout container), `ExerciseFocusView` (the core logging screen, mockup frame 2b), `ExerciseIndexSheet` (read-only overview, frame 2), `StartWorkoutSheet`, `AddExerciseSheet` (a **minimal** stand-in for the real Exercise Selection screen — see TODO.md build-order step 4)
+- `RepSetForge/Views/Components/` — `SetRowView` (the set-table row), `RPEChipRow`, `ExerciseTrendChart` (Swift Charts e1RM trend), `RestTimerPill`
 - `RepSetForge/RepSetForgeTheme.swift` — design tokens translated from the hi-fi mockup's CSS custom properties (surfaces, signal/pr/warn/destructive colors, radii, monospace type)
 
 ## Development Workflow
@@ -155,8 +155,12 @@ This is a freshly rebuilt foundation, not a feature-complete app. Current state:
 - [x] `PersistenceController` with CloudKit config + local fallback
 - [x] `ExerciseDedupService` (canonical key + fuzzy match)
 - [x] `RepSetForgeTheme.swift` token translation
-- [x] Minimal `RootView` tab shell (placeholder screens only — no real logging UI yet)
-- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list, starting with the Exercise Focus logging screen (step 2)
+- [x] `RootView` tab shell wired up: FAB starts/resumes a workout into `ActiveWorkoutView`; Home/History/Progress/Library themselves are still placeholders
+- [x] Exercise Focus logging screen (`ExerciseFocusView`) + set row (`SetRowView`) + read-only Exercise Index sheet — TODO.md build-order step 2, with noted simplifications (no superset paging, no progression panel, chart is e1RM-trend-only)
+- [x] Rest timer (`RestTimerManager`) + in-app rest pill — build-order step 3's non-Live-Activity half
+- [x] PR detection (`PersonalRecordService`) — `.bestWeight`/`.bestE1RM`/`.bestVolume`; `.repsAtWeight` not yet
+- [ ] `AddExerciseSheet` is a deliberately minimal create/select-exercise flow, not the real Exercise Selection screen (mockup frame 3, build-order step 4)
+- [ ] Everything else in the dev spec's build order §9 — see TODO.md for the prioritized list. Next up: Live Activity/Dynamic Island, the real Exercise Selection screen, and `WorkoutSession` restore-UX rules.
 
 ## Acceptance Criteria
 

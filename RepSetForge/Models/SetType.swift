@@ -1,6 +1,6 @@
 import Foundation
 
-enum SetType: String, Codable, CaseIterable, Identifiable {
+enum SetType: String, Codable, CaseIterable, Identifiable, Hashable {
     case warmup
     case working
     case drop

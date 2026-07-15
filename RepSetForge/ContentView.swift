@@ -1,14 +1,28 @@
 import SwiftUI
+import SwiftData
 
 /// Minimal stand-in for the `RootView` architecture in dev spec §1 — the
-/// TabView shell exists, but Home/History/Progress/Library and the FAB's
-/// StartWorkoutSheet are all still TODO.md build-order work.
+/// TabView shell exists and the FAB now starts/resumes a workout
+/// (ExerciseFocusView, TODO.md build-order step 2), but Home/History/
+/// Progress/Library themselves are still placeholders.
 struct ContentView: View {
     private enum Tab: Hashable {
         case home, history, progress, library
     }
 
     @State private var selectedTab: Tab = .home
+    @State private var isPresentingStartWorkout = false
+    @State private var activeWorkoutSession: WorkoutSession?
+
+    // Fetched unfiltered and matched in-memory rather than via a #Predicate
+    // filter — see ExerciseFocusView's note on relationship-predicate risk.
+    // This one's a plain attribute compare so it's lower-risk, but kept
+    // consistent for now.
+    @Query private var allSessions: [WorkoutSession]
+
+    private var activeSession: WorkoutSession? {
+        allSessions.first { $0.status == .active }
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -30,24 +44,41 @@ struct ContentView: View {
                     .tag(Tab.library)
             }
 
-            StartWorkoutFAB()
-                .padding(.bottom, 50)
+            StartWorkoutFAB(isActive: activeSession != nil) {
+                if let activeSession {
+                    activeWorkoutSession = activeSession
+                } else {
+                    isPresentingStartWorkout = true
+                }
+            }
+            .padding(.bottom, 50)
+        }
+        .sheet(isPresented: $isPresentingStartWorkout) {
+            StartWorkoutSheet { session in
+                activeWorkoutSession = session
+            }
+        }
+        .fullScreenCover(item: $activeWorkoutSession) { session in
+            ActiveWorkoutView(session: session) {
+                activeWorkoutSession = nil
+            }
         }
     }
 }
 
 private struct StartWorkoutFAB: View {
+    let isActive: Bool
+    let action: () -> Void
+
     var body: some View {
-        Button(action: {}) {
-            Image(systemName: "play.fill")
+        Button(action: action) {
+            Image(systemName: isActive ? "arrow.up.right" : "play.fill")
                 .font(.system(size: 19, weight: .bold))
                 .foregroundStyle(.black)
                 .frame(width: 48, height: 48)
                 .background(RepSetForgeTheme.Colors.signal, in: Circle())
         }
-        .disabled(true)
-        .opacity(0.4)
-        .accessibilityLabel("Start workout — coming soon")
+        .accessibilityLabel(isActive ? "Resume workout" : "Start workout")
     }
 }
 

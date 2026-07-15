@@ -1,6 +1,6 @@
 import Foundation
 
-enum PRKind: String, Codable, CaseIterable, Identifiable {
+enum PRKind: String, Codable, CaseIterable, Identifiable, Hashable {
     case bestWeight
     case bestE1RM
     case bestVolume

@@ -1,6 +1,6 @@
 import Foundation
 
-enum MuscleGroup: String, Codable, CaseIterable, Identifiable {
+enum MuscleGroup: String, Codable, CaseIterable, Identifiable, Hashable {
     case chest
     case back
     case shoulders

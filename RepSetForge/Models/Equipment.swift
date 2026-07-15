@@ -1,6 +1,6 @@
 import Foundation
 
-enum Equipment: String, Codable, CaseIterable, Identifiable {
+enum Equipment: String, Codable, CaseIterable, Identifiable, Hashable {
     case barbell
     case dumbbell
     case cable

@@ -5,7 +5,7 @@ import Foundation
 /// are v1.1 (dev spec §9 build order item 11, TODO.md). Don't add cases
 /// here until they have real logic; that's the whole point of this being
 /// an enum instead of a bool.
-enum ProgressionRuleType: String, Codable, CaseIterable, Identifiable {
+enum ProgressionRuleType: String, Codable, CaseIterable, Identifiable, Hashable {
     case ladder
 
     var id: String { rawValue }

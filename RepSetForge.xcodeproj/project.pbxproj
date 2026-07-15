@@ -28,9 +28,22 @@
 		AA0200000000000000000013 /* RepSetForgeSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000013 /* RepSetForgeSchema.swift */; };
 		AA0200000000000000000014 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000014 /* PersistenceController.swift */; };
 		AA0200000000000000000015 /* ExerciseDedupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000015 /* ExerciseDedupService.swift */; };
+		AA020000000000000000001E /* RestTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001E /* RestTimerManager.swift */; };
+		AA020000000000000000001F /* PersonalRecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001F /* PersonalRecordService.swift */; };
+		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
+		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
+		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
+		AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000023 /* StartWorkoutSheet.swift */; };
+		AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000024 /* AddExerciseSheet.swift */; };
+		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
+		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
+		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
+		AA0200000000000000000028 /* RestTimerPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000028 /* RestTimerPill.swift */; };
 		AA0200000000000000000016 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000016 /* Assets.xcassets */; };
 		AA020000000000000000001B /* ExerciseDedupServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001B /* ExerciseDedupServiceTests.swift */; };
 		AA020000000000000000001C /* SetEntryE1RMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001C /* SetEntryE1RMTests.swift */; };
+		AA0200000000000000000029 /* PersonalRecordServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000029 /* PersonalRecordServiceTests.swift */; };
+		AA020000000000000000002A /* RestTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000002A /* RestTimerManagerTests.swift */; };
 		AA020000000000000000001D /* RepSetForgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001D /* RepSetForgeUITests.swift */; };
 		/* End PBXBuildFile section */
 
@@ -76,10 +89,23 @@
 		AA0100000000000000000013 /* RepSetForgeSchema.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeSchema.swift; sourceTree = "<group>"; };
 		AA0100000000000000000014 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		AA0100000000000000000015 /* ExerciseDedupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDedupService.swift; sourceTree = "<group>"; };
+		AA010000000000000000001E /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
+		AA010000000000000000001F /* PersonalRecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
+		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000023 /* StartWorkoutSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartWorkoutSheet.swift; sourceTree = "<group>"; };
+		AA0100000000000000000024 /* AddExerciseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseSheet.swift; sourceTree = "<group>"; };
+		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
+		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
+		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
+		AA0100000000000000000028 /* RestTimerPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerPill.swift; sourceTree = "<group>"; };
 		AA0100000000000000000016 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA0100000000000000000017 /* RepSetForge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RepSetForge.entitlements; sourceTree = "<group>"; };
 		AA010000000000000000001B /* ExerciseDedupServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDedupServiceTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000001C /* SetEntryE1RMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEntryE1RMTests.swift; sourceTree = "<group>"; };
+		AA0100000000000000000029 /* PersonalRecordServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000002A /* RestTimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManagerTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000001D /* RepSetForgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeUITests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
@@ -137,6 +163,7 @@
 				AA0300000000000000000004 /* Models */,
 				AA0300000000000000000005 /* Services */,
 				AA0300000000000000000006 /* Persistence */,
+				AA0300000000000000000009 /* Views */,
 				AA0100000000000000000016 /* Assets.xcassets */,
 				AA0100000000000000000017 /* RepSetForge.entitlements */,
 			);
@@ -169,6 +196,8 @@
 			isa = PBXGroup;
 			children = (
 				AA0100000000000000000015 /* ExerciseDedupService.swift */,
+				AA010000000000000000001E /* RestTimerManager.swift */,
+				AA010000000000000000001F /* PersonalRecordService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -182,11 +211,37 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
+		AA0300000000000000000009 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				AA0100000000000000000020 /* ExerciseFocusView.swift */,
+				AA0100000000000000000021 /* ExerciseIndexSheet.swift */,
+				AA0100000000000000000022 /* ActiveWorkoutView.swift */,
+				AA0100000000000000000023 /* StartWorkoutSheet.swift */,
+				AA0100000000000000000024 /* AddExerciseSheet.swift */,
+				AA030000000000000000000A /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AA030000000000000000000A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AA0100000000000000000025 /* SetRowView.swift */,
+				AA0100000000000000000026 /* RPEChipRow.swift */,
+				AA0100000000000000000027 /* ExerciseTrendChart.swift */,
+				AA0100000000000000000028 /* RestTimerPill.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		AA0300000000000000000007 /* RepSetForgeTests */ = {
 			isa = PBXGroup;
 			children = (
 				AA010000000000000000001B /* ExerciseDedupServiceTests.swift */,
 				AA010000000000000000001C /* SetEntryE1RMTests.swift */,
+				AA0100000000000000000029 /* PersonalRecordServiceTests.swift */,
+				AA010000000000000000002A /* RestTimerManagerTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -339,6 +394,17 @@
 				AA0200000000000000000013 /* RepSetForgeSchema.swift in Sources */,
 				AA0200000000000000000014 /* PersistenceController.swift in Sources */,
 				AA0200000000000000000015 /* ExerciseDedupService.swift in Sources */,
+				AA020000000000000000001E /* RestTimerManager.swift in Sources */,
+				AA020000000000000000001F /* PersonalRecordService.swift in Sources */,
+				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
+				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
+				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
+				AA0200000000000000000023 /* StartWorkoutSheet.swift in Sources */,
+				AA0200000000000000000024 /* AddExerciseSheet.swift in Sources */,
+				AA0200000000000000000025 /* SetRowView.swift in Sources */,
+				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
+				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,
+				AA0200000000000000000028 /* RestTimerPill.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +414,8 @@
 			files = (
 				AA020000000000000000001B /* ExerciseDedupServiceTests.swift in Sources */,
 				AA020000000000000000001C /* SetEntryE1RMTests.swift in Sources */,
+				AA0200000000000000000029 /* PersonalRecordServiceTests.swift in Sources */,
+				AA020000000000000000002A /* RestTimerManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
