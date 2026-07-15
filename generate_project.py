@@ -88,6 +88,7 @@ FR = {
     "WorkoutSessionRestoreService": u(1, 0x40),
     "TEST_WorkoutSessionRestore": u(1, 0x41),
     "ProgressionRuleEditorSheet": u(1, 0x42),
+    "RestTimerNotificationScheduler": u(1, 0x43),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -174,6 +175,7 @@ APP_SOURCES = [
     ("ProgressStatsService",  "Services/ProgressStatsService.swift"),
     ("AppSettings",           "Services/AppSettings.swift"),
     ("WorkoutSessionRestoreService", "Services/WorkoutSessionRestoreService.swift"),
+    ("RestTimerNotificationScheduler", "Services/RestTimerNotificationScheduler.swift"),
     ("ExerciseFocusView",     "Views/ExerciseFocusView.swift"),
     ("ExerciseIndexSheet",    "Views/ExerciseIndexSheet.swift"),
     ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
@@ -206,7 +208,7 @@ MODEL_KEYS = [
 SERVICE_KEYS = [
     "ExerciseDedupService", "RestTimerManager", "PersonalRecordService", "HomeStatsService",
     "ProgressionLadderService", "ExerciseHistoryService", "ProgressStatsService", "AppSettings",
-    "WorkoutSessionRestoreService",
+    "WorkoutSessionRestoreService", "RestTimerNotificationScheduler",
 ]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [

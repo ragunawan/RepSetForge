@@ -47,6 +47,17 @@ struct ActiveWorkoutView: View {
         }
         .background(RepSetForgeTheme.Colors.surface)
         .interactiveDismissDisabled(true)
+        .onAppear {
+            RestTimerNotificationScheduler.requestAuthorizationIfNeeded()
+        }
+        // `restTimer` is one shared instance across every page in this
+        // session, so the notification hook lives here rather than in
+        // ExerciseFocusView — Start/Extend/Skip on the pill all funnel
+        // through this single `restEndDate` regardless of which page is
+        // currently visible.
+        .onChange(of: restTimer.restEndDate) { _, newEndDate in
+            RestTimerNotificationScheduler.reschedule(endDate: newEndDate)
+        }
         .sheet(isPresented: $isPresentingAddExercise) {
             AddExerciseSheet { exercise in addExercise(exercise) }
         }

@@ -26,7 +26,7 @@ Canonical, prioritized backlog. Structured around the dev spec's build order (`D
 - [x] `RestTimerManager` — wall-clock `Date` math, not a running timer (survives backgrounding); start/extend/skip
 - [x] Rest pill UI (in-app, `RestTimerPill`) with overtime state (counts up, warning color)
 - [ ] ActivityKit Live Activity: lock screen, Dynamic Island compact/minimal/expanded, all per dev spec §4 — requires adding a Widget Extension target (not yet in `generate_project.py`)
-- [ ] Local notification at rest completion when backgrounded
+- [x] Local notification at rest completion when backgrounded (`RestTimerNotificationScheduler`, driven by `ActiveWorkoutView` observing `restTimer.restEndDate` so Start/Extend/Skip on the pill all reschedule/cancel the same pending request regardless of which superset/exercise page is visible). No delegate is registered, so iOS's default foreground-suppression behavior gives "only when backgrounded" without extra code. No Info.plist usage string or entitlement needed for local (non-push) notifications.
 
 ### 4. Exercise picker + dedup + create-exercise flow
 - [ ] Exercise Selection screen (mockup frame 3): searchable, Recents/Favorites/All sections, muscle+equipment chip filters, inline history preview on row tap. `AddExerciseSheet` is a **minimal stand-in** for this (plain list + create form) built just to unblock the Exercise Focus flow — replace it, don't build alongside it.

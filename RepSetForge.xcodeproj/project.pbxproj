@@ -36,6 +36,7 @@
 		AA020000000000000000003A /* ProgressStatsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003A /* ProgressStatsService.swift */; };
 		AA020000000000000000003D /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003D /* AppSettings.swift */; };
 		AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */; };
+		AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */; };
 		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
@@ -121,6 +122,7 @@
 		AA010000000000000000003A /* ProgressStatsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatsService.swift; sourceTree = "<group>"; };
 		AA010000000000000000003D /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionRestoreService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerNotificationScheduler.swift; sourceTree = "<group>"; };
 		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				AA010000000000000000003A /* ProgressStatsService.swift */,
 				AA010000000000000000003D /* AppSettings.swift */,
 				AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */,
+				AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -474,6 +477,7 @@
 				AA020000000000000000003A /* ProgressStatsService.swift in Sources */,
 				AA020000000000000000003D /* AppSettings.swift in Sources */,
 				AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */,
+				AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */,
 				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
