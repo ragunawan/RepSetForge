@@ -1,6 +1,6 @@
 # RepSetForge Progress
 
-Current phase: Phase 3 - Rest Timer + Live Activity + Dynamic Island
+Current phase: Phase 5 - Picker + Create Exercise
 
 Completed:
 - Phase 0 started - PROGRESS.md created.
@@ -20,6 +20,10 @@ Completed:
 - P3.1 RestTimerManager semantics - done, rest remains wall-clock `Date` math with skip/+30s extension, cumulative ledger invariants preserved, and rest completion notification scheduled/cancelled from the single in-app source of truth.
 - P3.2 ActivityKit payload + app updates - done, shared attributes/state added, Focus store starts/reasserts/updates Live Activity on set completion, rest start/extend/skip, and page changes; ActivityKit failures are best-effort and do not affect logging.
 - P3.3 Live Activity/Dynamic Island views - done, lock screen/banner plus compact/minimal/expanded Dynamic Island implemented with OS-driven timer text, Skip/+30s `LiveActivityIntent`s, widget URL deep link, and tokenized styling.
+- P4.1 Ladder engine - done, double-progression level generation derives from SetEntry history, supports historical regression, and remains rebuildable.
+- P4.2 Focus prompt ladder source - done, coaching prompt and tap-to-apply target use the current ladder level as the single source of truth.
+- P4.3 PROG panel - done, bottom PROG opens a tokenized rule + ladder sheet with current/completed level states.
+- Phase 4 gate 2026-07-16 - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (23/23) including ladder regeneration property coverage and prompt == ladder head.
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
@@ -27,6 +31,7 @@ Decisions:
 - Phase 2 render gate uses SwiftUI `ImageRenderer` smoke snapshots in XCTest for the required type-size/color-scheme matrix until a pixel-baseline snapshot harness is introduced.
 - Phase 2 plate calculator uses the spec default 20 kg bar and common kg plate set locally until Settings owns configurable plate inventory.
 - Phase 3 simulator verification covers build/tests only; the phase gate remains open because the plan requires on-device lock-screen/background Live Activity behavior.
+- Phase 4 Focus uses the default double-progression rule until Phase 8 routine builder/library binds editable `ProgressionRule` rows to routine items.
 
 Open:
 - Phase 3 gate pending: on-device lock phone mid-rest, countdown ticks, Skip works from lock screen, activity survives backgrounding.

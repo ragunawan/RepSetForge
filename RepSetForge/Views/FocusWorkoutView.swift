@@ -3,6 +3,7 @@ import SwiftUI
 struct FocusWorkoutView: View {
   @Bindable var store: FocusWorkoutStore
   @State private var showsIndex = false
+  @State private var showsProgression = false
 
   var body: some View {
     ZStack(alignment: .bottom) {
@@ -17,11 +18,15 @@ struct FocusWorkoutView: View {
       }
       .tabViewStyle(.page(indexDisplayMode: .never))
 
-      BottomFocusPill(store: store, showsIndex: $showsIndex)
+      BottomFocusPill(store: store, showsIndex: $showsIndex, showsProgression: $showsProgression)
     }
     .sheet(isPresented: $showsIndex) {
       ExerciseIndexSheet(store: store)
         .presentationDetents([.medium])
+    }
+    .sheet(isPresented: $showsProgression) {
+      ProgressionSheet(exercise: store.exercises[store.selectedIndex])
+        .presentationDetents([.medium, .large])
     }
     .environment(\.font, .system(.body, design: .monospaced))
   }
@@ -265,7 +270,7 @@ private struct CoachingPrompt: View {
         Text("SAME AS LAST SESSION · TAP TO APPLY")
           .forgeTextStyle(DesignTokens.Typography.eyebrow)
           .foregroundStyle(DesignTokens.ColorToken.textPrimary)
-        Text("TARGET ≥ \(format(exercise.targetWeightKg)) KG × \(exercise.targetReps) @ \(format(exercise.targetRPE)) RPE")
+        Text("TARGET ≥ \(format(exercise.coachingTarget.weightKg)) KG × \(exercise.coachingTarget.reps) @ ≤\(format(exercise.progressionRule.maxQualifyingRPE)) RPE")
           .forgeTextStyle(DesignTokens.Typography.numericRow)
           .forgeNumeric()
           .foregroundStyle(DesignTokens.ColorToken.signal)
@@ -692,12 +697,18 @@ private struct FinishWorkoutButton: View {
 private struct BottomFocusPill: View {
   @Bindable var store: FocusWorkoutStore
   @Binding var showsIndex: Bool
+  @Binding var showsProgression: Bool
 
   var body: some View {
     HStack(spacing: DesignTokens.Spacing.step4) {
       Text("×")
-      Text("PROG")
-        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      Button {
+        showsProgression = true
+      } label: {
+        Text("PROG")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      }
+      .buttonStyle(.plain)
       if let rest = store.activeRest {
         Button("+30") {
           store.extendRest()
@@ -731,6 +742,107 @@ private struct BottomFocusPill: View {
     .overlay(Capsule().stroke(DesignTokens.ColorToken.hairline))
     .shadow(color: DesignTokens.ColorToken.surface.opacity(0.25), radius: DesignTokens.Spacing.step2)
     .padding(.bottom, DesignTokens.Spacing.step5)
+  }
+}
+
+private struct ProgressionSheet: View {
+  let exercise: FocusExercise
+
+  var body: some View {
+    NavigationStack {
+      ScrollView {
+        VStack(alignment: .leading, spacing: DesignTokens.Spacing.step4) {
+          ruleRows
+          ladderRows
+        }
+        .padding(DesignTokens.Spacing.screenGutter)
+      }
+      .background(DesignTokens.ColorToken.surface)
+      .navigationTitle("Progression")
+    }
+    .environment(\.font, .system(.body, design: .monospaced))
+  }
+
+  private var ruleRows: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+      Text("RULE")
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      ProgressionRuleRow(label: "REP RANGE", value: "\(exercise.progressionRule.repRangeLow)–\(exercise.progressionRule.repRangeHigh)")
+      ProgressionRuleRow(label: "RPE", value: "≤ \(format(exercise.progressionRule.maxQualifyingRPE))")
+      ProgressionRuleRow(label: "SETS / SESSION", value: "≥ \(exercise.progressionRule.qualifyingSetsRequired)")
+      ProgressionRuleRow(label: "INCREMENT", value: "+\(format(exercise.progressionRule.incrementKg)) KG")
+    }
+  }
+
+  private var ladderRows: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+      Text("LADDER")
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      ForEach(exercise.ladderState.levels) { level in
+        LadderLevelRow(level: level, currentLevel: exercise.ladderState.currentLevel)
+      }
+    }
+  }
+}
+
+private struct ProgressionRuleRow: View {
+  let label: String
+  let value: String
+
+  var body: some View {
+    HStack {
+      Text(label)
+        .forgeTextStyle(DesignTokens.Typography.secondary)
+        .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+      Spacer()
+      Text(value)
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+        .forgeNumeric()
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+    }
+    .padding(.vertical, DesignTokens.Spacing.step2)
+    .overlay(alignment: .bottom) {
+      Rectangle()
+        .fill(DesignTokens.ColorToken.hairline)
+        .frame(height: 1)
+    }
+  }
+}
+
+private struct LadderLevelRow: View {
+  let level: LadderLevel
+  let currentLevel: LadderLevel
+
+  var body: some View {
+    HStack(spacing: DesignTokens.Spacing.step3) {
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+        Text("\(format(level.weightKg)) KG × \(level.reps)")
+          .forgeTextStyle(DesignTokens.Typography.numericRow)
+          .forgeNumeric()
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text("E1RM \(format(level.estimatedOneRepMaxKg)) KG")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .forgeNumeric()
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+      }
+      Spacer()
+      Text(checkmarks)
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+        .foregroundStyle(level.isCompleted ? DesignTokens.ColorToken.signal : DesignTokens.ColorToken.textTertiary)
+    }
+    .padding(DesignTokens.Spacing.step3)
+    .background(level.id == currentLevel.id ? DesignTokens.ColorToken.signalDim : DesignTokens.ColorToken.surfaceRaised)
+    .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.card))
+    .opacity(level.isCompleted ? 0.55 : 1)
+  }
+
+  private var checkmarks: String {
+    if level.isCompleted {
+      return String(repeating: "✓", count: level.requiredSets)
+    }
+    return String(repeating: "○", count: level.requiredSets)
   }
 }
 

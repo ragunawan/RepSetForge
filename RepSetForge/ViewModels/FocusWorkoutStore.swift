@@ -28,6 +28,8 @@ struct FocusExercise: Identifiable, Equatable {
   let id: UUID
   var name: String
   var detail: String
+  var progressionRule: ProgressionRuleSnapshot
+  var ladderState: LadderState
   var targetWeightKg: Decimal
   var targetReps: Int
   var targetRPE: Decimal
@@ -53,6 +55,10 @@ struct FocusExercise: Identifiable, Equatable {
 
   var anyCompleted: Bool {
     sets.contains(where: \.isCompleted)
+  }
+
+  var coachingTarget: LadderLevel {
+    ladderState.currentLevel
   }
 }
 
@@ -217,8 +223,8 @@ final class FocusWorkoutStore {
 
   func applyTarget(to exerciseID: FocusExercise.ID) {
     guard let exerciseIndex = exercises.firstIndex(where: { $0.id == exerciseID }) else { return }
-    let targetWeight = exercises[exerciseIndex].targetWeightKg
-    let targetReps = exercises[exerciseIndex].targetReps
+    let targetWeight = exercises[exerciseIndex].coachingTarget.weightKg
+    let targetReps = exercises[exerciseIndex].coachingTarget.reps
     let targetRPE = exercises[exerciseIndex].targetRPE
     for index in exercises[exerciseIndex].sets.indices where !exercises[exerciseIndex].sets[index].isCompleted {
       exercises[exerciseIndex].sets[index].weightKg = targetWeight
@@ -259,6 +265,7 @@ final class FocusWorkoutStore {
     }
     startRest(duration: TimeInterval(exercises[exerciseIndex].sets[setIndex].restSeconds), now: now)
     appendNextSetIfNeeded(exerciseIndex: exerciseIndex, completedSetIndex: setIndex)
+    refreshLadder(forExerciseAt: exerciseIndex)
     persistDraft()
     updateLiveActivity()
   }
@@ -345,6 +352,18 @@ final class FocusWorkoutStore {
       touchedFields: []
     ))
     exercises[exerciseIndex].plannedSets = max(exercises[exerciseIndex].plannedSets, exercises[exerciseIndex].sets.count)
+  }
+
+  private func refreshLadder(forExerciseAt exerciseIndex: Int) {
+    let exercise = exercises[exerciseIndex]
+    let state = LadderEngine.rebuild(
+      rule: exercise.progressionRule,
+      baseWeightKg: exercise.previousBestWeightKg,
+      focusSets: exercise.sets
+    )
+    exercises[exerciseIndex].ladderState = state
+    exercises[exerciseIndex].targetWeightKg = state.currentLevel.weightKg
+    exercises[exerciseIndex].targetReps = state.currentLevel.reps
   }
 
   private func isPersonalRecord(_ set: FocusSet, exercise: FocusExercise) -> Bool {
@@ -463,12 +482,16 @@ final class FocusWorkoutStore {
       }
       let targetWeight = best?.weightKg ?? 0
       let targetReps = best?.reps ?? 8
+      let rule = sessionExercise.exercise.flatMap { _ in sessionExercise.note.map { _ in ProgressionRuleSnapshot() } } ?? ProgressionRuleSnapshot()
+      let ladder = LadderEngine.rebuild(rule: rule, baseWeightKg: targetWeight, focusSets: sets)
       return FocusExercise(
         id: sessionExercise.id,
         name: sessionExercise.exercise?.name ?? "Exercise",
         detail: sessionExercise.note ?? "Working sets",
-        targetWeightKg: targetWeight,
-        targetReps: targetReps,
+        progressionRule: rule,
+        ladderState: ladder,
+        targetWeightKg: ladder.currentLevel.weightKg,
+        targetReps: ladder.currentLevel.reps,
         targetRPE: 8,
         previousBestWeightKg: targetWeight,
         previousBestReps: targetReps,
@@ -564,6 +587,8 @@ final class FocusWorkoutStore {
         id: UUID(),
         name: "Bench Press",
         detail: "Chest · Sternal head · Triceps",
+        progressionRule: ProgressionRuleSnapshot(),
+        ladderState: LadderEngine.rebuild(rule: ProgressionRuleSnapshot(), baseWeightKg: 105, focusSets: []),
         targetWeightKg: 105,
         targetReps: 8,
         targetRPE: 8,
@@ -583,6 +608,8 @@ final class FocusWorkoutStore {
         id: UUID(),
         name: "Barbell Row",
         detail: "Back · Lats · Rear delts",
+        progressionRule: ProgressionRuleSnapshot(),
+        ladderState: LadderEngine.rebuild(rule: ProgressionRuleSnapshot(), baseWeightKg: 92.5, focusSets: []),
         targetWeightKg: 92.5,
         targetReps: 10,
         targetRPE: 8,
