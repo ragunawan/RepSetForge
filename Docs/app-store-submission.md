@@ -66,6 +66,7 @@ Health-denied path:
 
 ## Release Checklist
 
+- Complete `Docs/release-verification.md` and keep the signed-off copy with the release archive.
 - CloudKit production schema deployed.
 - Privacy policy URL hosted and entered in App Store Connect.
 - TestFlight Health-denied path completed.

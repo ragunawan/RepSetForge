@@ -40,6 +40,7 @@ Completed:
 - P8.5 Rest/haptic accessibility polish - done, Focus set completion now fires `.light`, PR commits fire `.success`, rest completion fires `.warning`, and active rest posts VoiceOver announcements at 10s remaining + completion without per-second state; `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (24/24).
 - P8.6 Token contrast audit - done, light `onSignal` and `warning` tokens corrected at source, `DesignTokens.swift` regenerated, and `DesignTokenContrastTests` added for required light/dark text/action pairs; `test_sim CODE_SIGNING_ALLOWED=NO` green (27/27).
 - P8.7 Privacy policy draft - done, `Docs/privacy-policy.md` added with §8b-required Health read/write, private CloudKit, no tracking/sale/sharing, Health-denied functionality, and Delete All Data language; `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (27/27).
+- P8.8 Release verification artifact - done, `Docs/release-verification.md` added for privacy URL, CloudKit production, HealthKit device, Live Activity, accessibility, and screenshot sign-off; privacy policy dated; submission doc path checked; `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (27/27).
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.

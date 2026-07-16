@@ -1,6 +1,6 @@
 # RepSetForge Privacy Policy
 
-Effective date: TODO before submission
+Effective date: July 16, 2026
 
 RepSetForge is a strength-training tracker for iPhone. This policy explains what data the app handles and how it is used.
 
@@ -28,4 +28,4 @@ Settings > Delete All Data removes RepSetForge app records from the app database
 
 ## Contact
 
-TODO: Add support email or website before submission.
+For support or privacy questions, use the support contact listed on the RepSetForge App Store product page.
