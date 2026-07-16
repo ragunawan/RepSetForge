@@ -1,6 +1,18 @@
 # RepSetForge — PROGRESS
 
-Current phase: **6 — Home + Summary + Health** (code complete; on-device Fitness-app gate pending)
+Current phase: **8 — Settings/polish/submission** (all phases 0–8 code complete on 2026-07-16; every build/test/device gate pending on-Mac verification)
+
+## Phase 7 completed
+- P7.1 InvalidationChain: §6 four-step chain (PR recompute via PRRebuilder wholesale-replace + isPR cascade; ladder implicit-live; rollups computed-on-demand; Health re-write via healthKitUUID) + deleteSession w/ HKWorkout propagation — done
+- P7.2 LibraryView + RoutineBuilderView: create/archive, drag reorder, superset grouping via context menu (singleton groups dissolve), target steppers, RuleEditorView bound to ProgressionRule — done
+- P7.3 HistoryView: month-grouped list, swipe-delete → chain, SessionDetailView edit → chain on Done — done
+- P7.4 ProgressTabView: weekly volume rollups computed live from SetEntry (12-week bar chart), insight sentence, 2-week unlock state — done
+
+## Phase 8 completed
+- P8.1 CSVCodec: spec schema, RFC-4180 quoting, tolerant import (skips bad rows, keeps good) + round-trip tests — done
+- P8.2 SettingsView: units/rest/RPE toggle/plate bar weight/bodyweight log/CSV export+share/iCloud line/Delete-All (typed DELETE + HKWorkout purge) — done
+- P8.3 Submission artifacts: Docs/submission/review-notes.md (Health rationale, privacy label, test script), screenshot-list.md; usage strings already in Info.plist from Phase 0 — done
+- P8.4 Settings wired to Home profile button — done
 
 ## Phase 5 completed
 - P5.1 ExercisePickerView: search (canonical-key), ALL/FAV/RECENT filters, favorite toggle, first-run "Create your first exercise" (DB ships empty) — done
@@ -49,6 +61,14 @@ Current phase: **6 — Home + Summary + Health** (code complete; on-device Fitne
 - P0.4 Entitlements: app (HealthKit, CloudKit container iCloud.dev.gnwn.RepSetForge, aps-environment) + widget (app group group.dev.gnwn.RepSetForge) — done
 - P0.5 Widget extension scaffold: WidgetBundle + Live Activity stub (WorkoutActivityAttributes defined; full surfaces = Phase 3) — done
 - P0.6 project.pbxproj (objectVersion 77, synchronized folders, 3 targets: app / widget appex / unit tests) + shared scheme — done
+
+## Outstanding before v1.0 ships (needs a Mac / device)
+1. `xcodebuild build` + `xcodebuild test` — fix any compile errors (all code written without a Swift toolchain available)
+2. Snapshot tests at large/xxxLarge/AX1/AX3 × light/dark (suite not yet written — needs simulator)
+3. On-device gates: Live Activity (Phase 3), Fitness-app export/edit/delete (Phase 6)
+4. Superset paged rendering (§3 resolved model — group = one page) not yet implemented; plate-calc long-press popover pending; prev-session ghost feed passes [] (needs history query wiring in ActiveWorkoutView)
+5. CSV import UI (codec + tests done; file-picker flow pending); plate calc config editor; theme picker
+6. CloudKit prod schema deploy + TestFlight round with Health denied
 
 ## Gate status
 - Phase 2 gate (two-taps demo; snapshots at 4 sizes × 2 modes): **snapshot suite not yet written (needs simulator); two-tap flow implemented (✓ commits ghosts, no modals).** Open items: superset pages (§3 resolved model), plate-calc long-press, prev-session ghost feed (needs history query), rest field per RoutineItem.

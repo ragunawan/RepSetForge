@@ -13,6 +13,7 @@ struct RootView: View {
     @State private var showRestoreSheet = false
     @State private var suggestFinishAsIs = false
     @State private var showSummary = false
+    @State private var showSettings = false
     @State private var healthSaved = false
     @State private var tab = 0
     private let health = HealthKitExporter()
@@ -20,19 +21,25 @@ struct RootView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             TabView(selection: $tab) {
-                Group {
-                    if let vm {
-                        HomeView(vm: vm,
-                                 onResume: { showWorkout = true },
-                                 onStart: startWorkout(routine:))
-                    } else {
-                        DT.Colors.surface.ignoresSafeArea()
+                NavigationStack {
+                    Group {
+                        if let vm {
+                            HomeView(vm: vm,
+                                     onResume: { showWorkout = true },
+                                     onStart: startWorkout(routine:))
+                        } else {
+                            DT.Colors.surface.ignoresSafeArea()
+                        }
+                    }
+                    .navigationTitle("Home")
+                    .toolbar {
+                        Button { showSettings = true } label: { Image(systemName: "person.circle") }
                     }
                 }
                 .tabItem { Label("HOME", systemImage: "house") }.tag(0)
-                Text("History — Phase 7").tabItem { Label("HIST", systemImage: "calendar") }.tag(1)
-                Text("Progress — Phase 7").tabItem { Label("PROG", systemImage: "chart.bar") }.tag(2)
-                Text("Library — Phase 7").tabItem { Label("LIB", systemImage: "books.vertical") }.tag(3)
+                HistoryView().tabItem { Label("HIST", systemImage: "calendar") }.tag(1)
+                ProgressTabView().tabItem { Label("PROG", systemImage: "chart.bar") }.tag(2)
+                LibraryView().tabItem { Label("LIB", systemImage: "books.vertical") }.tag(3)
             }
             .tint(DT.Colors.signal)
 
@@ -55,6 +62,7 @@ struct RootView: View {
                                   onFinish: finishWorkout)
             }
         }
+        .sheet(isPresented: $showSettings) { SettingsView() }
         .sheet(isPresented: $showSummary) {
             if let vm {
                 SummaryView(vm: vm, healthSaved: healthSaved) {
