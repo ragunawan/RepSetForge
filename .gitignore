@@ -1,8 +1,17 @@
-.DS_Store
-DerivedData/
+# Xcode
 build/
+DerivedData/
 *.xcuserstate
-*.xcworkspace/xcuserdata/
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
 
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
