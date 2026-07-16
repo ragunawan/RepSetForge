@@ -1,24 +1,33 @@
 import SwiftUI
+import SwiftData
 
 struct FocusWorkoutView: View {
   @Bindable var store: FocusWorkoutStore
+  @Environment(\.modelContext) private var modelContext
   @State private var showsIndex = false
   @State private var showsProgression = false
+  @State private var showsPicker = false
 
   var body: some View {
-    ZStack(alignment: .bottom) {
-      DesignTokens.ColorToken.surface
-        .ignoresSafeArea()
+    Group {
+      if store.exercises.isEmpty {
+        FirstExerciseView(store: store)
+      } else {
+        ZStack(alignment: .bottom) {
+          DesignTokens.ColorToken.surface
+            .ignoresSafeArea()
 
-      TabView(selection: $store.selectedExerciseID) {
-        ForEach(store.exercises) { exercise in
-          ExerciseFocusPage(store: store, exercise: exercise)
-            .tag(exercise.id)
+          TabView(selection: $store.selectedExerciseID) {
+            ForEach(store.exercises) { exercise in
+              ExerciseFocusPage(store: store, exercise: exercise)
+                .tag(exercise.id)
+            }
+          }
+          .tabViewStyle(.page(indexDisplayMode: .never))
+
+          BottomFocusPill(store: store, showsIndex: $showsIndex, showsProgression: $showsProgression)
         }
       }
-      .tabViewStyle(.page(indexDisplayMode: .never))
-
-      BottomFocusPill(store: store, showsIndex: $showsIndex, showsProgression: $showsProgression)
     }
     .sheet(isPresented: $showsIndex) {
       ExerciseIndexSheet(store: store)
@@ -29,6 +38,402 @@ struct FocusWorkoutView: View {
         .presentationDetents([.medium, .large])
     }
     .environment(\.font, .system(.body, design: .monospaced))
+  }
+}
+
+private struct FirstExerciseView: View {
+  @Bindable var store: FocusWorkoutStore
+  @Environment(\.modelContext) private var modelContext
+  @State private var showsPicker = false
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 0) {
+      Spacer()
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step4) {
+        Text("REPSETFORGE")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+        Text("Create your first exercise")
+          .forgeTextStyle(DesignTokens.Typography.largeTitle)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text("Start with a custom lift, then add it to this workout.")
+          .forgeTextStyle(DesignTokens.Typography.body)
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+        Button {
+          showsPicker = true
+        } label: {
+          Text("CREATE EXERCISE")
+            .forgeTextStyle(DesignTokens.Typography.heading)
+            .foregroundStyle(DesignTokens.ColorToken.onSignal)
+            .frame(maxWidth: .infinity, minHeight: DesignTokens.Spacing.step6 + DesignTokens.Spacing.step3)
+            .background(DesignTokens.ColorToken.signal, in: Capsule())
+        }
+        .buttonStyle(.plain)
+      }
+      Spacer()
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+    .background(DesignTokens.ColorToken.surface.ignoresSafeArea())
+    .sheet(isPresented: $showsPicker) {
+      ExercisePickerView(store: store)
+        .presentationDetents([.large])
+    }
+  }
+}
+
+private struct ExercisePickerView: View {
+  @Bindable var store: FocusWorkoutStore
+  @Environment(\.dismiss) private var dismiss
+  @Environment(\.modelContext) private var modelContext
+  @Query(sort: \Exercise.name) private var exercises: [Exercise]
+  @Query(sort: \SetEntry.completedAt, order: .reverse) private var sets: [SetEntry]
+  @State private var searchText = ""
+  @State private var debouncedSearch = ""
+  @State private var selectedMuscles: Set<String> = []
+  @State private var selectedEquipment: Set<String> = []
+  @State private var expandedExerciseID: UUID?
+  @State private var showsCreate = false
+
+  var body: some View {
+    NavigationStack {
+      List {
+        filterSection
+        if exercises.isEmpty {
+          emptySection
+        } else {
+          exerciseSection("RECENTS", exercises: recentExercises)
+          exerciseSection("FAVORITES", exercises: favoriteExercises)
+          exerciseSection("ALL", exercises: filteredExercises)
+        }
+      }
+      .scrollContentBackground(.hidden)
+      .background(DesignTokens.ColorToken.surface)
+      .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+      .onChange(of: searchText) { _, value in
+        Task {
+          try? await Task.sleep(nanoseconds: 150_000_000)
+          if value == searchText {
+            debouncedSearch = value
+          }
+        }
+      }
+      .navigationTitle("EXERCISES")
+      .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          Button("CLOSE") { dismiss() }
+            .forgeTextStyle(DesignTokens.Typography.body)
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+          Button("CREATE") { showsCreate = true }
+            .forgeTextStyle(DesignTokens.Typography.body)
+        }
+      }
+      .sheet(isPresented: $showsCreate) {
+        CreateExerciseView(existingExercises: exercises) { exercise in
+          modelContext.insert(exercise)
+          try? modelContext.save()
+          store.addExercise(exercise)
+          dismiss()
+        }
+        .presentationDetents([.medium, .large])
+      }
+    }
+    .environment(\.font, .system(.body, design: .monospaced))
+  }
+
+  private var filterSection: some View {
+    Section {
+      ScrollView(.horizontal, showsIndicators: false) {
+        HStack(spacing: DesignTokens.Spacing.step2) {
+          ForEach(availableMuscles, id: \.self) { muscle in
+            FilterChip(title: muscle, isSelected: selectedMuscles.contains(muscle)) {
+              toggle(muscle, in: &selectedMuscles)
+            }
+          }
+          ForEach(availableEquipment, id: \.self) { equipment in
+            FilterChip(title: equipment, isSelected: selectedEquipment.contains(equipment)) {
+              toggle(equipment, in: &selectedEquipment)
+            }
+          }
+        }
+        .padding(.vertical, DesignTokens.Spacing.step1)
+      }
+    }
+    .listRowBackground(DesignTokens.ColorToken.surface)
+  }
+
+  private var emptySection: some View {
+    Section {
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step3) {
+        Text("Create your first exercise")
+          .forgeTextStyle(DesignTokens.Typography.heading)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text("Your exercise database starts empty.")
+          .forgeTextStyle(DesignTokens.Typography.secondary)
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+        Button("CREATE EXERCISE") { showsCreate = true }
+          .forgeTextStyle(DesignTokens.Typography.body)
+      }
+      .padding(.vertical, DesignTokens.Spacing.step3)
+    }
+    .listRowBackground(DesignTokens.ColorToken.surfaceRaised)
+  }
+
+  private func exerciseSection(_ title: String, exercises: [Exercise]) -> some View {
+    Section(title) {
+      ForEach(exercises) { exercise in
+        ExercisePickerRow(
+          exercise: exercise,
+          history: history(for: exercise),
+          isExpanded: expandedExerciseID == exercise.id,
+          onExpand: { expandedExerciseID = expandedExerciseID == exercise.id ? nil : exercise.id },
+          onAdd: {
+            store.addExercise(exercise)
+            dismiss()
+          }
+        )
+      }
+    }
+    .listRowBackground(DesignTokens.ColorToken.surfaceRaised)
+  }
+
+  private var filteredExercises: [Exercise] {
+    exercises.filter(matches)
+  }
+
+  private var favoriteExercises: [Exercise] {
+    filteredExercises.filter(\.isFavorite)
+  }
+
+  private var recentExercises: [Exercise] {
+    let orderedIDs = sets.compactMap { $0.sessionExercise?.exercise }.reduce(into: [UUID]()) { ids, exercise in
+      guard !ids.contains(exercise.id), matches(exercise), ids.count < 10 else { return }
+      ids.append(exercise.id)
+    }
+    return orderedIDs.compactMap { id in exercises.first { $0.id == id } }
+  }
+
+  private var availableMuscles: [String] {
+    Array(Set(exercises.flatMap(\.muscleGroups))).sorted()
+  }
+
+  private var availableEquipment: [String] {
+    Array(Set(exercises.compactMap(\.equipment))).sorted()
+  }
+
+  private func matches(_ exercise: Exercise) -> Bool {
+    let query = debouncedSearch.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    let matchesQuery = query.isEmpty || exercise.name.lowercased().contains(query)
+    let matchesMuscles = selectedMuscles.isEmpty || selectedMuscles.isSubset(of: Set(exercise.muscleGroups))
+    let matchesEquipment = selectedEquipment.isEmpty || selectedEquipment.contains(exercise.equipment ?? "")
+    return matchesQuery && matchesMuscles && matchesEquipment
+  }
+
+  private func history(for exercise: Exercise) -> ExerciseHistoryPreview {
+    let exerciseSets = sets.filter { $0.sessionExercise?.exercise?.id == exercise.id && $0.completedAt != nil }
+    let bestWeight = exerciseSets.compactMap(\.weightKg).max() ?? 0
+    let bestE1RM = exerciseSets.compactMap(\.estimatedOneRepMaxKg).max() ?? 0
+    let volumes = exerciseSets.prefix(6).map { $0.volumeKg ?? 0 }
+    return ExerciseHistoryPreview(bestWeightKg: bestWeight, bestE1RMKg: bestE1RM, recentVolumes: Array(volumes))
+  }
+
+  private func toggle(_ value: String, in set: inout Set<String>) {
+    if set.contains(value) {
+      set.remove(value)
+    } else {
+      set.insert(value)
+    }
+  }
+}
+
+private struct ExerciseHistoryPreview {
+  var bestWeightKg: Decimal
+  var bestE1RMKg: Decimal
+  var recentVolumes: [Decimal]
+}
+
+private struct ExercisePickerRow: View {
+  let exercise: Exercise
+  let history: ExerciseHistoryPreview
+  let isExpanded: Bool
+  let onExpand: () -> Void
+  let onAdd: () -> Void
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step3) {
+      Button(action: onExpand) {
+        HStack(spacing: DesignTokens.Spacing.step3) {
+          VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+            Text(exercise.name)
+              .forgeTextStyle(DesignTokens.Typography.body)
+              .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+            Text(detail)
+              .forgeTextStyle(DesignTokens.Typography.secondary)
+              .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+          }
+          Spacer()
+          if exercise.isFavorite {
+            Text("★")
+              .forgeTextStyle(DesignTokens.Typography.body)
+              .foregroundStyle(DesignTokens.ColorToken.pr)
+          }
+        }
+      }
+      .buttonStyle(.plain)
+
+      if isExpanded {
+        HStack(alignment: .bottom, spacing: DesignTokens.Spacing.step4) {
+          MetricBlock(label: "BEST", value: "\(format(history.bestWeightKg)) KG")
+          MetricBlock(label: "E1RM", value: "\(format(history.bestE1RMKg)) KG")
+          MiniSparkline(values: history.recentVolumes)
+            .frame(width: DesignTokens.Spacing.step6 * 2, height: DesignTokens.Spacing.step6)
+          Spacer()
+          Button("ADD TO WORKOUT", action: onAdd)
+            .forgeTextStyle(DesignTokens.Typography.secondary)
+            .foregroundStyle(DesignTokens.ColorToken.onSignal)
+            .padding(.horizontal, DesignTokens.Spacing.step3)
+            .padding(.vertical, DesignTokens.Spacing.step2)
+            .background(DesignTokens.ColorToken.signal, in: Capsule())
+            .buttonStyle(.plain)
+        }
+      }
+    }
+    .padding(.vertical, DesignTokens.Spacing.step2)
+  }
+
+  private var detail: String {
+    ([exercise.muscleGroups.first, exercise.equipment].compactMap { $0 }).joined(separator: " · ")
+  }
+}
+
+private struct FilterChip: View {
+  let title: String
+  let isSelected: Bool
+  let action: () -> Void
+
+  var body: some View {
+    Button(action: action) {
+      Text(title.uppercased())
+        .forgeTextStyle(DesignTokens.Typography.secondary)
+        .foregroundStyle(isSelected ? DesignTokens.ColorToken.onSignal : DesignTokens.ColorToken.textSecondary)
+        .padding(.horizontal, DesignTokens.Spacing.step3)
+        .padding(.vertical, DesignTokens.Spacing.step2)
+        .background(isSelected ? DesignTokens.ColorToken.signal : DesignTokens.ColorToken.surfaceInput, in: Capsule())
+    }
+    .buttonStyle(.plain)
+  }
+}
+
+private struct MiniSparkline: View {
+  let values: [Decimal]
+
+  var body: some View {
+    GeometryReader { proxy in
+      Path { path in
+        guard !values.isEmpty else { return }
+        let maxValue = CGFloat(truncating: (values.max() ?? 1) as NSNumber)
+        for (index, value) in values.enumerated() {
+          let x = proxy.size.width * CGFloat(index) / CGFloat(max(values.count - 1, 1))
+          let y = proxy.size.height - (CGFloat(truncating: value as NSNumber) / max(maxValue, 1) * proxy.size.height)
+          if index == 0 {
+            path.move(to: CGPoint(x: x, y: y))
+          } else {
+            path.addLine(to: CGPoint(x: x, y: y))
+          }
+        }
+      }
+      .stroke(DesignTokens.ColorToken.signal, lineWidth: 2)
+    }
+  }
+}
+
+private struct CreateExerciseView: View {
+  let existingExercises: [Exercise]
+  let onCreate: (Exercise) -> Void
+  @Environment(\.dismiss) private var dismiss
+  @State private var name = ""
+  @State private var muscleText = ""
+  @State private var secondaryText = ""
+  @State private var equipment = ""
+  @State private var allowSimilarCreate = false
+
+  var body: some View {
+    NavigationStack {
+      Form {
+        Section("NAME") {
+          TextField("Exercise name", text: $name)
+            .textInputAutocapitalization(.words)
+        }
+        if !similarExercises.isEmpty {
+          Section("SIMILAR EXISTS") {
+            ForEach(similarExercises) { exercise in
+              HStack {
+                VStack(alignment: .leading) {
+                  Text(exercise.name)
+                    .forgeTextStyle(DesignTokens.Typography.body)
+                  Text(exercise.canonicalNameKey)
+                    .forgeTextStyle(DesignTokens.Typography.secondary)
+                    .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+                }
+                Spacer()
+              }
+            }
+            Toggle("CREATE ANYWAY", isOn: $allowSimilarCreate)
+              .forgeTextStyle(DesignTokens.Typography.body)
+          }
+        }
+        Section("DETAILS") {
+          TextField("Primary muscles, comma separated", text: $muscleText)
+          TextField("Secondary muscles", text: $secondaryText)
+          TextField("Equipment", text: $equipment)
+        }
+      }
+      .scrollContentBackground(.hidden)
+      .background(DesignTokens.ColorToken.surface)
+      .navigationTitle("CREATE")
+      .toolbar {
+        ToolbarItem(placement: .topBarLeading) {
+          Button("CANCEL") { dismiss() }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+          Button("SAVE") {
+            onCreate(Exercise(
+              name: trimmedName,
+              muscleGroups: csv(muscleText),
+              secondaryMuscles: csv(secondaryText),
+              equipment: equipment.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty,
+              isCustom: true
+            ))
+          }
+          .disabled(!canCreate)
+        }
+      }
+    }
+    .environment(\.font, .system(.body, design: .monospaced))
+  }
+
+  private var trimmedName: String {
+    name.trimmingCharacters(in: .whitespacesAndNewlines)
+  }
+
+  private var similarExercises: [Exercise] {
+    guard !trimmedName.isEmpty else { return [] }
+    return ExerciseDeduplicator.similarExercises(to: trimmedName, existing: existingExercises)
+  }
+
+  private var canCreate: Bool {
+    !trimmedName.isEmpty && (similarExercises.isEmpty || allowSimilarCreate)
+  }
+
+  private func csv(_ value: String) -> [String] {
+    value.split(separator: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
+  }
+}
+
+private extension String {
+  var nilIfEmpty: String? {
+    isEmpty ? nil : self
   }
 }
 

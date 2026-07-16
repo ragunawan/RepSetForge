@@ -290,7 +290,16 @@ final class FocusWorkoutStore {
   }
 
   func reassertLiveActivity() {
+    guard !exercises.isEmpty else { return }
     activityController?.startOrUpdate(attributes: liveActivityAttributes, state: liveActivityState)
+  }
+
+  func addExercise(_ exercise: Exercise, plannedSets: Int = 3, restSeconds: Int = 120) {
+    let focusExercise = makeFocusExercise(from: exercise, plannedSets: plannedSets, restSeconds: restSeconds)
+    exercises.append(focusExercise)
+    selectedExerciseID = focusExercise.id
+    persistDraft()
+    updateLiveActivity()
   }
 
   private func startRest(duration: TimeInterval, now: Date) {
@@ -303,6 +312,42 @@ final class FocusWorkoutStore {
 
   private var selectedExercise: FocusExercise {
     exercises.first { $0.id == selectedExerciseID } ?? exercises[0]
+  }
+
+  private func makeFocusExercise(from exercise: Exercise, plannedSets: Int, restSeconds: Int) -> FocusExercise {
+    let detailParts = [exercise.muscleGroups.first, exercise.secondaryMuscles.first, exercise.equipment].compactMap { $0 }
+    let detail = detailParts.isEmpty ? "Working sets" : detailParts.joined(separator: " · ")
+    let rule = ProgressionRuleSnapshot()
+    let ladder = LadderEngine.rebuild(rule: rule, baseWeightKg: 0, focusSets: [])
+    return FocusExercise(
+      id: UUID(),
+      name: exercise.name,
+      detail: detail,
+      progressionRule: rule,
+      ladderState: ladder,
+      targetWeightKg: ladder.currentLevel.weightKg,
+      targetReps: ladder.currentLevel.reps,
+      targetRPE: 8,
+      previousBestWeightKg: 0,
+      previousBestReps: 0,
+      oneRepMaxKg: 0,
+      plannedSets: plannedSets,
+      sets: (1...plannedSets).map { index in
+        FocusSet(
+          id: UUID(),
+          index: index,
+          type: .working,
+          weightKg: nil,
+          reps: nil,
+          rpe: nil,
+          restSeconds: restSeconds,
+          completedAt: nil,
+          isPR: false,
+          touchedFields: []
+        )
+      },
+      trend: []
+    )
   }
 
   private var liveActivityAttributes: RepSetForgeActivityAttributes {
@@ -333,6 +378,7 @@ final class FocusWorkoutStore {
   }
 
   private func updateLiveActivity() {
+    guard !exercises.isEmpty else { return }
     activityController?.startOrUpdate(attributes: liveActivityAttributes, state: liveActivityState)
   }
 
@@ -416,6 +462,7 @@ final class FocusWorkoutStore {
 
   private func persistDraft() {
     draftSaveCount += 1
+    guard !exercises.isEmpty else { return }
     guard let modelContext else { return }
     let session = sessionDraft ?? makeSessionDraft(in: modelContext)
     session.name = sessionName
@@ -437,7 +484,7 @@ final class FocusWorkoutStore {
     if let session = try? modelContext.fetch(descriptor).first {
       sessionDraft = session
       loadDraft(session)
-    } else {
+    } else if !exercises.isEmpty {
       sessionDraft = makeSessionDraft(in: modelContext)
       syncDraft(sessionDraft!)
       try? modelContext.save()
