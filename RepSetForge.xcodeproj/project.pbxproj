@@ -20,6 +20,7 @@
 		100000000000000000000094 /* SessionRestorePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A4 /* SessionRestorePolicy.swift */; };
 		100000000000000000000095 /* PRRebuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A5 /* PRRebuilder.swift */; };
 		1000000000000000000000AA /* HistoricalSessionInvalidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000AB /* HistoricalSessionInvalidator.swift */; };
+		1000000000000000000000AC /* CSVTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000AD /* CSVTransfer.swift */; };
 		1000000000000000000000A8 /* LadderEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A9 /* LadderEngine.swift */; };
 		10000000000000000000009A /* FocusWorkoutStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A6 /* FocusWorkoutStore.swift */; };
 		10000000000000000000009B /* FocusWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A7 /* FocusWorkoutView.swift */; };
@@ -81,6 +82,7 @@
 		1000000000000000000000A4 /* SessionRestorePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/SessionRestorePolicy.swift; sourceTree = "<group>"; };
 		1000000000000000000000A5 /* PRRebuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PRRebuilder.swift; sourceTree = "<group>"; };
 		1000000000000000000000AB /* HistoricalSessionInvalidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/HistoricalSessionInvalidator.swift; sourceTree = "<group>"; };
+		1000000000000000000000AD /* CSVTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/CSVTransfer.swift; sourceTree = "<group>"; };
 		1000000000000000000000A9 /* LadderEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LadderEngine.swift; sourceTree = "<group>"; };
 		1000000000000000000000A6 /* FocusWorkoutStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/FocusWorkoutStore.swift; sourceTree = "<group>"; };
 		1000000000000000000000A7 /* FocusWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/FocusWorkoutView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				1000000000000000000000A4 /* SessionRestorePolicy.swift */,
 				1000000000000000000000A5 /* PRRebuilder.swift */,
 				1000000000000000000000AB /* HistoricalSessionInvalidator.swift */,
+				1000000000000000000000AD /* CSVTransfer.swift */,
 				1000000000000000000000A9 /* LadderEngine.swift */,
 				1000000000000000000000F3 /* RepSetForgeActivityAttributes.swift */,
 				1000000000000000000000F4 /* WorkoutActivityController.swift */,
@@ -256,7 +259,7 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		100000000000000000000043 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000090, 100000000000000000000091, 100000000000000000000092, 100000000000000000000093, 100000000000000000000094, 100000000000000000000095, 1000000000000000000000AA, 1000000000000000000000A8, 10000000000000000000009A, 10000000000000000000009B, 1000000000000000000000F0, 1000000000000000000000F1); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000043 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000090, 100000000000000000000091, 100000000000000000000092, 100000000000000000000093, 100000000000000000000094, 100000000000000000000095, 1000000000000000000000AA, 1000000000000000000000AC, 1000000000000000000000A8, 10000000000000000000009A, 10000000000000000000009B, 1000000000000000000000F0, 1000000000000000000000F1); runOnlyForDeploymentPostprocessing = 0; };
 		100000000000000000000053 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000004, 100000000000000000000005, 1000000000000000000000F2, 1000000000000000000000F5); runOnlyForDeploymentPostprocessing = 0; };
 		1000000000000000000000C2 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000096, 100000000000000000000097, 100000000000000000000098, 100000000000000000000099, 10000000000000000000009C, 1000000000000000000000B6, 1000000000000000000000B8); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
