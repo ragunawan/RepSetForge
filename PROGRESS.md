@@ -1,8 +1,18 @@
 # RepSetForge — PROGRESS
 
-Current phase: **1 — Data core** (code complete; tests written, not yet run — no macOS toolchain here)
+Current phase: **2 — Focus view + set row** (core built; superset pages, plate calc, prev-session ghost feed & snapshots pending)
 
 ## Completed
+- P2.1 RestLedger (pure): completed intervals + wall-clock current rest; WORK+REST≡SESSION by construction; overtime/extend/skip; tests incl. invariant sweep — done
+- P2.2 GhostResolver (pure): row-above → prev-session inheritance, per-field fill, touched semantics + tests — done
+- P2.3 RestTimerManager: @Observable wall-clock wrapper over ledger (Phase 3 adds Live Activity + notification) — done
+- P2.4 WorkoutViewModel: telemetry aggregates, chart-collapse map, completion flow (commit ghosts→completedAt→PR check→rest start→auto-append last row), applyTarget, add/delete set — done
+- P2.5 ActiveWorkoutView + TelemetryHeader: TabView(.page) carousel; SESSION/WORK/REST all OS-driven Text(timerInterval:) with ledger offsets (no per-second state); progress bar — done
+- P2.6 ExerciseFocusPage: full-bleed identity/chart/prompt/table/add-set/finish; CoachingPromptBanner (ladder binding = Phase 4) — done
+- P2.7 SetTableView: 3 Dynamic-Type tiers in one view (grid / AX1 shed-rest / AX2+ stacked row per §7a C1), type badge menu w/ subscripts, stepper accessory (2.5kg/1rep/0.5RPE), optimistic completion + haptics + reduce-motion — done
+- P2.8 ChartSection: Swift Charts bars+line+%1RM rule, collapse-on-first-set w/ 200ms fade, per-page state — done
+- P2.9 BottomPill: rest countdown replaces pager (OS-driven ProgressView(timerInterval:)), +30s/Skip, index/PROG/minimize — done
+- P2.10 ExerciseIndexSheet (read-only, jump+reorder) + ProgressionPanel shell (engine = Phase 4) — done
 - P1.1 TrainingModels.swift: all §2 @Model classes (Exercise…UserProfile) with CloudKit-safe shapes (all relationships optional, defaults everywhere, no .unique); enums via raw-value shadows; SetEntry.e1RM computed — done
 - P1.2 ModelContainerFactory: .private(iCloud.dev.gnwn.RepSetForge) prod config + in-memory ephemeral for tests/previews — done
 - P1.3 StrengthMath: Epley e1RM (reps 1–12, reps=1→w), canonicalNameKey, volumeKg + tests — done
@@ -18,6 +28,7 @@ Current phase: **1 — Data core** (code complete; tests written, not yet run �
 - P0.6 project.pbxproj (objectVersion 77, synchronized folders, 3 targets: app / widget appex / unit tests) + shared scheme — done
 
 ## Gate status
+- Phase 2 gate (two-taps demo; snapshots at 4 sizes × 2 modes): **snapshot suite not yet written (needs simulator); two-tap flow implemented (✓ commits ghosts, no modals).** Open items: superset pages (§3 resolved model), plate-calc long-press, prev-session ghost feed (needs history query), rest field per RoutineItem.
 - Phase 1 gate (unit tests: e1RM, dedup fuzzy-match, restore branching, PR rebuild from fixture): **suites written, NOT RUN — requires `xcodebuild test` on a Mac.**
 - Phase 0 gate ("builds, empty screen renders both modes with token colors"): **NOT YET VERIFIED — no macOS/xcodebuild in this environment.** Structure complete; must run `xcodebuild -scheme RepSetForge build` on a Mac. All builds/gates require on-Mac verification until CI exists.
 
