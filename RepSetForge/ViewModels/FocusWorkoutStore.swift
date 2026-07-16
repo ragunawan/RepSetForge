@@ -329,7 +329,11 @@ final class FocusWorkoutStore {
     session.endedAt = now
     session.status = .completed
     syncDraft(session)
-    rebuildPRRecords(for: session, in: modelContext)
+    HistoricalSessionInvalidator.rebuildPRs(
+      for: Set((session.exercises ?? []).compactMap { $0.exercise?.persistentModelID }),
+      in: modelContext
+    )
+    syncPRFlags(for: session)
     try? modelContext.save()
 
     completedSummarySession = session
@@ -523,7 +527,11 @@ final class FocusWorkoutStore {
     session.startedAt = startedAt
     session.status = .active
     syncDraft(session)
-    rebuildPRRecords(for: session, in: modelContext)
+    HistoricalSessionInvalidator.rebuildPRs(
+      for: Set((session.exercises ?? []).compactMap { $0.exercise?.persistentModelID }),
+      in: modelContext
+    )
+    syncPRFlags(for: session)
     try? modelContext.save()
   }
 
@@ -642,34 +650,14 @@ final class FocusWorkoutStore {
     }
   }
 
-  private func rebuildPRRecords(for session: WorkoutSession, in modelContext: ModelContext) {
-    let sessionExercises = session.exercises ?? []
-    let exerciseIDs = Set(sessionExercises.compactMap { $0.exercise?.id })
-    guard !exerciseIDs.isEmpty else { return }
-
-    if let existingRecords = try? modelContext.fetch(FetchDescriptor<PRRecord>()) {
-      existingRecords
-        .filter { record in
-          guard let id = record.exercise?.id else { return false }
-          return exerciseIDs.contains(id)
-        }
-        .forEach(modelContext.delete)
-    }
-
-    for sessionExercise in sessionExercises {
-      guard let exercise = sessionExercise.exercise else { continue }
-      let records = PRRebuilder.rebuild(for: exercise, sets: sessionExercise.sets ?? [])
-      records.forEach(modelContext.insert)
-      syncPRFlags(from: sessionExercise)
-    }
-  }
-
-  private func syncPRFlags(from sessionExercise: SessionExercise) {
-    guard let exerciseIndex = exercises.firstIndex(where: { $0.id == sessionExercise.id }) else { return }
-    let flags = Dictionary(uniqueKeysWithValues: (sessionExercise.sets ?? []).map { ($0.id, $0.isPR) })
-    for setIndex in exercises[exerciseIndex].sets.indices {
-      let setID = exercises[exerciseIndex].sets[setIndex].id
-      exercises[exerciseIndex].sets[setIndex].isPR = flags[setID] ?? false
+  private func syncPRFlags(for session: WorkoutSession) {
+    for sessionExercise in session.exercises ?? [] {
+      guard let exerciseIndex = exercises.firstIndex(where: { $0.id == sessionExercise.id }) else { continue }
+      let flags = Dictionary(uniqueKeysWithValues: (sessionExercise.sets ?? []).map { ($0.id, $0.isPR) })
+      for setIndex in exercises[exerciseIndex].sets.indices {
+        let setID = exercises[exerciseIndex].sets[setIndex].id
+        exercises[exerciseIndex].sets[setIndex].isPR = flags[setID] ?? false
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 # RepSetForge Progress
 
-Current phase: Phase 6 - Home + History + Summary
+Current phase: Phase 7 - Library/Builder, History, Progress
 
 Completed:
 - Phase 0 started - PROGRESS.md created.
@@ -29,6 +29,7 @@ Completed:
 - P6.1 Root tab shell + Home placeholders - done, RootView now hosts Home/History/Progress/Library tabs with FAB-driven active workout cover; Home renders resume banner plus week/recommendation/body modules in stable positions with first-run placeholders and dual-line body chart sketch.
 - P6.2 Body chart period paging - done, Home Body module now uses BodyMetric W/M/Y period paging, swipe/arrows, weight aggregation, and 14-day body-fat interpolation; `build_sim CODE_SIGNING_ALLOWED=NO` green.
 - P6.3 Summary + HealthKit finish path - done, Focus finish now completes the SwiftData session, shows Summary deltas/PR spotlight/routine prompt, exports phone-only HealthKit workouts through HKWorkoutBuilder with healthKitUUID replacement guard and delete helper; `test_sim CODE_SIGNING_ALLOWED=NO` green (23/23).
+- P7.1 History calendar/list + historical PR invalidation - done, History tab now renders completed-session month grid, composed text/PR filters, empty state, session rows, and edit/delete sheet wired through `HistoricalSessionInvalidator`; `test_sim CODE_SIGNING_ALLOWED=NO` green (24/24).
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
@@ -39,6 +40,7 @@ Decisions:
 - Phase 4 Focus uses the default double-progression rule until Phase 8 routine builder/library binds editable `ProgressionRule` rows to routine items.
 - Phase 5 keeps existing FocusWorkoutStore sample data as an explicit test/preview default, while production RootView injects an empty exercise list to satisfy the empty-shipped-DB first-run flow.
 - Phase 6 Health export uses a fixed 82 kg bodyweight estimate until Settings/Health bodyweight read owns the canonical current bodyweight input.
+- Phase 7 historical edit currently recomputes PR records/flags and HealthKit rewrite/delete; ladder and weekly rollup recomputation hooks remain pending with the Progress/routine-builder slices.
 
 Open:
 - Phase 3 gate pending: on-device lock phone mid-rest, countdown ticks, Skip works from lock screen, activity survives backgrounding.

@@ -12,7 +12,7 @@ struct RootView: View {
       TabView {
         HomeView(store: store, showsActiveWorkout: $showsActiveWorkout)
           .tabItem { Label("Home", systemImage: "house") }
-        PlaceholderTab(title: "HISTORY", message: "Your first session will appear here")
+        HistoryView()
           .tabItem { Label("History", systemImage: "calendar") }
         PlaceholderTab(title: "PROGRESS", message: "Charts unlock as your training history grows")
           .tabItem { Label("Progress", systemImage: "chart.line.uptrend.xyaxis") }
@@ -527,6 +527,319 @@ private struct PlaceholderTab: View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     .background(DesignTokens.ColorToken.surface)
   }
+}
+
+private struct HistoryView: View {
+  @Environment(\.modelContext) private var modelContext
+  @Query(sort: \WorkoutSession.startedAt, order: .reverse) private var sessions: [WorkoutSession]
+  @State private var monthOffset = 0
+  @State private var query = ""
+  @State private var prOnly = false
+  @State private var selectedSession: WorkoutSession?
+
+  private var completedSessions: [WorkoutSession] {
+    sessions.filter { $0.status == .completed }
+  }
+
+  private var visibleSessions: [WorkoutSession] {
+    completedSessions.filter { session in
+      let matchesText = query.isEmpty || session.name.localizedCaseInsensitiveContains(query)
+      let matchesPR = !prOnly || sessionPRCount(session) > 0
+      return matchesText && matchesPR
+    }
+  }
+
+  var body: some View {
+    NavigationStack {
+      ScrollView {
+        VStack(alignment: .leading, spacing: DesignTokens.Spacing.cardGap) {
+          monthControls
+          historyGrid
+          filterBar
+          sessionList
+        }
+        .padding(DesignTokens.Spacing.screenGutter)
+      }
+      .background(DesignTokens.ColorToken.surface)
+      .navigationTitle("HISTORY")
+      .sheet(item: $selectedSession) { session in
+        HistoricalSessionEditor(session: session)
+      }
+    }
+  }
+
+  private var monthControls: some View {
+    HStack {
+      Button { monthOffset += 1 } label: {
+        Image(systemName: "chevron.left")
+      }
+      .accessibilityLabel("Previous month")
+
+      Spacer()
+      Text(historyMonthLabel(offset: monthOffset))
+        .forgeTextStyle(DesignTokens.Typography.heading)
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+      Spacer()
+
+      Button { monthOffset = max(0, monthOffset - 1) } label: {
+        Image(systemName: "chevron.right")
+      }
+      .disabled(monthOffset == 0)
+      .accessibilityLabel("Next month")
+    }
+    .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+  }
+
+  private var historyGrid: some View {
+    let days = historyMonthDays(offset: monthOffset)
+    return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: DesignTokens.Spacing.step1), count: 7), spacing: DesignTokens.Spacing.step1) {
+      ForEach(days, id: \.self) { date in
+        let daySessions = visibleSessions.filter { Calendar.current.isDate($0.startedAt, inSameDayAs: date) }
+        Button {
+          selectedSession = daySessions.first
+        } label: {
+          VStack(spacing: DesignTokens.Spacing.step1) {
+            Text("\(Calendar.current.component(.day, from: date))")
+              .forgeTextStyle(DesignTokens.Typography.secondary)
+              .forgeNumeric()
+            Circle()
+              .fill(daySessions.isEmpty ? DesignTokens.ColorToken.hairline : DesignTokens.ColorToken.signal)
+              .frame(width: DesignTokens.Spacing.step2, height: DesignTokens.Spacing.step2)
+          }
+          .frame(maxWidth: .infinity, minHeight: DesignTokens.Spacing.step6)
+          .foregroundStyle(daySessions.isEmpty ? DesignTokens.ColorToken.textTertiary : DesignTokens.ColorToken.textPrimary)
+          .background(DesignTokens.ColorToken.surfaceRaised, in: RoundedRectangle(cornerRadius: DesignTokens.Radius.input))
+          .overlay {
+            if daySessions.isEmpty && completedSessions.isEmpty {
+              RoundedRectangle(cornerRadius: DesignTokens.Radius.input)
+                .stroke(DesignTokens.ColorToken.hairline, style: StrokeStyle(lineWidth: 1, dash: [DesignTokens.Spacing.step2, DesignTokens.Spacing.step1]))
+            }
+          }
+        }
+        .disabled(daySessions.isEmpty)
+        .buttonStyle(.plain)
+      }
+    }
+  }
+
+  private var filterBar: some View {
+    HStack(spacing: DesignTokens.Spacing.step2) {
+      TextField("FILTER", text: $query)
+        .textFieldStyle(.roundedBorder)
+      Toggle("PRS", isOn: $prOnly)
+        .toggleStyle(.button)
+        .forgeTextStyle(DesignTokens.Typography.secondary)
+    }
+  }
+
+  private var sessionList: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+      if completedSessions.isEmpty {
+        PlaceholderModuleText("Your first session will appear here")
+      } else if visibleSessions.isEmpty {
+        PlaceholderModuleText("No sessions match these filters")
+      } else {
+        ForEach(visibleSessions) { session in
+          Button {
+            selectedSession = session
+          } label: {
+            HistorySessionRow(session: session)
+          }
+          .buttonStyle(.plain)
+        }
+      }
+    }
+  }
+}
+
+private struct HistorySessionRow: View {
+  let session: WorkoutSession
+
+  var body: some View {
+    HStack(alignment: .top, spacing: DesignTokens.Spacing.step3) {
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+        Text(session.name)
+          .forgeTextStyle(DesignTokens.Typography.heading)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text(historyDateTime(session.startedAt))
+          .forgeTextStyle(DesignTokens.Typography.secondary)
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+      }
+      Spacer()
+      VStack(alignment: .trailing, spacing: DesignTokens.Spacing.step1) {
+        Text("\(sessionSetCount(session)) SETS")
+        Text("\(homeFormat(sessionVolume(session))) KG")
+        if sessionPRCount(session) > 0 {
+          Text("\(sessionPRCount(session)) PR")
+            .foregroundStyle(DesignTokens.ColorToken.signal)
+        }
+      }
+      .forgeTextStyle(DesignTokens.Typography.secondary)
+      .forgeNumeric()
+      .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+    }
+    .padding(DesignTokens.Spacing.cardPadding)
+    .background(DesignTokens.ColorToken.surfaceRaised, in: RoundedRectangle(cornerRadius: DesignTokens.Radius.card))
+  }
+}
+
+private struct HistoricalSessionEditor: View {
+  @Environment(\.modelContext) private var modelContext
+  @Environment(\.dismiss) private var dismiss
+  @Bindable var session: WorkoutSession
+  @State private var isRecalculating = false
+
+  var body: some View {
+    NavigationStack {
+      List {
+        Section("SESSION") {
+          TextField("Name", text: $session.name)
+          DatePicker("Started", selection: $session.startedAt)
+          DatePicker("Ended", selection: Binding(
+            get: { session.endedAt ?? session.startedAt },
+            set: { session.endedAt = $0 }
+          ))
+          TextField("Notes", text: Binding(
+            get: { session.notes ?? "" },
+            set: { session.notes = $0.isEmpty ? nil : $0 }
+          ), axis: .vertical)
+        }
+
+        ForEach((session.exercises ?? []).sorted { $0.order < $1.order }) { exercise in
+          Section(exercise.exercise?.name ?? "Exercise") {
+            ForEach((exercise.sets ?? []).sorted { $0.index < $1.index }) { set in
+              HistoricalSetRow(set: set)
+            }
+          }
+        }
+
+        Section {
+          Button(role: .destructive) {
+            Task {
+              isRecalculating = true
+              await HistoricalSessionInvalidator.delete(session: session, in: modelContext)
+              isRecalculating = false
+              dismiss()
+            }
+          } label: {
+            Label("Delete session", systemImage: "trash")
+          }
+        }
+      }
+      .font(.system(.body, design: .monospaced))
+      .navigationTitle("EDIT SESSION")
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button("CLOSE") { dismiss() }
+        }
+        ToolbarItem(placement: .confirmationAction) {
+          Button(isRecalculating ? "SAVING" : "SAVE") {
+            Task {
+              isRecalculating = true
+              await HistoricalSessionInvalidator.recalculate(session: session, in: modelContext)
+              isRecalculating = false
+              dismiss()
+            }
+          }
+          .disabled(isRecalculating)
+        }
+      }
+      .overlay(alignment: .bottom) {
+        if isRecalculating {
+          Text("RECALCULATING RECORDS...")
+            .forgeTextStyle(DesignTokens.Typography.secondary)
+            .foregroundStyle(DesignTokens.ColorToken.onSignal)
+            .padding(DesignTokens.Spacing.step2)
+            .background(DesignTokens.ColorToken.signal, in: Capsule())
+            .padding(.bottom, DesignTokens.Spacing.step4)
+        }
+      }
+    }
+  }
+}
+
+private struct HistoricalSetRow: View {
+  @Bindable var set: SetEntry
+
+  var body: some View {
+    HStack(spacing: DesignTokens.Spacing.step2) {
+      Text("\(set.index)")
+        .forgeTextStyle(DesignTokens.Typography.secondary)
+        .forgeNumeric()
+        .frame(width: DesignTokens.Spacing.step5)
+      DecimalField(title: "KG", value: $set.weightKg)
+      IntField(title: "REPS", value: $set.reps)
+      DecimalField(title: "RPE", value: $set.rpe)
+      if set.isPR {
+        Image(systemName: "star.fill")
+          .foregroundStyle(DesignTokens.ColorToken.signal)
+      }
+    }
+  }
+}
+
+private struct DecimalField: View {
+  let title: String
+  @Binding var value: Decimal?
+
+  var body: some View {
+    TextField(title, text: Binding(
+      get: { value.map(homeFormat) ?? "" },
+      set: { value = Decimal(string: $0) }
+    ))
+    .keyboardType(.decimalPad)
+    .textFieldStyle(.roundedBorder)
+    .forgeNumeric()
+  }
+}
+
+private struct IntField: View {
+  let title: String
+  @Binding var value: Int?
+
+  var body: some View {
+    TextField(title, text: Binding(
+      get: { value.map(String.init) ?? "" },
+      set: { value = Int($0) }
+    ))
+    .keyboardType(.numberPad)
+    .textFieldStyle(.roundedBorder)
+    .forgeNumeric()
+  }
+}
+
+private func historyMonthDays(offset: Int, calendar: Calendar = .current, now: Date = .now) -> [Date] {
+  let shifted = calendar.date(byAdding: .month, value: -offset, to: now) ?? now
+  guard let interval = calendar.dateInterval(of: .month, for: shifted) else { return [] }
+  let dayCount = calendar.dateComponents([.day], from: interval.start, to: interval.end).day ?? 0
+  return (0..<dayCount).compactMap { calendar.date(byAdding: .day, value: $0, to: interval.start) }
+}
+
+private func historyMonthLabel(offset: Int) -> String {
+  let shifted = Calendar.current.date(byAdding: .month, value: -offset, to: Date()) ?? Date()
+  let formatter = DateFormatter()
+  formatter.locale = Locale(identifier: "en_US_POSIX")
+  formatter.dateFormat = "MMMM yyyy"
+  return formatter.string(from: shifted).uppercased()
+}
+
+private func historyDateTime(_ date: Date) -> String {
+  let formatter = DateFormatter()
+  formatter.locale = Locale(identifier: "en_US_POSIX")
+  formatter.dateFormat = "MMM d, h:mm a"
+  return formatter.string(from: date).uppercased()
+}
+
+private func sessionSetCount(_ session: WorkoutSession) -> Int {
+  (session.exercises ?? []).flatMap { $0.sets ?? [] }.filter { $0.completedAt != nil }.count
+}
+
+private func sessionVolume(_ session: WorkoutSession) -> Decimal {
+  (session.exercises ?? []).flatMap { $0.sets ?? [] }.reduce(0) { $0 + ($1.volumeKg ?? 0) }
+}
+
+private func sessionPRCount(_ session: WorkoutSession) -> Int {
+  (session.exercises ?? []).flatMap { $0.sets ?? [] }.filter(\.isPR).count
 }
 
 #Preview("Light") {
