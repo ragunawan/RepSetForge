@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "name": "RepSetForge",
+    "version": "1.0",
+    "platform": "iOS 17+",
+    "modes": [
+      "dark (primary)",
+      "light"
+    ]
+  },
+  "color": {
+    "dark": {
+      "surface": "#0D0F12",
+      "surfaceRaised": "#16191E",
+      "surfaceInput": "#1D2127",
+      "hairline": "#262B33",
+      "textPrimary": "#F2F4F7",
+      "textSecondary": "#8B93A1",
+      "textTertiary": "#5A6270",
+      "signal": "#30E585",
+      "signalDim": "rgba(48,229,133,0.14)",
+      "onSignal": "#07130C",
+      "pr": "#F5C542",
+      "prDim": "rgba(245,197,66,0.14)",
+      "warning": "#FF7A59",
+      "destructive": "#FF5D5D"
+    },
+    "light": {
+      "surface": "#F7F8FA",
+      "surfaceRaised": "#FFFFFF",
+      "surfaceInput": "#EEF0F4",
+      "hairline": "#E2E5EA",
+      "textPrimary": "#111418",
+      "textSecondary": "#5C6572",
+      "textTertiary": "#98A0AC",
+      "signal": "#1FA968",
+      "signalDim": "rgba(31,169,104,0.12)",
+      "onSignal": "#FFFFFF",
+      "pr": "#B8860B",
+      "prDim": "rgba(184,134,11,0.12)",
+      "warning": "#D9552F",
+      "destructive": "#D93636"
+    },
+    "roles": {
+      "signal": "Set completion, primary actions, progression, positive deltas. Nothing else.",
+      "pr": "Personal records only. Never decorative.",
+      "warning": "Failure sets, overtime rest, under-target volume.",
+      "destructive": "Delete and discard actions only."
+    }
+  },
+  "typography": {
+    "families": {
+      "display": "SF Mono / ui-monospace, weight 700-800 (screen titles; tighten tracking -0.02em to offset mono width)",
+      "body": "SF Mono / ui-monospace (all labels, rows, copy)",
+      "numeric": "SF Mono, tabular-nums (weights, reps, timers \u2014 inherits from body; tabular figures still explicitly set)"
+    },
+    "scale": {
+      "largeTitle": {
+        "size": 26,
+        "weight": 800,
+        "tracking": -0.03
+      },
+      "title": {
+        "size": 20,
+        "weight": 800,
+        "tracking": -0.02
+      },
+      "heading": {
+        "size": 15,
+        "weight": 800
+      },
+      "body": {
+        "size": 14,
+        "weight": 600
+      },
+      "secondary": {
+        "size": 12,
+        "weight": 500
+      },
+      "eyebrow": {
+        "size": 10,
+        "weight": 700,
+        "tracking": 0.1,
+        "case": "uppercase"
+      },
+      "numericLarge": {
+        "size": 20,
+        "weight": 600,
+        "family": "numeric"
+      },
+      "numericRow": {
+        "size": 13,
+        "weight": 500,
+        "family": "numeric"
+      }
+    },
+    "rule": "v1.5: monospaced throughout. One face, one voice \u2014 hierarchy carried entirely by size, weight, case, and color, not family. Tabular numerals remain mandatory so ticking values never jitter."
+  },
+  "spacing": {
+    "base": 4,
+    "steps": [
+      4,
+      8,
+      12,
+      16,
+      24,
+      32
+    ],
+    "screenGutter": 10,
+    "cardPadding": 10,
+    "cardGap": 8,
+    "setRowHeightVisual": 36,
+    "setRowHitTarget": 44,
+    "note": "v1.1 density pass: visual row height 36pt, hit areas padded to 44pt via contentShape extending into gutters"
+  },
+  "radius": {
+    "card": 10,
+    "input": 8,
+    "pill": 22,
+    "checkbox": 8,
+    "segment": 9,
+    "phoneSheet": 34
+  },
+  "elevation": {
+    "flat": "cards: none \u2014 1px hairline border only",
+    "raised": "rest-timer pill & modals: 0 6px 20px rgba(0,0,0,0.45)",
+    "fab": "0 4px 14px signal @ 35%"
+  },
+  "motion": {
+    "setComplete": {
+      "duration": 250,
+      "curve": "spring cubic-bezier(0.34,1.56,0.64,1)",
+      "effect": "checkmark scale 0.6\u21921.0 + light haptic"
+    },
+    "stateChange": {
+      "duration": 200,
+      "curve": "easeOut"
+    },
+    "reducedMotion": "All springs replaced with 150ms opacity fades; timer ring replaced with numeric countdown",
+    "rule": "Motion communicates state change only. No decorative or ambient animation."
+  },
+  "touchTargets": {
+    "minimum": "44x44pt",
+    "setCompleteControl": "52x44pt",
+    "tabBarItem": "48x48pt"
+  }
+}

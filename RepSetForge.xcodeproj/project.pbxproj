@@ -1,214 +1,438 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {};
+	classes = {
+	};
 	objectVersion = 56;
 	objects = {
-		021F2B7F3E0C61452C987484 = {isa = PBXGroup; children = (8CEDA7969DF3E20018ADE29A, D8D6F9F883E6FC85755BAEFF, C123A07E755C73927ECA799A, F7274FA43EF4B25DC0D9F954); name = Products; sourceTree = "<group>";};
-		03EFABB86F665BA711C83EA5 = {isa = XCConfigurationList; buildConfigurations = (8DFBB93514DB53EE62D3B44B, 7DB5DFCC8ED86DDD8C423579); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
-		093ABFD0D1DF3B13366209EE = {isa = PBXBuildFile; fileRef = B30928BB1402943E3C7CE009;};
-		09BC3A3119CFE29CC052AFFD = {isa = PBXBuildFile; fileRef = 3E69BF185DC595A494B7832C;};
-		13F3C112BD1AFC2B1DA93543 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (24AC16927DA1C910EE21AFD1); runOnlyForDeploymentPostprocessing = 0;};
-		15F5FC4F22B2380DCB1C23F4 = {isa = PBXBuildFile; fileRef = DD144EDCFEA66CD4EDDCACDD;};
-		1DB33592A24C9148BFD65F63 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		24AC16927DA1C910EE21AFD1 = {isa = PBXBuildFile; fileRef = F039B007885BF2C7143259E5;};
-		2BF5DE592226D457D3BCDAC0 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		2C135CA110FDB5658326B736 = {isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = B645626E2FC3DB45E109AAC5; remoteInfo = RepSetForge;};
-		2C392AD8ADE10E05413759CE = {isa = PBXNativeTarget; buildConfigurationList = FFF446F067F09552158CA1AC; buildPhases = (13F3C112BD1AFC2B1DA93543, A05070AD1604345718597354, 1DB33592A24C9148BFD65F63); buildRules = (); dependencies = (); name = RepSetForgeWatch; productName = RepSetForgeWatch; productReference = C123A07E755C73927ECA799A; productType = "com.apple.product-type.application";};
-		2E2C5F2C2CCE58D9B4F08777 = {isa = PBXNativeTarget; buildConfigurationList = 895CD05BEE8BAB8F28D9933C; buildPhases = (BBF27171F2E9EBCCAFD3E545, CD5BADB5A91D597E76F60CF4, D7DA8668DC68561CF3B5D465); buildRules = (); dependencies = (768F8B228D9788DC87302A82); name = RepSetForgeTests; productName = RepSetForgeTests; productReference = F7274FA43EF4B25DC0D9F954; productType = "com.apple.product-type.bundle.unit-test";};
-		34B8CC57206F01904C88BA49 = {isa = PBXBuildFile; fileRef = 8422D63737CD5E48813E1830;};
-		3E69BF185DC595A494B7832C = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/LibraryAndSettings.swift"; sourceTree = SOURCE_ROOT;};
-		4163187A501ED788B7D490D2 = {isa = PBXBuildFile; fileRef = F36545DF92B5B6A2A4F4A382;};
-		45A6A88DC85623F57ECF575D = {isa = XCConfigurationList; buildConfigurations = (5E8ACABCCBE1DB5D311988C9, F84FD35CA8548076F2B51EDF); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
-		468826A83B962F0C47EFF338 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Design/RSTheme.swift"; sourceTree = SOURCE_ROOT;};
-		4B5C49B62512474C57B10522 = {isa = PBXBuildFile; fileRef = D8D6F9F883E6FC85755BAEFF; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };};
-		4D8C5BA960F8645B260F1B3F = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		518E35B85443929954635880 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/RootView.swift"; sourceTree = SOURCE_ROOT;};
-		534E97FE03168657A20C767F = {isa = XCBuildConfiguration; buildSettings = {
 
+/* Begin PBXBuildFile section */
+		100000000000000000000001 /* RepSetForgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000011 /* RepSetForgeApp.swift */; };
+		100000000000000000000002 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000012 /* RootView.swift */; };
+		100000000000000000000003 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000013 /* DesignTokens.swift */; };
+		100000000000000000000004 /* RepSetForgeWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000021 /* RepSetForgeWidgetBundle.swift */; };
+		100000000000000000000005 /* RepSetForgeLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000022 /* RepSetForgeLiveActivity.swift */; };
+		100000000000000000000006 /* RepSetForgeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 100000000000000000000032 /* RepSetForgeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		100000000000000000000090 /* TrainingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A0 /* TrainingModels.swift */; };
+		100000000000000000000091 /* ModelContainerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A1 /* ModelContainerFactory.swift */; };
+		100000000000000000000092 /* StrengthMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A2 /* StrengthMath.swift */; };
+		100000000000000000000093 /* ExerciseDeduplicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A3 /* ExerciseDeduplicator.swift */; };
+		100000000000000000000094 /* SessionRestorePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A4 /* SessionRestorePolicy.swift */; };
+		100000000000000000000095 /* PRRebuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A5 /* PRRebuilder.swift */; };
+		100000000000000000000096 /* StrengthMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B0 /* StrengthMathTests.swift */; };
+		100000000000000000000097 /* ExerciseDeduplicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B1 /* ExerciseDeduplicatorTests.swift */; };
+		100000000000000000000098 /* SessionRestorePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B2 /* SessionRestorePolicyTests.swift */; };
+		100000000000000000000099 /* PRRebuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B3 /* PRRebuilderTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		100000000000000000000007 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 100000000000000000000040 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 100000000000000000000052;
+			remoteInfo = RepSetForgeWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		100000000000000000000008 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				100000000000000000000006 /* RepSetForgeWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		100000000000000000000011 /* RepSetForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeApp.swift; sourceTree = "<group>"; };
+		100000000000000000000012 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		100000000000000000000013 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design/DesignTokens.swift; sourceTree = "<group>"; };
+		100000000000000000000014 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		100000000000000000000015 /* RepSetForge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RepSetForge.entitlements; sourceTree = "<group>"; };
+		100000000000000000000021 /* RepSetForgeWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeWidgetBundle.swift; sourceTree = "<group>"; };
+		100000000000000000000022 /* RepSetForgeLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeLiveActivity.swift; sourceTree = "<group>"; };
+		100000000000000000000023 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		100000000000000000000024 /* RepSetForgeWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RepSetForgeWidget.entitlements; sourceTree = "<group>"; };
+		100000000000000000000031 /* RepSetForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		100000000000000000000032 /* RepSetForgeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RepSetForgeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		100000000000000000000037 /* RepSetForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1000000000000000000000A0 /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/TrainingModels.swift; sourceTree = "<group>"; };
+		1000000000000000000000A1 /* ModelContainerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ModelContainerFactory.swift; sourceTree = "<group>"; };
+		1000000000000000000000A2 /* StrengthMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/StrengthMath.swift; sourceTree = "<group>"; };
+		1000000000000000000000A3 /* ExerciseDeduplicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ExerciseDeduplicator.swift; sourceTree = "<group>"; };
+		1000000000000000000000A4 /* SessionRestorePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/SessionRestorePolicy.swift; sourceTree = "<group>"; };
+		1000000000000000000000A5 /* PRRebuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PRRebuilder.swift; sourceTree = "<group>"; };
+		1000000000000000000000B0 /* StrengthMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrengthMathTests.swift; sourceTree = "<group>"; };
+		1000000000000000000000B1 /* ExerciseDeduplicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDeduplicatorTests.swift; sourceTree = "<group>"; };
+		1000000000000000000000B2 /* SessionRestorePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRestorePolicyTests.swift; sourceTree = "<group>"; };
+		1000000000000000000000B3 /* PRRebuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PRRebuilderTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		100000000000000000000041 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000051 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		1000000000000000000000C1 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		100000000000000000000033 = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000034 /* RepSetForge */,
+				100000000000000000000035 /* RepSetForgeWidget */,
+				1000000000000000000000B4 /* RepSetForgeTests */,
+				100000000000000000000036 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		100000000000000000000034 /* RepSetForge */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000011 /* RepSetForgeApp.swift */,
+				100000000000000000000012 /* RootView.swift */,
+				100000000000000000000013 /* DesignTokens.swift */,
+				1000000000000000000000A0 /* TrainingModels.swift */,
+				1000000000000000000000A1 /* ModelContainerFactory.swift */,
+				1000000000000000000000A2 /* StrengthMath.swift */,
+				1000000000000000000000A3 /* ExerciseDeduplicator.swift */,
+				1000000000000000000000A4 /* SessionRestorePolicy.swift */,
+				1000000000000000000000A5 /* PRRebuilder.swift */,
+				100000000000000000000014 /* Info.plist */,
+				100000000000000000000015 /* RepSetForge.entitlements */,
+			);
+			path = RepSetForge;
+			sourceTree = "<group>";
+		};
+		100000000000000000000035 /* RepSetForgeWidget */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000021 /* RepSetForgeWidgetBundle.swift */,
+				100000000000000000000022 /* RepSetForgeLiveActivity.swift */,
+				100000000000000000000023 /* Info.plist */,
+				100000000000000000000024 /* RepSetForgeWidget.entitlements */,
+			);
+			path = RepSetForgeWidget;
+			sourceTree = "<group>";
+		};
+		100000000000000000000036 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				100000000000000000000031 /* RepSetForge.app */,
+				100000000000000000000032 /* RepSetForgeWidget.appex */,
+				100000000000000000000037 /* RepSetForgeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1000000000000000000000B4 /* RepSetForgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				1000000000000000000000B0 /* StrengthMathTests.swift */,
+				1000000000000000000000B1 /* ExerciseDeduplicatorTests.swift */,
+				1000000000000000000000B2 /* SessionRestorePolicyTests.swift */,
+				1000000000000000000000B3 /* PRRebuilderTests.swift */,
+			);
+			path = RepSetForgeTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		100000000000000000000042 /* RepSetForge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000060 /* Build configuration list for PBXNativeTarget "RepSetForge" */;
+			buildPhases = (
+				100000000000000000000043 /* Sources */,
+				100000000000000000000041 /* Frameworks */,
+				100000000000000000000008 /* Embed App Extensions */,
+			);
+			buildRules = ();
+			dependencies = (
+				100000000000000000000009 /* PBXTargetDependency */,
+			);
+			name = RepSetForge;
+			productName = RepSetForge;
+			productReference = 100000000000000000000031 /* RepSetForge.app */;
+			productType = "com.apple.product-type.application";
+		};
+		100000000000000000000052 /* RepSetForgeWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000070 /* Build configuration list for PBXNativeTarget "RepSetForgeWidget" */;
+			buildPhases = (
+				100000000000000000000053 /* Sources */,
+				100000000000000000000051 /* Frameworks */,
+			);
+			buildRules = ();
+			dependencies = ();
+			name = RepSetForgeWidget;
+			productName = RepSetForgeWidget;
+			productReference = 100000000000000000000032 /* RepSetForgeWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		1000000000000000000000C0 /* RepSetForgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1000000000000000000000E0 /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */;
+			buildPhases = (
+				1000000000000000000000C2 /* Sources */,
+				1000000000000000000000C1 /* Frameworks */,
+			);
+			buildRules = ();
+			dependencies = (
+				1000000000000000000000D0 /* PBXTargetDependency */,
+			);
+			name = RepSetForgeTests;
+			productName = RepSetForgeTests;
+			productReference = 100000000000000000000037 /* RepSetForgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		100000000000000000000040 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					100000000000000000000042 = {CreatedOnToolsVersion = 16.0; };
+					100000000000000000000052 = {CreatedOnToolsVersion = 16.0; };
+					1000000000000000000000C0 = {CreatedOnToolsVersion = 16.0; TestTargetID = 100000000000000000000042; };
+				};
+			};
+			buildConfigurationList = 100000000000000000000080 /* Build configuration list for PBXProject "RepSetForge" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (en, Base);
+			mainGroup = 100000000000000000000033;
+			productRefGroup = 100000000000000000000036 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				100000000000000000000042 /* RepSetForge */,
+				100000000000000000000052 /* RepSetForgeWidget */,
+				1000000000000000000000C0 /* RepSetForgeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		100000000000000000000043 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000090, 100000000000000000000091, 100000000000000000000092, 100000000000000000000093, 100000000000000000000094, 100000000000000000000095); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000053 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000004, 100000000000000000000005); runOnlyForDeploymentPostprocessing = 0; };
+		1000000000000000000000C2 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000096, 100000000000000000000097, 100000000000000000000098, 100000000000000000000099); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		100000000000000000000009 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 100000000000000000000052 /* RepSetForgeWidget */; targetProxy = 100000000000000000000007 /* PBXContainerItemProxy */; };
+		1000000000000000000000D0 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 100000000000000000000042 /* RepSetForge */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		100000000000000000000061 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = RepSetForgeWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-
-			}; name = Debug;};
-		596D251FBAD1432CFC93A91F = {isa = XCConfigurationList; buildConfigurations = (7A3DAE032B0E5D1183437EA7, C0BEA2BCF3288F986B1289A9); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
-		5B52D652D8790AD2308FBE2D = {isa = PBXTargetDependency; target = 91C955795F5E0E56AF892273; targetProxy = 7FA7FA3197DDD3447EC92118;};
-		5BD186B7D3C477B8360BC085 = {isa = PBXBuildFile; fileRef = 6002A4EA3545228B0F520F0D;};
-		5BFE1DDC0B9A1563F3628D4A = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Services/AppServices.swift"; sourceTree = SOURCE_ROOT;};
-		5E8ACABCCBE1DB5D311988C9 = {isa = XCBuildConfiguration; buildSettings = {
-
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				SDKROOT = iphoneos;
-				SWIFT_VERSION = 6.0;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-
-			}; name = Debug;};
-		6002A4EA3545228B0F520F0D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeWidgets/RepSetForgeLiveActivityWidget.swift"; sourceTree = SOURCE_ROOT;};
-		66C714C844D0BFA03DC09D81 = {isa = PBXBuildFile; fileRef = 518E35B85443929954635880;};
-		6CFC827E67DCAE34C72B9CED = {isa = PBXGroup; children = (9D2B46629158D5E0D18E42F7, CCC1F3D3455368CE13C7842F, EEDE5D0B67B3FA38304ED102, 9CD01FA7633D4D3A0A8F990B, B1C788C39A33962CBDFB3048, 021F2B7F3E0C61452C987484); sourceTree = "<group>";};
-		6F0DFB68682158FD83DBF8E4 = {isa = XCBuildConfiguration; buildSettings = {
-
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = RepSetForgeWatch/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 10.0;
-
-			}; name = Release;};
-		7395CD3B076723358C708BE0 = {isa = PBXBuildFile; fileRef = C123A07E755C73927ECA799A; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };};
-		768F8B228D9788DC87302A82 = {isa = PBXTargetDependency; target = B645626E2FC3DB45E109AAC5; targetProxy = 2C135CA110FDB5658326B736;};
-		7A3DAE032B0E5D1183437EA7 = {isa = XCBuildConfiguration; buildSettings = {
-
-				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = RepSetForgeWidgets/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widgets;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-
-			}; name = Debug;};
-		7DB5DFCC8ED86DDD8C423579 = {isa = XCBuildConfiguration; buildSettings = {
-
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = RepSetForge/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-
-			}; name = Release;};
-		7FA7FA3197DDD3447EC92118 = {isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = 91C955795F5E0E56AF892273; remoteInfo = RepSetForgeWidgets;};
-		8422D63737CD5E48813E1830 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/MainScreens.swift"; sourceTree = SOURCE_ROOT;};
-		886176CCD022F100EDE51FE8 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		895CD05BEE8BAB8F28D9933C = {isa = XCConfigurationList; buildConfigurations = (A51FF283BDA878CEF9B465DA, A76B9D3B3504C8728F6534B2); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
-		8CEDA7969DF3E20018ADE29A = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR;};
-		8DFBB93514DB53EE62D3B44B = {isa = XCBuildConfiguration; buildSettings = {
-
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
-				CODE_SIGN_STYLE = Automatic;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RepSetForge/Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-
-			}; name = Debug;};
-		91C955795F5E0E56AF892273 = {isa = PBXNativeTarget; buildConfigurationList = 596D251FBAD1432CFC93A91F; buildPhases = (AC60C995B9A5B193F3CF9C56, 4D8C5BA960F8645B260F1B3F, 886176CCD022F100EDE51FE8); buildRules = (); dependencies = (); name = RepSetForgeWidgets; productName = RepSetForgeWidgets; productReference = D8D6F9F883E6FC85755BAEFF; productType = "com.apple.product-type.app-extension";};
-		98F54143AB4E86B28C3AFEE0 = {isa = PBXProject; attributes = { LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; TargetAttributes = { B645626E2FC3DB45E109AAC5 = { CreatedOnToolsVersion = 26.6; }; 91C955795F5E0E56AF892273 = { CreatedOnToolsVersion = 26.6; }; 2C392AD8ADE10E05413759CE = { CreatedOnToolsVersion = 26.6; }; 2E2C5F2C2CCE58D9B4F08777 = { CreatedOnToolsVersion = 26.6; }; }; }; buildConfigurationList = 45A6A88DC85623F57ECF575D; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 6CFC827E67DCAE34C72B9CED; productRefGroup = 021F2B7F3E0C61452C987484; projectDirPath = ""; projectRoot = ""; targets = (B645626E2FC3DB45E109AAC5, 91C955795F5E0E56AF892273, 2C392AD8ADE10E05413759CE, 2E2C5F2C2CCE58D9B4F08777);};
-		9CD01FA7633D4D3A0A8F990B = {isa = PBXGroup; children = (F039B007885BF2C7143259E5, CE6117A772DB58011AA8DA50); path = RepSetForgeWatch; sourceTree = "<group>";};
-		9D2B46629158D5E0D18E42F7 = {isa = PBXGroup; children = (468826A83B962F0C47EFF338, D039A96F7604883D5BB328CD, E7F648460125A45A0B81F511, DD144EDCFEA66CD4EDDCACDD, 5BFE1DDC0B9A1563F3628D4A, 3E69BF185DC595A494B7832C, 8422D63737CD5E48813E1830, 518E35B85443929954635880, E7B24F1A036D1B004FD41D76); path = RepSetForge; sourceTree = "<group>";};
-		A05070AD1604345718597354 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		A51FF283BDA878CEF9B465DA = {isa = XCBuildConfiguration; buildSettings = {
-
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
-
-			}; name = Debug;};
-		A582D4F903CE1245D40003FA = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 13; files = (4B5C49B62512474C57B10522); name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0;};
-		A76B9D3B3504C8728F6534B2 = {isa = XCBuildConfiguration; buildSettings = {
-
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
-
-			}; name = Release;};
-		AC60C995B9A5B193F3CF9C56 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (CE6BD6A4F43D4950BAB18B6C, 5BD186B7D3C477B8360BC085); runOnlyForDeploymentPostprocessing = 0;};
-		B1C788C39A33962CBDFB3048 = {isa = PBXGroup; children = (F36545DF92B5B6A2A4F4A382); path = RepSetForgeTests; sourceTree = "<group>";};
-		B30928BB1402943E3C7CE009 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeShared/RepSetForgeActivityAttributes.swift"; sourceTree = SOURCE_ROOT;};
-		B645626E2FC3DB45E109AAC5 = {isa = PBXNativeTarget; buildConfigurationList = 03EFABB86F665BA711C83EA5; buildPhases = (FDBEB636160CC4A63F780304, FA3C5073B463D1BB4154A72F, 2BF5DE592226D457D3BCDAC0, A582D4F903CE1245D40003FA); buildRules = (); dependencies = (5B52D652D8790AD2308FBE2D); name = RepSetForge; productName = RepSetForge; productReference = 8CEDA7969DF3E20018ADE29A; productType = "com.apple.product-type.application";};
-		BBF27171F2E9EBCCAFD3E545 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (4163187A501ED788B7D490D2); runOnlyForDeploymentPostprocessing = 0;};
-		C0BEA2BCF3288F986B1289A9 = {isa = XCBuildConfiguration; buildSettings = {
-
-				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidgets/RepSetForgeWidgets.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = RepSetForgeWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widgets;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		100000000000000000000062 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForge/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		100000000000000000000071 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidget/RepSetForgeWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForgeWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app.RepSetForgeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-
-			}; name = Release;};
-		C123A07E755C73927ECA799A = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForgeWatch.app; sourceTree = BUILT_PRODUCTS_DIR;};
-		CCC1F3D3455368CE13C7842F = {isa = PBXGroup; children = (B30928BB1402943E3C7CE009); path = RepSetForgeShared; sourceTree = "<group>";};
-		CD5BADB5A91D597E76F60CF4 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		CE6117A772DB58011AA8DA50 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RepSetForgeWatch/Info.plist"; sourceTree = SOURCE_ROOT;};
-		CE6BD6A4F43D4950BAB18B6C = {isa = PBXBuildFile; fileRef = B30928BB1402943E3C7CE009;};
-		D039A96F7604883D5BB328CD = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Models/AppModels.swift"; sourceTree = SOURCE_ROOT;};
-		D4AABA29BC4DE8A9B240B214 = {isa = PBXBuildFile; fileRef = D039A96F7604883D5BB328CD;};
-		D7DA8668DC68561CF3B5D465 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		D8D6F9F883E6FC85755BAEFF = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RepSetForgeWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR;};
-		DC383D6985E96F0C625D14DE = {isa = PBXBuildFile; fileRef = 468826A83B962F0C47EFF338;};
-		DD144EDCFEA66CD4EDDCACDD = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/RepSetForgeApp.swift"; sourceTree = SOURCE_ROOT;};
-		DD70718FE9E23B3564F06431 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "RepSetForgeWidgets/Info.plist"; sourceTree = SOURCE_ROOT;};
-		E0842783B1DD0C533172395B = {isa = PBXBuildFile; fileRef = 5BFE1DDC0B9A1563F3628D4A;};
-		E7B24F1A036D1B004FD41D76 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Views/WorkoutViews.swift"; sourceTree = SOURCE_ROOT;};
-		E7F648460125A45A0B81F511 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForge/Persistence/PersistenceController.swift"; sourceTree = SOURCE_ROOT;};
-		E9D4387469A0B58F5BC5482F = {isa = PBXBuildFile; fileRef = E7B24F1A036D1B004FD41D76;};
-		EEDE5D0B67B3FA38304ED102 = {isa = PBXGroup; children = (6002A4EA3545228B0F520F0D, DD70718FE9E23B3564F06431); path = RepSetForgeWidgets; sourceTree = "<group>";};
-		F039B007885BF2C7143259E5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeWatch/RepSetForgeWatchApp.swift"; sourceTree = SOURCE_ROOT;};
-		F36545DF92B5B6A2A4F4A382 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepSetForgeTests/RepSetForgeTests.swift"; sourceTree = SOURCE_ROOT;};
-		F57A69ED7597B84606BA7B10 = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = "$(CONTENTS_FOLDER_PATH)/Watch"; dstSubfolderSpec = 16; files = (7395CD3B076723358C708BE0); name = "Embed Watch Content"; runOnlyForDeploymentPostprocessing = 0;};
-		F7274FA43EF4B25DC0D9F954 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR;};
-		F84FD35CA8548076F2B51EDF = {isa = XCBuildConfiguration; buildSettings = {
-
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = appex;
+			};
+			name = Debug;
+		};
+		100000000000000000000072 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidget/RepSetForgeWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RepSetForgeWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app.RepSetForgeWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = appex;
+			};
+			name = Release;
+		};
+		1000000000000000000000E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+			};
+			name = Debug;
+		};
+		1000000000000000000000E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.repsetforge.app.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+			};
+			name = Release;
+		};
+		100000000000000000000081 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				DEVELOPMENT_TEAM = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1 $(inherited)";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 6.0;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+			};
+			name = Debug;
+		};
+		100000000000000000000082 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
 
-			}; name = Release;};
-		FA3C5073B463D1BB4154A72F = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
-		FCC84A159A22FC149BD70F27 = {isa = PBXBuildFile; fileRef = E7F648460125A45A0B81F511;};
-		FDBEB636160CC4A63F780304 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (DC383D6985E96F0C625D14DE, D4AABA29BC4DE8A9B240B214, FCC84A159A22FC149BD70F27, 15F5FC4F22B2380DCB1C23F4, E0842783B1DD0C533172395B, 09BC3A3119CFE29CC052AFFD, 34B8CC57206F01904C88BA49, 66C714C844D0BFA03DC09D81, E9D4387469A0B58F5BC5482F, 093ABFD0D1DF3B13366209EE); runOnlyForDeploymentPostprocessing = 0;};
-		FFF446F067F09552158CA1AC = {isa = XCConfigurationList; buildConfigurations = (534E97FE03168657A20C767F, 6F0DFB68682158FD83DBF8E4); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+/* Begin XCConfigurationList section */
+		100000000000000000000060 /* Build configuration list for PBXNativeTarget "RepSetForge" */ = {isa = XCConfigurationList; buildConfigurations = (100000000000000000000061, 100000000000000000000062); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		100000000000000000000070 /* Build configuration list for PBXNativeTarget "RepSetForgeWidget" */ = {isa = XCConfigurationList; buildConfigurations = (100000000000000000000071, 100000000000000000000072); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		1000000000000000000000E0 /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */ = {isa = XCConfigurationList; buildConfigurations = (1000000000000000000000E1, 1000000000000000000000E2); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		100000000000000000000080 /* Build configuration list for PBXProject "RepSetForge" */ = {isa = XCConfigurationList; buildConfigurations = (100000000000000000000081, 100000000000000000000082); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+/* End XCConfigurationList section */
 	};
-	rootObject = 98F54143AB4E86B28C3AFEE0;
+	rootObject = 100000000000000000000040 /* Project object */;
 }
