@@ -1,6 +1,17 @@
 # RepSetForge — PROGRESS
 
-Current phase: **4 — Ladder engine + prompt** (engine + tests + PROG UI done; cross-session history feed = Phase 7)
+Current phase: **6 — Home + Summary + Health** (code complete; on-device Fitness-app gate pending)
+
+## Phase 5 completed
+- P5.1 ExercisePickerView: search (canonical-key), ALL/FAV/RECENT filters, favorite toggle, first-run "Create your first exercise" (DB ships empty) — done
+- P5.2 CreateExerciseView: name+muscles+equipment form, live "Similar exists" rows via ExerciseDeduplicator with use-instead action — done
+
+## Phase 6 completed
+- P6.1 BodyChartMath (pure): period aggregation (W daily/M 10-slot/Y 12-slot means), BF% interpolation ≤14d (never leading/trailing, never long gaps), deltas, span labels + tests — done
+- P6.2 HealthKitExporter: lazy auth at first completion, healthKitUUID guard (edit = delete+re-save), delete propagation, graceful when denied — done
+- P6.3 HomeView 4 modules: resume banner, week strip, recommended-next (least-recently-performed), Body dual-axis module w/ W/M/Y + swipe/arrow paging + locked/no-BF states — done
+- P6.4 SummaryView: duration/sets/reps/volume, PR spotlight, Health line — done
+- P6.5 RootView: tabs+FAB+active pill, fullScreenCover workout, §1 restore branching UI, finish→Health export→summary; App attaches CloudKit container (ephemeral fallback) — done
 
 ## Phase 4 completed
 - P4.1 LadderEngine (pure): rung generation (every rep low→high), qualify rule (weight==, reps>=, RPE<=max or missing, working/failure only), chronological replay w/ multi-rung skip + level-up regen; promptTarget == regenerate().current by definition — done
