@@ -21,6 +21,11 @@
 		100000000000000000000095 /* PRRebuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A5 /* PRRebuilder.swift */; };
 		10000000000000000000009A /* FocusWorkoutStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A6 /* FocusWorkoutStore.swift */; };
 		10000000000000000000009B /* FocusWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000A7 /* FocusWorkoutView.swift */; };
+		1000000000000000000000F0 /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F3 /* RepSetForgeActivityAttributes.swift */; };
+		1000000000000000000000F1 /* WorkoutActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F4 /* WorkoutActivityController.swift */; };
+		1000000000000000000000F2 /* RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F3 /* RepSetForgeActivityAttributes.swift */; };
+		1000000000000000000000F5 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100000000000000000000013 /* DesignTokens.swift */; };
+		1000000000000000000000F6 /* AppIntents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F7 /* AppIntents.framework */; };
 		100000000000000000000096 /* StrengthMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B0 /* StrengthMathTests.swift */; };
 		100000000000000000000097 /* ExerciseDeduplicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B1 /* ExerciseDeduplicatorTests.swift */; };
 		100000000000000000000098 /* SessionRestorePolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B2 /* SessionRestorePolicyTests.swift */; };
@@ -73,6 +78,9 @@
 		1000000000000000000000A5 /* PRRebuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PRRebuilder.swift; sourceTree = "<group>"; };
 		1000000000000000000000A6 /* FocusWorkoutStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/FocusWorkoutStore.swift; sourceTree = "<group>"; };
 		1000000000000000000000A7 /* FocusWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/FocusWorkoutView.swift; sourceTree = "<group>"; };
+		1000000000000000000000F3 /* RepSetForgeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/RepSetForgeActivityAttributes.swift; sourceTree = "<group>"; };
+		1000000000000000000000F4 /* WorkoutActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity/WorkoutActivityController.swift; sourceTree = "<group>"; };
+		1000000000000000000000F7 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
 		1000000000000000000000B0 /* StrengthMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrengthMathTests.swift; sourceTree = "<group>"; };
 		1000000000000000000000B1 /* ExerciseDeduplicatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDeduplicatorTests.swift; sourceTree = "<group>"; };
 		1000000000000000000000B2 /* SessionRestorePolicyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRestorePolicyTests.swift; sourceTree = "<group>"; };
@@ -82,7 +90,7 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		100000000000000000000041 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		100000000000000000000051 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000051 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (1000000000000000000000F6); runOnlyForDeploymentPostprocessing = 0; };
 		1000000000000000000000C1 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXFrameworksBuildPhase section */
 
@@ -93,6 +101,7 @@
 				100000000000000000000034 /* RepSetForge */,
 				100000000000000000000035 /* RepSetForgeWidget */,
 				1000000000000000000000B4 /* RepSetForgeTests */,
+				1000000000000000000000F7 /* AppIntents.framework */,
 				100000000000000000000036 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +118,8 @@
 				1000000000000000000000A3 /* ExerciseDeduplicator.swift */,
 				1000000000000000000000A4 /* SessionRestorePolicy.swift */,
 				1000000000000000000000A5 /* PRRebuilder.swift */,
+				1000000000000000000000F3 /* RepSetForgeActivityAttributes.swift */,
+				1000000000000000000000F4 /* WorkoutActivityController.swift */,
 				1000000000000000000000A6 /* FocusWorkoutStore.swift */,
 				1000000000000000000000A7 /* FocusWorkoutView.swift */,
 				100000000000000000000014 /* Info.plist */,
@@ -233,8 +244,8 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		100000000000000000000043 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000090, 100000000000000000000091, 100000000000000000000092, 100000000000000000000093, 100000000000000000000094, 100000000000000000000095, 10000000000000000000009A, 10000000000000000000009B); runOnlyForDeploymentPostprocessing = 0; };
-		100000000000000000000053 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000004, 100000000000000000000005); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000043 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000001, 100000000000000000000002, 100000000000000000000003, 100000000000000000000090, 100000000000000000000091, 100000000000000000000092, 100000000000000000000093, 100000000000000000000094, 100000000000000000000095, 10000000000000000000009A, 10000000000000000000009B, 1000000000000000000000F0, 1000000000000000000000F1); runOnlyForDeploymentPostprocessing = 0; };
+		100000000000000000000053 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000004, 100000000000000000000005, 1000000000000000000000F2, 1000000000000000000000F5); runOnlyForDeploymentPostprocessing = 0; };
 		1000000000000000000000C2 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (100000000000000000000096, 100000000000000000000097, 100000000000000000000098, 100000000000000000000099, 10000000000000000000009C); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 

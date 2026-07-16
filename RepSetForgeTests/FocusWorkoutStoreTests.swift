@@ -61,6 +61,22 @@ final class FocusWorkoutStoreTests: XCTestCase {
     XCTAssertEqual(store.workDuration(now: Date(timeIntervalSince1970: 100)) + store.completedRestDuration, 100, accuracy: 0.001)
   }
 
+  func testRestExtensionUsesWallClockEndDateAndLedgerUsesActualRestedTime() {
+    let store = FocusWorkoutStore(startedAt: Date(timeIntervalSince1970: 0))
+    let exercise = store.exercises[0]
+
+    store.complete(setID: exercise.sets[0].id, exerciseID: exercise.id, now: Date(timeIntervalSince1970: 10))
+    store.extendRest(by: 30)
+
+    XCTAssertEqual(store.activeRest?.endsAt, Date(timeIntervalSince1970: 130))
+    XCTAssertEqual(store.activeRest?.total, 120)
+
+    store.skipRest(now: Date(timeIntervalSince1970: 80))
+
+    XCTAssertNil(store.activeRest)
+    XCTAssertEqual(store.completedRestDuration, 70)
+  }
+
   func testPRFlagIsInlineDerivedOnCommit() {
     let store = FocusWorkoutStore()
     let exerciseID = store.exercises[0].id

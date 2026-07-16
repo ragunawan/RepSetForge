@@ -67,6 +67,7 @@ struct RestLedgerEntry: Identifiable, Equatable {
 }
 
 @Observable
+@MainActor
 final class FocusWorkoutStore {
   var sessionName = "Upper Strength"
   var startedAt: Date
@@ -79,11 +80,17 @@ final class FocusWorkoutStore {
   var draftSaveCount = 0
   private var modelContext: ModelContext?
   private var sessionDraft: WorkoutSession?
+  private let activityController: WorkoutActivityController?
 
-  init(startedAt: Date = .now, exercises: [FocusExercise] = FocusWorkoutStore.sampleExercises()) {
+  init(
+    startedAt: Date = .now,
+    exercises: [FocusExercise] = FocusWorkoutStore.sampleExercises(),
+    activityController: WorkoutActivityController? = nil
+  ) {
     self.startedAt = startedAt
     self.exercises = exercises
     self.selectedExerciseID = exercises.first?.id ?? UUID()
+    self.activityController = activityController
   }
 
   func bindModelContext(_ modelContext: ModelContext) {
@@ -97,6 +104,7 @@ final class FocusWorkoutStore {
     set {
       guard exercises.indices.contains(newValue) else { return }
       selectedExerciseID = exercises[newValue].id
+      updateLiveActivity()
     }
   }
 
@@ -115,6 +123,16 @@ final class FocusWorkoutStore {
 
   var completedRestDuration: TimeInterval {
     restLedger.reduce(0) { $0 + $1.duration }
+  }
+
+  var totalVolumeKg: Decimal {
+    exercises.reduce(0) { $0 + $1.volumeKg }
+  }
+
+  var personalRecordCount: Int {
+    exercises.reduce(0) { partial, exercise in
+      partial + exercise.sets.filter(\.isPR).count
+    }
   }
 
   func workDuration(now: Date = .now) -> TimeInterval {
@@ -219,6 +237,7 @@ final class FocusWorkoutStore {
       exercises[exerciseIndex].sets[setIndex].completedAt = nil
       exercises[exerciseIndex].sets[setIndex].isPR = false
       persistDraft()
+      updateLiveActivity()
       return
     }
 
@@ -241,12 +260,30 @@ final class FocusWorkoutStore {
     startRest(duration: TimeInterval(exercises[exerciseIndex].sets[setIndex].restSeconds), now: now)
     appendNextSetIfNeeded(exerciseIndex: exerciseIndex, completedSetIndex: setIndex)
     persistDraft()
+    updateLiveActivity()
   }
 
   func skipRest(now: Date = .now) {
     guard let activeRest else { return }
     restLedger.append(RestLedgerEntry(startedAt: activeRest.startedAt, endedAt: min(now, activeRest.endsAt)))
     self.activeRest = nil
+    activityController?.cancelRestCompletionNotification()
+    updateLiveActivity()
+  }
+
+  func extendRest(by seconds: TimeInterval = 30) {
+    guard let activeRest else { return }
+    self.activeRest = (
+      startedAt: activeRest.startedAt,
+      endsAt: activeRest.endsAt.addingTimeInterval(seconds),
+      total: activeRest.total + seconds
+    )
+    activityController?.scheduleRestCompletion(at: self.activeRest!.endsAt, exerciseName: selectedExercise.name)
+    updateLiveActivity()
+  }
+
+  func reassertLiveActivity() {
+    activityController?.startOrUpdate(attributes: liveActivityAttributes, state: liveActivityState)
   }
 
   private func startRest(duration: TimeInterval, now: Date) {
@@ -254,6 +291,42 @@ final class FocusWorkoutStore {
       restLedger.append(RestLedgerEntry(startedAt: activeRest.startedAt, endedAt: min(now, activeRest.endsAt)))
     }
     activeRest = (startedAt: now, endsAt: now.addingTimeInterval(duration), total: duration)
+    activityController?.scheduleRestCompletion(at: now.addingTimeInterval(duration), exerciseName: selectedExercise.name)
+  }
+
+  private var selectedExercise: FocusExercise {
+    exercises.first { $0.id == selectedExerciseID } ?? exercises[0]
+  }
+
+  private var liveActivityAttributes: RepSetForgeActivityAttributes {
+    RepSetForgeActivityAttributes(workoutName: sessionName, startedAt: startedAt)
+  }
+
+  private var liveActivityState: RepSetForgeActivityAttributes.ContentState {
+    let exercise = selectedExercise
+    let nextSet = exercise.sets.first(where: { !$0.isCompleted }) ?? exercise.sets.last
+    let phase: RepSetForgeActivityAttributes.ContentState.RestPhase
+    if let activeRest {
+      phase = .resting(end: activeRest.endsAt, total: activeRest.total)
+    } else {
+      phase = .working
+    }
+
+    return RepSetForgeActivityAttributes.ContentState(
+      currentExerciseName: exercise.name,
+      setIndex: nextSet?.index ?? 1,
+      setTotal: exercise.plannedSets,
+      sessionSetCount: completedSetCount,
+      sessionSetTotal: plannedSetCount,
+      restPhase: phase,
+      volumeKg: totalVolumeKg,
+      prCount: personalRecordCount,
+      summaryLine: nil
+    )
+  }
+
+  private func updateLiveActivity() {
+    activityController?.startOrUpdate(attributes: liveActivityAttributes, state: liveActivityState)
   }
 
   private func appendNextSetIfNeeded(exerciseIndex: Int, completedSetIndex: Int) {
@@ -485,7 +558,7 @@ final class FocusWorkoutStore {
     return fields
   }
 
-  static func sampleExercises() -> [FocusExercise] {
+  nonisolated static func sampleExercises() -> [FocusExercise] {
     [
       FocusExercise(
         id: UUID(),

@@ -698,20 +698,28 @@ private struct BottomFocusPill: View {
       Text("×")
       Text("PROG")
         .forgeTextStyle(DesignTokens.Typography.eyebrow)
-      Button {
-        showsIndex = true
-      } label: {
-        if let rest = store.activeRest {
-          Text(timerInterval: Date()...rest.endsAt, countsDown: true)
-            .forgeTextStyle(DesignTokens.Typography.numericRow)
-            .forgeNumeric()
-        } else {
+      if let rest = store.activeRest {
+        Button("+30") {
+          store.extendRest()
+        }
+        .buttonStyle(.plain)
+        Text(timerInterval: Date()...rest.endsAt, countsDown: true)
+          .forgeTextStyle(DesignTokens.Typography.numericRow)
+          .forgeNumeric()
+        Button("SKIP") {
+          store.skipRest()
+        }
+        .buttonStyle(.plain)
+      } else {
+        Button {
+          showsIndex = true
+        } label: {
           Text("‹ \(store.selectedIndex + 1)/\(store.exercises.count) ›")
             .forgeTextStyle(DesignTokens.Typography.numericRow)
             .forgeNumeric()
         }
+        .buttonStyle(.plain)
       }
-      .buttonStyle(.plain)
       Text("↗")
     }
     .forgeTextStyle(DesignTokens.Typography.numericRow)
