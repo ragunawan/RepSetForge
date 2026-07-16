@@ -37,6 +37,7 @@ Completed:
 - P8.2 CSV import/export - done, Settings exports completed SetEntry history to `date,exercise,set_type,weight_kg,reps,rpe` CSV and imports the same schema into completed SwiftData sessions with exercise dedup + PR rebuild; `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (24/24).
 - P8.3 App Store text artifacts - done, `docs/app-store-submission.md` now contains privacy-label text, privacy-policy requirements, verified Health usage strings, review notes, demo path, Health-denied path, screenshot list, and release checklist.
 - P8.4 Accessibility audit artifact - done, `docs/accessibility-audit.md` records completed simulator checks for Dynamic Type tiering/VoiceOver/reduce-motion and separates pending device/manual verification.
+- P8.5 Rest/haptic accessibility polish - done, Focus set completion now fires `.light`, PR commits fire `.success`, rest completion fires `.warning`, and active rest posts VoiceOver announcements at 10s remaining + completion without per-second state; `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (24/24).
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
@@ -55,4 +56,4 @@ Decisions:
 Open:
 - Phase 3 gate pending: on-device lock phone mid-rest, countdown ticks, Skip works from lock screen, activity survives backgrounding.
 - Phase 6 pending: on-device workout appears in Fitness app; edit session updates HKWorkout via healthKitUUID; delete session removes HKWorkout.
-- Phase 8 pending: hosted privacy policy URL, CloudKit production schema deploy, TestFlight Health-denied path, AX5/device tap-target audit, rest announcements, haptic verification, and contrast measurement.
+- Phase 8 pending: hosted privacy policy URL, CloudKit production schema deploy, TestFlight Health-denied path, AX5/device tap-target audit, on-device haptic verification, and contrast measurement.

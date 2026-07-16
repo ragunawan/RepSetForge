@@ -1,5 +1,6 @@
 import SwiftUI
 import SwiftData
+import UIKit
 
 struct FocusWorkoutView: View {
   @Bindable var store: FocusWorkoutStore
@@ -776,7 +777,7 @@ private struct SetRow: View {
     }
     .opacity(set.isCompleted ? 0.55 : 1)
     .background(set.isPR ? DesignTokens.ColorToken.prDim : Color.clear)
-    .animation(.easeInOut(duration: DesignTokens.Motion.stateChangeDuration), value: set.isCompleted)
+    .animation(reduceMotion ? .easeInOut(duration: DesignTokens.Motion.stateChangeDuration) : .spring(response: DesignTokens.Motion.setCompleteDuration, dampingFraction: 0.7), value: set.isCompleted)
   }
 
   private var gridRow: some View {
@@ -905,12 +906,22 @@ private struct SetRow: View {
 
   private func complete() {
     showsRPEChips = false
+    let wasCompleted = set.isCompleted
     if reduceMotion {
       store.complete(setID: set.id, exerciseID: exercise.id)
     } else {
       withAnimation(.spring(response: DesignTokens.Motion.setCompleteDuration, dampingFraction: 0.7)) {
         store.complete(setID: set.id, exerciseID: exercise.id)
       }
+    }
+    guard !wasCompleted,
+          let updatedExercise = store.exercises.first(where: { $0.id == exercise.id }),
+          let updatedSet = updatedExercise.sets.first(where: { $0.id == set.id }),
+          updatedSet.isCompleted else { return }
+
+    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    if updatedSet.isPR {
+      UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
   }
 
@@ -1301,6 +1312,7 @@ private struct BottomFocusPill: View {
   @Bindable var store: FocusWorkoutStore
   @Binding var showsIndex: Bool
   @Binding var showsProgression: Bool
+  @Environment(\.accessibilityVoiceOverEnabled) private var voiceOverEnabled
 
   var body: some View {
     HStack(spacing: DesignTokens.Spacing.step4) {
@@ -1345,6 +1357,30 @@ private struct BottomFocusPill: View {
     .overlay(Capsule().stroke(DesignTokens.ColorToken.hairline))
     .shadow(color: DesignTokens.ColorToken.surface.opacity(0.25), radius: DesignTokens.Spacing.step2)
     .padding(.bottom, DesignTokens.Spacing.step5)
+    .task(id: store.activeRest?.endsAt) {
+      await announceActiveRest()
+    }
+  }
+
+  private func announceActiveRest() async {
+    guard let rest = store.activeRest else { return }
+    let tenSecondAnnouncement = rest.endsAt.addingTimeInterval(-10)
+    if tenSecondAnnouncement > .now {
+      try? await Task.sleep(for: .seconds(tenSecondAnnouncement.timeIntervalSinceNow))
+      guard !Task.isCancelled, store.activeRest?.endsAt == rest.endsAt else { return }
+      if voiceOverEnabled {
+        UIAccessibility.post(notification: .announcement, argument: "Rest ends in 10 seconds")
+      }
+    }
+
+    if rest.endsAt > .now {
+      try? await Task.sleep(for: .seconds(rest.endsAt.timeIntervalSinceNow))
+    }
+    guard !Task.isCancelled, store.activeRest?.endsAt == rest.endsAt else { return }
+    UINotificationFeedbackGenerator().notificationOccurred(.warning)
+    if voiceOverEnabled {
+      UIAccessibility.post(notification: .announcement, argument: "Rest complete")
+    }
   }
 }
 
