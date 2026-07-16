@@ -91,6 +91,20 @@ enum HealthKitExportService {
         }
     }
 
+    /// Historical edit invalidation chain step 4 (dev spec §5): "update the
+    /// linked HKWorkout via healthKitUUID (delete + re-save with
+    /// same-session metadata)". `HKWorkoutBuilder` has no in-place update
+    /// API, so this is a real delete-then-recreate; `saveWorkout` early-
+    /// returns the existing UUID otherwise, so `healthKitUUID` has to be
+    /// cleared first or the re-save would silently no-op.
+    static func resaveWorkout(session: WorkoutSession, bodyweightKg: Decimal?) async -> UUID? {
+        if let existing = session.healthKitUUID {
+            deleteWorkout(uuid: existing)
+            session.healthKitUUID = nil
+        }
+        return await saveWorkout(session: session, bodyweightKg: bodyweightKg)
+    }
+
     /// Deleting a session deletes its `HKWorkout` (dev spec §4b/§5) — this
     /// is a best-effort fire-and-forget; there's nothing useful to surface
     /// to the user if it fails (the local session record is already gone).

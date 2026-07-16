@@ -4,7 +4,10 @@ import SwiftData
 /// dev spec §5, mockup frame 7. The mockup's calendar also marks "planned"
 /// (dashed) future sessions — there's no scheduling feature yet (TODO.md),
 /// so the calendar here only ever marks days with a completed session.
-/// Filters (by routine/muscle) aren't built either.
+/// Filters (by routine/muscle) aren't built either. List rows now push into
+/// `SessionDetailView` (edit/delete past sets, triggering the historical
+/// edit invalidation chain, dev spec §5) — the calendar view doesn't have an
+/// equivalent day-tap-through yet.
 struct HistoryView: View {
     @Query private var allSessions: [WorkoutSession]
 
@@ -49,8 +52,12 @@ struct HistoryView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 List(completedSessions) { session in
-                    sessionRow(session)
-                        .listRowBackground(RepSetForgeTheme.Colors.surfaceRaised)
+                    NavigationLink {
+                        SessionDetailView(session: session)
+                    } label: {
+                        sessionRow(session)
+                    }
+                    .listRowBackground(RepSetForgeTheme.Colors.surfaceRaised)
                 }
                 .scrollContentBackground(.hidden)
             }

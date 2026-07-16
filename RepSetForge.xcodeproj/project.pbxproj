@@ -39,6 +39,7 @@
 		AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */; };
 		AA0200000000000000000044 /* RoutineDiffService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* RoutineDiffService.swift */; };
 		AA0200000000000000000047 /* HealthKitExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000048 /* HealthKitExportService.swift */; };
+		AA0200000000000000000048 /* HistoricalEditInvalidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000049 /* HistoricalEditInvalidationService.swift */; };
 		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
@@ -58,6 +59,7 @@
 		AA020000000000000000003E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003E /* SettingsView.swift */; };
 		AA020000000000000000003F /* UnfinishedSessionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003F /* UnfinishedSessionSheet.swift */; };
 		AA0200000000000000000045 /* RoutineUpdateDiffSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000046 /* RoutineUpdateDiffSheet.swift */; };
+		AA0200000000000000000049 /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004A /* SessionDetailView.swift */; };
 		AA0200000000000000000025 /* SetRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000025 /* SetRowView.swift */; };
 		AA0200000000000000000026 /* RPEChipRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000026 /* RPEChipRow.swift */; };
 		AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000027 /* ExerciseTrendChart.swift */; };
@@ -73,6 +75,7 @@
 		AA020000000000000000003C /* ProgressStatsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000003C /* ProgressStatsServiceTests.swift */; };
 		AA0200000000000000000041 /* WorkoutSessionRestoreServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */; };
 		AA0200000000000000000046 /* RoutineDiffServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000047 /* RoutineDiffServiceTests.swift */; };
+		AA020000000000000000004A /* PersonalRecordRecomputeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000004B /* PersonalRecordRecomputeTests.swift */; };
 		AA020000000000000000001D /* RepSetForgeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA010000000000000000001D /* RepSetForgeUITests.swift */; };
 		/* End PBXBuildFile section */
 
@@ -129,6 +132,7 @@
 		AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerNotificationScheduler.swift; sourceTree = "<group>"; };
 		AA0100000000000000000045 /* RoutineDiffService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDiffService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000048 /* HealthKitExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitExportService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000049 /* HistoricalEditInvalidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalEditInvalidationService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 		AA010000000000000000003E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		AA010000000000000000003F /* UnfinishedSessionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnfinishedSessionSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000046 /* RoutineUpdateDiffSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineUpdateDiffSheet.swift; sourceTree = "<group>"; };
+		AA010000000000000000004A /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000025 /* SetRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRowView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000026 /* RPEChipRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPEChipRow.swift; sourceTree = "<group>"; };
 		AA0100000000000000000027 /* ExerciseTrendChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTrendChart.swift; sourceTree = "<group>"; };
@@ -164,6 +169,7 @@
 		AA010000000000000000003C /* ProgressStatsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStatsServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionRestoreServiceTests.swift; sourceTree = "<group>"; };
 		AA0100000000000000000047 /* RoutineDiffServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDiffServiceTests.swift; sourceTree = "<group>"; };
+		AA010000000000000000004B /* PersonalRecordRecomputeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordRecomputeTests.swift; sourceTree = "<group>"; };
 		AA010000000000000000001D /* RepSetForgeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepSetForgeUITests.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
 
@@ -265,6 +271,7 @@
 				AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */,
 				AA0100000000000000000045 /* RoutineDiffService.swift */,
 				AA0100000000000000000048 /* HealthKitExportService.swift */,
+				AA0100000000000000000049 /* HistoricalEditInvalidationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -300,6 +307,7 @@
 				AA010000000000000000003E /* SettingsView.swift */,
 				AA010000000000000000003F /* UnfinishedSessionSheet.swift */,
 				AA0100000000000000000046 /* RoutineUpdateDiffSheet.swift */,
+				AA010000000000000000004A /* SessionDetailView.swift */,
 				AA030000000000000000000A /* Components */,
 			);
 			path = Views;
@@ -329,6 +337,7 @@
 				AA010000000000000000003C /* ProgressStatsServiceTests.swift */,
 				AA0100000000000000000041 /* WorkoutSessionRestoreServiceTests.swift */,
 				AA0100000000000000000047 /* RoutineDiffServiceTests.swift */,
+				AA010000000000000000004B /* PersonalRecordRecomputeTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -492,6 +501,7 @@
 				AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */,
 				AA0200000000000000000044 /* RoutineDiffService.swift in Sources */,
 				AA0200000000000000000047 /* HealthKitExportService.swift in Sources */,
+				AA0200000000000000000048 /* HistoricalEditInvalidationService.swift in Sources */,
 				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
@@ -511,6 +521,7 @@
 				AA020000000000000000003E /* SettingsView.swift in Sources */,
 				AA020000000000000000003F /* UnfinishedSessionSheet.swift in Sources */,
 				AA0200000000000000000045 /* RoutineUpdateDiffSheet.swift in Sources */,
+				AA0200000000000000000049 /* SessionDetailView.swift in Sources */,
 				AA0200000000000000000025 /* SetRowView.swift in Sources */,
 				AA0200000000000000000026 /* RPEChipRow.swift in Sources */,
 				AA0200000000000000000027 /* ExerciseTrendChart.swift in Sources */,
@@ -532,6 +543,7 @@
 				AA020000000000000000003C /* ProgressStatsServiceTests.swift in Sources */,
 				AA0200000000000000000041 /* WorkoutSessionRestoreServiceTests.swift in Sources */,
 				AA0200000000000000000046 /* RoutineDiffServiceTests.swift in Sources */,
+				AA020000000000000000004A /* PersonalRecordRecomputeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
