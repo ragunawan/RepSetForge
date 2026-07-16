@@ -1,6 +1,11 @@
 # RepSetForge — PROGRESS
 
-Current phase: **3 — Timers + Live Activity** (code complete; gate is on-device only)
+Current phase: **4 — Ladder engine + prompt** (engine + tests + PROG UI done; cross-session history feed = Phase 7)
+
+## Phase 4 completed
+- P4.1 LadderEngine (pure): rung generation (every rep low→high), qualify rule (weight==, reps>=, RPE<=max or missing, working/failure only), chronological replay w/ multi-rung skip + level-up regen; promptTarget == regenerate().current by definition — done
+- P4.2 LadderEngineTests: property tests — regenerable from history (edit regresses, input-order independent), prompt==ladder head, RPE gating, warmup exclusion, level-up — done
+- P4.3 ProgressionPanel: rule rows + ladder list (done dim 55% / current signal-dim bg / level-up annotation, per-level e1RM, completion dates) fed by engine from live session — done
 
 ## Phase 3 completed
 - P3.1 WorkoutActivityAttributes moved to app Services/ and shared to widget target via pbxproj exception set (VERIFY membership in Xcode) — done
