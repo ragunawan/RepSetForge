@@ -1,0 +1,522 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000012E00000100000001 /* RepSetForgeWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A10000022E00000100000002 /* RepSetForgeWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A10000032E00000100000003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000042E00000100000004 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000052E00000100000005;
+			remoteInfo = RepSetForgeWidgetExtension;
+		};
+		A10000062E00000100000006 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000042E00000100000004 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10000072E00000100000007;
+			remoteInfo = RepSetForge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A10000082E00000100000008 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10000012E00000100000001 /* RepSetForgeWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A10000092E00000100000009 /* RepSetForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepSetForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000022E00000100000002 /* RepSetForgeWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RepSetForgeWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A100000A2E0000010000000A /* RepSetForgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RepSetForgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		A100000B2E0000010000000B /* Exceptions for "RepSetForge" folder in "RepSetForge" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A10000072E00000100000007 /* RepSetForge */;
+		};
+		A100000C2E0000010000000C /* Exceptions for "RepSetForgeWidget" folder in "RepSetForgeWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = A10000052E00000100000005 /* RepSetForgeWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		A100000D2E0000010000000D /* RepSetForge */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A100000B2E0000010000000B /* Exceptions for "RepSetForge" folder in "RepSetForge" target */,
+			);
+			path = RepSetForge;
+			sourceTree = "<group>";
+		};
+		A100000E2E0000010000000E /* RepSetForgeWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A100000C2E0000010000000C /* Exceptions for "RepSetForgeWidget" folder in "RepSetForgeWidgetExtension" target */,
+			);
+			path = RepSetForgeWidget;
+			sourceTree = "<group>";
+		};
+		A100000F2E0000010000000F /* RepSetForgeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = RepSetForgeTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000102E00000100000010 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000112E00000100000011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000122E00000100000012 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000132E00000100000013 = {
+			isa = PBXGroup;
+			children = (
+				A100000D2E0000010000000D /* RepSetForge */,
+				A100000E2E0000010000000E /* RepSetForgeWidget */,
+				A100000F2E0000010000000F /* RepSetForgeTests */,
+				A10000142E00000100000014 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000142E00000100000014 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000092E00000100000009 /* RepSetForge.app */,
+				A10000022E00000100000002 /* RepSetForgeWidgetExtension.appex */,
+				A100000A2E0000010000000A /* RepSetForgeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000072E00000100000007 /* RepSetForge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000152E00000100000015 /* Build configuration list for PBXNativeTarget "RepSetForge" */;
+			buildPhases = (
+				A10000162E00000100000016 /* Sources */,
+				A10000102E00000100000010 /* Frameworks */,
+				A10000172E00000100000017 /* Resources */,
+				A10000082E00000100000008 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000182E00000100000018 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A100000D2E0000010000000D /* RepSetForge */,
+			);
+			name = RepSetForge;
+			productName = RepSetForge;
+			productReference = A10000092E00000100000009 /* RepSetForge.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A10000052E00000100000005 /* RepSetForgeWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000192E00000100000019 /* Build configuration list for PBXNativeTarget "RepSetForgeWidgetExtension" */;
+			buildPhases = (
+				A100001A2E0000010000001A /* Sources */,
+				A10000112E00000100000011 /* Frameworks */,
+				A100001B2E0000010000001B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A100000E2E0000010000000E /* RepSetForgeWidget */,
+			);
+			name = RepSetForgeWidgetExtension;
+			productName = RepSetForgeWidgetExtension;
+			productReference = A10000022E00000100000002 /* RepSetForgeWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A100001C2E0000010000001C /* RepSetForgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A100001D2E0000010000001D /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */;
+			buildPhases = (
+				A100001E2E0000010000001E /* Sources */,
+				A10000122E00000100000012 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A100001F2E0000010000001F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				A100000F2E0000010000000F /* RepSetForgeTests */,
+			);
+			name = RepSetForgeTests;
+			productName = RepSetForgeTests;
+			productReference = A100000A2E0000010000000A /* RepSetForgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000042E00000100000004 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A10000072E00000100000007 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A10000052E00000100000005 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A100001C2E0000010000001C = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A10000072E00000100000007;
+					};
+				};
+			};
+			buildConfigurationList = A10000202E00000100000020 /* Build configuration list for PBXProject "RepSetForge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10000132E00000100000013;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A10000142E00000100000014 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000072E00000100000007 /* RepSetForge */,
+				A10000052E00000100000005 /* RepSetForgeWidgetExtension */,
+				A100001C2E0000010000001C /* RepSetForgeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000172E00000100000017 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A100001B2E0000010000001B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000162E00000100000016 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A100001A2E0000010000001A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A100001E2E0000010000001E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000182E00000100000018 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000052E00000100000005 /* RepSetForgeWidgetExtension */;
+			targetProxy = A10000032E00000100000003 /* PBXContainerItemProxy */;
+		};
+		A100001F2E0000010000001F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10000072E00000100000007 /* RepSetForge */;
+			targetProxy = A10000062E00000100000006 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10000212E00000100000021 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A10000222E00000100000022 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A10000232E00000100000023 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepSetForge/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A10000242E00000100000024 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RepSetForge/RepSetForge.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepSetForge/Info.plist;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A10000252E00000100000025 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidget/RepSetForgeWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepSetForgeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RepSetForgeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A10000262E00000100000026 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RepSetForgeWidget/RepSetForgeWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RepSetForgeWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RepSetForgeWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForge.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A10000272E00000100000027 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+			};
+			name = Debug;
+		};
+		A10000282E00000100000028 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = dev.gnwn.RepSetForgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RepSetForge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/RepSetForge";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000202E00000100000020 /* Build configuration list for PBXProject "RepSetForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000212E00000100000021 /* Debug */,
+				A10000222E00000100000022 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000152E00000100000015 /* Build configuration list for PBXNativeTarget "RepSetForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000232E00000100000023 /* Debug */,
+				A10000242E00000100000024 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000192E00000100000019 /* Build configuration list for PBXNativeTarget "RepSetForgeWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000252E00000100000025 /* Debug */,
+				A10000262E00000100000026 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A100001D2E0000010000001D /* Build configuration list for PBXNativeTarget "RepSetForgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000272E00000100000027 /* Debug */,
+				A10000282E00000100000028 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A10000042E00000100000004 /* Project object */;
+}
