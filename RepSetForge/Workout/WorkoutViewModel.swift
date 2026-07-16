@@ -11,7 +11,10 @@ import Observation
 final class WorkoutViewModel {
     let store: ActiveSessionStore
     let restTimer = RestTimerManager()
-    var page: Int = 0
+    let liveActivity = LiveActivityController()
+    var page: Int = 0 {
+        didSet { if page != oldValue { pushActivityUpdate() } }
+    }
     /// Per-exercise-per-session chart expansion; absent = expanded until first set.
     var chartOpen: [Int: Bool] = [:]
     /// Row indices flagged touched per page ("p-i").
@@ -20,6 +23,47 @@ final class WorkoutViewModel {
 
     init(store: ActiveSessionStore) {
         self.store = store
+        // Rest transitions (§4): update the activity and manage the
+        // rest-complete notification; intents from the lock screen route back
+        // through the bridge into the same manager.
+        restTimer.onStateChange = { [weak self] in
+            guard let self else { return }
+            if let end = restTimer.plannedEnd {
+                let name = orderedExercises.indices.contains(page)
+                    ? orderedExercises[page].exercise?.name ?? "" : ""
+                liveActivity.scheduleRestNotification(endingAt: end, exerciseName: name)
+            } else {
+                liveActivity.cancelRestNotification()
+            }
+            pushActivityUpdate()
+        }
+        RestIntentBridge.shared.skip = { [weak self] in self?.restTimer.skip() }
+        RestIntentBridge.shared.extend = { [weak self] in self?.restTimer.extend($0) }
+    }
+
+    // MARK: Live Activity lifecycle (§4)
+
+    func startLiveActivity() {
+        guard let session else { return }
+        liveActivity.start(workoutName: session.name, startDate: session.startedAt,
+                           state: activityContentState())
+    }
+
+    func endLiveActivity(discarded: Bool) {
+        liveActivity.cancelRestNotification()
+        liveActivity.end(finalState: discarded ? nil : activityContentState(),
+                         immediate: discarded)
+    }
+
+    func reassertLiveActivityOnForeground() {
+        guard let session else { return }
+        liveActivity.reassertIfNeeded(workoutName: session.name,
+                                      startDate: session.startedAt,
+                                      state: activityContentState())
+    }
+
+    func pushActivityUpdate() {
+        liveActivity.update(activityContentState())
     }
 
     var session: WorkoutSession? { store.session }
@@ -132,6 +176,7 @@ final class WorkoutViewModel {
 
         restTimer.start(duration: TimeInterval(restSeconds))
         store.touch()
+        pushActivityUpdate()
         return .init(isPR: isPR, startedRestSeconds: restSeconds)
     }
 

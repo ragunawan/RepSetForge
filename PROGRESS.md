@@ -1,6 +1,13 @@
 # RepSetForge — PROGRESS
 
-Current phase: **2 — Focus view + set row** (core built; superset pages, plate calc, prev-session ghost feed & snapshots pending)
+Current phase: **3 — Timers + Live Activity** (code complete; gate is on-device only)
+
+## Phase 3 completed
+- P3.1 WorkoutActivityAttributes moved to app Services/ and shared to widget target via pbxproj exception set (VERIFY membership in Xcode) — done
+- P3.2 SkipRestIntent/ExtendRestIntent (LiveActivityIntent, in-process via RestIntentBridge) — done
+- P3.3 LiveActivityController: start/update/end (.after(4s) on finish, .immediate on discard), foreground re-assert, time-sensitive rest-complete notification — done
+- P3.4 Full lock-screen + Dynamic Island surfaces (compact/minimal/expanded), all OS-driven ticking, Skip/+30s buttons resting-only, widgetURL deep link — done
+- P3.5 VM wiring: rest transitions → activity update + notification; page change/set completion → update; intents → RestTimerManager — done
 
 ## Completed
 - P2.1 RestLedger (pure): completed intervals + wall-clock current rest; WORK+REST≡SESSION by construction; overtime/extend/skip; tests incl. invariant sweep — done
