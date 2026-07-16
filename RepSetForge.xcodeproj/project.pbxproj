@@ -31,6 +31,7 @@
 		1000000000000000000000AC /* Services/CSVTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000AD /* Services/CSVTransfer.swift */; };
 		1000000000000000000000B6 /* LadderEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B7 /* LadderEngineTests.swift */; };
 		1000000000000000000000B8 /* HistoricalSessionInvalidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000B9 /* HistoricalSessionInvalidatorTests.swift */; };
+		1000000000000000000000BA /* DesignTokenContrastTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000BB /* DesignTokenContrastTests.swift */; };
 		1000000000000000000000F0 /* Shared/RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F3 /* Shared/RepSetForgeActivityAttributes.swift */; };
 		1000000000000000000000F1 /* Activity/WorkoutActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F4 /* Activity/WorkoutActivityController.swift */; };
 		1000000000000000000000F2 /* Shared/RepSetForgeActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1000000000000000000000F3 /* Shared/RepSetForgeActivityAttributes.swift */; };
@@ -100,6 +101,7 @@
 		1000000000000000000000B5 /* FocusWorkoutStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWorkoutStoreTests.swift; sourceTree = "<group>"; };
 		1000000000000000000000B7 /* LadderEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LadderEngineTests.swift; sourceTree = "<group>"; };
 		1000000000000000000000B9 /* HistoricalSessionInvalidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalSessionInvalidatorTests.swift; sourceTree = "<group>"; };
+		1000000000000000000000BB /* DesignTokenContrastTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokenContrastTests.swift; sourceTree = "<group>"; };
 		1000000000000000000000F3 /* Shared/RepSetForgeActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared/RepSetForgeActivityAttributes.swift; sourceTree = "<group>"; };
 		1000000000000000000000F4 /* Activity/WorkoutActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity/WorkoutActivityController.swift; sourceTree = "<group>"; };
 		1000000000000000000000F7 /* AppIntents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppIntents.framework; path = System/Library/Frameworks/AppIntents.framework; sourceTree = SDKROOT; };
@@ -198,6 +200,7 @@
 				1000000000000000000000B5 /* FocusWorkoutStoreTests.swift */,
 				1000000000000000000000B7 /* LadderEngineTests.swift */,
 				1000000000000000000000B9 /* HistoricalSessionInvalidatorTests.swift */,
+				1000000000000000000000BB /* DesignTokenContrastTests.swift */,
 			);
 			path = RepSetForgeTests;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				10000000000000000000009C /* FocusWorkoutStoreTests.swift in Sources */,
 				1000000000000000000000B6 /* LadderEngineTests.swift in Sources */,
 				1000000000000000000000B8 /* HistoricalSessionInvalidatorTests.swift in Sources */,
+				1000000000000000000000BA /* DesignTokenContrastTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

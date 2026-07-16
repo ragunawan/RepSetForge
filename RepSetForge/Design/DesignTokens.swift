@@ -14,10 +14,10 @@ enum DesignTokens {
     static let textTertiary = Color(light: Color(red: 152/255, green: 160/255, blue: 172/255, opacity: 1), dark: Color(red: 90/255, green: 98/255, blue: 112/255, opacity: 1))
     static let signal = Color(light: Color(red: 31/255, green: 169/255, blue: 104/255, opacity: 1), dark: Color(red: 48/255, green: 229/255, blue: 133/255, opacity: 1))
     static let signalDim = Color(light: Color(red: 31/255, green: 169/255, blue: 104/255, opacity: 0.12), dark: Color(red: 48/255, green: 229/255, blue: 133/255, opacity: 0.14))
-    static let onSignal = Color(light: Color(red: 255/255, green: 255/255, blue: 255/255, opacity: 1), dark: Color(red: 7/255, green: 19/255, blue: 12/255, opacity: 1))
+    static let onSignal = Color(light: Color(red: 7/255, green: 19/255, blue: 12/255, opacity: 1), dark: Color(red: 7/255, green: 19/255, blue: 12/255, opacity: 1))
     static let pr = Color(light: Color(red: 184/255, green: 134/255, blue: 11/255, opacity: 1), dark: Color(red: 245/255, green: 197/255, blue: 66/255, opacity: 1))
     static let prDim = Color(light: Color(red: 184/255, green: 134/255, blue: 11/255, opacity: 0.12), dark: Color(red: 245/255, green: 197/255, blue: 66/255, opacity: 0.14))
-    static let warning = Color(light: Color(red: 217/255, green: 85/255, blue: 47/255, opacity: 1), dark: Color(red: 255/255, green: 122/255, blue: 89/255, opacity: 1))
+    static let warning = Color(light: Color(red: 180/255, green: 70/255, blue: 39/255, opacity: 1), dark: Color(red: 255/255, green: 122/255, blue: 89/255, opacity: 1))
     static let destructive = Color(light: Color(red: 217/255, green: 54/255, blue: 54/255, opacity: 1), dark: Color(red: 255/255, green: 93/255, blue: 93/255, opacity: 1))
   }
 

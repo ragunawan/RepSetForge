@@ -35,10 +35,10 @@
       "textTertiary": "#98A0AC",
       "signal": "#1FA968",
       "signalDim": "rgba(31,169,104,0.12)",
-      "onSignal": "#FFFFFF",
+      "onSignal": "#07130C",
       "pr": "#B8860B",
       "prDim": "rgba(184,134,11,0.12)",
-      "warning": "#D9552F",
+      "warning": "#B44627",
       "destructive": "#D93636"
     },
     "roles": {

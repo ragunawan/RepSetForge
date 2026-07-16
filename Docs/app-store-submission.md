@@ -18,7 +18,9 @@ Tracking:
 
 ## Privacy Policy
 
-Required before submission: host a public privacy policy URL.
+Draft: `Docs/privacy-policy.md`.
+
+Required before submission: host the public privacy policy URL and enter it in App Store Connect.
 
 Policy must state:
 - RepSetForge reads heart rate, energy burned, body weight, and body-fat measurements when permission is granted.
