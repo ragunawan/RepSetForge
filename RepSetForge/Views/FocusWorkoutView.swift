@@ -1,0 +1,654 @@
+import SwiftUI
+
+struct FocusWorkoutView: View {
+  @Bindable var store: FocusWorkoutStore
+  @State private var showsIndex = false
+
+  var body: some View {
+    ZStack(alignment: .bottom) {
+      DesignTokens.ColorToken.surface
+        .ignoresSafeArea()
+
+      TabView(selection: $store.selectedExerciseID) {
+        ForEach(store.exercises) { exercise in
+          ExerciseFocusPage(store: store, exercise: exercise)
+            .tag(exercise.id)
+        }
+      }
+      .tabViewStyle(.page(indexDisplayMode: .never))
+
+      BottomFocusPill(store: store, showsIndex: $showsIndex)
+    }
+    .sheet(isPresented: $showsIndex) {
+      ExerciseIndexSheet(store: store)
+        .presentationDetents([.medium])
+    }
+    .environment(\.font, .system(.body, design: .monospaced))
+  }
+}
+
+private struct ExerciseFocusPage: View {
+  @Bindable var store: FocusWorkoutStore
+  let exercise: FocusExercise
+
+  var body: some View {
+    ScrollView {
+      VStack(spacing: 0) {
+        TelemetryHeader(store: store)
+        Divider().overlay(DesignTokens.ColorToken.hairline)
+        ExerciseIdentityRow(exercise: exercise)
+        Divider().overlay(DesignTokens.ColorToken.hairline)
+        ExerciseChart(store: store, exercise: exercise)
+        Divider().overlay(DesignTokens.ColorToken.hairline)
+        CoachingPrompt(store: store, exercise: exercise)
+        SetTable(store: store, exercise: exercise)
+        FinishWorkoutButton()
+      }
+      .padding(.bottom, DesignTokens.Spacing.step6 * 3)
+    }
+  }
+}
+
+private struct TelemetryHeader: View {
+  @Bindable var store: FocusWorkoutStore
+
+  var body: some View {
+    VStack(spacing: DesignTokens.Spacing.step2) {
+      HStack {
+        MetricBlock(label: "SESSION", value: timerText)
+        Spacer(minLength: DesignTokens.Spacing.step4)
+        MetricBlock(label: "SET", value: "\(store.completedSetCount)/\(store.plannedSetCount)")
+      }
+
+      HStack {
+        MetricBlock(label: "WORK", value: duration(store.workDuration()))
+        Spacer(minLength: DesignTokens.Spacing.step4)
+        MetricBlock(label: "REST", value: duration(store.completedRestDuration))
+        Spacer(minLength: DesignTokens.Spacing.step4)
+        MetricBlock(label: "DONE", value: "\(store.percentComplete)%")
+      }
+
+      ProgressView(value: Double(store.completedSetCount), total: Double(max(store.plannedSetCount, 1)))
+        .tint(DesignTokens.ColorToken.signal)
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .padding(.vertical, DesignTokens.Spacing.step3)
+  }
+
+  private var timerText: String {
+    duration(Date().timeIntervalSince(store.startedAt))
+  }
+
+  private func duration(_ interval: TimeInterval) -> String {
+    let total = max(0, Int(interval.rounded()))
+    return String(format: "%02d:%02d:%02d", total / 3600, (total / 60) % 60, total % 60)
+  }
+}
+
+private struct MetricBlock: View {
+  let label: String
+  let value: String
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+      Text(label)
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      Text(value)
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+        .forgeNumeric()
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+    }
+  }
+}
+
+private struct ExerciseIdentityRow: View {
+  let exercise: FocusExercise
+
+  var body: some View {
+    HStack(spacing: DesignTokens.Spacing.step3) {
+      RoundedRectangle(cornerRadius: DesignTokens.Radius.input)
+        .fill(DesignTokens.ColorToken.surfaceInput)
+        .frame(width: DesignTokens.Spacing.step6, height: DesignTokens.Spacing.step6)
+        .overlay(
+          Text("●")
+            .forgeTextStyle(DesignTokens.Typography.body)
+            .foregroundStyle(DesignTokens.ColorToken.signal)
+        )
+
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+        Text(exercise.name)
+          .forgeTextStyle(DesignTokens.Typography.title)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text(exercise.detail)
+          .forgeTextStyle(DesignTokens.Typography.secondary)
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+      }
+
+      Spacer()
+      Text("•••")
+        .forgeTextStyle(DesignTokens.Typography.heading)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .padding(.vertical, DesignTokens.Spacing.step3)
+  }
+}
+
+private struct ExerciseChart: View {
+  @Bindable var store: FocusWorkoutStore
+  let exercise: FocusExercise
+
+  var body: some View {
+    Group {
+      if store.isChartExpanded(for: exercise) {
+        VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+          HStack {
+            Chip(text: "WEIGHT × REPS", isActive: true)
+            Spacer()
+            Chip(text: "3M", isActive: false)
+            Chip(text: "%1RM", isActive: false)
+          }
+
+          ChartSketch(exercise: exercise)
+            .frame(height: DesignTokens.Spacing.step6 * 4)
+
+          HStack {
+            Chip(text: "1RM \(format(exercise.oneRepMaxKg)) KG", isActive: false)
+            Chip(text: "PR \(format(exercise.previousBestWeightKg))×\(exercise.previousBestReps)", isActive: false, isPR: true)
+          }
+        }
+        .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+        .padding(.vertical, DesignTokens.Spacing.step3)
+        .transition(.opacity.combined(with: .move(edge: .top)))
+      } else {
+        Button {
+          withAnimation(.easeInOut(duration: DesignTokens.Motion.stateChangeDuration)) {
+            store.setChartExpanded(true, for: exercise)
+          }
+        } label: {
+          HStack {
+            Text("CHART")
+              .forgeTextStyle(DesignTokens.Typography.eyebrow)
+              .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+            Spacer()
+            Text("1RM \(format(exercise.oneRepMaxKg)) · PR \(format(exercise.previousBestWeightKg))×\(exercise.previousBestReps)")
+              .forgeTextStyle(DesignTokens.Typography.numericRow)
+              .forgeNumeric()
+              .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+          }
+          .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+          .padding(.vertical, DesignTokens.Spacing.step3)
+        }
+        .buttonStyle(.plain)
+      }
+    }
+  }
+}
+
+private struct ChartSketch: View {
+  let exercise: FocusExercise
+
+  var body: some View {
+    GeometryReader { proxy in
+      let width = proxy.size.width
+      let height = proxy.size.height
+      let count = max(exercise.trend.count, 1)
+      let step = width / CGFloat(count)
+
+      ZStack(alignment: .topLeading) {
+        Path { path in
+          path.move(to: CGPoint(x: 0, y: height * 0.25))
+          path.addLine(to: CGPoint(x: width, y: height * 0.25))
+        }
+        .stroke(DesignTokens.ColorToken.warning, style: StrokeStyle(lineWidth: 1, dash: [DesignTokens.Spacing.step1, DesignTokens.Spacing.step1]))
+
+        ForEach(Array(exercise.trend.enumerated()), id: \.offset) { index, value in
+          let barHeight = max(DesignTokens.Spacing.step3, height - CGFloat(truncating: value as NSNumber))
+          RoundedRectangle(cornerRadius: DesignTokens.Radius.checkbox)
+            .fill(DesignTokens.ColorToken.surfaceInput)
+            .frame(width: max(DesignTokens.Spacing.step2, step * 0.55), height: barHeight)
+            .position(x: CGFloat(index) * step + step * 0.5, y: height - barHeight * 0.5)
+        }
+
+        Path { path in
+          for (index, value) in exercise.trend.enumerated() {
+            let point = CGPoint(x: CGFloat(index) * step + step * 0.5, y: CGFloat(truncating: value as NSNumber))
+            if index == 0 {
+              path.move(to: point)
+            } else {
+              path.addLine(to: point)
+            }
+          }
+        }
+        .stroke(DesignTokens.ColorToken.signal, lineWidth: 2)
+
+        Text("75% · \(format(exercise.oneRepMaxKg * 0.75)) KG")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .foregroundStyle(DesignTokens.ColorToken.warning)
+          .padding(.top, DesignTokens.Spacing.step2)
+      }
+    }
+  }
+}
+
+private struct Chip: View {
+  let text: String
+  let isActive: Bool
+  var isPR = false
+
+  var body: some View {
+    Text(text)
+      .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      .forgeNumeric()
+      .foregroundStyle(isPR ? DesignTokens.ColorToken.pr : DesignTokens.ColorToken.textSecondary)
+      .padding(.horizontal, DesignTokens.Spacing.step2)
+      .padding(.vertical, DesignTokens.Spacing.step1)
+      .background(isActive ? DesignTokens.ColorToken.signalDim : DesignTokens.ColorToken.surfaceInput)
+      .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.segment))
+      .overlay(
+        RoundedRectangle(cornerRadius: DesignTokens.Radius.segment)
+          .stroke(isPR ? DesignTokens.ColorToken.pr : DesignTokens.ColorToken.hairline)
+      )
+  }
+}
+
+private struct CoachingPrompt: View {
+  @Bindable var store: FocusWorkoutStore
+  let exercise: FocusExercise
+
+  var body: some View {
+    Button {
+      store.applyTarget(to: exercise.id)
+    } label: {
+      VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+        Text("SAME AS LAST SESSION · TAP TO APPLY")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        Text("TARGET ≥ \(format(exercise.targetWeightKg)) KG × \(exercise.targetReps) @ \(format(exercise.targetRPE)) RPE")
+          .forgeTextStyle(DesignTokens.Typography.numericRow)
+          .forgeNumeric()
+          .foregroundStyle(DesignTokens.ColorToken.signal)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+      .padding(.vertical, DesignTokens.Spacing.step3)
+      .background(DesignTokens.ColorToken.signalDim)
+    }
+    .buttonStyle(.plain)
+  }
+}
+
+private struct SetTable: View {
+  @Bindable var store: FocusWorkoutStore
+  let exercise: FocusExercise
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+  var body: some View {
+    VStack(spacing: 0) {
+      if dynamicTypeSize < .accessibility1 {
+        header
+      }
+
+      ForEach(exercise.sets) { set in
+        SetRow(store: store, exercise: exercise, set: set)
+        if set.isPR {
+          PRBadgeRow()
+        }
+        Divider().overlay(DesignTokens.ColorToken.hairline)
+      }
+    }
+  }
+
+  private var header: some View {
+    Grid(horizontalSpacing: DesignTokens.Spacing.step2, verticalSpacing: 0) {
+      GridRow {
+        tableHeader("#")
+        tableHeader("WEIGHT")
+        tableHeader("REPS")
+        tableHeader("RPE")
+        tableHeader("REST")
+        tableHeader("✓")
+      }
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .padding(.top, DesignTokens.Spacing.step3)
+    .padding(.bottom, DesignTokens.Spacing.step1)
+  }
+
+  private func tableHeader(_ text: String) -> some View {
+    Text(text)
+      .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      .frame(maxWidth: .infinity)
+  }
+}
+
+private struct SetRow: View {
+  @Bindable var store: FocusWorkoutStore
+  let exercise: FocusExercise
+  let set: FocusSet
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  var body: some View {
+    Group {
+      if dynamicTypeSize >= .accessibility2 {
+        stackedRow
+      } else {
+        gridRow
+      }
+    }
+    .opacity(set.isCompleted ? 0.55 : 1)
+    .background(set.isPR ? DesignTokens.ColorToken.prDim : Color.clear)
+    .animation(.easeInOut(duration: DesignTokens.Motion.stateChangeDuration), value: set.isCompleted)
+  }
+
+  private var gridRow: some View {
+    Grid(horizontalSpacing: DesignTokens.Spacing.step2, verticalSpacing: 0) {
+      GridRow {
+        typeBadge
+        FieldStepper(
+          text: weightText,
+          isGhost: store.isGhost(.weight, set: set),
+          decrement: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: -1) },
+          increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) }
+        )
+        FieldStepper(
+          text: repsText,
+          isGhost: store.isGhost(.reps, set: set),
+          decrement: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: -1) },
+          increment: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: 1) }
+        )
+        FieldStepper(
+          text: rpeText,
+          isGhost: store.isGhost(.rpe, set: set),
+          decrement: { store.step(.rpe, setID: set.id, exerciseID: exercise.id, direction: -1) },
+          increment: { store.step(.rpe, setID: set.id, exerciseID: exercise.id, direction: 1) }
+        )
+        if dynamicTypeSize < .accessibility1 {
+          FieldStepper(
+            text: restText,
+            isGhost: store.isGhost(.rest, set: set),
+            decrement: { store.step(.rest, setID: set.id, exerciseID: exercise.id, direction: -1) },
+            increment: { store.step(.rest, setID: set.id, exerciseID: exercise.id, direction: 1) }
+          )
+        } else {
+          Text(restText)
+            .forgeTextStyle(DesignTokens.Typography.eyebrow)
+            .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+        }
+        CompleteButton(isCompleted: set.isCompleted) {
+          complete()
+        }
+      }
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .frame(minHeight: DesignTokens.Spacing.setRowHitTarget)
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel(accessibilityLabel)
+    .accessibilityAction(named: "Complete set", complete)
+  }
+
+  private var stackedRow: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+      HStack {
+        Text("SET \(set.index) · \(set.type.label.uppercased())")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+        Spacer()
+        Text("PREV \(format(exercise.previousBestWeightKg))×\(exercise.previousBestReps)")
+          .forgeTextStyle(DesignTokens.Typography.eyebrow)
+          .forgeNumeric()
+          .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      }
+
+      HStack(spacing: DesignTokens.Spacing.step2) {
+        FieldStepper(text: weightText, isGhost: store.isGhost(.weight, set: set), decrement: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) })
+        FieldStepper(text: repsText, isGhost: store.isGhost(.reps, set: set), decrement: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: 1) })
+        CompleteButton(isCompleted: set.isCompleted) { complete() }
+      }
+
+      HStack(spacing: DesignTokens.Spacing.step2) {
+        Chip(text: "RPE \(rpeText)", isActive: false)
+        Chip(text: "REST \(restText)", isActive: false)
+      }
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .padding(.vertical, DesignTokens.Spacing.step3)
+    .accessibilityElement(children: .combine)
+    .accessibilityLabel(accessibilityLabel)
+    .accessibilityAction(named: "Complete set", complete)
+  }
+
+  private var typeBadge: some View {
+    Text(set.type.shortLabel)
+      .forgeTextStyle(DesignTokens.Typography.numericRow)
+      .forgeNumeric()
+      .foregroundStyle(set.type == .warmup ? DesignTokens.ColorToken.pr : DesignTokens.ColorToken.textSecondary)
+      .frame(maxWidth: .infinity)
+  }
+
+  private var weightText: String {
+    store.displayWeight(for: set, in: exercise).map { format($0) } ?? "–"
+  }
+
+  private var repsText: String {
+    store.displayReps(for: set, in: exercise).map(String.init) ?? "–"
+  }
+
+  private var rpeText: String {
+    store.displayRPE(for: set, in: exercise).map { format($0) } ?? "–"
+  }
+
+  private var restText: String {
+    let seconds = store.inheritedRest(for: set, in: exercise)
+    return String(format: "%d:%02d", seconds / 60, seconds % 60)
+  }
+
+  private var accessibilityLabel: String {
+    "\(exercise.name), set \(set.index) of \(exercise.plannedSets), previous \(format(exercise.previousBestWeightKg)) kilograms for \(exercise.previousBestReps) reps. Weight, \(weightText). Reps, \(repsText). \(set.isCompleted ? "Completed." : "Not completed.")"
+  }
+
+  private func complete() {
+    if reduceMotion {
+      store.complete(setID: set.id, exerciseID: exercise.id)
+    } else {
+      withAnimation(.spring(response: DesignTokens.Motion.setCompleteDuration, dampingFraction: 0.7)) {
+        store.complete(setID: set.id, exerciseID: exercise.id)
+      }
+    }
+  }
+}
+
+private struct FieldStepper: View {
+  let text: String
+  let isGhost: Bool
+  let decrement: () -> Void
+  let increment: () -> Void
+
+  var body: some View {
+    HStack(spacing: DesignTokens.Spacing.step1) {
+      Button(action: decrement) {
+        Text("−")
+          .forgeTextStyle(DesignTokens.Typography.numericRow)
+      }
+      Text(text)
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+        .forgeNumeric()
+        .lineLimit(1)
+        .minimumScaleFactor(0.75)
+        .foregroundStyle(isGhost ? DesignTokens.ColorToken.textTertiary : DesignTokens.ColorToken.textPrimary)
+        .frame(maxWidth: .infinity)
+      Button(action: increment) {
+        Text("+")
+          .forgeTextStyle(DesignTokens.Typography.numericRow)
+      }
+    }
+    .buttonStyle(.plain)
+    .padding(.horizontal, DesignTokens.Spacing.step1)
+    .frame(minHeight: DesignTokens.Spacing.setRowHeightVisual)
+    .background(DesignTokens.ColorToken.surfaceInput)
+    .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.input))
+  }
+}
+
+private struct CompleteButton: View {
+  let isCompleted: Bool
+  let action: () -> Void
+
+  var body: some View {
+    Button(action: action) {
+      Text(isCompleted ? "✓" : "○")
+        .forgeTextStyle(DesignTokens.Typography.heading)
+        .foregroundStyle(isCompleted ? DesignTokens.ColorToken.onSignal : DesignTokens.ColorToken.textTertiary)
+        .frame(maxWidth: .infinity)
+        .frame(height: DesignTokens.Spacing.setRowHitTarget)
+        .background(isCompleted ? DesignTokens.ColorToken.signal : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.checkbox))
+        .overlay(
+          RoundedRectangle(cornerRadius: DesignTokens.Radius.checkbox)
+            .stroke(isCompleted ? DesignTokens.ColorToken.signal : DesignTokens.ColorToken.hairline)
+        )
+    }
+    .buttonStyle(.plain)
+  }
+}
+
+private struct PRBadgeRow: View {
+  var body: some View {
+    HStack {
+      Spacer()
+      Text("PR")
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.pr)
+        .padding(.horizontal, DesignTokens.Spacing.step2)
+        .padding(.vertical, DesignTokens.Spacing.step1)
+        .background(DesignTokens.ColorToken.prDim)
+        .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.segment))
+    }
+    .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+    .padding(.vertical, DesignTokens.Spacing.step1)
+  }
+}
+
+private struct FinishWorkoutButton: View {
+  var body: some View {
+    Button {} label: {
+      Text("FINISH WORKOUT")
+        .forgeTextStyle(DesignTokens.Typography.heading)
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, DesignTokens.Spacing.step3)
+        .background(DesignTokens.ColorToken.surfaceInput)
+        .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.input))
+    }
+    .buttonStyle(.plain)
+    .padding(DesignTokens.Spacing.screenGutter)
+  }
+}
+
+private struct BottomFocusPill: View {
+  @Bindable var store: FocusWorkoutStore
+  @Binding var showsIndex: Bool
+
+  var body: some View {
+    HStack(spacing: DesignTokens.Spacing.step4) {
+      Text("×")
+      Text("PROG")
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      Button {
+        showsIndex = true
+      } label: {
+        if let rest = store.activeRest {
+          Text(timerInterval: Date()...rest.endsAt, countsDown: true)
+            .forgeTextStyle(DesignTokens.Typography.numericRow)
+            .forgeNumeric()
+        } else {
+          Text("‹ \(store.selectedIndex + 1)/\(store.exercises.count) ›")
+            .forgeTextStyle(DesignTokens.Typography.numericRow)
+            .forgeNumeric()
+        }
+      }
+      .buttonStyle(.plain)
+      Text("↗")
+    }
+    .forgeTextStyle(DesignTokens.Typography.numericRow)
+    .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+    .padding(.horizontal, DesignTokens.Spacing.step4)
+    .padding(.vertical, DesignTokens.Spacing.step3)
+    .background(DesignTokens.ColorToken.surfaceRaised)
+    .clipShape(Capsule())
+    .overlay(Capsule().stroke(DesignTokens.ColorToken.hairline))
+    .shadow(color: DesignTokens.ColorToken.surface.opacity(0.25), radius: DesignTokens.Spacing.step2)
+    .padding(.bottom, DesignTokens.Spacing.step5)
+  }
+}
+
+private struct ExerciseIndexSheet: View {
+  @Bindable var store: FocusWorkoutStore
+  @Environment(\.dismiss) private var dismiss
+
+  var body: some View {
+    NavigationStack {
+      List(store.exercises) { exercise in
+        Button {
+          store.selectedExerciseID = exercise.id
+          dismiss()
+        } label: {
+          HStack {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+              Text(exercise.name)
+                .forgeTextStyle(DesignTokens.Typography.body)
+              Text("\(exercise.completedSets)/\(exercise.plannedSets) SETS · \(format(exercise.volumeKg)) KG")
+                .forgeTextStyle(DesignTokens.Typography.eyebrow)
+                .forgeNumeric()
+                .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+            }
+            Spacer()
+            if exercise.sets.contains(where: \.isPR) {
+              Text("PR")
+                .forgeTextStyle(DesignTokens.Typography.eyebrow)
+                .foregroundStyle(DesignTokens.ColorToken.pr)
+            }
+          }
+        }
+      }
+      .navigationTitle("Index")
+    }
+  }
+}
+
+private extension SetEntryType {
+  var label: String {
+    switch self {
+    case .warmup: "Warmup"
+    case .working: "Working"
+    case .drop: "Drop"
+    case .failure: "Failure"
+    case .bodyweight: "Bodyweight"
+    }
+  }
+
+  var shortLabel: String {
+    switch self {
+    case .warmup: "W"
+    case .working: "\(rawValue.prefix(1).uppercased())"
+    case .drop: "D"
+    case .failure: "F"
+    case .bodyweight: "BW"
+    }
+  }
+}
+
+private func format(_ value: Decimal) -> String {
+  let number = NSDecimalNumber(decimal: value)
+  let formatter = NumberFormatter()
+  formatter.minimumFractionDigits = 0
+  formatter.maximumFractionDigits = 1
+  return formatter.string(from: number) ?? number.stringValue
+}
+
+#Preview {
+  FocusWorkoutView(store: FocusWorkoutStore())
+}

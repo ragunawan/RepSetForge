@@ -11,10 +11,13 @@ Completed:
 - P1.2 CloudKit ModelContainer wiring - done, private database configuration added with XCTest in-memory fallback.
 - P1.3 data-core services - done, e1RM, canonical-name dedup, restore policy, PR rebuild implemented.
 - Phase 1 gate 2026-07-15 - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (11/11); final `build_sim CODE_SIGNING_ALLOWED=NO` green.
+- P2.1 Focus workout loop scaffold - done, `FocusWorkoutStore` + `FocusWorkoutView` added with carousel, telemetry header, ghost inheritance, optimistic completion, chart collapse, inline PR badge, bottom rest pill, read-only index sheet, AX stacked row path.
+- P2.2 Phase 2 interaction/render coverage - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (17/17) including two-taps-per-unchanged-set path, rest ledger invariant, chart collapse, PR commit, and large/xxxLarge/AX1/AX3 x light/dark render checks; final `build_sim CODE_SIGNING_ALLOWED=NO` green.
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
 - XCTest uses an in-memory SwiftData container so hosted tests do not require CloudKit entitlements while normal app runs use the private CloudKit database.
+- Phase 2 render gate uses SwiftUI `ImageRenderer` smoke snapshots in XCTest for the required type-size/color-scheme matrix until a pixel-baseline snapshot harness is introduced.
 
 Open:
-- Phase 2 gate: two-taps-per-unchanged-set demo; snapshot tests at 4 type sizes x 2 modes.
+- Phase 2 remaining: replace sample `FocusWorkoutStore` data with SwiftData-backed active-session draft persistence, implement inline decimal keyboard entry, long-press plate calculator, RPE chip row, and real PRRecord rebuild integration on commit.
