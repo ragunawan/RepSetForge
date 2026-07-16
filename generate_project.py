@@ -92,6 +92,7 @@ FR = {
     "RoutineDiffService":    u(1, 0x45),
     "RoutineUpdateDiffSheet": u(1, 0x46),
     "TEST_RoutineDiff":      u(1, 0x47),
+    "HealthKitExportService": u(1, 0x48),
 }
 
 # Build files (one per compiled/copied file reference, excluding products)
@@ -180,6 +181,7 @@ APP_SOURCES = [
     ("WorkoutSessionRestoreService", "Services/WorkoutSessionRestoreService.swift"),
     ("RestTimerNotificationScheduler", "Services/RestTimerNotificationScheduler.swift"),
     ("RoutineDiffService",    "Services/RoutineDiffService.swift"),
+    ("HealthKitExportService", "Services/HealthKitExportService.swift"),
     ("ExerciseFocusView",     "Views/ExerciseFocusView.swift"),
     ("ExerciseIndexSheet",    "Views/ExerciseIndexSheet.swift"),
     ("ActiveWorkoutView",     "Views/ActiveWorkoutView.swift"),
@@ -214,6 +216,7 @@ SERVICE_KEYS = [
     "ExerciseDedupService", "RestTimerManager", "PersonalRecordService", "HomeStatsService",
     "ProgressionLadderService", "ExerciseHistoryService", "ProgressStatsService", "AppSettings",
     "WorkoutSessionRestoreService", "RestTimerNotificationScheduler", "RoutineDiffService",
+    "HealthKitExportService",
 ]
 PERSISTENCE_KEYS = ["RepSetForgeSchema", "PersistenceController"]
 VIEW_KEYS = [
@@ -679,6 +682,10 @@ def pbxproj():
         a(f"\t\t\t\tGENERATE_INFOPLIST_FILE = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_CFBundleDisplayName = RepSetForge;")
         a(f"\t\t\t\tINFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;")
+        # Dev spec §8b's exact required strings — concrete, not generic
+        # ("vague strings... are a top HealthKit rejection cause").
+        a(f"\t\t\t\tINFOPLIST_KEY_NSHealthUpdateUsageDescription = \"RepSetForge saves your completed strength workouts to Apple Health so they appear in the Fitness app and count toward your rings.\";")
+        a(f"\t\t\t\tINFOPLIST_KEY_NSHealthShareUsageDescription = \"RepSetForge reads your heart rate and energy burned during workouts, and your body weight and body-fat measurements, to display them in your training and body-trend charts.\";")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;")
         a(f"\t\t\t\tINFOPLIST_KEY_UILaunchScreen_Generation = YES;")

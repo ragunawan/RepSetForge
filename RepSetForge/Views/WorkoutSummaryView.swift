@@ -3,9 +3,7 @@ import SwiftData
 
 /// Post-workout summary (dev spec §5, mockup frame 4). PR callouts key off
 /// `PRRecord.setEntry`'s session rather than a separate "PRs this session"
-/// list, so no extra bookkeeping is needed at commit time. The HealthKit
-/// "Saved to Health" row is still TODO.md work (build-order step 5) —
-/// there's no HealthKit integration to hook into yet. The routine-update
+/// list, so no extra bookkeeping is needed at commit time. The routine-update
 /// diff is a tappable card rather than an auto-presented sheet (dev spec §5
 /// says "if diff non-empty → sheet", but an unprompted extra sheet stacked
 /// on top of this one didn't fit this app's otherwise non-modal-happy style
@@ -14,13 +12,23 @@ struct WorkoutSummaryView: View {
     let session: WorkoutSession
     let onDone: () -> Void
 
+    private enum HealthSaveState: Equatable {
+        case idle
+        case saving
+        case saved
+        case unavailableOrDenied
+    }
+
     @Environment(\.modelContext) private var modelContext
     @State private var isPresentingRoutineDiff = false
+    @State private var healthSaveState: HealthSaveState = .idle
+    @AppStorage(AppSettingsKeys.autoSaveToHealth) private var autoSaveToHealth = true
 
     // Fetched unfiltered and matched in-memory — see ExerciseFocusView's
     // note on relationship-#Predicate risk in this environment.
     @Query private var allSessions: [WorkoutSession]
     @Query private var allPRRecords: [PRRecord]
+    @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
 
     private var routineChanges: [RoutineDiffService.Change] {
         guard let routine = session.routine else { return [] }
@@ -100,6 +108,7 @@ struct WorkoutSummaryView: View {
                     if !routineChanges.isEmpty {
                         routineDiffCard
                     }
+                    healthCard
                 }
                 .padding(14)
             }
@@ -120,6 +129,74 @@ struct WorkoutSummaryView: View {
                     onSkip: {}
                 )
             }
+        }
+        .task {
+            if session.healthKitUUID != nil {
+                healthSaveState = .saved
+            } else if autoSaveToHealth {
+                await saveToHealth()
+            }
+        }
+    }
+
+    // MARK: - Apple Health (dev spec §4b)
+
+    private var healthCard: some View {
+        HStack(spacing: 8) {
+            Image(systemName: healthCardIcon)
+                .foregroundStyle(healthCardColor)
+            Text(healthCardText)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(RepSetForgeTheme.Colors.textSecondary)
+            Spacer()
+            if healthSaveState == .idle || healthSaveState == .unavailableOrDenied {
+                if !autoSaveToHealth && healthSaveState == .idle {
+                    Button("Save to Health") {
+                        Task { await saveToHealth() }
+                    }
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(RepSetForgeTheme.Colors.signal)
+                }
+            }
+        }
+        .padding(12)
+        .card()
+    }
+
+    private var healthCardIcon: String {
+        switch healthSaveState {
+        case .idle: return "heart"
+        case .saving: return "arrow.triangle.2.circlepath"
+        case .saved: return "checkmark.circle.fill"
+        case .unavailableOrDenied: return "heart.slash"
+        }
+    }
+
+    private var healthCardColor: Color {
+        healthSaveState == .saved ? RepSetForgeTheme.Colors.signal : RepSetForgeTheme.Colors.textTertiary
+    }
+
+    private var healthCardText: String {
+        switch healthSaveState {
+        case .idle: return autoSaveToHealth ? "Saving to Apple Health…" : "Not saved to Apple Health"
+        case .saving: return "Saving to Apple Health…"
+        case .saved: return "Saved to Apple Health"
+        case .unavailableOrDenied: return "Health access off — enable in Settings › Health"
+        }
+    }
+
+    private func saveToHealth() async {
+        healthSaveState = .saving
+        let authorized = await HealthKitExportService.requestAuthorizationIfNeeded()
+        guard authorized else {
+            healthSaveState = .unavailableOrDenied
+            return
+        }
+        if let uuid = await HealthKitExportService.saveWorkout(session: session, bodyweightKg: bodyMetrics.first?.bodyweightKg) {
+            session.healthKitUUID = uuid
+            healthSaveState = .saved
+        } else {
+            healthSaveState = .unavailableOrDenied
         }
     }
 

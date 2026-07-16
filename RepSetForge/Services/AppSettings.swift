@@ -10,6 +10,10 @@ enum AppSettingsKeys {
     static let defaultRestSeconds = "settings.defaultRestSeconds"
     static let showRPE = "settings.showRPE"
     static let theme = "settings.theme"
+    /// "Auto-save to Apple Health (default on)" (dev spec §4b) — read by
+    /// `WorkoutSummaryView` to decide auto-save vs. a manual "Save to
+    /// Health" action.
+    static let autoSaveToHealth = "settings.autoSaveToHealth"
 }
 
 /// Stored but not yet threaded through every kg display in the app — see

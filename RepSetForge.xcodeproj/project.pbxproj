@@ -38,6 +38,7 @@
 		AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */; };
 		AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */; };
 		AA0200000000000000000044 /* RoutineDiffService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000045 /* RoutineDiffService.swift */; };
+		AA0200000000000000000047 /* HealthKitExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000048 /* HealthKitExportService.swift */; };
 		AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000020 /* ExerciseFocusView.swift */; };
 		AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000021 /* ExerciseIndexSheet.swift */; };
 		AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0100000000000000000022 /* ActiveWorkoutView.swift */; };
@@ -127,6 +128,7 @@
 		AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionRestoreService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerNotificationScheduler.swift; sourceTree = "<group>"; };
 		AA0100000000000000000045 /* RoutineDiffService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineDiffService.swift; sourceTree = "<group>"; };
+		AA0100000000000000000048 /* HealthKitExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitExportService.swift; sourceTree = "<group>"; };
 		AA0100000000000000000020 /* ExerciseFocusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFocusView.swift; sourceTree = "<group>"; };
 		AA0100000000000000000021 /* ExerciseIndexSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseIndexSheet.swift; sourceTree = "<group>"; };
 		AA0100000000000000000022 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				AA0100000000000000000040 /* WorkoutSessionRestoreService.swift */,
 				AA0100000000000000000043 /* RestTimerNotificationScheduler.swift */,
 				AA0100000000000000000045 /* RoutineDiffService.swift */,
+				AA0100000000000000000048 /* HealthKitExportService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -488,6 +491,7 @@
 				AA0200000000000000000040 /* WorkoutSessionRestoreService.swift in Sources */,
 				AA0200000000000000000043 /* RestTimerNotificationScheduler.swift in Sources */,
 				AA0200000000000000000044 /* RoutineDiffService.swift in Sources */,
+				AA0200000000000000000047 /* HealthKitExportService.swift in Sources */,
 				AA0200000000000000000020 /* ExerciseFocusView.swift in Sources */,
 				AA0200000000000000000021 /* ExerciseIndexSheet.swift in Sources */,
 				AA0200000000000000000022 /* ActiveWorkoutView.swift in Sources */,
@@ -687,6 +691,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves your completed strength workouts to Apple Health so they appear in the Fitness app and count toward your rings.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your heart rate and energy burned during workouts, and your body weight and body-fat measurements, to display them in your training and body-trend charts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -717,6 +723,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = RepSetForge;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "RepSetForge saves your completed strength workouts to Apple Health so they appear in the Fitness app and count toward your rings.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "RepSetForge reads your heart rate and energy burned during workouts, and your body weight and body-fat measurements, to display them in your training and body-trend charts.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

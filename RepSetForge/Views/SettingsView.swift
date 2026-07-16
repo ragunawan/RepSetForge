@@ -6,7 +6,9 @@ import SwiftData
 /// no plate-calculator UI to configure yet, and CSV I/O is its own chunk of
 /// work (TODO.md). Units is stored but not yet threaded through every kg
 /// display in the app. Default rest duration and RPE visibility *are*
-/// wired into `ExerciseFocusView`/`SetRowView`; theme is wired at the app root.
+/// wired into `ExerciseFocusView`/`SetRowView`; theme is wired at the app
+/// root; Auto-save to Apple Health is read by `WorkoutSummaryView`
+/// (`HealthKitExportService`, dev spec §4b).
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
@@ -15,8 +17,10 @@ struct SettingsView: View {
     @AppStorage(AppSettingsKeys.defaultRestSeconds) private var defaultRestSeconds = 90
     @AppStorage(AppSettingsKeys.showRPE) private var showRPE = true
     @AppStorage(AppSettingsKeys.theme) private var theme: ThemePreference = .system
+    @AppStorage(AppSettingsKeys.autoSaveToHealth) private var autoSaveToHealth = true
 
     @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
+    @Query private var allSessions: [WorkoutSession]
     @State private var isPresentingLogWeight = false
     @State private var isPresentingDeleteConfirmation = false
     @State private var deleteConfirmationText = ""
@@ -55,6 +59,10 @@ struct SettingsView: View {
                         }
                     }
                     .pickerStyle(.segmented)
+                }
+
+                Section("Health") {
+                    Toggle("Auto-save to Apple Health", isOn: $autoSaveToHealth)
                 }
 
                 Section("Data") {
@@ -104,6 +112,17 @@ struct SettingsView: View {
     }
 
     private func deleteAllData() {
+        // "Delete All Data... removes CloudKit records and app-created
+        // HKWorkouts" (dev spec §8b's privacy-policy text) — the batch
+        // `delete(model:)` calls below can't hand back the objects they
+        // remove, so the HealthKit deletes have to happen first while the
+        // sessions (and their `healthKitUUID`s) still exist.
+        for session in allSessions {
+            if let uuid = session.healthKitUUID {
+                HealthKitExportService.deleteWorkout(uuid: uuid)
+            }
+        }
+
         // Order doesn't matter for correctness — every relationship here is
         // optional, so nothing requires a specific delete sequence.
         try? modelContext.delete(model: WorkoutSession.self)
