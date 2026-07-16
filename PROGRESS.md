@@ -1,6 +1,6 @@
 # RepSetForge Progress
 
-Current phase: Phase 2 - Active Workout Loop
+Current phase: Phase 3 - Rest Timer + Live Activity + Dynamic Island
 
 Completed:
 - Phase 0 started - PROGRESS.md created.
@@ -13,11 +13,16 @@ Completed:
 - Phase 1 gate 2026-07-15 - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (11/11); final `build_sim CODE_SIGNING_ALLOWED=NO` green.
 - P2.1 Focus workout loop scaffold - done, `FocusWorkoutStore` + `FocusWorkoutView` added with carousel, telemetry header, ghost inheritance, optimistic completion, chart collapse, inline PR badge, bottom rest pill, read-only index sheet, AX stacked row path.
 - P2.2 Phase 2 interaction/render coverage - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (17/17) including two-taps-per-unchanged-set path, rest ledger invariant, chart collapse, PR commit, and large/xxxLarge/AX1/AX3 x light/dark render checks; final `build_sim CODE_SIGNING_ALLOWED=NO` green.
+- P2.3 Active-session draft persistence - done, `FocusWorkoutStore` now binds to SwiftData `ModelContext`, creates/restores an active `WorkoutSession`, autosaves mutations, and reloads completed `SetEntry` data.
+- P2.4 Inline set input affordances - done, set rows now support inline decimal/numeric keyboard entry, long-press weight plate calculator, and inline RPE chip selection.
+- P2.5 PR rebuild on commit - done, SwiftData draft persistence rebuilds `PRRecord` from committed `SetEntry` history and mirrors derived `isPR` flags back to the optimistic row state.
+- Phase 2 gate 2026-07-15 - done, `test_sim CODE_SIGNING_ALLOWED=NO` green (19/19); final `build_sim CODE_SIGNING_ALLOWED=NO` green via test build.
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
 - XCTest uses an in-memory SwiftData container so hosted tests do not require CloudKit entitlements while normal app runs use the private CloudKit database.
 - Phase 2 render gate uses SwiftUI `ImageRenderer` smoke snapshots in XCTest for the required type-size/color-scheme matrix until a pixel-baseline snapshot harness is introduced.
+- Phase 2 plate calculator uses the spec default 20 kg bar and common kg plate set locally until Settings owns configurable plate inventory.
 
 Open:
-- Phase 2 remaining: replace sample `FocusWorkoutStore` data with SwiftData-backed active-session draft persistence, implement inline decimal keyboard entry, long-press plate calculator, RPE chip row, and real PRRecord rebuild integration on commit.
+- Phase 3 next: rest timer notifications/announcements and ActivityKit state updates per §4.

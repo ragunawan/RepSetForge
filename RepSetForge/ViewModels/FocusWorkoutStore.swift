@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftData
 
 struct FocusSet: Identifiable, Equatable {
   let id: UUID
@@ -76,11 +77,19 @@ final class FocusWorkoutStore {
   var restLedger: [RestLedgerEntry] = []
   var lastCompletedSetID: FocusSet.ID?
   var draftSaveCount = 0
+  private var modelContext: ModelContext?
+  private var sessionDraft: WorkoutSession?
 
   init(startedAt: Date = .now, exercises: [FocusExercise] = FocusWorkoutStore.sampleExercises()) {
     self.startedAt = startedAt
     self.exercises = exercises
     self.selectedExerciseID = exercises.first?.id ?? UUID()
+  }
+
+  func bindModelContext(_ modelContext: ModelContext) {
+    guard self.modelContext == nil else { return }
+    self.modelContext = modelContext
+    loadOrCreateActiveDraft()
   }
 
   var selectedIndex: Int {
@@ -170,6 +179,22 @@ final class FocusWorkoutStore {
       }
     }
     persistDraft()
+  }
+
+  func updateWeight(_ value: Decimal?, setID: FocusSet.ID, exerciseID: FocusExercise.ID) {
+    update(.weight, setID: setID, exerciseID: exerciseID) { $0.weightKg = value }
+  }
+
+  func updateReps(_ value: Int?, setID: FocusSet.ID, exerciseID: FocusExercise.ID) {
+    update(.reps, setID: setID, exerciseID: exerciseID) { $0.reps = value }
+  }
+
+  func updateRPE(_ value: Decimal?, setID: FocusSet.ID, exerciseID: FocusExercise.ID) {
+    update(.rpe, setID: setID, exerciseID: exerciseID) { $0.rpe = value }
+  }
+
+  func updateRest(_ value: Int, setID: FocusSet.ID, exerciseID: FocusExercise.ID) {
+    update(.rest, setID: setID, exerciseID: exerciseID) { $0.restSeconds = max(0, value) }
   }
 
   func applyTarget(to exerciseID: FocusExercise.ID) {
@@ -289,8 +314,175 @@ final class FocusWorkoutStore {
     mutation(&exercises[exerciseIndex].sets[setIndex], exercise)
   }
 
+  private func update(_ field: FocusSet.Field, setID: FocusSet.ID, exerciseID: FocusExercise.ID, mutation: (inout FocusSet) -> Void) {
+    mutateSet(setID: setID, exerciseID: exerciseID) { set, _ in
+      set.touchedFields.insert(field)
+      mutation(&set)
+    }
+    persistDraft()
+  }
+
   private func persistDraft() {
     draftSaveCount += 1
+    guard let modelContext else { return }
+    let session = sessionDraft ?? makeSessionDraft(in: modelContext)
+    session.name = sessionName
+    session.startedAt = startedAt
+    session.status = .active
+    syncDraft(session)
+    rebuildPRRecords(for: session, in: modelContext)
+    try? modelContext.save()
+  }
+
+  private func loadOrCreateActiveDraft() {
+    guard let modelContext else { return }
+    var descriptor = FetchDescriptor<WorkoutSession>(
+      predicate: #Predicate { $0.statusRawValue == "active" },
+      sortBy: [SortDescriptor(\.startedAt, order: .reverse)]
+    )
+    descriptor.fetchLimit = 1
+
+    if let session = try? modelContext.fetch(descriptor).first {
+      sessionDraft = session
+      loadDraft(session)
+    } else {
+      sessionDraft = makeSessionDraft(in: modelContext)
+      syncDraft(sessionDraft!)
+      try? modelContext.save()
+    }
+  }
+
+  private func makeSessionDraft(in modelContext: ModelContext) -> WorkoutSession {
+    let session = WorkoutSession(name: sessionName, startedAt: startedAt, status: .active)
+    modelContext.insert(session)
+    return session
+  }
+
+  private func loadDraft(_ session: WorkoutSession) {
+    sessionName = session.name
+    startedAt = session.startedAt
+    let sessionExercises = (session.exercises ?? []).sorted { $0.order < $1.order }
+    guard !sessionExercises.isEmpty else { return }
+
+    exercises = sessionExercises.map { sessionExercise in
+      let sets = (sessionExercise.sets ?? []).sorted { $0.index < $1.index }.map {
+        FocusSet(
+          id: $0.id,
+          index: $0.index,
+          type: $0.type,
+          weightKg: $0.weightKg,
+          reps: $0.reps,
+          rpe: $0.rpe,
+          restSeconds: 120,
+          completedAt: $0.completedAt,
+          isPR: $0.isPR,
+          touchedFields: touchedFields(for: $0)
+        )
+      }
+      let completedWorkingSets = sets.filter { $0.isCompleted && $0.type != .warmup }
+      let best = completedWorkingSets.max { lhs, rhs in
+        let lhsWeight = lhs.weightKg ?? 0
+        let rhsWeight = rhs.weightKg ?? 0
+        if lhsWeight == rhsWeight {
+          return (lhs.reps ?? 0) < (rhs.reps ?? 0)
+        }
+        return lhsWeight < rhsWeight
+      }
+      let targetWeight = best?.weightKg ?? 0
+      let targetReps = best?.reps ?? 8
+      return FocusExercise(
+        id: sessionExercise.id,
+        name: sessionExercise.exercise?.name ?? "Exercise",
+        detail: sessionExercise.note ?? "Working sets",
+        targetWeightKg: targetWeight,
+        targetReps: targetReps,
+        targetRPE: 8,
+        previousBestWeightKg: targetWeight,
+        previousBestReps: targetReps,
+        oneRepMaxKg: StrengthMath.estimatedOneRepMax(weightKg: targetWeight, reps: targetReps) ?? targetWeight,
+        plannedSets: max(sets.count, 1),
+        sets: sets,
+        trend: [40, 34, 37, 30, 27, 24, 22, 18, 16]
+      )
+    }
+    selectedExerciseID = exercises.first?.id ?? selectedExerciseID
+  }
+
+  private func syncDraft(_ session: WorkoutSession) {
+    let existingExercises = Dictionary(uniqueKeysWithValues: (session.exercises ?? []).map { ($0.id, $0) })
+    var syncedExercises: [SessionExercise] = []
+
+    for (order, exercise) in exercises.enumerated() {
+      let sessionExercise = existingExercises[exercise.id] ?? SessionExercise(id: exercise.id, session: session, order: order)
+      sessionExercise.session = session
+      sessionExercise.order = order
+      sessionExercise.note = exercise.detail
+      if sessionExercise.exercise == nil {
+        sessionExercise.exercise = Exercise(id: exercise.id, name: exercise.name)
+      } else {
+        sessionExercise.exercise?.name = exercise.name
+      }
+      syncSets(exercise.sets, into: sessionExercise)
+      syncedExercises.append(sessionExercise)
+    }
+
+    session.exercises = syncedExercises
+  }
+
+  private func syncSets(_ sets: [FocusSet], into sessionExercise: SessionExercise) {
+    let existingSets = Dictionary(uniqueKeysWithValues: (sessionExercise.sets ?? []).map { ($0.id, $0) })
+    sessionExercise.sets = sets.map { focusSet in
+      let set = existingSets[focusSet.id] ?? SetEntry(id: focusSet.id, sessionExercise: sessionExercise, index: focusSet.index)
+      set.sessionExercise = sessionExercise
+      set.index = focusSet.index
+      set.type = focusSet.type
+      set.weightKg = focusSet.weightKg
+      set.reps = focusSet.reps
+      set.rpe = focusSet.rpe
+      set.completedAt = focusSet.completedAt
+      set.isPR = focusSet.isPR
+      return set
+    }
+  }
+
+  private func rebuildPRRecords(for session: WorkoutSession, in modelContext: ModelContext) {
+    let sessionExercises = session.exercises ?? []
+    let exerciseIDs = Set(sessionExercises.compactMap { $0.exercise?.id })
+    guard !exerciseIDs.isEmpty else { return }
+
+    if let existingRecords = try? modelContext.fetch(FetchDescriptor<PRRecord>()) {
+      existingRecords
+        .filter { record in
+          guard let id = record.exercise?.id else { return false }
+          return exerciseIDs.contains(id)
+        }
+        .forEach(modelContext.delete)
+    }
+
+    for sessionExercise in sessionExercises {
+      guard let exercise = sessionExercise.exercise else { continue }
+      let records = PRRebuilder.rebuild(for: exercise, sets: sessionExercise.sets ?? [])
+      records.forEach(modelContext.insert)
+      syncPRFlags(from: sessionExercise)
+    }
+  }
+
+  private func syncPRFlags(from sessionExercise: SessionExercise) {
+    guard let exerciseIndex = exercises.firstIndex(where: { $0.id == sessionExercise.id }) else { return }
+    let flags = Dictionary(uniqueKeysWithValues: (sessionExercise.sets ?? []).map { ($0.id, $0.isPR) })
+    for setIndex in exercises[exerciseIndex].sets.indices {
+      let setID = exercises[exerciseIndex].sets[setIndex].id
+      exercises[exerciseIndex].sets[setIndex].isPR = flags[setID] ?? false
+    }
+  }
+
+  private func touchedFields(for set: SetEntry) -> Set<FocusSet.Field> {
+    var fields: Set<FocusSet.Field> = []
+    if set.weightKg != nil { fields.insert(.weight) }
+    if set.reps != nil { fields.insert(.reps) }
+    if set.rpe != nil { fields.insert(.rpe) }
+    if set.completedAt != nil { fields.formUnion([.weight, .reps, .rpe, .rest]) }
+    return fields
   }
 
   static func sampleExercises() -> [FocusExercise] {

@@ -330,13 +330,23 @@ private struct SetRow: View {
   let set: FocusSet
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @State private var showsRPEChips = false
+  @State private var showsPlateCalculator = false
 
   var body: some View {
-    Group {
-      if dynamicTypeSize >= .accessibility2 {
-        stackedRow
-      } else {
-        gridRow
+    VStack(spacing: 0) {
+      Group {
+        if dynamicTypeSize >= .accessibility2 {
+          stackedRow
+        } else {
+          gridRow
+        }
+      }
+      if showsRPEChips && !set.isCompleted {
+        RPEChipRow(selected: store.displayRPE(for: set, in: exercise)) { value in
+          store.updateRPE(value, setID: set.id, exerciseID: exercise.id)
+          showsRPEChips = false
+        }
       }
     }
     .opacity(set.isCompleted ? 0.55 : 1)
@@ -351,25 +361,39 @@ private struct SetRow: View {
         FieldStepper(
           text: weightText,
           isGhost: store.isGhost(.weight, set: set),
+          keyboard: .decimalPad,
+          onTextChange: { store.updateWeight(decimal(from: $0), setID: set.id, exerciseID: exercise.id) },
           decrement: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: -1) },
-          increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) }
+          increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) },
+          onLongPress: { showsPlateCalculator = true }
         )
+        .popover(isPresented: $showsPlateCalculator) {
+          PlateCalculatorView(weightKg: store.displayWeight(for: set, in: exercise) ?? 0)
+            .presentationCompactAdaptation(.popover)
+        }
         FieldStepper(
           text: repsText,
           isGhost: store.isGhost(.reps, set: set),
+          keyboard: .numberPad,
+          onTextChange: { store.updateReps(Int($0), setID: set.id, exerciseID: exercise.id) },
           decrement: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: -1) },
           increment: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: 1) }
         )
         FieldStepper(
           text: rpeText,
           isGhost: store.isGhost(.rpe, set: set),
+          keyboard: .decimalPad,
+          onTextChange: { store.updateRPE(decimal(from: $0), setID: set.id, exerciseID: exercise.id) },
           decrement: { store.step(.rpe, setID: set.id, exerciseID: exercise.id, direction: -1) },
-          increment: { store.step(.rpe, setID: set.id, exerciseID: exercise.id, direction: 1) }
+          increment: { store.step(.rpe, setID: set.id, exerciseID: exercise.id, direction: 1) },
+          onTap: { showsRPEChips.toggle() }
         )
         if dynamicTypeSize < .accessibility1 {
           FieldStepper(
             text: restText,
             isGhost: store.isGhost(.rest, set: set),
+            keyboard: .numberPad,
+            onTextChange: { store.updateRest(Int($0).map { $0 * 60 } ?? store.inheritedRest(for: set, in: exercise), setID: set.id, exerciseID: exercise.id) },
             decrement: { store.step(.rest, setID: set.id, exerciseID: exercise.id, direction: -1) },
             increment: { store.step(.rest, setID: set.id, exerciseID: exercise.id, direction: 1) }
           )
@@ -404,8 +428,12 @@ private struct SetRow: View {
       }
 
       HStack(spacing: DesignTokens.Spacing.step2) {
-        FieldStepper(text: weightText, isGhost: store.isGhost(.weight, set: set), decrement: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) })
-        FieldStepper(text: repsText, isGhost: store.isGhost(.reps, set: set), decrement: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: 1) })
+        FieldStepper(text: weightText, isGhost: store.isGhost(.weight, set: set), keyboard: .decimalPad, onTextChange: { store.updateWeight(decimal(from: $0), setID: set.id, exerciseID: exercise.id) }, decrement: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.weight, setID: set.id, exerciseID: exercise.id, direction: 1) }, onLongPress: { showsPlateCalculator = true })
+          .popover(isPresented: $showsPlateCalculator) {
+            PlateCalculatorView(weightKg: store.displayWeight(for: set, in: exercise) ?? 0)
+              .presentationCompactAdaptation(.popover)
+          }
+        FieldStepper(text: repsText, isGhost: store.isGhost(.reps, set: set), keyboard: .numberPad, onTextChange: { store.updateReps(Int($0), setID: set.id, exerciseID: exercise.id) }, decrement: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: -1) }, increment: { store.step(.reps, setID: set.id, exerciseID: exercise.id, direction: 1) })
         CompleteButton(isCompleted: set.isCompleted) { complete() }
       }
 
@@ -451,6 +479,7 @@ private struct SetRow: View {
   }
 
   private func complete() {
+    showsRPEChips = false
     if reduceMotion {
       store.complete(setID: set.id, exerciseID: exercise.id)
     } else {
@@ -459,13 +488,22 @@ private struct SetRow: View {
       }
     }
   }
+
+  private func decimal(from text: String) -> Decimal? {
+    Decimal(string: text.replacingOccurrences(of: ",", with: "."))
+  }
 }
 
 private struct FieldStepper: View {
   let text: String
   let isGhost: Bool
+  var keyboard: UIKeyboardType = .decimalPad
+  var onTextChange: ((String) -> Void)?
   let decrement: () -> Void
   let increment: () -> Void
+  var onTap: (() -> Void)?
+  var onLongPress: (() -> Void)?
+  @FocusState private var isFocused: Bool
 
   var body: some View {
     HStack(spacing: DesignTokens.Spacing.step1) {
@@ -473,13 +511,29 @@ private struct FieldStepper: View {
         Text("−")
           .forgeTextStyle(DesignTokens.Typography.numericRow)
       }
-      Text(text)
-        .forgeTextStyle(DesignTokens.Typography.numericRow)
-        .forgeNumeric()
-        .lineLimit(1)
-        .minimumScaleFactor(0.75)
-        .foregroundStyle(isGhost ? DesignTokens.ColorToken.textTertiary : DesignTokens.ColorToken.textPrimary)
-        .frame(maxWidth: .infinity)
+      TextField("", text: Binding(
+        get: { text == "–" ? "" : text },
+        set: { onTextChange?($0) }
+      ))
+      .keyboardType(keyboard)
+      .multilineTextAlignment(.center)
+      .focused($isFocused)
+      .placeholder(when: text == "–") {
+        Text(text)
+          .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      }
+      .forgeTextStyle(DesignTokens.Typography.numericRow)
+      .forgeNumeric()
+      .lineLimit(1)
+      .minimumScaleFactor(0.75)
+      .foregroundStyle(isGhost ? DesignTokens.ColorToken.textTertiary : DesignTokens.ColorToken.textPrimary)
+      .frame(maxWidth: .infinity)
+      .onTapGesture {
+        onTap?()
+      }
+      .onLongPressGesture {
+        onLongPress?()
+      }
       Button(action: increment) {
         Text("+")
           .forgeTextStyle(DesignTokens.Typography.numericRow)
@@ -490,6 +544,93 @@ private struct FieldStepper: View {
     .frame(minHeight: DesignTokens.Spacing.setRowHeightVisual)
     .background(DesignTokens.ColorToken.surfaceInput)
     .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.input))
+  }
+}
+
+private struct RPEChipRow: View {
+  let selected: Decimal?
+  let select: (Decimal) -> Void
+  private let values: [Decimal] = [6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10]
+
+  var body: some View {
+    ScrollView(.horizontal, showsIndicators: false) {
+      HStack(spacing: DesignTokens.Spacing.step2) {
+        ForEach(values, id: \.self) { value in
+          Button {
+            select(value)
+          } label: {
+            Text(format(value))
+              .forgeTextStyle(DesignTokens.Typography.numericRow)
+              .forgeNumeric()
+              .foregroundStyle(value == selected ? DesignTokens.ColorToken.onSignal : DesignTokens.ColorToken.textPrimary)
+              .padding(.horizontal, DesignTokens.Spacing.step3)
+              .padding(.vertical, DesignTokens.Spacing.step2)
+              .background(value == selected ? DesignTokens.ColorToken.signal : DesignTokens.ColorToken.surfaceInput)
+              .clipShape(RoundedRectangle(cornerRadius: DesignTokens.Radius.segment))
+          }
+          .buttonStyle(.plain)
+        }
+      }
+      .padding(.horizontal, DesignTokens.Spacing.screenGutter)
+      .padding(.vertical, DesignTokens.Spacing.step2)
+    }
+  }
+}
+
+private struct PlateCalculatorView: View {
+  let weightKg: Decimal
+  private let barKg: Decimal = 20
+  private let plates: [Decimal] = [25, 20, 15, 10, 5, 2.5, 1.25]
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step3) {
+      Text("PLATES")
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      Text("\(format(weightKg)) KG")
+        .forgeTextStyle(DesignTokens.Typography.heading)
+        .forgeNumeric()
+      ForEach(plateBreakdown, id: \.plate) { item in
+        HStack {
+          Text("\(format(item.plate)) KG")
+          Spacer()
+          Text("× \(item.count)")
+            .forgeNumeric()
+        }
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+      }
+    }
+    .padding(DesignTokens.Spacing.step4)
+    .frame(minWidth: DesignTokens.Spacing.step6 * 5)
+    .background(DesignTokens.ColorToken.surfaceRaised)
+  }
+
+  private var plateBreakdown: [(plate: Decimal, count: Int)] {
+    var side = max(0, (weightKg - barKg) / 2)
+    return plates.compactMap { plate in
+      let count = NSDecimalNumber(decimal: (side / plate).roundedDown).intValue
+      guard count > 0 else { return nil }
+      side -= plate * Decimal(count)
+      return (plate, count)
+    }
+  }
+}
+
+private extension Decimal {
+  var roundedDown: Decimal {
+    var value = self
+    var result = Decimal()
+    NSDecimalRound(&result, &value, 0, .down)
+    return result
+  }
+}
+
+private extension View {
+  func placeholder<Content: View>(when shouldShow: Bool, alignment: Alignment = .center, @ViewBuilder placeholder: () -> Content) -> some View {
+    ZStack(alignment: alignment) {
+      placeholder().opacity(shouldShow ? 1 : 0)
+      self
+    }
   }
 }
 

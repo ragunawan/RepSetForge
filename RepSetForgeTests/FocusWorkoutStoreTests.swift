@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 import XCTest
 @testable import RepSetForge
 
@@ -68,6 +69,50 @@ final class FocusWorkoutStoreTests: XCTestCase {
     store.step(.weight, setID: setID, exerciseID: exerciseID, direction: 18)
     store.complete(setID: setID, exerciseID: exerciseID)
 
+    XCTAssertTrue(store.exercises[0].sets[1].isPR)
+  }
+
+  func testSwiftDataDraftPersistsAndReloadsActiveSession() throws {
+    let container = try ModelContainer(
+      for: ModelContainerFactory.schema,
+      configurations: ModelConfiguration("FocusDraftTests", schema: ModelContainerFactory.schema, isStoredInMemoryOnly: true)
+    )
+    let context = container.mainContext
+    let store = FocusWorkoutStore(startedAt: Date(timeIntervalSince1970: 0))
+    store.bindModelContext(context)
+
+    let exerciseID = store.exercises[0].id
+    let setID = store.exercises[0].sets[1].id
+    store.updateWeight(110, setID: setID, exerciseID: exerciseID)
+    store.updateReps(6, setID: setID, exerciseID: exerciseID)
+    store.complete(setID: setID, exerciseID: exerciseID, now: Date(timeIntervalSince1970: 30))
+
+    let restored = FocusWorkoutStore()
+    restored.bindModelContext(context)
+
+    XCTAssertEqual(restored.startedAt, Date(timeIntervalSince1970: 0))
+    XCTAssertEqual(restored.exercises[0].sets[1].weightKg, 110)
+    XCTAssertEqual(restored.exercises[0].sets[1].reps, 6)
+    XCTAssertEqual(restored.exercises[0].sets[1].completedAt, Date(timeIntervalSince1970: 30))
+  }
+
+  func testSetCommitRebuildsSwiftDataPRRecords() throws {
+    let container = try ModelContainer(
+      for: ModelContainerFactory.schema,
+      configurations: ModelConfiguration("FocusPRTests", schema: ModelContainerFactory.schema, isStoredInMemoryOnly: true)
+    )
+    let context = container.mainContext
+    let store = FocusWorkoutStore(startedAt: Date(timeIntervalSince1970: 0))
+    store.bindModelContext(context)
+
+    let exerciseID = store.exercises[0].id
+    let setID = store.exercises[0].sets[1].id
+    store.updateWeight(140, setID: setID, exerciseID: exerciseID)
+    store.updateReps(5, setID: setID, exerciseID: exerciseID)
+    store.complete(setID: setID, exerciseID: exerciseID, now: Date(timeIntervalSince1970: 30))
+
+    let records = try context.fetch(FetchDescriptor<PRRecord>())
+    XCTAssertTrue(records.contains { $0.kind == .bestWeight && $0.value == 140 })
     XCTAssertTrue(store.exercises[0].sets[1].isPR)
   }
 
