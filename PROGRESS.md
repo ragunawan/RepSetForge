@@ -27,6 +27,8 @@ Completed:
 - P5.1 Exercise picker + first-run create flow - done, production root now starts with an empty exercise DB placeholder, picker supports debounced search, recents/favorites/all sections, AND-combined muscle/equipment chips, inline history preview with explicit Add to workout, and one-screen custom exercise creation with dedup "Similar exists" gating.
 - Phase 5 gate 2026-07-15 - done, `build_sim CODE_SIGNING_ALLOWED=NO` green; `test_sim CODE_SIGNING_ALLOWED=NO` green (23/23).
 - P6.1 Root tab shell + Home placeholders - done, RootView now hosts Home/History/Progress/Library tabs with FAB-driven active workout cover; Home renders resume banner plus week/recommendation/body modules in stable positions with first-run placeholders and dual-line body chart sketch.
+- P6.2 Body chart period paging - done, Home Body module now uses BodyMetric W/M/Y period paging, swipe/arrows, weight aggregation, and 14-day body-fat interpolation; `build_sim CODE_SIGNING_ALLOWED=NO` green.
+- P6.3 Summary + HealthKit finish path - done, Focus finish now completes the SwiftData session, shows Summary deltas/PR spotlight/routine prompt, exports phone-only HealthKit workouts through HKWorkoutBuilder with healthKitUUID replacement guard and delete helper; `test_sim CODE_SIGNING_ALLOWED=NO` green (23/23).
 
 Decisions:
 - Phase 0 render check used a temporary app-only simulator install after the full unsigned app+widget product hit an install-time embedded-extension placeholder check; the committed project still builds app + widget extension together.
@@ -36,7 +38,8 @@ Decisions:
 - Phase 3 simulator verification covers build/tests only; the phase gate remains open because the plan requires on-device lock-screen/background Live Activity behavior.
 - Phase 4 Focus uses the default double-progression rule until Phase 8 routine builder/library binds editable `ProgressionRule` rows to routine items.
 - Phase 5 keeps existing FocusWorkoutStore sample data as an explicit test/preview default, while production RootView injects an empty exercise list to satisfy the empty-shipped-DB first-run flow.
+- Phase 6 Health export uses a fixed 82 kg bodyweight estimate until Settings/Health bodyweight read owns the canonical current bodyweight input.
 
 Open:
 - Phase 3 gate pending: on-device lock phone mid-rest, countdown ticks, Skip works from lock screen, activity survives backgrounding.
-- Phase 6 pending: Summary with deltas + PR spotlight, routine-update prompt, HealthKit export service with healthKitUUID update/delete guard, full body chart period paging/interpolation.
+- Phase 6 pending: on-device workout appears in Fitness app; edit session updates HKWorkout via healthKitUUID; delete session removes HKWorkout.

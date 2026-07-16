@@ -4,9 +4,11 @@ import SwiftData
 struct FocusWorkoutView: View {
   @Bindable var store: FocusWorkoutStore
   @Environment(\.modelContext) private var modelContext
+  @Environment(\.dismiss) private var dismiss
   @State private var showsIndex = false
   @State private var showsProgression = false
   @State private var showsPicker = false
+  @State private var showsSummary = false
 
   var body: some View {
     Group {
@@ -36,6 +38,19 @@ struct FocusWorkoutView: View {
     .sheet(isPresented: $showsProgression) {
       ProgressionSheet(exercise: store.exercises[store.selectedIndex])
         .presentationDetents([.medium, .large])
+    }
+    .sheet(isPresented: $showsSummary) {
+      if let session = store.completedSummarySession {
+        SummaryView(store: store, session: session) {
+          store.closeCompletedWorkout()
+          showsSummary = false
+          dismiss()
+        }
+        .presentationDetents([.large])
+      }
+    }
+    .onChange(of: store.completedSummarySession?.id) { _, newValue in
+      showsSummary = newValue != nil
     }
     .environment(\.font, .system(.body, design: .monospaced))
   }
@@ -452,7 +467,7 @@ private struct ExerciseFocusPage: View {
         Divider().overlay(DesignTokens.ColorToken.hairline)
         CoachingPrompt(store: store, exercise: exercise)
         SetTable(store: store, exercise: exercise)
-        FinishWorkoutButton()
+        FinishWorkoutButton(store: store)
       }
       .padding(.bottom, DesignTokens.Spacing.step6 * 3)
     }
@@ -1084,8 +1099,14 @@ private struct PRBadgeRow: View {
 }
 
 private struct FinishWorkoutButton: View {
+  @Bindable var store: FocusWorkoutStore
+
   var body: some View {
-    Button {} label: {
+    Button {
+      Task {
+        await store.finishWorkout()
+      }
+    } label: {
       Text("FINISH WORKOUT")
         .forgeTextStyle(DesignTokens.Typography.heading)
         .foregroundStyle(DesignTokens.ColorToken.textPrimary)
@@ -1096,6 +1117,183 @@ private struct FinishWorkoutButton: View {
     }
     .buttonStyle(.plain)
     .padding(DesignTokens.Spacing.screenGutter)
+  }
+}
+
+private struct SummaryView: View {
+  @Bindable var store: FocusWorkoutStore
+  let session: WorkoutSession
+  let onDone: () -> Void
+  @Query(sort: \WorkoutSession.startedAt, order: .reverse) private var sessions: [WorkoutSession]
+
+  var body: some View {
+    NavigationStack {
+      ScrollView {
+        VStack(alignment: .leading, spacing: DesignTokens.Spacing.cardGap) {
+          summaryCard
+          healthRow
+          prSpotlight
+          routinePrompt
+        }
+        .padding(DesignTokens.Spacing.screenGutter)
+      }
+      .background(DesignTokens.ColorToken.surface)
+      .navigationTitle("SUMMARY")
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button("DONE", action: onDone)
+            .forgeTextStyle(DesignTokens.Typography.body)
+        }
+      }
+    }
+  }
+
+  private var summaryCard: some View {
+    SummaryCard(title: session.name) {
+      HStack {
+        SummaryMetric(label: "SETS", value: "\(completedSets)")
+        Spacer()
+        SummaryMetric(label: "VOLUME", value: "\(summaryFormat(totalVolume)) KG")
+        Spacer()
+        SummaryMetric(label: "DELTA", value: deltaText)
+      }
+    }
+  }
+
+  private var healthRow: some View {
+    SummaryCard(title: "APPLE HEALTH") {
+      HStack(spacing: DesignTokens.Spacing.step2) {
+        Image(systemName: healthIcon)
+          .foregroundStyle(healthColor)
+        Text(healthText)
+          .forgeTextStyle(DesignTokens.Typography.body)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+      }
+    }
+  }
+
+  private var prSpotlight: some View {
+    SummaryCard(title: "PR SPOTLIGHT") {
+      if let best = prSets.first {
+        Text("\(best.sessionExercise?.exercise?.name ?? "Exercise") · \(summaryFormat(best.weightKg ?? 0)) KG x \(best.reps ?? 0)")
+          .forgeTextStyle(DesignTokens.Typography.heading)
+          .forgeNumeric()
+          .foregroundStyle(DesignTokens.ColorToken.pr)
+      } else {
+        Text("No PRs this session")
+          .forgeTextStyle(DesignTokens.Typography.body)
+          .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      }
+    }
+  }
+
+  private var routinePrompt: some View {
+    SummaryCard(title: "ROUTINE") {
+      Text("Update routine targets from today's logged sets?")
+        .forgeTextStyle(DesignTokens.Typography.body)
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+      Text("Routine editing lands in the builder phase.")
+        .forgeTextStyle(DesignTokens.Typography.secondary)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+    }
+  }
+
+  private var completedSets: Int {
+    setEntries.filter { $0.completedAt != nil }.count
+  }
+
+  private var totalVolume: Decimal {
+    setEntries.reduce(0) { $0 + ($1.volumeKg ?? 0) }
+  }
+
+  private var prSets: [SetEntry] {
+    setEntries.filter(\.isPR)
+  }
+
+  private var setEntries: [SetEntry] {
+    (session.exercises ?? []).flatMap { $0.sets ?? [] }
+  }
+
+  private var previousSession: WorkoutSession? {
+    sessions.first { candidate in
+      candidate.id != session.id
+      && candidate.status == .completed
+      && candidate.startedAt < session.startedAt
+      && (candidate.routine?.id == session.routine?.id || candidate.name == session.name)
+    }
+  }
+
+  private var deltaText: String {
+    guard let previousSession else { return "FIRST" }
+    let previousVolume = (previousSession.exercises ?? []).flatMap { $0.sets ?? [] }.reduce(Decimal(0)) { $0 + ($1.volumeKg ?? 0) }
+    let delta = totalVolume - previousVolume
+    return "\(delta > 0 ? "+" : "")\(summaryFormat(delta)) KG"
+  }
+
+  private var healthText: String {
+    switch store.healthExportState {
+    case .idle: return "Save pending"
+    case .saving: return "Saving to Apple Health"
+    case .saved: return "Saved to Apple Health"
+    case .denied: return "Health access off - enable in Settings > Health"
+    case .unavailable: return "Apple Health unavailable"
+    case .failed: return "Apple Health save failed"
+    }
+  }
+
+  private var healthIcon: String {
+    switch store.healthExportState {
+    case .saved: return "checkmark.circle.fill"
+    case .denied, .failed, .unavailable: return "exclamationmark.triangle.fill"
+    default: return "heart.fill"
+    }
+  }
+
+  private var healthColor: Color {
+    switch store.healthExportState {
+    case .saved: return DesignTokens.ColorToken.signal
+    case .denied, .failed, .unavailable: return DesignTokens.ColorToken.warning
+    default: return DesignTokens.ColorToken.textSecondary
+    }
+  }
+}
+
+private func summaryFormat(_ value: Decimal) -> String {
+  let number = NSDecimalNumber(decimal: value).doubleValue
+  return number.rounded() == number ? String(format: "%.0f", number) : String(format: "%.1f", number)
+}
+
+private struct SummaryCard<Content: View>: View {
+  let title: String
+  @ViewBuilder var content: Content
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step3) {
+      Text(title)
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      content
+    }
+    .padding(DesignTokens.Spacing.cardPadding)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(DesignTokens.ColorToken.surfaceRaised, in: RoundedRectangle(cornerRadius: DesignTokens.Radius.card))
+  }
+}
+
+private struct SummaryMetric: View {
+  let label: String
+  let value: String
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step1) {
+      Text(label)
+        .forgeTextStyle(DesignTokens.Typography.eyebrow)
+        .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+      Text(value)
+        .forgeTextStyle(DesignTokens.Typography.numericRow)
+        .forgeNumeric()
+        .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+    }
   }
 }
 

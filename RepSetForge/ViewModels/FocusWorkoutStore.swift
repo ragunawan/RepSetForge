@@ -1,4 +1,5 @@
 import Foundation
+import HealthKit
 import Observation
 import SwiftData
 
@@ -75,6 +76,15 @@ struct RestLedgerEntry: Identifiable, Equatable {
 @Observable
 @MainActor
 final class FocusWorkoutStore {
+  enum HealthExportState: Equatable {
+    case idle
+    case saving
+    case saved
+    case denied
+    case unavailable
+    case failed
+  }
+
   var sessionName = "Upper Strength"
   var startedAt: Date
   var exercises: [FocusExercise]
@@ -83,6 +93,8 @@ final class FocusWorkoutStore {
   var activeRest: (startedAt: Date, endsAt: Date, total: TimeInterval)?
   var restLedger: [RestLedgerEntry] = []
   var lastCompletedSetID: FocusSet.ID?
+  var completedSummarySession: WorkoutSession?
+  var healthExportState: HealthExportState = .idle
   var draftSaveCount = 0
   private var modelContext: ModelContext?
   private var sessionDraft: WorkoutSession?
@@ -300,6 +312,48 @@ final class FocusWorkoutStore {
     selectedExerciseID = focusExercise.id
     persistDraft()
     updateLiveActivity()
+  }
+
+  func finishWorkout(now: Date = .now) async {
+    guard !exercises.isEmpty else { return }
+    if let activeRest {
+      restLedger.append(RestLedgerEntry(startedAt: activeRest.startedAt, endedAt: min(now, activeRest.endsAt)))
+      self.activeRest = nil
+    }
+    activityController?.cancelRestCompletionNotification()
+
+    guard let modelContext else { return }
+    let session = sessionDraft ?? makeSessionDraft(in: modelContext)
+    session.name = sessionName
+    session.startedAt = startedAt
+    session.endedAt = now
+    session.status = .completed
+    syncDraft(session)
+    rebuildPRRecords(for: session, in: modelContext)
+    try? modelContext.save()
+
+    completedSummarySession = session
+    sessionDraft = nil
+    healthExportState = .saving
+
+    let result = await HealthKitWorkoutExporter().save(session: session)
+    session.healthKitUUID = result.uuid
+    healthExportState = result.state
+    try? modelContext.save()
+    activityController?.end(summary: liveActivityState, discard: false)
+  }
+
+  func closeCompletedWorkout() {
+    sessionName = "Upper Strength"
+    startedAt = .now
+    exercises = []
+    selectedExerciseID = UUID()
+    chartExpandedByExerciseID = [:]
+    activeRest = nil
+    restLedger = []
+    lastCompletedSetID = nil
+    completedSummarySession = nil
+    healthExportState = .idle
   }
 
   private func startRest(duration: TimeInterval, now: Date) {
@@ -672,5 +726,145 @@ final class FocusWorkoutStore {
         trend: [36, 38, 32, 28, 30, 24, 21, 19, 17]
       ),
     ]
+  }
+}
+
+struct HealthKitWorkoutExporter {
+  struct Result {
+    let uuid: UUID?
+    let state: FocusWorkoutStore.HealthExportState
+  }
+
+  private let healthStore = HKHealthStore()
+
+  func save(session: WorkoutSession) async -> Result {
+    guard HKHealthStore.isHealthDataAvailable() else {
+      return Result(uuid: session.healthKitUUID, state: .unavailable)
+    }
+
+    let workoutType = HKObjectType.workoutType()
+    guard let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else {
+      return Result(uuid: session.healthKitUUID, state: .unavailable)
+    }
+
+    do {
+      try await requestAuthorization(toShare: [workoutType, energyType], read: [energyType])
+      if let healthKitUUID = session.healthKitUUID {
+        try? await deleteWorkout(uuid: healthKitUUID)
+      }
+
+      let start = session.startedAt
+      let end = max(session.endedAt ?? .now, start.addingTimeInterval(1))
+      let durationHours = max(end.timeIntervalSince(start) / 3600, 1 / 3600)
+      let bodyweightKg = Decimal(82)
+      let kcal = 5.0 * NSDecimalNumber(decimal: bodyweightKg).doubleValue * durationHours
+      let energy = HKQuantity(unit: .kilocalorie(), doubleValue: kcal)
+      let metadata: [String: Any] = [
+        HKMetadataKeyWorkoutBrandName: "RepSetForge",
+        "RepSetForgeTotalVolumeKg": NSDecimalNumber(decimal: totalVolume(session)),
+        "RepSetForgeSetCount": completedSetCount(session)
+      ]
+      let configuration = HKWorkoutConfiguration()
+      configuration.activityType = .traditionalStrengthTraining
+      configuration.locationType = .indoor
+      let builder = HKWorkoutBuilder(healthStore: healthStore, configuration: configuration, device: .local())
+      try await builder.beginCollection(at: start)
+      try await builder.addMetadata(metadata)
+      let energySample = HKQuantitySample(type: energyType, quantity: energy, start: start, end: end)
+      try await builder.addSamples([energySample])
+      for activity in workoutActivities(for: session, configuration: configuration, start: start, end: end) {
+        try await builder.addWorkoutActivity(activity)
+      }
+      try await builder.endCollection(at: end)
+      let workout = try await finishWorkout(builder)
+      return Result(uuid: workout.uuid, state: .saved)
+    } catch let error as HKError where error.code == .errorAuthorizationDenied {
+      return Result(uuid: session.healthKitUUID, state: .denied)
+    } catch {
+      return Result(uuid: session.healthKitUUID, state: .failed)
+    }
+  }
+
+  func delete(session: WorkoutSession) async -> FocusWorkoutStore.HealthExportState {
+    guard let uuid = session.healthKitUUID else { return .idle }
+    do {
+      try await deleteWorkout(uuid: uuid)
+      return .idle
+    } catch let error as HKError where error.code == .errorAuthorizationDenied {
+      return .denied
+    } catch {
+      return .failed
+    }
+  }
+
+  private func requestAuthorization(toShare shareTypes: Set<HKSampleType>, read readTypes: Set<HKObjectType>) async throws {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+      healthStore.requestAuthorization(toShare: shareTypes, read: readTypes) { success, error in
+        if let error {
+          continuation.resume(throwing: error)
+        } else if success {
+          continuation.resume()
+        } else {
+          continuation.resume(throwing: HKError(.errorAuthorizationDenied))
+        }
+      }
+    }
+  }
+
+  private func deleteWorkout(uuid: UUID) async throws {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+      let predicate = HKQuery.predicateForObject(with: uuid)
+      healthStore.deleteObjects(of: HKObjectType.workoutType(), predicate: predicate) { success, _, error in
+        if let error {
+          continuation.resume(throwing: error)
+        } else if success {
+          continuation.resume()
+        } else {
+          continuation.resume(throwing: NSError(domain: "RepSetForge.HealthKit", code: 2))
+        }
+      }
+    }
+  }
+
+  private func totalVolume(_ session: WorkoutSession) -> Decimal {
+    (session.exercises ?? [])
+      .flatMap { $0.sets ?? [] }
+      .reduce(0) { $0 + ($1.volumeKg ?? 0) }
+  }
+
+  private func completedSetCount(_ session: WorkoutSession) -> Int {
+    (session.exercises ?? [])
+      .flatMap { $0.sets ?? [] }
+      .filter { $0.completedAt != nil }
+      .count
+  }
+
+  private func workoutActivities(for session: WorkoutSession, configuration: HKWorkoutConfiguration, start: Date, end: Date) -> [HKWorkoutActivity] {
+    let exercises = (session.exercises ?? []).sorted { $0.order < $1.order }
+    return exercises.compactMap { sessionExercise in
+      let dates = (sessionExercise.sets ?? []).compactMap(\.completedAt).sorted()
+      guard !dates.isEmpty else { return nil }
+      let activityStart = max(start, dates.first ?? start)
+      let activityEnd = min(end, max(dates.last ?? activityStart, activityStart.addingTimeInterval(1)))
+      let metadata: [String: Any] = [
+        "RepSetForgeExerciseName": sessionExercise.exercise?.name ?? "Exercise",
+        "RepSetForgeExerciseVolumeKg": NSDecimalNumber(decimal: (sessionExercise.sets ?? []).reduce(0) { $0 + ($1.volumeKg ?? 0) })
+      ]
+      return HKWorkoutActivity(workoutConfiguration: configuration, start: activityStart, end: activityEnd, metadata: metadata)
+    }
+  }
+
+  private func finishWorkout(_ builder: HKWorkoutBuilder) async throws -> HKWorkout {
+    try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<HKWorkout, Error>) in
+      builder.finishWorkout { workout, error in
+        if let error {
+          continuation.resume(throwing: error)
+        } else if let workout {
+          continuation.resume(returning: workout)
+        } else {
+          continuation.resume(throwing: NSError(domain: "RepSetForge.HealthKit", code: 3))
+        }
+      }
+    }
   }
 }

@@ -56,6 +56,9 @@ private struct HomeView: View {
   @Query(sort: \WorkoutSession.startedAt, order: .reverse) private var sessions: [WorkoutSession]
   @Query(sort: \Routine.lastPerformedAt) private var routines: [Routine]
   @Query(sort: \BodyMetric.date, order: .reverse) private var bodyMetrics: [BodyMetric]
+  @State private var bodyRange: BodyPeriodRange = .week
+  @State private var bodyOffset = 0
+  @State private var bodyDragStartX: CGFloat?
 
   var body: some View {
     NavigationStack {
@@ -154,11 +157,16 @@ private struct HomeView: View {
 
   private var bodyModule: some View {
     HomeModule(title: "BODY") {
-      if bodyMetrics.count < 2 {
-        PlaceholderModuleText("Log today's weight")
+      let series = BodyPeriodSeries.make(metrics: bodyMetrics, range: bodyRange, offset: bodyOffset)
+      if series.weightPoints.count < 2 {
+        PlaceholderModuleText(bodyMetrics.isEmpty ? "Log today's weight" : "Log another bodyweight to start tracking")
       } else {
-        BodyTrendSketch(metrics: Array(bodyMetrics.prefix(14).reversed()))
-          .frame(height: DesignTokens.Spacing.step6 * 4)
+        BodyTrendModule(
+          range: $bodyRange,
+          offset: $bodyOffset,
+          dragStartX: $bodyDragStartX,
+          series: series
+        )
       }
     }
   }
@@ -223,37 +231,283 @@ private struct PlaceholderModuleText: View {
   }
 }
 
-private struct BodyTrendSketch: View {
-  let metrics: [BodyMetric]
+private enum BodyPeriodRange: String, CaseIterable, Identifiable {
+  case week = "W"
+  case month = "M"
+  case year = "Y"
+
+  var id: String { rawValue }
+
+  var component: Calendar.Component {
+    switch self {
+    case .week: return .day
+    case .month: return .day
+    case .year: return .month
+    }
+  }
+
+  var value: Int {
+    switch self {
+    case .week: return 7
+    case .month: return 1
+    case .year: return 1
+    }
+  }
+
+  var points: Int {
+    switch self {
+    case .week: return 7
+    case .month: return 10
+    case .year: return 12
+    }
+  }
+}
+
+private struct BodyPeriodSeries {
+  struct Point: Identifiable {
+    let id = UUID()
+    let date: Date
+    let weightKg: Decimal?
+    let bodyFatPct: Decimal?
+  }
+
+  let label: String
+  let previousLabel: String
+  let nextLabel: String?
+  let weightPoints: [Point]
+  let fatPoints: [Point]
+  let currentWeightKg: Decimal
+  let weightDeltaKg: Decimal
+  let currentBodyFatPct: Decimal?
+  let bodyFatDeltaPct: Decimal?
+
+  static func make(metrics: [BodyMetric], range: BodyPeriodRange, offset: Int, calendar: Calendar = .current, now: Date = .now) -> BodyPeriodSeries {
+    let bounds = periodBounds(range: range, offset: offset, calendar: calendar, now: now)
+    let anchors = pointDates(range: range, start: bounds.start, end: bounds.end, calendar: calendar)
+    let sorted = metrics.sorted { $0.date < $1.date }
+    let points = anchors.map { anchor in
+      Point(
+        date: anchor,
+        weightKg: aggregateWeight(metrics: sorted, range: range, anchor: anchor, calendar: calendar),
+        bodyFatPct: interpolatedBodyFat(metrics: sorted, at: anchor, calendar: calendar)
+      )
+    }
+    let weights = points.compactMap(\.weightKg)
+    let fats = points.compactMap(\.bodyFatPct)
+    return BodyPeriodSeries(
+      label: label(for: bounds, range: range),
+      previousLabel: label(for: periodBounds(range: range, offset: offset + 1, calendar: calendar, now: now), range: range),
+      nextLabel: offset == 0 ? nil : label(for: periodBounds(range: range, offset: offset - 1, calendar: calendar, now: now), range: range),
+      weightPoints: points.filter { $0.weightKg != nil },
+      fatPoints: points.filter { $0.bodyFatPct != nil },
+      currentWeightKg: weights.last ?? 0,
+      weightDeltaKg: (weights.last ?? 0) - (weights.first ?? 0),
+      currentBodyFatPct: fats.last,
+      bodyFatDeltaPct: fats.last.flatMap { last in fats.first.map { last - $0 } }
+    )
+  }
+
+  private static func periodBounds(range: BodyPeriodRange, offset: Int, calendar: Calendar, now: Date) -> (start: Date, end: Date) {
+    let endOfToday = calendar.startOfDay(for: now)
+    switch range {
+    case .week:
+      let end = calendar.date(byAdding: .day, value: -(offset * 7), to: endOfToday) ?? endOfToday
+      let start = calendar.date(byAdding: .day, value: -6, to: end) ?? end
+      return (start, end)
+    case .month:
+      let shifted = calendar.date(byAdding: .month, value: -offset, to: endOfToday) ?? endOfToday
+      let interval = calendar.dateInterval(of: .month, for: shifted)
+      let start = interval?.start ?? shifted
+      let end = min(endOfToday, calendar.date(byAdding: .day, value: -1, to: interval?.end ?? shifted) ?? shifted)
+      return (start, end)
+    case .year:
+      let shifted = calendar.date(byAdding: .year, value: -offset, to: endOfToday) ?? endOfToday
+      let interval = calendar.dateInterval(of: .year, for: shifted)
+      let start = interval?.start ?? shifted
+      let end = min(endOfToday, calendar.date(byAdding: .day, value: -1, to: interval?.end ?? shifted) ?? shifted)
+      return (start, end)
+    }
+  }
+
+  private static func pointDates(range: BodyPeriodRange, start: Date, end: Date, calendar: Calendar) -> [Date] {
+    guard range == .year else {
+      let days = max(calendar.dateComponents([.day], from: start, to: end).day ?? 0, 0)
+      let step = max(1, Int((Double(days) / Double(max(range.points - 1, 1))).rounded()))
+      return (0..<range.points).compactMap { calendar.date(byAdding: .day, value: min(days, $0 * step), to: start) }
+    }
+    return (0..<range.points).compactMap { calendar.date(byAdding: .month, value: $0, to: start) }
+  }
+
+  private static func aggregateWeight(metrics: [BodyMetric], range: BodyPeriodRange, anchor: Date, calendar: Calendar) -> Decimal? {
+    switch range {
+    case .week:
+      return metrics.last { calendar.isDate($0.date, inSameDayAs: anchor) }?.bodyweightKg
+    case .month:
+      let sameWeek = metrics.filter { calendar.isDate($0.date, equalTo: anchor, toGranularity: .weekOfYear) }.map(\.bodyweightKg)
+      return mean(sameWeek)
+    case .year:
+      let sameMonth = metrics.filter { calendar.isDate($0.date, equalTo: anchor, toGranularity: .month) }.map(\.bodyweightKg)
+      return mean(sameMonth)
+    }
+  }
+
+  private static func interpolatedBodyFat(metrics: [BodyMetric], at date: Date, calendar: Calendar) -> Decimal? {
+    let fatMetrics = metrics.compactMap { metric -> (Date, Decimal)? in
+      guard let bodyFatPct = metric.bodyFatPct else { return nil }
+      return (metric.date, bodyFatPct)
+    }
+    guard !fatMetrics.isEmpty else { return nil }
+    if let exact = fatMetrics.last(where: { calendar.isDate($0.0, inSameDayAs: date) }) {
+      return exact.1
+    }
+    let previous = fatMetrics.last { $0.0 < date }
+    let next = fatMetrics.first { $0.0 > date }
+    guard let previous, let next else { return nil }
+    let gap = next.0.timeIntervalSince(previous.0)
+    guard gap > 0, gap <= 14 * 24 * 60 * 60 else { return nil }
+    let fraction = Decimal(date.timeIntervalSince(previous.0) / gap)
+    return previous.1 + (next.1 - previous.1) * fraction
+  }
+
+  private static func mean(_ values: [Decimal]) -> Decimal? {
+    guard !values.isEmpty else { return nil }
+    return values.reduce(0, +) / Decimal(values.count)
+  }
+
+  private static func label(for bounds: (start: Date, end: Date), range: BodyPeriodRange) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "en_US_POSIX")
+    formatter.dateFormat = range == .year ? "yyyy" : "MMM d"
+    if range == .year {
+      return formatter.string(from: bounds.start).uppercased()
+    }
+    return "\(formatter.string(from: bounds.start).uppercased())-\(formatter.string(from: bounds.end).uppercased())"
+  }
+}
+
+private struct BodyTrendModule: View {
+  @Binding var range: BodyPeriodRange
+  @Binding var offset: Int
+  @Binding var dragStartX: CGFloat?
+  let series: BodyPeriodSeries
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: DesignTokens.Spacing.step2) {
+      Picker("Body range", selection: $range) {
+        ForEach(BodyPeriodRange.allCases) { range in
+          Text(range.rawValue).tag(range)
+        }
+      }
+      .pickerStyle(.segmented)
+      .onChange(of: range) { _, _ in offset = 0 }
+
+      HStack {
+        Button {
+          offset += 1
+        } label: {
+          Text("< \(series.previousLabel)")
+        }
+
+        Spacer()
+
+        Text(series.label)
+          .forgeTextStyle(DesignTokens.Typography.secondary)
+          .foregroundStyle(DesignTokens.ColorToken.textPrimary)
+
+        Spacer()
+
+        Button {
+          offset = max(0, offset - 1)
+        } label: {
+          Text(series.nextLabel.map { "\($0) >" } ?? "NOW >")
+        }
+        .disabled(offset == 0)
+      }
+      .forgeTextStyle(DesignTokens.Typography.eyebrow)
+      .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+
+      BodyTrendChart(series: series)
+        .frame(height: DesignTokens.Spacing.step6 * 3)
+        .contentShape(Rectangle())
+        .gesture(
+          DragGesture(minimumDistance: DesignTokens.Spacing.step4)
+            .onChanged { value in
+              if dragStartX == nil {
+                dragStartX = value.startLocation.x
+              }
+            }
+            .onEnded { value in
+              let delta = value.location.x - (dragStartX ?? value.startLocation.x)
+              dragStartX = nil
+              if delta > DesignTokens.Spacing.step6 {
+                offset += 1
+              } else if delta < -DesignTokens.Spacing.step6 {
+                offset = max(0, offset - 1)
+              }
+            }
+        )
+
+      HStack(spacing: DesignTokens.Spacing.step3) {
+        Text("WEIGHT \(homeFormat(series.currentWeightKg)) KG (\(signed(series.weightDeltaKg)))")
+          .foregroundStyle(DesignTokens.ColorToken.signal)
+        if let bodyFat = series.currentBodyFatPct, let delta = series.bodyFatDeltaPct {
+          Text("BODY FAT \(homeFormat(bodyFat))% (\(signed(delta)))")
+            .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+        } else {
+          Text("NO BODY-FAT DATA")
+            .foregroundStyle(DesignTokens.ColorToken.textTertiary)
+        }
+      }
+      .forgeTextStyle(DesignTokens.Typography.secondary)
+      .forgeNumeric()
+
+      HStack(spacing: DesignTokens.Spacing.step3) {
+        Text("- WEIGHT LEFT")
+          .foregroundStyle(DesignTokens.ColorToken.signal)
+        Text("-- BODY FAT RIGHT")
+          .foregroundStyle(DesignTokens.ColorToken.textSecondary)
+      }
+      .forgeTextStyle(DesignTokens.Typography.eyebrow)
+    }
+  }
+
+  private func signed(_ value: Decimal) -> String {
+    let prefix = value > 0 ? "+" : ""
+    return "\(prefix)\(homeFormat(value))"
+  }
+}
+
+private struct BodyTrendChart: View {
+  let series: BodyPeriodSeries
 
   var body: some View {
     GeometryReader { proxy in
-      Path { path in
-        let weights = metrics.map(\.bodyweightKg)
-        guard let minWeight = weights.min(), let maxWeight = weights.max(), !weights.isEmpty else { return }
-        for (index, value) in weights.enumerated() {
-          let x = proxy.size.width * CGFloat(index) / CGFloat(max(weights.count - 1, 1))
-          let range = max(CGFloat(truncating: (maxWeight - minWeight) as NSNumber), 1)
-          let y = proxy.size.height - CGFloat(truncating: (value - minWeight) as NSNumber) / range * proxy.size.height
-          if index == 0 { path.move(to: CGPoint(x: x, y: y)) } else { path.addLine(to: CGPoint(x: x, y: y)) }
-        }
+      ZStack {
+        RoundedRectangle(cornerRadius: DesignTokens.Radius.input)
+          .stroke(DesignTokens.ColorToken.hairline, lineWidth: 1)
+        chartPath(points: series.weightPoints, value: \.weightKg, size: proxy.size)
+          .stroke(DesignTokens.ColorToken.signal, lineWidth: 2)
+        chartPath(points: series.fatPoints, value: \.bodyFatPct, size: proxy.size)
+          .stroke(DesignTokens.ColorToken.textSecondary, style: StrokeStyle(lineWidth: 2, dash: [DesignTokens.Spacing.step2, DesignTokens.Spacing.step1]))
       }
-      .stroke(DesignTokens.ColorToken.signal, lineWidth: 2)
+    }
+  }
 
-      Path { path in
-        let fatPoints = metrics.enumerated().compactMap { index, metric -> (Int, Decimal)? in
-          guard let bodyFatPct = metric.bodyFatPct else { return nil }
-          return (index, bodyFatPct)
-        }
-        guard let minFat = fatPoints.map(\.1).min(), let maxFat = fatPoints.map(\.1).max(), !fatPoints.isEmpty else { return }
-        for (offset, point) in fatPoints.enumerated() {
-          let x = proxy.size.width * CGFloat(point.0) / CGFloat(max(metrics.count - 1, 1))
-          let range = max(CGFloat(truncating: (maxFat - minFat) as NSNumber), 1)
-          let y = proxy.size.height - CGFloat(truncating: (point.1 - minFat) as NSNumber) / range * proxy.size.height
-          if offset == 0 { path.move(to: CGPoint(x: x, y: y)) } else { path.addLine(to: CGPoint(x: x, y: y)) }
+  private func chartPath(points: [BodyPeriodSeries.Point], value: KeyPath<BodyPeriodSeries.Point, Decimal?>, size: CGSize) -> Path {
+    Path { path in
+      let values = points.compactMap { $0[keyPath: value] }
+      guard let minValue = values.min(), let maxValue = values.max(), !values.isEmpty else { return }
+      let span = max(CGFloat(truncating: (maxValue - minValue) as NSNumber), 1)
+      for (index, point) in points.enumerated() {
+        guard let decimal = point[keyPath: value] else { continue }
+        let x = size.width * CGFloat(index) / CGFloat(max(points.count - 1, 1))
+        let y = size.height - CGFloat(truncating: (decimal - minValue) as NSNumber) / span * size.height
+        if index == 0 {
+          path.move(to: CGPoint(x: x, y: y))
+        } else {
+          path.addLine(to: CGPoint(x: x, y: y))
         }
       }
-      .stroke(DesignTokens.ColorToken.textSecondary, style: StrokeStyle(lineWidth: 2, dash: [DesignTokens.Spacing.step2, DesignTokens.Spacing.step1]))
     }
   }
 }
