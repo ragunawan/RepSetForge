@@ -2,6 +2,16 @@
 
 Current phase: **8 — Settings/polish/submission** (all phases 0–8 code complete on 2026-07-16; every build/test/device gate pending on-Mac verification)
 
+## Post-phase follow-ups completed (2026-07-20)
+- Superset paged rendering (§3 resolved model): `WorkoutViewModel.pages` groups adjacent shared-groupID exercises into one page; ExerciseFocusPage renders stacked member sections with chart member chips; non-final members start no rest + auto-scroll to next member; pager/index sheet/Live Activity count pages — done
+- Prev-session ghost feed: `previousRows(for:)` queries the last completed session per exercise (cached per active session) and seeds GhostResolver; touched keys re-keyed per SessionExercise (page-index keys would collide on superset pages) — done
+- Per-item rest: set table rest now resolves RoutineItem.restSeconds → profile default → 120 s (replaces hardcoded 120) — done
+- Plate calculator: pure `PlateCalc.breakdown` (greedy per-side, remainder) + long-press popover on the weight field + tests; `UserProfile.availablePlatesKg` added (defaulted — CloudKit-safe) — done
+- Plate config editor: bar-weight stepper + plate-denomination chips in Settings — done
+- CSV import UI: fileImporter → CSVCodec tolerant import → sessions grouped per calendar day, exercises matched by canonical key or created, PR recompute via InvalidationChain, summary line — done
+- Theme picker: System/Light/Dark in Settings via @AppStorage, applied with preferredColorScheme at app root — done
+- (All of the above still need on-Mac build/test verification like everything else.)
+
 ## Phase 7 completed
 - P7.1 InvalidationChain: §6 four-step chain (PR recompute via PRRebuilder wholesale-replace + isPR cascade; ladder implicit-live; rollups computed-on-demand; Health re-write via healthKitUUID) + deleteSession w/ HKWorkout propagation — done
 - P7.2 LibraryView + RoutineBuilderView: create/archive, drag reorder, superset grouping via context menu (singleton groups dissolve), target steppers, RuleEditorView bound to ProgressionRule — done

@@ -29,9 +29,7 @@ final class WorkoutViewModel {
         restTimer.onStateChange = { [weak self] in
             guard let self else { return }
             if let end = restTimer.plannedEnd {
-                let name = orderedExercises.indices.contains(page)
-                    ? orderedExercises[page].exercise?.name ?? "" : ""
-                liveActivity.scheduleRestNotification(endingAt: end, exerciseName: name)
+                liveActivity.scheduleRestNotification(endingAt: end, exerciseName: pageTitle(page))
             } else {
                 liveActivity.cancelRestNotification()
             }
@@ -72,6 +70,28 @@ final class WorkoutViewModel {
         (session?.exercises ?? []).sorted { $0.order < $1.order }
     }
 
+    // MARK: superset pages (§3 resolved model — a group occupies one page)
+
+    /// Adjacent exercises sharing a groupID collapse into one page.
+    var pages: [[SessionExercise]] {
+        var out: [[SessionExercise]] = []
+        for ex in orderedExercises {
+            if let gid = ex.groupID, let last = out.last, last.first?.groupID == gid {
+                out[out.count - 1].append(ex)
+            } else {
+                out.append([ex])
+            }
+        }
+        return out
+    }
+
+    func pageTitle(_ index: Int) -> String {
+        guard pages.indices.contains(index) else { return "" }
+        let members = pages[index]
+        if members.count > 1 { return "Superset" }
+        return members.first?.exercise?.name ?? ""
+    }
+
     func orderedSets(_ ex: SessionExercise) -> [SetEntry] {
         (ex.sets ?? []).sorted { $0.index < $1.index }
     }
@@ -90,28 +110,80 @@ final class WorkoutViewModel {
         }
     }
 
+    // MARK: history feeds (ghost seed + per-item rest)
+
+    private var previousRowsCache: [UUID: [GhostResolver.RowValues]] = [:]
+
+    /// The previous completed session's set values for this exercise —
+    /// first-row ghost seed (§3 contract #1). Cached per exercise for the
+    /// life of the active session.
+    func previousRows(for exercise: SessionExercise) -> [GhostResolver.RowValues] {
+        guard let exID = exercise.exercise?.id else { return [] }
+        if let cached = previousRowsCache[exID] { return cached }
+        guard let context = store.context else { return [] }
+        let completed = SessionStatus.completed.rawValue
+        let fd = FetchDescriptor<WorkoutSession>(
+            predicate: #Predicate { $0.statusRaw == completed },
+            sortBy: [SortDescriptor(\.startedAt, order: .reverse)]
+        )
+        let currentID = session?.id
+        let prev = ((try? context.fetch(fd)) ?? [])
+            .first { s in
+                s.id != currentID &&
+                (s.exercises ?? []).contains { $0.exercise?.id == exID }
+            }?
+            .exercises?.first { $0.exercise?.id == exID }
+        let rows: [GhostResolver.RowValues] = prev.map { p in
+            (p.sets ?? []).sorted { $0.index < $1.index }
+                .filter { $0.completedAt != nil }
+                .map { .init(weightKg: $0.weightKg, reps: $0.reps, rpe: $0.rpe) }
+        } ?? []
+        previousRowsCache[exID] = rows
+        return rows
+    }
+
+    /// Rest for an exercise: its RoutineItem's restSeconds when the session
+    /// came from a routine, else the profile default, else 120 s.
+    func restSeconds(for exercise: SessionExercise) -> Int {
+        let exID = exercise.exercise?.id
+        if let items = session?.routine?.orderedItems,
+           let item = items.first(where: { $0.exercise?.id == exID }) {
+            return item.restSeconds
+        }
+        if let context = store.context,
+           let profile = try? context.fetch(FetchDescriptor<UserProfile>()).first {
+            return profile.defaultRestSeconds
+        }
+        return 120
+    }
+
     // MARK: ghost inheritance
 
-    func touchedKey(page: Int, row: Int) -> String { "\(page)-\(row)" }
+    /// Keyed per session-exercise (a superset page holds several tables, so
+    /// page index alone would collide).
+    func touchedKey(exercise: SessionExercise, row: Int) -> String {
+        "\(ObjectIdentifier(exercise).hashValue)-\(row)"
+    }
 
-    func markTouched(page: Int, row: Int) {
-        touchedKeys.insert(touchedKey(page: page, row: row))
+    func markTouched(exercise: SessionExercise, row: Int) {
+        touchedKeys.insert(touchedKey(exercise: exercise, row: row))
         store.touch()
     }
 
-    func isTouched(page: Int, row: Int) -> Bool {
-        touchedKeys.contains(touchedKey(page: page, row: row))
+    func isTouched(exercise: SessionExercise, row: Int) -> Bool {
+        touchedKeys.contains(touchedKey(exercise: exercise, row: row))
     }
 
-    /// Resolve display values for a page's set table.
-    func resolvedRows(pageIndex: Int, exercise: SessionExercise,
-                      previous: [GhostResolver.RowValues]) -> [GhostResolver.Resolved] {
+    /// Resolve display values for a set table, seeded from the previous
+    /// session's history.
+    func resolvedRows(exercise: SessionExercise) -> [GhostResolver.Resolved] {
         let sets = orderedSets(exercise)
         let rows = sets.map { GhostResolver.RowValues(weightKg: $0.weightKg, reps: $0.reps, rpe: $0.rpe) }
         let touched = sets.enumerated().map { i, s in
-            s.completedAt != nil || isTouched(page: pageIndex, row: i)
+            s.completedAt != nil || isTouched(exercise: exercise, row: i)
         }
-        return GhostResolver.resolve(rows: rows, touched: touched, previous: previous)
+        return GhostResolver.resolve(rows: rows, touched: touched,
+                                     previous: previousRows(for: exercise))
     }
 
     // MARK: chart collapse (§3.3)
@@ -131,11 +203,14 @@ final class WorkoutViewModel {
 
     /// Tap ✓: commit resolved ghosts as real, stamp completedAt, PR check,
     /// start rest, append next row if last. Haptics/animation are view-side.
+    /// `startRest: false` for non-final superset members (§3: intra-superset
+    /// transition is immediate; only the round's last member starts the timer).
     @discardableResult
-    func complete(pageIndex: Int, exercise: SessionExercise, rowIndex: Int,
+    func complete(exercise: SessionExercise, rowIndex: Int,
                   resolved: GhostResolver.Resolved,
                   restSeconds: Int,
-                  bestWeight: Decimal?, bestReps: Int?) -> CompletionOutcome {
+                  bestWeight: Decimal?, bestReps: Int?,
+                  startRest: Bool = true) -> CompletionOutcome {
         let sets = orderedSets(exercise)
         guard sets.indices.contains(rowIndex) else { return .init(isPR: false, startedRestSeconds: nil) }
         let set = sets[rowIndex]
@@ -152,7 +227,7 @@ final class WorkoutViewModel {
         set.reps = resolved.values.reps
         set.rpe = resolved.values.rpe
         set.completedAt = .now
-        markTouched(page: pageIndex, row: rowIndex)
+        markTouched(exercise: exercise, row: rowIndex)
 
         // PR check against current bests (full PRRecord integration in Phase 6/7;
         // rebuild stays authoritative via PRRebuilder).
@@ -174,10 +249,12 @@ final class WorkoutViewModel {
             exercise.sets?.append(next)
         }
 
-        restTimer.start(duration: TimeInterval(restSeconds))
+        if startRest {
+            restTimer.start(duration: TimeInterval(restSeconds))
+        }
         store.touch()
         pushActivityUpdate()
-        return .init(isPR: isPR, startedRestSeconds: restSeconds)
+        return .init(isPR: isPR, startedRestSeconds: startRest ? restSeconds : nil)
     }
 
     func addSet(to exercise: SessionExercise) {
@@ -196,13 +273,13 @@ final class WorkoutViewModel {
 
     /// Coaching-prompt apply (§3.4): write the target into all pending
     /// non-warmup sets.
-    func applyTarget(exercise: SessionExercise, pageIndex: Int,
+    func applyTarget(exercise: SessionExercise,
                      weightKg: Decimal, reps: Int, rpe: Double?) {
         for (i, s) in orderedSets(exercise).enumerated() where s.completedAt == nil && s.type != .warmup {
             s.weightKg = weightKg
             s.reps = reps
             if let rpe { s.rpe = rpe }
-            markTouched(page: pageIndex, row: i)
+            markTouched(exercise: exercise, row: i)
         }
         store.touch()
     }

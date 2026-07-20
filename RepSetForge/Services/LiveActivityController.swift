@@ -72,12 +72,11 @@ extension WorkoutViewModel {
     /// Snapshot the current state for Activity.update() — called on set
     /// completion, rest transitions, and page change only (§4 budget).
     func activityContentState() -> WorkoutActivityAttributes.ContentState {
-        let exercises = orderedExercises
-        let ex = exercises.indices.contains(page) ? exercises[page] : nil
-        let sets = ex.map(orderedSets) ?? []
+        let members = pages.indices.contains(page) ? pages[page] : []
+        let sets = members.flatMap(orderedSets)
         let doneHere = sets.filter { $0.completedAt != nil }.count
         return .init(
-            exerciseName: ex?.exercise?.name ?? "",
+            exerciseName: pageTitle(page),
             setIndex: min(doneHere + 1, max(sets.count, 1)),
             setTotal: sets.count,
             sessionSetCount: doneSets,

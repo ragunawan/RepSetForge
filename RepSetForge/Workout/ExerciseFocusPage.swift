@@ -1,54 +1,120 @@
 import SwiftUI
 import SwiftData
 
-/// One exercise per page (§3): identity row, collapsible chart, coaching
-/// prompt, set table, add-set, finish. Full-bleed — hairline dividers only.
+/// One page of the carousel (§3): a single exercise, or a superset/circuit
+/// group rendered as stacked full-bleed member sections (hairline-divided,
+/// each with its own set table). Identity row, collapsible chart (member
+/// chips when grouped), coaching prompt, set table, add-set, finish.
 struct ExerciseFocusPage: View {
     @Bindable var vm: WorkoutViewModel
     let pageIndex: Int
-    let exercise: SessionExercise
+    let members: [SessionExercise]
     var onFinish: () -> Void = {}
+    /// Which member's chart shows (§3: first member's chart + chips to switch).
+    @State private var chartMember = 0
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                identityRow
-                Divider().overlay(DT.Colors.hairline)
+        ScrollViewReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    if members.count > 1 {
+                        supersetHeader
+                        memberChips
+                    }
+                    if let chartEx = members.indices.contains(chartMember) ? members[chartMember] : members.first {
+                        ChartSection(vm: vm, pageIndex: pageIndex, exercise: chartEx)
+                        Divider().overlay(DT.Colors.hairline)
+                    }
 
-                ChartSection(vm: vm, pageIndex: pageIndex, exercise: exercise)
-                Divider().overlay(DT.Colors.hairline)
+                    ForEach(Array(members.enumerated()), id: \.element.persistentModelID) { m, ex in
+                        memberSection(m: m, ex: ex, proxy: proxy)
+                    }
 
-                CoachingPromptBanner(vm: vm, pageIndex: pageIndex, exercise: exercise)
-
-                SetTableView(vm: vm, pageIndex: pageIndex, exercise: exercise)
-
-                Button {
-                    vm.addSet(to: exercise)
-                } label: {
-                    Text("+ Add set")
-                        .font(DT.Type.secondary.weight(.semibold))
-                        .foregroundStyle(DT.Colors.textSecondary)
-                        .frame(minHeight: DT.Touch.minimum)
+                    Button(action: onFinish) {
+                        Text("Finish workout")
+                            .font(DT.Type.body.weight(.bold))
+                            .frame(maxWidth: .infinity, minHeight: DT.Touch.minimum)
+                            .background(DT.Colors.surfaceInput)
+                            .clipShape(RoundedRectangle(cornerRadius: DT.Radius.card + 2))
+                            .overlay(RoundedRectangle(cornerRadius: DT.Radius.card + 2)
+                                .strokeBorder(DT.Colors.hairline))
+                    }
+                    .padding(.horizontal, DT.Spacing.s16 + 2)
+                    .padding(.vertical, DT.Spacing.s8)
                 }
-                .padding(.horizontal, DT.Spacing.s16 + 2)
-
-                Button(action: onFinish) {
-                    Text("Finish workout")
-                        .font(DT.Type.body.weight(.bold))
-                        .frame(maxWidth: .infinity, minHeight: DT.Touch.minimum)
-                        .background(DT.Colors.surfaceInput)
-                        .clipShape(RoundedRectangle(cornerRadius: DT.Radius.card + 2))
-                        .overlay(RoundedRectangle(cornerRadius: DT.Radius.card + 2)
-                            .strokeBorder(DT.Colors.hairline))
-                }
-                .padding(.horizontal, DT.Spacing.s16 + 2)
-                .padding(.vertical, DT.Spacing.s8)
+                .padding(.bottom, 140) // clear the bottom pill
             }
-            .padding(.bottom, 140) // clear the bottom pill
         }
     }
 
-    private var identityRow: some View {
+    @ViewBuilder
+    private func memberSection(m: Int, ex: SessionExercise, proxy: ScrollViewProxy) -> some View {
+        let isFinal = m == members.count - 1
+        VStack(alignment: .leading, spacing: 0) {
+            identityRow(ex)
+            Divider().overlay(DT.Colors.hairline)
+
+            CoachingPromptBanner(vm: vm, exercise: ex)
+
+            SetTableView(vm: vm, exercise: ex,
+                         // §3 superset rest: members before the last start no
+                         // timer; the round's final member starts group rest.
+                         startsRestOnComplete: members.count == 1 || isFinal,
+                         onSetCompleted: {
+                             guard members.count > 1, !isFinal else { return }
+                             withAnimation(DT.Motion.stateChange) {
+                                 proxy.scrollTo(members[m + 1].persistentModelID, anchor: .top)
+                             }
+                         })
+
+            Button {
+                vm.addSet(to: ex)
+            } label: {
+                Text("+ Add set")
+                    .font(DT.Type.secondary.weight(.semibold))
+                    .foregroundStyle(DT.Colors.textSecondary)
+                    .frame(minHeight: DT.Touch.minimum)
+            }
+            .padding(.horizontal, DT.Spacing.s16 + 2)
+        }
+        .id(ex.persistentModelID)
+        if !isFinal {
+            Divider().overlay(DT.Colors.hairline)
+                .padding(.vertical, DT.Spacing.s4)
+        }
+    }
+
+    private var supersetHeader: some View {
+        Text("SUPERSET · \(members.count) EXERCISES")
+            .font(DT.Type.eyebrow)
+            .foregroundStyle(DT.Colors.signal)
+            .padding(.horizontal, DT.Spacing.s16 + 2)
+            .padding(.top, DT.Spacing.s8)
+    }
+
+    private var memberChips: some View {
+        HStack(spacing: DT.Spacing.s8 - 2) {
+            ForEach(Array(members.enumerated()), id: \.element.persistentModelID) { m, ex in
+                Button {
+                    chartMember = m
+                } label: {
+                    Text(ex.exercise?.name ?? "Exercise")
+                        .font(DT.Type.eyebrow)
+                        .lineLimit(1)
+                        .foregroundStyle(chartMember == m ? DT.Colors.signal : DT.Colors.textSecondary)
+                        .padding(.horizontal, 10).padding(.vertical, 5)
+                        .background(chartMember == m ? DT.Colors.signalDim : DT.Colors.surfaceInput)
+                        .clipShape(Capsule())
+                        .overlay(Capsule().strokeBorder(chartMember == m ? DT.Colors.signal : DT.Colors.hairline))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, DT.Spacing.s16 + 2)
+        .padding(.vertical, DT.Spacing.s4)
+    }
+
+    private func identityRow(_ exercise: SessionExercise) -> some View {
         HStack(spacing: DT.Spacing.s12 - 2) {
             let initials = (exercise.exercise?.name ?? "?")
                 .split(separator: " ").compactMap(\.first).prefix(2)
@@ -64,7 +130,7 @@ struct ExerciseFocusPage: View {
                 Text(exercise.exercise?.name ?? "Exercise")
                     .font(DT.Type.heading)
                     .tracking(-0.3)
-                Text(muscleDetail)
+                Text(muscleDetail(exercise))
                     .font(DT.Type.secondary)
                     .foregroundStyle(DT.Colors.textSecondary)
             }
@@ -84,7 +150,7 @@ struct ExerciseFocusPage: View {
         .padding(.vertical, DT.Spacing.s12 - 2)
     }
 
-    private var muscleDetail: String {
+    private func muscleDetail(_ exercise: SessionExercise) -> String {
         let e = exercise.exercise
         let parts = ([e?.muscleGroups.first].compactMap { $0 }) + (e?.secondaryMuscles ?? [])
         return parts.isEmpty ? "—" : parts.joined(separator: " · ")
@@ -92,18 +158,17 @@ struct ExerciseFocusPage: View {
 }
 
 /// §3.4 coaching prompt banner: plain-language trigger + explicit mono target.
-/// Tap applies to pending sets. The target is fed from the ladder in Phase 4 —
-/// until then it shows "same as last session" from ghost seeds.
+/// Tap applies to pending sets. On a superset page each member shows its own
+/// banner (per-member targets stacked).
 struct CoachingPromptBanner: View {
     var vm: WorkoutViewModel
-    let pageIndex: Int
     let exercise: SessionExercise
 
     var body: some View {
         // Phase 4 wires ProgressionEngine.currentLevel here (single source of truth).
         if let target = currentTarget {
             Button {
-                vm.applyTarget(exercise: exercise, pageIndex: pageIndex,
+                vm.applyTarget(exercise: exercise,
                                weightKg: target.weightKg, reps: target.reps, rpe: target.rpe)
             } label: {
                 VStack(alignment: .leading, spacing: 2) {

@@ -16,8 +16,9 @@ struct ActiveWorkoutView: View {
             VStack(spacing: 0) {
                 TelemetryHeader(vm: vm)
                 TabView(selection: $vm.page) {
-                    ForEach(Array(vm.orderedExercises.enumerated()), id: \.element.persistentModelID) { idx, ex in
-                        ExerciseFocusPage(vm: vm, pageIndex: idx, exercise: ex, onFinish: onFinish)
+                    // §3: a superset group occupies one page.
+                    ForEach(Array(vm.pages.enumerated()), id: \.element.first?.persistentModelID) { idx, members in
+                        ExerciseFocusPage(vm: vm, pageIndex: idx, members: members, onFinish: onFinish)
                             .tag(idx)
                     }
                 }

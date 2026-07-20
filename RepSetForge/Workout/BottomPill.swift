@@ -51,7 +51,7 @@ struct BottomPill: View {
 
     @ViewBuilder
     private var pagerContent: some View {
-        let count = vm.orderedExercises.count
+        let count = vm.pages.count
         Button(action: onMinimize) {
             Image(systemName: "chevron.down")
                 .foregroundStyle(DT.Colors.textTertiary)

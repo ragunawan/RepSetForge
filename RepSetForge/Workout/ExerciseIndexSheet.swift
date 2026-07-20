@@ -9,19 +9,25 @@ struct ExerciseIndexSheet: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(Array(vm.orderedExercises.enumerated()), id: \.element.persistentModelID) { idx, ex in
+                // One row per page: a superset group is one pager position.
+                ForEach(Array(vm.pages.enumerated()), id: \.element.first?.persistentModelID) { idx, members in
                     Button {
                         vm.page = idx
                         dismiss()
                     } label: {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(ex.exercise?.name ?? "Exercise")
+                                Text(members.count > 1
+                                     ? members.compactMap { $0.exercise?.name }.joined(separator: " + ")
+                                     : members.first?.exercise?.name ?? "Exercise")
                                     .font(DT.Type.body.weight(.bold))
                                     .foregroundStyle(idx == vm.page ? DT.Colors.signal : DT.Colors.textPrimary)
                                 HStack(spacing: 4) {
-                                    let sets = ex.sets ?? []
+                                    let sets = members.flatMap { $0.sets ?? [] }
                                     let done = sets.filter { $0.completedAt != nil }.count
+                                    if members.count > 1 {
+                                        Text("SUPERSET ·").foregroundStyle(DT.Colors.signal)
+                                    }
                                     Text("\(done)/\(sets.count) sets")
                                     if sets.contains(where: { $0.isPR }) {
                                         Text("· PR").foregroundStyle(DT.Colors.pr)
@@ -39,9 +45,10 @@ struct ExerciseIndexSheet: View {
                     .listRowBackground(DT.Colors.surface)
                 }
                 .onMove { from, to in
-                    var items = vm.orderedExercises
-                    items.move(fromOffsets: from, toOffset: to)
-                    for (i, item) in items.enumerated() { item.order = i }
+                    // Reorder whole pages, then flatten back to exercise order.
+                    var pages = vm.pages
+                    pages.move(fromOffsets: from, toOffset: to)
+                    for (i, item) in pages.flatMap({ $0 }).enumerated() { item.order = i }
                     vm.store.touch()
                 }
             }
@@ -72,8 +79,8 @@ struct ProgressionPanel: View {
     }
 
     private var ladder: LadderEngine.State {
-        let exercises = vm.orderedExercises
-        let ex = exercises.indices.contains(vm.page) ? exercises[vm.page] : nil
+        let pages = vm.pages
+        let ex = pages.indices.contains(vm.page) ? pages[vm.page].first : nil
         let facts: [LadderEngine.SessionFacts] = {
             guard let ex, let session = vm.session else { return [] }
             let sets = vm.orderedSets(ex).filter { $0.completedAt != nil }

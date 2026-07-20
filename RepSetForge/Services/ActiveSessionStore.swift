@@ -9,7 +9,8 @@ import Observation
 @MainActor
 final class ActiveSessionStore {
     private(set) var session: WorkoutSession?
-    private var context: ModelContext?
+    /// Read access for history queries (ghost feed, ladder history).
+    private(set) var context: ModelContext?
     private var saveTask: Task<Void, Never>?
 
     var isActive: Bool { session != nil }

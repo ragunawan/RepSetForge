@@ -6,11 +6,17 @@ import SwiftData
 /// row and shortens ghosts; Tier 3 (AX2+) stacked rows.
 struct SetTableView: View {
     @Bindable var vm: WorkoutViewModel
-    let pageIndex: Int
     let exercise: SessionExercise
+    /// False for non-final superset members: completing a set starts no rest
+    /// timer (§3 — only the round's last member does).
+    var startsRestOnComplete: Bool = true
+    /// Fired after a completion commits (superset pages auto-scroll on it).
+    var onSetCompleted: () -> Void = {}
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Query private var profiles: [UserProfile]
     @State private var selection: FieldSelection?
+    @State private var plateRow: Int?
 
     struct FieldSelection: Equatable {
         var row: Int
@@ -18,9 +24,11 @@ struct SetTableView: View {
         enum Field: String { case weight, reps, rpe, rest }
     }
 
+    private var restSeconds: Int { vm.restSeconds(for: exercise) }
+
     var body: some View {
         let sets = vm.orderedSets(exercise)
-        let resolved = vm.resolvedRows(pageIndex: pageIndex, exercise: exercise, previous: [])
+        let resolved = vm.resolvedRows(exercise: exercise)
 
         VStack(spacing: 0) {
             if typeSize >= .accessibility2 {
@@ -34,7 +42,7 @@ struct SetTableView: View {
                 }
             }
             if let sel = selection, sets.indices.contains(sel.row) {
-                StepperAccessory(vm: vm, pageIndex: pageIndex, exercise: exercise,
+                StepperAccessory(vm: vm, exercise: exercise,
                                  selection: sel, onClose: { selection = nil })
             }
         }
@@ -68,13 +76,24 @@ struct SetTableView: View {
                     .frame(width: shedRest ? nil : 34)
                 fieldButton(i: i, field: .weight, width: 64,
                             text: weightText(resolved.values.weightKg), ghost: resolved.isGhost, done: done)
+                    .simultaneousGesture(LongPressGesture(minimumDuration: 0.4).onEnded { _ in
+                        if resolved.values.weightKg != nil { plateRow = i }
+                    })
+                    .popover(isPresented: Binding(get: { plateRow == i },
+                                                  set: { if !$0 { plateRow = nil } })) {
+                        let p = profiles.first
+                        PlateCalcView(
+                            targetKg: NSDecimalNumber(decimal: resolved.values.weightKg ?? 0).doubleValue,
+                            barKg: NSDecimalNumber(decimal: p?.barWeightKg ?? 20).doubleValue,
+                            plates: p?.availablePlatesKg ?? [25, 20, 15, 10, 5, 2.5, 1.25])
+                    }
                 fieldButton(i: i, field: .reps, width: 48,
                             text: resolved.values.reps.map(String.init) ?? "—", ghost: resolved.isGhost, done: done)
                 fieldButton(i: i, field: .rpe, width: 40,
                             text: rpeText(resolved.values.rpe), ghost: resolved.isGhost, done: done)
                 if !shedRest {
                     fieldButton(i: i, field: .rest, width: 52,
-                                text: restText(seconds: 120), ghost: false, done: done)
+                                text: restText(seconds: restSeconds), ghost: false, done: done)
                 }
                 Spacer()
                 completeControl(i: i, set: set, resolved: resolved)
@@ -124,7 +143,7 @@ struct SetTableView: View {
                         stackedField(i: i, field: .reps, label: "REPS", text: r.values.reps.map(String.init) ?? "—", ghost: r.isGhost)
                     }
                     Button { selection = .init(row: i, field: .rpe) } label: {
-                        Text("RPE \(rpeText(r.values.rpe)) · REST \(restText(seconds: 120))")
+                        Text("RPE \(rpeText(r.values.rpe)) · REST \(restText(seconds: restSeconds))")
                             .font(DT.Type.secondary)
                             .foregroundStyle(DT.Colors.textSecondary)
                             .monospacedDigit()
@@ -177,7 +196,7 @@ struct SetTableView: View {
                     .font(DT.Type.secondary.weight(.bold))
                     .foregroundStyle(set.type == .warmup ? DT.Colors.pr : DT.Colors.textSecondary)
                 if showRestSuffix {
-                    Text(restText(seconds: 120))
+                    Text(restText(seconds: restSeconds))
                         .font(DT.Type.eyebrow)
                         .foregroundStyle(DT.Colors.textTertiary)
                 }
@@ -245,16 +264,18 @@ struct SetTableView: View {
         // debounced in the store.
         let outcome: WorkoutViewModel.CompletionOutcome
         if reduceMotion {
-            outcome = vm.complete(pageIndex: pageIndex, exercise: exercise, rowIndex: i,
-                                  resolved: resolved, restSeconds: 120,
-                                  bestWeight: nil, bestReps: nil)
+            outcome = vm.complete(exercise: exercise, rowIndex: i,
+                                  resolved: resolved, restSeconds: restSeconds,
+                                  bestWeight: nil, bestReps: nil,
+                                  startRest: startsRestOnComplete)
         } else {
             withAnimation(DT.Motion.setComplete) {
                 // animation wraps the state change; assignment below is outside
             }
-            outcome = vm.complete(pageIndex: pageIndex, exercise: exercise, rowIndex: i,
-                                  resolved: resolved, restSeconds: 120,
-                                  bestWeight: nil, bestReps: nil)
+            outcome = vm.complete(exercise: exercise, rowIndex: i,
+                                  resolved: resolved, restSeconds: restSeconds,
+                                  bestWeight: nil, bestReps: nil,
+                                  startRest: startsRestOnComplete)
         }
         selection = nil
         let gen = UIImpactFeedbackGenerator(style: .light)
@@ -262,6 +283,7 @@ struct SetTableView: View {
         if outcome.isPR {
             UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
+        if set.completedAt != nil { onSetCompleted() }
     }
 
     private func weightText(_ w: Decimal?) -> String {
@@ -284,7 +306,6 @@ struct SetTableView: View {
 /// 1 rep, 0.5 RPE, 15 s rest (plate step from Settings in Phase 8).
 struct StepperAccessory: View {
     @Bindable var vm: WorkoutViewModel
-    let pageIndex: Int
     let exercise: SessionExercise
     let selection: SetTableView.FieldSelection
     var onClose: () -> Void
@@ -330,7 +351,7 @@ struct StepperAccessory: View {
         case .rest:
             break // per-set rest lands with RoutineItem wiring (Phase 7)
         }
-        vm.markTouched(page: pageIndex, row: selection.row)
+        vm.markTouched(exercise: exercise, row: selection.row)
     }
 
     private func current(_ set: SetEntry) -> String {
@@ -340,7 +361,9 @@ struct StepperAccessory: View {
             return NSDecimalNumber(decimal: w).doubleValue.formatted(.number.precision(.fractionLength(0...1)))
         case .reps: return set.reps.map(String.init) ?? "—"
         case .rpe: return set.rpe?.formatted(.number.precision(.fractionLength(0...1))) ?? "—"
-        case .rest: return "2:00"
+        case .rest:
+            let r = vm.restSeconds(for: exercise)
+            return String(format: "%d:%02d", r / 60, r % 60)
         }
     }
 

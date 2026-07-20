@@ -210,6 +210,8 @@ final class UserProfile {
     var defaultRestSeconds: Int = 120
     var showRPE: Bool = true
     var barWeightKg: Decimal = 20
+    /// Plate calculator inventory (per-side denominations, kg).
+    var availablePlatesKg: [Double] = [25, 20, 15, 10, 5, 2.5, 1.25]
 
     init() {}
 }
